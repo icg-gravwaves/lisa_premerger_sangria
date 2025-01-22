@@ -12,7 +12,9 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 results/test*
-results/out*
 results/psd_*
-sub_files
+results/focused_*
+results/signal_0_gaps
+sub_dir
 logs
+plots

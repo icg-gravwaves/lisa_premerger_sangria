@@ -62,7 +62,7 @@ legend.labelspacing: 0.4
 legend.columnspacing: 1
 legend.facecolor: 'white'
 legend.edgecolor: 'white'
-legend.framealpha: 0.5
+legend.framealpha: 0
 legend.title_fontsize: 8
 
 ### Figure size

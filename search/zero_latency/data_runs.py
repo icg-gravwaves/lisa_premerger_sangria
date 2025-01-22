@@ -185,6 +185,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
         testing_plots=args.testing_plots,
     )
 
+# Subtract the mean from the data
 for channel in data.keys():
     mean_val = np.mean(data[channel])
     data[channel] = data[channel] - mean_val

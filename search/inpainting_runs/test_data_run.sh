@@ -6,32 +6,32 @@ mkdir -p results/test
 
 shared_args="""
   --psd-files \
-    A:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
-    E:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
+    A:../../estimate_psds/model_AE_SMOOTHED_PSD.txt \
+    E:../../estimate_psds/model_AE_SMOOTHED_PSD.txt \
   --f-lower 1e-6 \
   --data-file \
     ../../datasets/LDC2_sangria_hm_training.hdf \
   --reduce-bank-factor \
-    141808 \
-  --remove-signals-after-coalescence 7200 \
+    22400 \
   --testing-plots results/test/inpainting_plots \
 """
 
 # for signal, use 11527200 for init_time_zerolatency
 # for noise, use 26962425 for init_time_zerolatency
 
-for init_time_inpainting in 4810020 8756480 11177840 11268570 11626940 12070960 13627110 16632190 17345150 18705750 20526220 22328060 23539830 24508760 29616090 ; do
+for init_time_inpainting in 4800030 ; do
+# 8756480 11177840 11268570 11626940 12070960 13627110 16632190 17345150 18705750 20526220 22328060 23539830 24508760 29616090 ; do
 
 # init_time_inpainting=$(($init_time_zerolatency - 86400))
 init_time_zerolatency=$(($init_time_inpainting + 86400))
 
-python ./data_runs.py $shared_args \
-  --bank-file \
-    ../template_bank/output/lisa_ew_1_day.hdf \
-  --days-to-search 21 \
-  --time-points-days 0.5 1 4 7 14  \
-  --time-point-window 3600 \
-  --end-time $init_time_inpainting  > ${result_file_inpaint}
+# python ./data_runs.py $shared_args \
+#   --bank-file \
+#     ../template_bank/output/lisa_ew_1_day.hdf \
+#   --days-to-search 21 \
+#   --time-points-days 0.5 1 4 7 14  \
+#   --time-point-window 3600 \
+#   --end-time $init_time_inpainting  > ${result_file_inpaint}
 
 shared_zerolag=" \
 --search-time 3600 \
@@ -39,14 +39,22 @@ shared_zerolag=" \
 --testing-plots results/test/zerolatency_plots \
 "
 
-for days_before in 1 ; do #4 7 4 1 0.5 ; do
-  result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
+for days_before in 1 ; do
+  result_file_raw=results/test/test_results_zero_latency_${days_before}_raw.txt
+  result_file_rm=results/test/test_results_zero_latency_${days_before}_remove.txt
 
   python ../zero_latency/data_runs.py \
     $shared_args $shared_zerolag \
     --bank-file \
     ../template_bank/output/lisa_ew_${days_before}_day.hdf \
-    --days-before-merger ${days_before} > ${result_file_zerol}
+    --days-before-merger ${days_before} > ${result_file_raw} 
+
+  python ../zero_latency/data_runs.py \
+    $shared_args $shared_zerolag \
+    --bank-file \
+    ../template_bank/output/lisa_ew_${days_before}_day.hdf \
+    --remove-signals-after-coalescence 7200 \
+    --days-before-merger ${days_before} > ${result_file_rm} 
 
 done
 

@@ -13,37 +13,47 @@ def calculate_plot_within(
     times_before=[0.5,1,4,7,14],
     alpha=1,
     predicted_time=True,
+    filter_around_merger=None,
+    color= None,
 ):
 
     norm = mcolors.LogNorm(vmin=min(times_before), vmax=max(times_before))
-    within_plot = np.ones_like(results['snr'], dtype=bool)
+    used_in_plot = np.ones_like(results['snr'], dtype=bool)
     # print('Using time' if predicted_time else 'Using data_end_time')
     result_times = results['time'] if predicted_time else results['data_end_time']
 
     # print(result_times)
 
     if start_time_offset is not None:
-        within_plot = np.logical_and(
-            within_plot,
+        used_in_plot = np.logical_and(
+            used_in_plot,
             ((result_times - central_time) / 86400) >= start_time_offset
         )
 
     if end_time_offset is not None:
-        within_plot = np.logical_and(
-            within_plot,
+        used_in_plot = np.logical_and(
+            used_in_plot,
             ((result_times - central_time) / 86400) <= end_time_offset
         )
 
-    if not any(within_plot):
+    if filter_around_merger is not None:
+        used_in_plot = np.logical_and(
+            used_in_plot,
+            abs(results['time'] - central_time) < filter_around_merger
+        )
+
+    if not any(used_in_plot):
         return 0, None
 
     cmap = cm.get_cmap('rainbow')
     sm = cm.ScalarMappable(norm=norm, cmap=cmap)
-    colors_rgba = sm.to_rgba(results['time_before'][within_plot])
+    colors_rgba = sm.to_rgba(results['time_before'][used_in_plot])
+    if color is not None:
+        colors_rgba = 'k'
 
     ax.scatter(
-        (result_times[within_plot] - central_time) / 86400,
-        results['snr'][within_plot],
+        (result_times[used_in_plot] - central_time) / 86400,
+        results['snr'][used_in_plot],
         marker=marker,
         facecolors='none' if marker=='o' else colors_rgba,
         edgecolors=colors_rgba if marker=='o' else None,
@@ -51,7 +61,7 @@ def calculate_plot_within(
         rasterized=True
     )
 
-    return max(results['snr'][within_plot]), sm
+    return max(results['snr'][used_in_plot]), sm
 
 def plot_around_time(
     results_one=None,
@@ -65,6 +75,9 @@ def plot_around_time(
     predicted_time=True,
     label_one='Raw',
     label_two='Remove',
+    filter_around_merger=None,
+    color_one=None,
+    color_two=None
 ):
     width = plt.rcParams["figure.figsize"][0] * 1.25
     height = plt.rcParams["figure.figsize"][1]
@@ -79,9 +92,10 @@ def plot_around_time(
         end_time_offset,
         signal_truth_time,
         marker='x',
-        alpha=0.4,
         times_before=times_before,
         predicted_time=predicted_time,
+        filter_around_merger=filter_around_merger,
+        color=color_one
     )
     max_snr = max(max_snr, max_snr_one)
 
@@ -95,6 +109,8 @@ def plot_around_time(
             times_before=times_before,
             marker='o',
             predicted_time=predicted_time,
+            filter_around_merger=filter_around_merger,
+            color=color_two
         )
         max_snr = max(max_snr, max_snr_two)
 
@@ -118,7 +134,7 @@ def plot_around_time(
             ax.axvline(
                 time_to_plot,
                 c=sm.to_rgba(time_before),
-                alpha=0.2,
+                linestyle=':'
             )
 
     label_start = "Forecast Merger Time" if predicted_time else "Data End Time"
@@ -154,4 +170,4 @@ def plot_around_time(
     ax.set_ylim(top=max(max_snr * 1.1, 10))
     if signal_number is not None:
         ax.set_title(f"Signal {signal_number}: {signal_truth_time:.1f}s")
-    return fig
+    return fig, ax

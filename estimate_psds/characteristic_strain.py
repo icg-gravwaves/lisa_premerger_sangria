@@ -7,6 +7,7 @@ from pycbc.waveform import get_fd_det_waveform
 import ldc.io.hdf5 as hdfio
 from ldc.common import tools as ldc_tools
 
+import os
 
 import argparse
 
