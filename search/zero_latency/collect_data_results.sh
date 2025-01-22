@@ -1,17 +1,16 @@
 set -e
 
 for days_before in 0.5 1 4 7 14  ; do
+  sanitize_dbm=`echo "$days_before" | sed 's/\./p/g'`
 
-  python collect_data_results.py \
-    --result-dir ./results/${days_before} \
-    --exclude-string remove \
-    --require-string raw \
-    --output-file ./results/data_runs_raw_${days_before}_results.hdf
-
-  python collect_data_results.py \
-    --result-dir ./results/${days_before} \
-    --require-string remove \
-    --exclude-string raw \
-    --output-file ./results/data_runs_remove_${days_before}_results.hdf
-
+  for remove in 'raw' 'remove' ; do
+    for model in model estimate ; do
+      echo $model $remove $sanitize_dbm
+      python collect_data_results.py \
+        --verbose \
+        --result-dir ./results/psd_$model/$remove/${sanitize_dbm} \
+        --output-file ./results/psd_$model/data_runs_${remove}_${days_before}_results.hdf
+    done
+  done
 done
+

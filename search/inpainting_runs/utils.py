@@ -32,12 +32,8 @@ from inpainting_utils import (
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from common_utils import (
-    to_timeseries,
-    AET,
     load_ldc_timeseries,
-    fast_tdi,
-    generate_waveform_for_data,
-    lisa_orbits
+    remove_signals
 )
 
 ####################################################
