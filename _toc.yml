@@ -1,0 +1,5 @@
+format: jb-book
+root: README.md
+chapters:
+- file: estimate_psds/README.md
+  sections: estimate_psds/estimate_psds.ipynb
