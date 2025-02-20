@@ -7,17 +7,17 @@ import pycbc.filter
 from pycbc.types import MultiDetOptionAction
 from tqdm import tqdm
 import h5py
+import logging
 
+from pycbc import init_logging, add_common_pycbc_options
 from pycbc.pnutils import get_inspiral_tf
 
 # Some top-level parameters
-f_nyquist = 0.01
-tlen = 86400 * 40
-delta_f = 1. / (tlen * 2) # Note that this is not long enough to represent in the time-domain, but we won't do that!
-low_freq_cutoff = max(1e-06, delta_f)
-nominal_distance = 2000
+f_nyquist = 0.1
+nominal_distance = 200
 
 parser = argparse.ArgumentParser()
+add_common_pycbc_options(parser)
 parser.add_argument(
     '--psd-files',
     required=True,
@@ -60,8 +60,8 @@ parser.add_argument(
 parser.add_argument(
     '--low-frequency-cutoff',
     type=float,
-    default=1e-6,
-    help="Low frequency cutoff for calculating SNR, in Hz. Default 1e-6"
+    default=1e-7,
+    help="Low frequency cutoff for calculating SNR, in Hz. Default 1e-7"
 )
 parser.add_argument(
     '--parallelize-range',
@@ -76,22 +76,38 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-if args.low_frequency_cutoff < delta_f:
-    args.low_frequency_cutoff = delta_f
+init_logging(args.verbose)
 
-# Open the PSDs, load as PyCBC objects
-psds = {}
-for channel, psd_file in args.psd_files.items():
-    psds[channel] = pycbc.psd.from_txt(
-        psd_file,
-        int(f_nyquist/delta_f),
-        delta_f,
-        low_freq_cutoff,
-        is_asd_file=False
-    )
+logging.info("Setting up PSDs")
+# Set up psds of different lengths ready to analyse different
+# length signals:
+tlen_days_all = np.array(
+    [30, 40, 60, 80, 100, 200, 365.25, 2 * 365.25, 3 * 365.25]
+)
+tlens = tlen_days_all * 86400
+psds = {channel: {} for channel in ['A','E']}
+psd_lens = np.zeros(len(tlens))
+delta_fs = np.zeros(len(tlens))
+for i, tlen in enumerate(tlens):
+    logging.info("%d / %d: %d days", i, tlens.size, tlen / 86400)
+    delta_f = 1. / (tlen * 2)
+    # Open the PSD, load as PyCBC object
+    for channel in ['A','E']:
+        psd = pycbc.psd.from_txt(
+            args.psd_files[channel],
+            int(f_nyquist/delta_f),
+            delta_f,
+            args.low_frequency_cutoff,
+            is_asd_file=False
+        )
+        psds[channel][tlen] = psd
+        # These _should_ be the same for both channels,
+        # so it doesn't matter which is saved
+    psd_lens[i] = len(psd)
+    delta_fs[i] = delta_f
 
-if ('A' not in psds) or ('E' not in psds):
-    raise ValueError("--psd-files must contain 'A' and 'E' options")
+
+logging.info("Loaded %d psds for various time lengths", tlens.size * 2)
 
 if args.log_mass_spacing:
     masses = np.logspace(
@@ -106,18 +122,16 @@ else:
         args.n_mass_points,
     )
 
+logging.info("Set up masses")
+
 times = np.array(args.times)
 
 shared_waveform = {
-    'ifos':['LISA_A','LISA_E'],
+    'ifos':['LISA_A','LISA_E','LISA_T'],
     'approximant':'BBHX_PhenomD',
     'spin1z':0,
     'spin2z':0,
-    'delta_f':delta_f,
     'distance':nominal_distance,
-    't_obs_start':tlen,
-    'tc':tlen - 86400,
-    'f_lower':low_freq_cutoff,
     't_offset':0,
     'tdi': '1.5',
 }
@@ -129,53 +143,69 @@ def get_sensitive_distance(t, m):
     """
     # Calculate the time-frequency track in order
     # to convert and get the right upper frequency cutoff
-    if t == 0:
-        freq = f_nyquist
-    else:
-        track_t, track_f = get_inspiral_tf(
-            0, m, m, 0, 0,
-            args.low_frequency_cutoff,
-            approximant='SPAtmplt'
-        )
-        freq = np.interp(-t, track_t, track_f)
-
-        if freq < (args.low_frequency_cutoff + 2 * delta_f):
-            # This frequency / time before merger is too low
-            # frequency, and won't give sensible results
-            return np.nan
     
+    track_t, track_f = get_inspiral_tf(
+        0, m, m, 0, 0,
+        args.low_frequency_cutoff,
+        approximant='SPAtmplt'
+    )
+    if t == 0:
+        freq_upper = f_nyquist
+    else:
+        freq_upper = np.interp(-t, track_t, track_f)
+
+    freq_upper = min(f_nyquist, freq_upper)
+    freq_lower = np.interp(-86400 * 365.25 * 3, track_t, track_f)
+    freq_lower = max(args.low_frequency_cutoff, freq_lower)
+
     # Using a standard seed keeps the sky points the same for
     # all points and any repeats
     np.random.seed(24601)
     sum_sigsq = 0
+    n_valid = 0
     for _ in range(args.n_sky_points):
-        wf = pycbc.waveform.get_fd_det_waveform(
+        template = {
             **shared_waveform,
-            mass1=m,
-            mass2=m,
-            f_final=freq,
-            coa_phase=np.random.uniform(0, np.pi * 2),
-            inclination=np.arccos(np.random.uniform(0,1)),
-            polarization=np.random.uniform(0, np.pi * 2),
-            eclipticlatitude=np.arccos(np.random.uniform(0,1)),
-            eclipticlongitude=np.random.uniform(0, np.pi * 2),
+            'mass1':m,
+            'mass2':m,
+            'f_final':freq_upper,
+            'coa_phase':np.random.uniform(0, np.pi * 2),
+            'inclination':np.arccos(np.random.uniform(0,1)),
+            'polarization':np.random.uniform(0, np.pi * 2),
+            'eclipticlatitude':np.arccos(np.random.uniform(0,1)),
+            'eclipticlongitude':np.random.uniform(0, np.pi * 2),
+            'f_lower':freq_lower
+        }
+        
+        wf = pycbc.waveform.get_fd_det_waveform(
+            **template,
+            delta_f = delta_fs[0],
+            t_obs_start=tlens[0],
+            tc=tlens[0] - 43200,
         )
-
-        for channel in ['A','E']:
-            N = min(
-                len(wf['LISA_' + channel]),
-                len(psds[channel]),
-            )
-            sig = pycbc.filter.sigma(
-                wf['LISA_' + channel][:N],
-                psds[channel][:N],
-                low_frequency_cutoff=args.low_frequency_cutoff,
-                high_frequency_cutoff=freq
-            )
-            sum_sigsq += sig ** 2
-
-    mean_sigsq = sum_sigsq / args.n_sky_points
-    if mean_sigsq > 0:
+        psd_i = np.argmax(psd_lens >= wf['LISA_A'].data.size)
+        #print(t, m, wf['LISA_A'].data.size, len(psds[tlens[psd_i]]))
+        wf = pycbc.waveform.get_fd_det_waveform(
+            **template,
+            delta_f = delta_fs[psd_i],
+            t_obs_start=tlens[psd_i],
+            tc=tlens[psd_i] - 86400,
+        )
+        try:
+            for channel in ['A','E']:
+                sig = pycbc.filter.sigma(
+                    wf['LISA_' + channel],
+                    psds[channel][tlens[psd_i]][:len(wf['LISA_' + channel])],
+                    low_frequency_cutoff=freq_lower,
+                    high_frequency_cutoff=freq_upper
+                )
+                sum_sigsq += sig ** 2
+            n_valid += 1
+        except ValueError:
+            continue
+    
+    if n_valid > 0 and sum_sigsq > 0:
+        mean_sigsq = sum_sigsq / n_valid
         dist_out = np.sqrt(mean_sigsq) / 10 * (nominal_distance / 1000)
     else:
         dist_out = np.nan
@@ -198,6 +228,8 @@ np.random.seed(0)
 np.random.shuffle(ids)
 ids = ids[imin:imax]
 
+logging.info("Selected %s randomly shuffled time-mass pairs", imax - imin)
+
 masses_all = masses_all[ids]
 times_all = times_all[ids]
 
@@ -208,6 +240,8 @@ for i, (m, t) in enumerate(tqdm(m_t)):
 
     dists[i] = get_sensitive_distance(t, m)
     continue
+
+logging.info("Got sensitive distances")
 
 with h5py.File(args.output_file, 'w') as out_f:
     out_f['mass'] = masses_all.flatten()
