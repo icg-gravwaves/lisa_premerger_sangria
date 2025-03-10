@@ -1,2 +1,3 @@
 __pycache__
-data_results*.txt
+results
+sub_files
