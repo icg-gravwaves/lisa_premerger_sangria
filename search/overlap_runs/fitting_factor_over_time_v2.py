@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import pycbc
 import pycbc.types
 from pycbc.psd import interpolate
-from pycbc.types import MultiDetOptionAction, TimeSeries  # Custom action for argparse
+from pycbc.types import MultiDetOptionAction  # Custom action for argparse
 from pycbc.psd.lisa_pre_merger import generate_pre_merger_psds  # Function to generate pre-merger PSDs
 from pycbc.waveform.pre_merger_waveform import (
     pre_process_data_lisa_pre_merger,  # Function to preprocess data for LISA pre-merger
@@ -31,7 +31,7 @@ from utils import (
     get_snr_series,
     get_snr_point
 )
-rms = lambda x: np.sqrt((x[0] ** 2 + x[1] ** 2) / 2)
+rtsumsq = lambda x: np.sqrt(sum(xi ** 2 for xi in x))
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
@@ -51,6 +51,8 @@ parser.add_argument('--data-file', required=True)
 # Add argument for the number of days before merger (required)
 parser.add_argument('--days-before-merger', required=True)
 
+parser.add_argument("--days-before", type=float, default=25)
+
 # Add argument for the kernel length with a default value
 parser.add_argument('--kernel-length', type=int, default=17280)
 
@@ -63,9 +65,13 @@ parser.add_argument('--f-lower', type=float, default=1e-6)
 # Add argument for the sample rate with a default value
 parser.add_argument('--sample-rate', type=float, default=0.2)
 
-parser.add_argument('--output-file')
+parser.add_argument('--output-file', required=True)
 
-parser.add_argument('--output-plot-format')
+parser.add_argument('--output-plot')
+
+parser.add_argument('--n-points', type=int, default=1200)
+
+parser.add_argument('--days-after', type=float, default=5)
 
 parser.add_argument('--signal-number', type=int, choices=np.arange(15))
 
@@ -76,11 +82,10 @@ parser.add_argument('--reduce-bank-factor', type=int,
                          "useful for performing the search quickly in testing"
                          "Default: don't do this")
 
-parser.add_argument('--extra-after', type=float, default=5)
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
-window_length = 17820
+window_length = 17280
 
 mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
 
@@ -110,8 +115,19 @@ psds_for_whitening = {
     for channel in ['A','E']
 }
 
+flen = int(args.data_length * args.sample_rate) // 2 + 1
+delta_f = 1 / args.data_length
 
-cutoff_s = float(args.days_before_merger) * 86400
+psds_standard = {
+    f'LISA_{channel}': pycbc.psd.from_txt(
+        args.psd_files[channel],
+        flen,
+        delta_f,
+        delta_f,
+        is_asd_file=False
+    )
+    for channel in ['A','E']
+}
 
 bank_dtype=np.dtype([
     ('mass1', np.float64),
@@ -138,109 +154,152 @@ bank_array = load_bank(args.bank_files[args.days_before_merger])
 
 bank_array = bank_array[::args.reduce_bank_factor]
 
-with h5py.File(args.output_file, 'w') as ofile:
-    ofile.attrs['days_before_merger'] = float(args.days_before_merger)
+cutoff_days = np.linspace(
+    -args.days_after,
+    args.days_before,
+    args.n_points
+)[::-1]
 
-for signal_number in np.arange(15):
-    if args.signal_number is not None and not signal_number == args.signal_number:
-        continue
-    signal_waveform = ldc_to_bbhx(
-        mbhbs[signal_number],
-        waveform_params_shared
+with h5py.File(args.output_file,'w') as ofile:
+    ofile.create_dataset(
+        'cutoff_days',
+        data=-cutoff_days[::-1],
     )
+
+logging.info("Signal number %d", args.signal_number)
+snr_over_time = np.zeros_like(cutoff_days)
+fitting_factor_over_time = np.zeros_like(cutoff_days)
+optimal_snr_over_time = np.zeros_like(cutoff_days)
+signal_waveform = ldc_to_bbhx(
+    mbhbs[args.signal_number],
+    waveform_params_shared
+)
+
+gen_data_length = (2 * args.data_length + args.days_before + args.days_after + 0.1) * 86400
+generate_waveform = copy.deepcopy(signal_waveform)
+generate_waveform.update({
+    't_obs_start': gen_data_length,
+    'delta_f': 1 / gen_data_length,
+    'tc': gen_data_length,
+})
+
+outs = pycbc.waveform.get_fd_det_waveform(
+    ifos=['LISA_A','LISA_E'],
+    **generate_waveform
+)
+
+fig, ax = plt.subplots()
+data_t = {}
+for channel in outs:
+    data_t[channel] = outs[channel].to_timeseries()
+    data_t[channel] = data_t[channel].cyclic_time_shift(
+        -args.days_after * 86400
+    )
+    data_t[channel]._epoch = -gen_data_length + args.days_after * 86400
+    ax.plot(
+        data_t[channel].sample_times / 86400,
+        data_t[channel],
+        label=channel
+    )
+    ax.legend()
+# ax.set_xlim(-0.2, 0.05)
+ax.grid()
+fig.savefig('test.png')
+
+# data = generate_waveform_lisa_pre_merger(
+#     signal_waveform,
+#     psds_for_whitening,
+#     sample_rate=args.sample_rate,
+#     window_length=window_length,
+#     cutoff_time=cutoff_s,
+#     forward_zeroes=args.kernel_length,
+# )
+
+logging.info("Calculating optimal SNR over time")
+for i, cutoff_day in enumerate(tqdm(cutoff_days)):
+    end_time = cutoff_day * 86400
+    # end_idx = 
+    # start_idx = 
+    # data_processed = 
+
+    optimal_snr = get_optimal_snr(
+        signal_waveform,
+        psds_for_whitening,
+        end_time,
+        window_length=window_length,
+        delta_t=1. / args.sample_rate,
+        kernel_length=args.kernel_length,
+    )
+
+    optimal_snr_over_time[i] = rtsumsq(optimal_snr)
 
     data = generate_waveform_lisa_pre_merger(
         signal_waveform,
         psds_for_whitening,
         sample_rate=args.sample_rate,
         window_length=window_length,
-        cutoff_time=0,
+        cutoff_time=cutoff_s,
+        forward_zeroes=args.kernel_length,
     )
 
-    exact_waveform = copy.deepcopy(signal_waveform)
-    del exact_waveform['distance']
-
-    sigma = rms(get_snr_point(
-        exact_waveform,
-        data,
-        psds_for_whitening,
-        cutoff_time=cutoff_s,
-        window_length=window_length,
-        delta_t=1./args.sample_rate,
-        kernel_length=args.kernel_length,
-    ))
-
-    fitting_factor_over_time = None
-
-    for bank_idx in tqdm(np.arange(bank_array.size)):
+    snr_max = 0
+    for bank_idx in range(bank_array.size):
+        if bank_idx > 0: continue
         bank_wf = copy.deepcopy(waveform_params_shared)
         bank_wf.update({
             k: bank_array[k][bank_idx]
             for k in bank_dtype.names
         })
 
-        snr = rms(get_snr_series(
+        snr = get_snr_point(
             bank_wf,
             data,
             psds_for_whitening,
+            delta_t=1. / args.sample_rate,
             window_length=window_length,
             cutoff_time=cutoff_s,
             kernel_length=args.kernel_length,
-            delta_t=1./args.sample_rate
-        )) / sigma
-
-        snr = snr.cyclic_time_shift(
-            -(cutoff_s + 86400 * args.extra_after)
         )
-        snr._epoch = -args.data_length + 86400 * args.extra_after
 
-        # print(f"Sigma (optimal SNR): {sigma}")
-        # print(f"Matched-filter SNR (before normalization): {max(snr) * sigma}")
-        # print(f"Normalized SNR: {max(snr)}")
-        # print(f"Fitting Factor (current max): {np.max(fitting_factor_over_time)}")
+        snr_max = max(
+            snr_max,
+            np.sqrt(snr[0] ** 2 + snr[1] ** 2)
+        )
 
-        if fitting_factor_over_time is None:
-            fitting_factor_over_time = snr.data
-        else:
-            fitting_factor_over_time = np.maximum(
-                fitting_factor_over_time,
-                snr.data
-            )
+    snr_over_time[i] = snr_max
 
-    ideal_snr = rms(get_snr_series(
-        exact_waveform,
-        data,
-        psds_for_whitening,
-        window_length=window_length,
-        cutoff_time=cutoff_s,
-        kernel_length=args.kernel_length,
-        delta_t=1./args.sample_rate
-    )) / sigma
 
-    ideal_snr = ideal_snr.cyclic_time_shift(
-        -(cutoff_s + 86400 * args.extra_after)
+logging.info(
+    "Updating zero cutoff time and later to be the full signal"
+)
+
+optimal_snr_over_time[cutoff_days <= 0] = rtsumsq(get_full_optimal_snr(
+    signal_waveform,
+    psds_standard
+))
+
+with h5py.File(args.output_file,'a') as ofile:
+    ofile.create_dataset(
+        f'optimal_snr_signal_{args.signal_number}',
+        data=optimal_snr_over_time[::-1],
     )
-    ideal_snr._epoch = -args.data_length + 86400 * args.extra_after
 
-    fig, ax = plt.subplots(1)
-    ax.plot(snr.sample_times / 86400, fitting_factor_over_time, c='tab:blue')
-    ax.plot(snr.sample_times / 86400, ideal_snr, c='tab:orange')
-
-    ax.set_yscale('log')
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Fitting Factor')
+if args.output_plot is not None:
+    fig, ax = plt.subplots()
+    ax.plot(
+        -cutoff_days,
+        optimal_snr_over_time,
+        label='Optimal'
+    )
+    ax.plot(
+        -cutoff_days,
+        snr_over_time,
+        label='SNR'
+    )
+    ax.semilogy()
+    ax.legend()
+    ax.set_title(f'SNR vs time, signal {args.signal_number}')
     ax.grid()
-
-    fig.savefig(args.output_plot_format.format(signal_no=signal_number))
-
-    with h5py.File(args.output_file, 'a') as ofile:
-        sn_group = ofile.create_group(str(signal_number))
-
-        sn_group.create_dataset(
-            'sample_times',
-            data=snr.sample_times / 86400
-        )
-        sn_group.create_dataset(
-            'fitting_factor',
-            data=fitting_factor_over_time,
-        )
+    ax.set_xlabel('Cutoff time')
+    ax.set_ylabel('SNR')
+    fig.savefig(args.output_plot)

@@ -9,6 +9,7 @@ import json  # Library for parsing JSON data
 import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
 from tqdm import tqdm  # Library for creating progress bars
+import numpy as np
 
 # Import specific modules from the PyCBC library
 import pycbc
@@ -20,15 +21,14 @@ from pycbc.waveform.pre_merger_waveform import (
     pre_process_data_lisa_pre_merger,  # Function to preprocess data for LISA pre-merger
     generate_waveform_lisa_pre_merger,  # Function to generate waveform for LISA pre-merger
 )
+import ldc.io.hdf5 as hdfio
 
 # Import utility functions from the utils module
 from utils import (
     get_snr_from_series,  # Function to get SNR from a series
-    get_snr_series,  # Function to get a series of SNR values
-    get_optimal_snr,  # Function to get the optimal SNR
-    get_snr_point,  # Function to get a specific SNR point
     plot_best_waveform,  # Function to plot the best waveform
-    load_timeseries, # function to load timeseries
+    load_ldc_timeseries, # function to load timeseries
+    generate_waveform_for_data,
 )
 
 # Set up argument parser for command-line arguments
@@ -55,17 +55,36 @@ parser.add_argument('--end-time', required=True, type=float,
 # valid of the SNR time series 
 parser.add_argument('--search-time', type=float, default=86400.)
 
-# Add argument for the data file with zero noise
-parser.add_argument('--data-file-zero-noise')
-
 # Add argument for the number of days before merger (required)
 parser.add_argument('--days-before-merger', type=float, required=True)
 
 # Add argument for the kernel length with a default value
 parser.add_argument('--kernel-length', type=int, default=17280)
 
-# Add argument for the data length with a default value
+# Add argument for the data length with a default value (seconds)
 parser.add_argument('--data-length', type=int, default=2592000)
+
+parser.add_argument(
+    '--remove-signals-after-coalescence',
+    type=float,
+    help="Remove signals from the data this amount of time (s) after "
+         "the coalescence. e.g. if we consider that a signal would "
+         "be considered found accurately half an hour after the coalescence, "
+         "set this to 1800. Default - don't do this"
+)
+
+parser.add_argument(
+    '--remove-all-mbhbs',
+    action='store_true',
+    help="If given, remove all mbhbs from the dataset. Thsi flag means that "
+    "--remove-signals-after-coalescence has no effect"
+)
+
+parser.add_argument(
+    '--remove-all-gbs',
+    action='store_true',
+    help="If given, remove all galactic binaries from the dataset"
+)
 
 # Add argument for the lower frequency cutoff with a default value
 parser.add_argument('--f-lower', type=float, default=1e-6)
@@ -105,6 +124,149 @@ waveform_params_shared = {
     'cutoff_deltat': 0,
 }
 
+
+time_before = 86400 * args.days_before_merger
+
+cutoff_time=time_before
+window_length=17280
+
+
+remove_noiseless_groups = []
+if args.remove_all_mbhbs:
+    remove_noiseless_groups.append('sky/mbhb/tdi')
+if args.remove_all_gbs:
+    remove_noiseless_groups += [f"sky/{i}gb/tdi" for i in ['v','d','i']]
+
+data = load_ldc_timeseries(
+    args.data_file,
+    remove_noiseless_groups=remove_noiseless_groups,
+    delta_t=1./args.sample_rate
+)
+
+mbhb_data = load_ldc_timeseries(
+    args.data_file,
+    data_group='sky/mbhb/tdi',
+    delta_t=1./args.sample_rate,
+)
+
+end_idx = int(args.end_time * args.sample_rate) # seconds * hertz = unitless
+start_idx = int(end_idx - args.data_length * args.sample_rate) # unitless - unitless
+start_time = args.end_time - args.data_length # seconds - number of samples / (number of samples per second) = seconds
+
+logging.info("Cutting to %.3f seconds of data", args.data_length)
+
+for channel in data.keys():
+    data[channel] = data[channel][start_idx:end_idx]
+    mbhb_data[channel] = mbhb_data[channel][start_idx:end_idx]
+    
+if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
+    from matplotlib import pyplot as plt
+    mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
+    for i, mbhb in enumerate(mbhbs):
+
+        if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
+            logging.info("Signal %d not yet reached", i)
+            continue
+
+        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * args.sample_rate * 2):
+            logging.info("Signal %d is well before the searched time - ignore it", i)
+            continue
+    
+        logging.info("Removing signal %d from data", i)
+
+        waveform_for_removal = generate_waveform_for_data(
+            mbhb,
+            start_time,
+            args.end_time,
+            1. / args.sample_rate,
+        )
+
+        plt.plot(
+            data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+            data['LISA_A'],
+            label='Data LISA A',
+            alpha=0.25
+        )
+        plt.plot(
+            data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+            data['LISA_E'],
+            label='Data LISA E',
+            alpha=0.25
+        )
+        plt.plot(
+            mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+            mbhb_data['LISA_A'],
+            c='tab:blue',
+            label='MBHB LISA_A',
+        )
+        plt.plot(
+            mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+            mbhb_data['LISA_E'],
+            c='tab:orange',
+            label='MBHB LISA_E',
+        )
+        plt.plot(
+            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+            waveform_for_removal['LISA_A'],
+            c='tab:green',
+            linestyle=':',
+            label='Waveform LISA A'
+        )
+        plt.plot(
+            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+            waveform_for_removal['LISA_E'],
+            c='tab:red',
+            linestyle=':',
+            label='Waveform LISA E'
+        )
+
+        plt.axvline(0, c='r', linestyle=':')
+        plt.xlim(-2000, 1000)
+        plt.ylim(-1e-19, 1e-19)
+        plt.legend(loc='upper left')
+        plt.savefig("waveform_for_removal.png")
+
+        logging.info('Removing from data')
+        subtracted = {
+            channel: data[channel] - waveform_for_removal[channel]
+            for channel in data.keys()
+        }
+
+        plt.figure()
+        plt.plot(
+            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+            data['LISA_A'],
+            alpha=0.5,
+            c='tab:blue',
+            label='Original LISA A'
+            )
+        plt.plot(
+            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+            data['LISA_E'],
+            alpha=0.5,
+            c='tab:orange',
+            label='Original LISA E'
+        )
+        plt.plot(
+            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+            subtracted['LISA_A'],
+            c='tab:blue',
+            label='Subtracted LISA A'
+            )
+        plt.plot(
+            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+            subtracted['LISA_E'],
+            c='tab:orange',
+            label='Subtracted LISA E'
+        )
+        plt.axvline(0, c='r', linestyle=':')
+        plt.xlim(-2000, 1000)
+        plt.ylim(-1e-19, 1e-19)
+        plt.legend(loc='upper left')
+        plt.savefig("waveform_removed.png")
+
+        data = subtracted
+
 psds_for_whitening = {
     f'LISA_{channel}':  interpolate(
         generate_pre_merger_psds(
@@ -120,24 +282,8 @@ psds_for_whitening = {
 
 logging.info("Generated PSD objects")
 
-time_before = 86400 * args.days_before_merger
-
-cutoff_time=time_before
-window_length=17280
-
 lisa_a_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_A']
 lisa_e_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_E']
-
-data = load_timeseries(
-    args.data_file,
-    channels=['LISA_A', 'LISA_E'],
-)
-
-start_idx = int((args.end_time - args.data_length) * args.sample_rate)
-end_idx = int(args.end_time * args.sample_rate)
-
-for channel in data.keys():
-    data[channel] = data[channel][start_idx:end_idx]
 
 data = pre_process_data_lisa_pre_merger(
     data,

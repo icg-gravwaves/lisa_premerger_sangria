@@ -44,10 +44,7 @@ parser.add_argument(
 # Add argument for the data file (required)
 parser.add_argument('--data-file', required=True)
 
-parser.add_argument("--optimal-days-before", type=float, default=25)
-
-# Add argument for the number of days before merger (required)
-parser.add_argument('--days-before-merger', type=float, nargs='+', default=[0.5, 1, 4, 7, 14])
+parser.add_argument("--days-before", type=float, default=25)
 
 # Add argument for the kernel length with a default value
 parser.add_argument('--kernel-length', type=int, default=17280)
@@ -61,20 +58,13 @@ parser.add_argument('--f-lower', type=float, default=1e-6)
 # Add argument for the sample rate with a default value
 parser.add_argument('--sample-rate', type=float, default=0.2)
 
-parser.add_argument('--output-file')
+parser.add_argument('--output-file', required=True)
 
-parser.add_argument('--output-plot')
+parser.add_argument('--output-plot-format')
 
-parser.add_argument('--log-xscale', action='store_true')
+parser.add_argument('--n-points', type=int, default=1200)
 
-parser.add_argument('--n-optimal', type=int, default=1200)
-
-# Add argument for reducing the bank factor
-parser.add_argument('--reduce-bank-factor', type=int,
-                    default=1,
-                    help="Reduce the bank by a factor of this number, "
-                         "useful for performing the search quickly in testing"
-                         "Default: don't do this")
+parser.add_argument('--days-after', type=float, default=5)
 
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
@@ -124,21 +114,12 @@ psds_standard = {
     for channel in ['A','E']
 }
 
-if args.log_xscale:
-    cutoff_days = np.logspace(
-        np.log10(1 / 24),
-        np.log10(args.optimal_days_before),
-        args.n_optimal
-    )[::-1]
-else:
-    cutoff_days = np.linspace(
-        1 / 24,
-        args.optimal_days_before,
-        args.n_optimal
-    )[::-1]
 
-# Add the zero time
-cutoff_days = np.concatenate((cutoff_days, [0]))
+cutoff_days = np.linspace(
+    -args.days_after,
+    args.days_before,
+    args.n_points
+)[::-1]
 
 with h5py.File(args.output_file,'w') as ofile:
     ofile.create_dataset(
@@ -155,6 +136,7 @@ for signal_number in np.arange(15):
     )
     logging.info("Calculating optimal SNR over time")
     for i, cutoff_day in enumerate(tqdm(cutoff_days)):
+
         cutoff_s = cutoff_day * 86400
         optimal_snr = get_optimal_snr(
             signal_waveform,
@@ -168,10 +150,10 @@ for signal_number in np.arange(15):
         optimal_snr_over_time[i] = rtsumsq(optimal_snr)
 
     logging.info(
-        "Updating zero cutoff time to be the full signal"
+        "Updating zero cutoff time and later to be the full signal"
     )
 
-    optimal_snr_over_time[-1] = rtsumsq(get_full_optimal_snr(
+    optimal_snr_over_time[cutoff_days <= 0] = rtsumsq(get_full_optimal_snr(
         signal_waveform,
         psds_standard
     ))
@@ -182,3 +164,16 @@ for signal_number in np.arange(15):
             f'optimal_snr_signal_{signal_number}',
             data=optimal_snr_over_time[::-1],
         )
+
+    if args.output_plot_format is not None:
+        fig, ax = plt.subplots()
+        ax.plot(
+            -cutoff_days,
+            optimal_snr_over_time
+        )
+        ax.semilogy()
+        ax.set_title(f'Optimal SNR vs time, signal {signal_number}')
+        ax.grid()
+        ax.set_xlabel('Cutoff time')
+        ax.set_ylabel('Optimal SNR')
+        fig.savefig(args.output_plot_format.format(signal_no=signal_number))
