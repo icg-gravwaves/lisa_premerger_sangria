@@ -2,6 +2,7 @@ import numpy as np
 import copy
 from tqdm import tqdm
 import h5py
+import logging
 
 import pycbc
 import pycbc.psd
@@ -17,7 +18,8 @@ from pycbc.waveform.pre_merger_waveform import (
     generate_waveform_lisa_pre_merger,
     pre_process_data_lisa_pre_merger,
 )
-
+from pycbc.waveform import get_fd_det_waveform
+import ldc.io.hdf5 as hdfio
 
 ####################################################
 # Function to get SNR given data and wform params
@@ -638,27 +640,128 @@ def plot_best_waveform(
     ax.set_title(f'Template {snr_vals[0]}, {time_before / 86400} days before merger, {label} psd')
     fig.savefig(f'bestwf_snr_series_{label}.png')
 
-import ldc.io.hdf5 as hdfio
+from ldc.common import tools as ldc_tools
 from pycbc.types import TimeSeries
+from ldc.waveform.waveform import get_fd_tdixyz
 
-def load_timeseries(filename, channels, group="obs/tdi"):
-    tdi_ts, _ = hdfio.load_array(filename, name=group)
+def to_timeseries(waveform_dict, delta_t, epoch=0):
+    return_dict = {}
+    for channel, array in waveform_dict.items():
+        array_ts = TimeSeries(array, delta_t=delta_t, epoch=epoch)
+        return_dict[channel] = array_ts
+    return return_dict
+
+def AET(X,Y,Z, delta_t, epoch=0):
+    waveform_A = (Z - X)/np.sqrt(2.0)
+    waveform_E = (X - 2.0*Y + Z)/np.sqrt(6.0)
+    waveform_T =(X + Y + Z)/np.sqrt(3.0)
+
+    AET_ts = to_timeseries(
+        {
+            'LISA_A': waveform_A,
+            'LISA_E': waveform_E,
+            'LISA_T': waveform_T,
+        },
+        delta_t,
+        epoch=epoch
+    )
+
+    return AET_ts
+
+
+def load_ldc_timeseries(
+    filename,
+    data_group="obs/tdi",
+    remove_noiseless_groups=[],
+    delta_t=5.
+):
+    tdi_ts, _ = hdfio.load_array(filename, name=data_group)
     X = tdi_ts['X']
     Y = tdi_ts['Y']
     Z = tdi_ts['Z']
 
-    return_dict = {}#'time': tdi_ts['t']}
-    if 'LISA_A' in channels:
-        A = (Z - X)/np.sqrt(2)
-        A_ts = TimeSeries(A, delta_t=5.)
-        return_dict['LISA_A'] = A_ts
-    if 'LISA_E' in channels:
-        E = (X - 2*Y + Z)/np.sqrt(6)
-        E_ts = TimeSeries(E, delta_t=5.)
-        return_dict['LISA_E'] = E_ts
-    if 'LISA_T' in channels:
-        T = (X + Y + Z)/np.sqrt(3)
-        T_ts = TimeSeries(T, delta_t=5.)
-        return_dict['LISA_T'] = T_ts
+    for ng in remove_noiseless_groups:
+        tdi_to_rm, _ = hdfio.load_array(filename, name=ng)
+        X -= tdi_to_rm['X']
+        Y -= tdi_to_rm['Y']
+        Z -= tdi_to_rm['Z']
 
-    return return_dict
+    return AET(X,Y,Z, delta_t)
+
+
+# The following is lifted from https://gitlab.in2p3.fr/LISA/LDC/-/blob/develop/data_generation/spritz/notebooks/MBHB_glitch_test1.ipynb?ref_type=heads
+# from ldc.waveform.waveform import HpHc
+from ldc.waveform.lisabeta import FastBHB
+# from ldc.lisa.projection import ProjectedStrain
+from ldc.lisa import orbits
+from astropy import units as un
+
+
+# gw_hm = HpHc.type('MBHB', 'MBHB', 'IMRPhenomD')
+
+lisa_orbits = orbits.Orbits.type(dict({"nominal_arm_length":2.5e9*un.m,
+                                       "initial_rotation":0*un.rad,
+                                       "initial_position":0*un.rad,
+                                       "orbit_type":"analytic"}))
+
+# def slow_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
+#     hphc = HpHc.type("MBHB", "MBHB", "IMRPhenomHM")
+
+#     hphc.set_param(mbhb)
+#     hphc.set_modes([(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)])
+#     P = ProjectedStrain(lisa_orbits)    
+#     _ = P.arm_response(
+#         start_time,
+#         end_time,
+#         dt,
+#         [hphc],
+#         tt_order=0
+#     )
+#     time_array = np.arange(start_time, end_time, dt)
+#     X = P.compute_tdi_x(time_array, tdi2=False)
+#     Z = P.compute_tdi_z(time_array, tdi2=False)
+#     Y = P.compute_tdi_y(time_array, tdi2=False)
+#     return AET(X,Y,Z, delta_t=dt, epoch=start_time)
+
+def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
+
+    fast_hm = FastBHB(
+        "MBHB",
+        approx="IMRPhenomHM",
+        T=end_time,
+        delta_t=dt,
+        orbits=lisa_orbits,
+        modes=[(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)]
+    )
+    
+    A, E, T = fast_hm.get_td_tdiaet(
+        template=mbhb,
+        tdi2=False
+    )
+
+    return to_timeseries(
+        {
+            'LISA_A': A,
+            'LISA_E': E,
+            'LISA_T': T,
+        },
+        dt,
+        epoch=start_time
+    )
+
+
+def generate_waveform_for_data(
+    mbhb,
+    start_time,
+    end_time,
+    delta_t,
+):
+    wave = dict(zip(mbhb.dtype.names, mbhb)) 
+    wave['Cadence'] = delta_t
+    return fast_tdi(
+        lisa_orbits,
+        wave,
+        start_time,
+        end_time,
+        delta_t
+    )

@@ -13,6 +13,7 @@ import pycbc.strain.strain
 import pycbc.noise
 import pycbc.pnutils
 import pycbc.filter
+from pycbc.types import TimeSeries
 from pycbc.waveform.pre_merger_waveform import (
     generate_data_lisa_pre_merger,
     generate_waveform_lisa_pre_merger,

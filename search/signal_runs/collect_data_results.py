@@ -21,11 +21,28 @@ parser.add_argument(
     help='output file'
 )
 
+parser.add_argument(
+    '--require-string',
+    help="A string to require in the filenames we collect from"
+)
+
+parser.add_argument(
+    '--exclude-string',
+    help="A string to exclude from the filenames we collect from"
+)
+
 args = parser.parse_args()
 
 init_logging(args.verbose)
 
-result_files = glob(os.path.join(args.result_dir, '*.out'))
+result_files = sorted(glob(os.path.join(args.result_dir, '*.out')))
+if args.require_string is not None:
+    result_files = [f for f in result_files if args.require_string in f]
+
+if args.exclude_string is not None:
+    result_files = [f for f in result_files if args.exclude_string not in f]
+
+print(result_files)
 
 results_dtype = numpy.dtype([
     ('template_id', int),
@@ -45,10 +62,13 @@ for i, rfname in enumerate(result_files):
         #remove empty lines
         data = [d for d in data if not d == ""]
         # remove lines that start with "No"
-        data = [d.split() for d in data if not d.startswith("No")]
+        data = [
+            d.split()
+            for d in data
+            if d.startswith("[")
+        ]
         # there should only be one line - raise Error if there isn't
         if len(data) != 1:
-            continue
             raise ValueError("Zero or more than one result line found in file")
         data = data[0]
         print(rfname)

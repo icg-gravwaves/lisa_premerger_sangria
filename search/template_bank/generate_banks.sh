@@ -40,7 +40,7 @@ for time_before in 0.5 1 4 7 14 ; do
     error = $logs_dir/lisa_ew_${time_before}_day.err
     log = $logs_dir/lisa_ew_${time_before}_day.log
 
-    request_memory = 4GB
+    request_memory = 128GB
     request_cpus = 1
     request_disk = 1GB
 
