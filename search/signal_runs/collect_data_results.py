@@ -69,7 +69,8 @@ for i, rfname in enumerate(result_files):
         ]
         # there should only be one line - raise Error if there isn't
         if len(data) != 1:
-            raise ValueError("Zero or more than one result line found in file")
+            logging.warning("Zero or more than one result line found in file")
+            continue
         data = data[0]
         print(rfname)
         template_id = int(data[0].strip('[,'))

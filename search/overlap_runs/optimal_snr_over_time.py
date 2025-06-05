@@ -34,7 +34,7 @@ rtsumsq = lambda x: np.sqrt(sum(xi ** 2 for xi in x))
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
-
+pycbc.add_common_pycbc_options(parser)
 parser.add_argument(
     '--psd-files',
     required=True,
@@ -66,8 +66,14 @@ parser.add_argument('--n-points', type=int, default=1200)
 
 parser.add_argument('--days-after', type=float, default=5)
 
+parser.add_argument('--signal-number', type=int,
+                    help="If given, restrict the signal number loop "
+                         "to only this signal")
+
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
+
+pycbc.init_logging(args.verbose)
 
 window_length = 17280
 
@@ -128,6 +134,8 @@ with h5py.File(args.output_file,'w') as ofile:
     )
 
 for signal_number in np.arange(15):
+    if args.signal_number is not None and not signal_number == args.signal_number:
+        continue
     logging.info("Signal number %d", signal_number)
     optimal_snr_over_time = np.zeros_like(cutoff_days)
     signal_waveform = ldc_to_bbhx(
