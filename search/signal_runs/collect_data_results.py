@@ -69,10 +69,10 @@ for i, rfname in enumerate(result_files):
         ]
         # there should only be one line - raise Error if there isn't
         if len(data) != 1:
-            logging.warning("Zero or more than one result line found in file")
+            logging.warning("Zero or more than one result line found in file %s", rfname)
             continue
         data = data[0]
-        print(rfname)
+        # print(rfname)
         template_id = int(data[0].strip('[,'))
         snr_A, snr_E = float(data[1].strip('(,')), float(data[2].strip(',)'))
         snr = float(data[3].strip(','))
@@ -83,7 +83,7 @@ for i, rfname in enumerate(result_files):
 logging.info("Writing results to file")
 with h5py.File(args.output_file, 'w') as f:
     for k in results_dtype.names:
-        print(k, results[k])
+        # print(k, results[k])
         f.create_dataset(
             k,
             data=results[k]
