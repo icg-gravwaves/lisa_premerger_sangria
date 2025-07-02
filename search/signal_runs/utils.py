@@ -704,25 +704,6 @@ lisa_orbits = orbits.Orbits.type(dict({"nominal_arm_length":2.5e9*un.m,
                                        "initial_position":0*un.rad,
                                        "orbit_type":"analytic"}))
 
-# def slow_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
-#     hphc = HpHc.type("MBHB", "MBHB", "IMRPhenomHM")
-
-#     hphc.set_param(mbhb)
-#     hphc.set_modes([(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)])
-#     P = ProjectedStrain(lisa_orbits)    
-#     _ = P.arm_response(
-#         start_time,
-#         end_time,
-#         dt,
-#         [hphc],
-#         tt_order=0
-#     )
-#     time_array = np.arange(start_time, end_time, dt)
-#     X = P.compute_tdi_x(time_array, tdi2=False)
-#     Z = P.compute_tdi_z(time_array, tdi2=False)
-#     Y = P.compute_tdi_y(time_array, tdi2=False)
-#     return AET(X,Y,Z, delta_t=dt, epoch=start_time)
-
 def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
 
     fast_hm = FastBHB(
@@ -739,11 +720,15 @@ def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
         tdi2=False
     )
 
+    # Cut to the start/end time as appropriate
+    start_idx = int(start_time / dt)
+    end_idx = int(end_time / dt)
+
     return to_timeseries(
         {
-            'LISA_A': A,
-            'LISA_E': E,
-            'LISA_T': T,
+            'LISA_A': A[start_idx:end_idx],
+            'LISA_E': E[start_idx:end_idx],
+            'LISA_T': T[start_idx:end_idx],
         },
         dt,
         epoch=start_time
