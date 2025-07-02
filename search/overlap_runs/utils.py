@@ -13,6 +13,7 @@ import pycbc.strain.strain
 import pycbc.noise
 import pycbc.pnutils
 import pycbc.filter
+from pycbc.types import TimeSeries
 from pycbc.waveform.pre_merger_waveform import (
     generate_data_lisa_pre_merger,
     generate_waveform_lisa_pre_merger,
@@ -704,6 +705,25 @@ lisa_orbits = orbits.Orbits.type(dict({"nominal_arm_length":2.5e9*un.m,
                                        "initial_position":0*un.rad,
                                        "orbit_type":"analytic"}))
 
+# def slow_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
+#     hphc = HpHc.type("MBHB", "MBHB", "IMRPhenomHM")
+
+#     hphc.set_param(mbhb)
+#     hphc.set_modes([(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)])
+#     P = ProjectedStrain(lisa_orbits)    
+#     _ = P.arm_response(
+#         start_time,
+#         end_time,
+#         dt,
+#         [hphc],
+#         tt_order=0
+#     )
+#     time_array = np.arange(start_time, end_time, dt)
+#     X = P.compute_tdi_x(time_array, tdi2=False)
+#     Z = P.compute_tdi_z(time_array, tdi2=False)
+#     Y = P.compute_tdi_y(time_array, tdi2=False)
+#     return AET(X,Y,Z, delta_t=dt, epoch=start_time)
+
 def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
 
     fast_hm = FastBHB(
@@ -715,24 +735,14 @@ def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
         modes=[(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)]
     )
     
-    A, E, T = fast_hm.get_td_tdiaet(
-        template=mbhb,
-        tdi2=False
-    )
+    X,Y,Z = fast_hm.get_td_tdixyz(template=mbhb, tdi2=False)
 
-    # Cut to the start/end time as appropriate
     start_idx = int(start_time / dt)
-    end_idx = int(end_time / dt)
+    X = X[start_idx:]
+    Y = Y[start_idx:]
+    Z = Z[start_idx:]
 
-    return to_timeseries(
-        {
-            'LISA_A': A[start_idx:end_idx],
-            'LISA_E': E[start_idx:end_idx],
-            'LISA_T': T[start_idx:end_idx],
-        },
-        dt,
-        epoch=start_time
-    )
+    return AET(X,Y,Z, delta_t=dt, epoch=start_time)
 
 
 def generate_waveform_for_data(
@@ -749,4 +759,94 @@ def generate_waveform_for_data(
         start_time,
         end_time,
         delta_t
+    )
+
+def spin_conv(mag, pol):
+    return mag*np.cos(pol)
+
+def ldc_to_bbhx(
+    mbhb,
+    waveform_params_shared
+):
+    """Convert a waveform defined by the LDC files to one which can be used in BBHx generator"""
+
+    waveform = {}
+    psi, incl = ldc_tools.aziPolAngleL2PsiIncl(mbhb["EclipticLatitude"],
+                                        mbhb["EclipticLongitude"],
+                                        mbhb['InitialPolarAngleL'],
+                                        mbhb['InitialAzimuthalAngleL'])
+
+    waveform['mass1'] = mbhb['Mass1']
+    waveform['mass2'] = mbhb['Mass2']
+    waveform['spin1z'] = spin_conv(mbhb['Spin1'],mbhb['PolarAngleOfSpin1'])
+    waveform['spin2z'] = spin_conv(mbhb['Spin2'],mbhb['PolarAngleOfSpin2'])
+    waveform['distance'] = mbhb['Distance']
+    waveform['inclination'] = incl
+    waveform['polarization'] = psi % (2 * np.pi)
+    waveform['eclipticlatitude'] = mbhb['EclipticLatitude']
+    waveform['eclipticlongitude'] = mbhb['EclipticLongitude']
+    waveform['coa_phase'] = mbhb['PhaseAtCoalescence']
+
+    waveform.update(waveform_params_shared)
+
+    return waveform
+
+def get_full_snr_series(
+    params,
+    data_f,
+    psds,
+):
+    """equivalent of get_snr_series, but with no cutoff"""
+
+    waveforms = pycbc.waveform.get_fd_det_waveform(
+        ifos=['LISA_A','LISA_E'],
+        **params,
+    )
+
+    snr_A = pycbc.filter.matched_filter(
+        waveforms['LISA_A'],
+        data_f['LISA_A'],
+        psd=psds['LISA_A']
+    )
+    snr_E = pycbc.filter.matched_filter(
+        waveforms['LISA_E'],
+        data_f['LISA_E'],
+        psd=psds['LISA_E']
+    )
+
+    return abs(snr_A), abs(snr_E)
+
+def get_full_snr_point(
+    params,
+    data_f,
+    psds,
+):
+    """equivalent of get_snr_point, but with no cutoff"""
+    snr_A, snr_E = get_full_snr_series(
+        params,
+        data_f,
+        psds,
+    )
+
+    return abs(snr_A[0]), abs(snr_E[0])
+
+def get_full_optimal_snr(
+    waveform_params,
+    psds,
+):
+    """equivalent of get_optimal_snr, but with no cutoff"""
+
+    waveforms = pycbc.waveform.get_fd_det_waveform(
+        ifos=['LISA_A','LISA_E'],
+        **waveform_params,
+    )
+
+    wp = copy.deepcopy(waveform_params)
+    if 'distance' in wp.keys():
+        del wp['distance']
+    
+    return get_full_snr_point(
+        wp,
+        waveforms,
+        psds,
     )
