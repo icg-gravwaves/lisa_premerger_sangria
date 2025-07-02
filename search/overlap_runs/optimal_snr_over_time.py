@@ -66,7 +66,7 @@ parser.add_argument('--n-points', type=int, default=1200)
 
 parser.add_argument('--days-after', type=float, default=5)
 
-parser.add_argument('--signal-number', type=int,
+parser.add_argument('--signal-number', type=int, choices=np.arange(15),
                     help="If given, restrict the signal number loop "
                          "to only this signal")
 

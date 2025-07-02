@@ -35,6 +35,7 @@ rms = lambda x: np.sqrt((x[0] ** 2 + x[1] ** 2) / 2)
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
+pycbc.add_common_pycbc_options(parser)
 
 parser.add_argument(
     '--psd-files',
@@ -79,6 +80,8 @@ parser.add_argument('--reduce-bank-factor', type=int,
 parser.add_argument('--extra-after', type=float, default=5)
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
+
+pycbc.init_logging(args.verbose)
 
 window_length = 17820
 
