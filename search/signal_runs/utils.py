@@ -640,7 +640,8 @@ def plot_best_waveform(
     ax.set_title(f'Template {snr_vals[0]}, {time_before / 86400} days before merger, {label} psd')
     fig.savefig(f'bestwf_snr_series_{label}.png')
 
-from ldc.common import tools as ldc_tools
+import ldc.io.hdf5 as hdfio
+from ldc_common import tools as ldc_tools
 from pycbc.types import TimeSeries
 from ldc.waveform.waveform import get_fd_tdixyz
 
