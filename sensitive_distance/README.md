@@ -10,7 +10,7 @@ Instead we calculate the time-frequency evolution of the waveform using pycbc's 
 We interpolate the frequency for the required time-before-merger and then use this as the high-frequency cutoff in the optimal SNR calculation.
 
 ## Sky averaged observable distance
-As the observable distance varies over the sky in a way, we perform this calculation at many points (our plots in the paper use 200) over the sky and average these.
+As the observable distance varies over the sky in a non-straightforward way, we perform this calculation at many points (our plots in the paper use 200) over the sky and average these.
 
 To keep this averaging consistent for the different PSDs, and if we use parallelization, we use the same random seed for every mass and time point where this is calculated. As a result the sky points will remain consistent.
 
