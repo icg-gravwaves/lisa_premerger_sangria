@@ -3,6 +3,7 @@ This is a module to convert the current FIR filter functions to use inpainting,
 but with the same 
 """
 from scipy import signal
+from functools import cache
 
 import pycbc.psd
 import pycbc.types

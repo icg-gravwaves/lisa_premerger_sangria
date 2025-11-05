@@ -1,1 +1,3 @@
 *.hdf
+*json
+*.txt.gz
