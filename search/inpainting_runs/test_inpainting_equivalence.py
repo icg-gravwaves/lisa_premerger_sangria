@@ -13,6 +13,7 @@ from inpainting_utils import (
     generate_lisa_pre_merger_psds_inpaint,
     generate_waveform_lisa_pre_merger_inpaint,
     pre_process_data_lisa_pre_merger_inpaint,
+    compute_hh_inner_product,
 )
 
 # Import FIR filter equivalents (these would be from pycbc if available)
