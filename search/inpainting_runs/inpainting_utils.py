@@ -1,6 +1,6 @@
 """
 This is a module to convert the current FIR filter functions to use inpainting,
-but with the same 
+but with the same interface and outputs.
 """
 from scipy import signal
 from functools import cache
@@ -9,6 +9,7 @@ import pycbc.psd
 import pycbc.types
 import pycbc.fft
 import pycbc.waveform
+import pycbc.filter
 from pycbc.strain.gate import gate_and_paint
 
 def generate_lisa_pre_merger_psds_inpaint(
@@ -315,8 +316,6 @@ def compute_hh_inner_product(
         Dictionary containing the inner product time series for each channel
         and the combined inner product
     """
-    import pycbc.filter
-    
     # Generate waveforms
     waveforms = generate_waveform_lisa_pre_merger_inpaint(
         waveform_params,
