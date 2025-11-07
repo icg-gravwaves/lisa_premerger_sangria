@@ -17,7 +17,21 @@ def generate_lisa_pre_merger_psds_inpaint(
     sample_rate,
 ):
     """
-    This is actually pretty much just loading the PSDs
+    Load PSDs from a text file for use with inpainting methods.
+    
+    Parameters
+    ----------
+    psd_file : str
+        Path to PSD file
+    duration : float
+        Duration of data in seconds
+    sample_rate : float
+        Sample rate in Hz
+        
+    Returns
+    -------
+    dict
+        Dictionary with 'FD' key containing the frequency-domain PSD
     """
     flen = int(duration * sample_rate) // 2 + 1
     delta_f = 1 / duration
@@ -42,6 +56,32 @@ def generate_data_lisa_pre_merger_inpaint(
     no_signal=False,
 ):
     """
+    Generate simulated LISA data with signal and noise using inpainting approach.
+    
+    The data is extended with zeros at the end to support variable search times.
+    This differs from the FIR filter method which fixes the time-before-merger.
+    
+    Parameters
+    ----------
+    waveform_params : dict
+        Waveform parameters including 'additional_end_data' for time shift
+    psds_for_datagen : dict
+        Dictionary of PSDs for each channel to generate noise
+    zeroed_length : int
+        Total length of output data (original + padding with zeros)
+    sample_rate : float
+        Sample rate in Hz
+    seed : int, optional
+        Random seed for noise generation (default: 137)
+    zero_noise : bool, optional
+        If True, set noise to zero (default: False)
+    no_signal : bool, optional
+        If True, don't add signal to data (default: False)
+        
+    Returns
+    -------
+    dict
+        Dictionary of time series data for LISA_A and LISA_E channels
     """
 
     # Generate injection
@@ -109,6 +149,23 @@ def generate_waveform_lisa_pre_merger_inpaint(
         psds_for_whitening,
         sample_rate=0.2,
 ):
+    """
+    Generate LISA waveforms in frequency domain for matched filtering.
+    
+    Parameters
+    ----------
+    waveform_params : dict
+        Waveform parameters for generation
+    psds_for_whitening : dict
+        Dictionary of PSDs (not used in this function but kept for API consistency)
+    sample_rate : float, optional
+        Sample rate in Hz (default: 0.2)
+        
+    Returns
+    -------
+    dict
+        Dictionary of frequency-domain waveforms for LISA_A and LISA_E channels
+    """
     outs = pycbc.waveform.get_fd_det_waveform(
         ifos=['LISA_A','LISA_E'], **waveform_params
     )
@@ -118,9 +175,32 @@ def generate_waveform_lisa_pre_merger_inpaint(
 
 
 def apply_inpainting(data, psd, start_idx, end_idx):
+    """
+    Apply inpainting to data between start_idx and end_idx using the given PSD.
+    
+    Parameters
+    ----------
+    data : pycbc.types.TimeSeries
+        Time series data to inpaint
+    psd : pycbc.types.FrequencySeries
+        Power spectral density
+    start_idx : int
+        Start index for inpainting region
+    end_idx : int
+        End index for inpainting region
+        
+    Returns
+    -------
+    pycbc.types.TimeSeries
+        Inpainted time series data
+    """
     invpsd = 1. / psd
-    # Must ensure DC component doesn't go to inf!
+    # Set the DC component (frequency = 0) of the inverse PSD to zero.
+    # This prevents division by zero (or very small values) when computing 1/psd[0],
+    # which would otherwise result in infinite or extremely large values at DC.
     invpsd[0] = 0.0
+    # Use copy=True to avoid in-place modification of the input data.
+    # This ensures that the original data is preserved and prevents unintended side effects.
     return gate_and_paint(data, start_idx, end_idx, invpsd, copy=True)
 
 
@@ -130,13 +210,37 @@ def pre_process_data_lisa_pre_merger_inpaint(
     psds_for_whitening,
     inpaint_start,
     inpaint_end,
+    gaps=None,
 ):
     """
-    Truncate, inpaint and then over-whiten the data
+    Truncate, inpaint and then over-whiten the data.
+    
+    Parameters
+    ----------
+    data_timeseries : dict
+        Dictionary of time series data for each channel
+    sample_rate : float
+        Sample rate of the data
+    psds_for_whitening : dict
+        Dictionary of PSDs for each channel
+    inpaint_start : int
+        Start index for main inpainting region
+    inpaint_end : int
+        End index for main inpainting region
+    gaps : list of tuples, optional
+        List of (start_idx, end_idx) tuples specifying additional gaps to inpaint.
+        For example: [(gap1_start, gap1_end), (gap2_start, gap2_end), ...]
+        
+    Returns
+    -------
+    dict
+        Dictionary of whitened frequency series data for each channel
     """
 
     # Number of samples to zero
     data_length = len(data_timeseries['LISA_A'])
+    
+    # Initialize painted data with the main inpainting region
     data_painted = {
         'LISA_A': apply_inpainting(
             data_timeseries['LISA_A'],
@@ -151,6 +255,22 @@ def pre_process_data_lisa_pre_merger_inpaint(
             inpaint_end
         ),
     }
+    
+    # If additional gaps are specified, apply inpainting to each gap
+    if gaps is not None:
+        for gap_start, gap_end in gaps:
+            data_painted['LISA_A'] = apply_inpainting(
+                data_painted['LISA_A'],
+                psds_for_whitening['LISA_A'],
+                gap_start,
+                gap_end
+            )
+            data_painted['LISA_E'] = apply_inpainting(
+                data_painted['LISA_E'],
+                psds_for_whitening['LISA_E'],
+                gap_start,
+                gap_end
+            )
 
     inv_psd = {channel: 1. / psd for channel, psd in psds_for_whitening.items()}
     for channel in inv_psd:
@@ -163,3 +283,92 @@ def pre_process_data_lisa_pre_merger_inpaint(
     }
 
     return data_ow
+
+
+def compute_hh_inner_product(
+    waveform_params,
+    psds_for_whitening,
+    sample_rate,
+    gaps=None,
+):
+    """
+    Compute the (h|h)(t) inner product for a waveform.
+    
+    This function generates a waveform, optionally applies inpainting to gaps,
+    whitens it, and computes the self-inner product as a function of time.
+    
+    Parameters
+    ----------
+    waveform_params : dict
+        Parameters for waveform generation
+    psds_for_whitening : dict
+        Dictionary of PSDs for each channel
+    sample_rate : float
+        Sample rate of the data
+    gaps : list of tuples, optional
+        List of (start_idx, end_idx) tuples specifying gaps to inpaint.
+        For example: [(gap1_start, gap1_end), (gap2_start, gap2_end), ...]
+        
+    Returns
+    -------
+    dict
+        Dictionary containing the inner product time series for each channel
+        and the combined inner product
+    """
+    import pycbc.filter
+    
+    # Generate waveforms
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
+        waveform_params,
+        psds_for_whitening,
+        sample_rate=sample_rate,
+    )
+    
+    # Convert to time series
+    waveforms_td = {
+        channel: wf.to_timeseries()
+        for channel, wf in waveforms.items()
+    }
+    
+    # Apply inpainting to gaps if specified
+    if gaps is not None:
+        for gap_start, gap_end in gaps:
+            for channel in waveforms_td:
+                waveforms_td[channel] = apply_inpainting(
+                    waveforms_td[channel],
+                    psds_for_whitening[channel],
+                    gap_start,
+                    gap_end
+                )
+    
+    # Whiten the waveforms
+    inv_psd = {channel: 1. / psd for channel, psd in psds_for_whitening.items()}
+    for channel in inv_psd:
+        inv_psd[channel][0] = 0.0
+    
+    waveforms_whitened = {
+        channel: wf_td.to_frequencyseries() * inv_psd[channel]
+        for channel, wf_td in waveforms_td.items()
+    }
+    
+    # Compute inner products for each channel
+    inner_products = {}
+    for channel, wf_white in waveforms_whitened.items():
+        # (h|h) as a function of time is the autocorrelation
+        inner_products[channel] = pycbc.filter.matched_filter(
+            wf_white,
+            wf_white,
+        )
+    
+    # Also compute the combined inner product (sum of squares)
+    # This represents the network SNR squared as a function of time
+    combined_ip = None
+    for channel, ip in inner_products.items():
+        if combined_ip is None:
+            combined_ip = abs(ip) ** 2
+        else:
+            combined_ip = combined_ip + abs(ip) ** 2
+    
+    inner_products['combined'] = combined_ip ** 0.5
+    
+    return inner_products
