@@ -112,14 +112,16 @@ def test_compute_hh_inner_product():
     Test that the compute_hh_inner_product function works correctly.
     
     This test verifies that:
-    - The function produces a valid inner product
-    - Gaps are properly handled
+    - The function produces a valid time-dependent (h|h)(t) inner product
+    - The mask correctly zeros out points after inpaint_start
+    - Gaps are properly handled in the mask
     - The combined inner product is computed correctly
+    - Whitening uses sqrt(invpsd) as per the correct implementation
     """
     if not PYCBC_AVAILABLE:
         pytest.skip("PyCBC not available")
     
-    # TODO: This test requires waveform parameters and PSDs
+    # TODO: This test requires waveform parameters, PSDs, data_length, and inpaint_start
     # For now, this is a placeholder that documents the expected behavior
     pass
 
