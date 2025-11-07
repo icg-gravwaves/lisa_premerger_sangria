@@ -322,7 +322,6 @@ def compute_hh_inner_product(
     -------
     dict
         Dictionary containing the (h|h)(t) time series for each channel
-        and the combined inner product
     """
     # Generate waveforms
     waveforms = generate_waveform_lisa_pre_merger_inpaint(
@@ -372,9 +371,5 @@ def compute_hh_inner_product(
         
         # Convert back to time series - this holds (h|h)(t)
         inner_products[channel] = masked_waveform_sq_fs.to_timeseries()
-    
-    # Compute the combined network SNR as sqrt(sum of squared individual inner products)
-    combined_ip_squared = sum(abs(ip) ** 2 for ip in inner_products.values())
-    inner_products['combined'] = combined_ip_squared ** 0.5
     
     return inner_products
