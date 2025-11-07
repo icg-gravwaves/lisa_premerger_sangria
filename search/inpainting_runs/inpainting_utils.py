@@ -5,6 +5,7 @@ but with the same interface and outputs.
 from scipy import signal
 from functools import cache
 
+import numpy as np
 import pycbc.psd
 import pycbc.types
 import pycbc.fft
@@ -290,13 +291,16 @@ def compute_hh_inner_product(
     waveform_params,
     psds_for_whitening,
     sample_rate,
+    data_length,
+    inpaint_start,
     gaps=None,
 ):
     """
     Compute the (h|h)(t) inner product for a waveform.
     
-    This function generates a waveform, optionally applies inpainting to gaps,
-    whitens it, and computes the self-inner product as a function of time.
+    This function generates a waveform, creates a mask to handle the inpainting
+    region and gaps, whitens the waveform, and computes the time-dependent
+    self-inner product (h|h)(t).
     
     Parameters
     ----------
@@ -305,15 +309,19 @@ def compute_hh_inner_product(
     psds_for_whitening : dict
         Dictionary of PSDs for each channel
     sample_rate : float
-        Sample rate of the data
+        Sample rate of the data in Hz
+    data_length : int
+        Total length of the data in samples (including any zero padding)
+    inpaint_start : int
+        Index where inpainting starts (points after this are zeroed in mask)
     gaps : list of tuples, optional
-        List of (start_idx, end_idx) tuples specifying gaps to inpaint.
+        List of (start_idx, end_idx) tuples specifying gaps to zero in the mask.
         For example: [(gap1_start, gap1_end), (gap2_start, gap2_end), ...]
         
     Returns
     -------
     dict
-        Dictionary containing the inner product time series for each channel
+        Dictionary containing the (h|h)(t) time series for each channel
         and the combined inner product
     """
     # Generate waveforms
@@ -323,43 +331,49 @@ def compute_hh_inner_product(
         sample_rate=sample_rate,
     )
     
-    # Convert to time series
-    waveforms_td = {
-        channel: wf.to_timeseries()
-        for channel, wf in waveforms.items()
-    }
-    
-    # Apply inpainting to gaps if specified
-    if gaps is not None:
-        for gap_start, gap_end in gaps:
-            for channel in waveforms_td:
-                waveforms_td[channel] = apply_inpainting(
-                    waveforms_td[channel],
-                    psds_for_whitening[channel],
-                    gap_start,
-                    gap_end
-                )
-    
-    # Whiten the waveforms
-    inv_psd = {channel: 1. / psd for channel, psd in psds_for_whitening.items()}
-    for channel in inv_psd:
-        inv_psd[channel][0] = 0.0
-    
-    waveforms_whitened = {
-        channel: wf_td.to_frequencyseries() * inv_psd[channel]
-        for channel, wf_td in waveforms_td.items()
-    }
-    
-    # Compute inner products for each channel
+    delta_t = 1.0 / sample_rate
     inner_products = {}
-    for channel, wf_white in waveforms_whitened.items():
-        # (h|h) as a function of time is the autocorrelation
-        inner_products[channel] = pycbc.filter.matched_filter(
-            wf_white,
-            wf_white,
-        )
     
-    # Compute the combined network SNR as sqrt(sum of squared individual SNRs)
+    # Compute (h|h)(t) for each channel
+    for channel in waveforms:
+        # Get the waveform time series
+        waveform_ts = waveforms[channel].to_timeseries()
+        
+        # Create a mask with ones
+        mask = pycbc.types.TimeSeries(
+            np.ones(data_length, dtype=waveform_ts.dtype),
+            delta_t=delta_t,
+            epoch=waveform_ts._epoch
+        )
+        
+        # Zero out points after inpaint_start
+        mask[inpaint_start:] = 0
+        
+        # Add gaps to the mask by zeroing them out
+        if gaps is not None:
+            for gap_start, gap_end in gaps:
+                mask[gap_start:gap_end] = 0
+        
+        # Compute inverse PSD and handle DC component
+        invpsd = 1.0 / psds_for_whitening[channel]
+        invpsd[0] = 0.0
+        
+        # Convert mask to frequency series
+        maskfs = mask.to_frequencyseries()
+        
+        # Whiten the waveform (using sqrt of inverse PSD)
+        waveform = (waveforms[channel].to_frequencyseries() * invpsd**0.5).to_timeseries()
+        
+        # Square the whitened waveform in time domain
+        waveform_sq = waveform * waveform
+        
+        # Multiply mask by conjugate of squared waveform in frequency domain
+        masked_waveform_sq_fs = maskfs * waveform_sq.to_frequencyseries().conj()
+        
+        # Convert back to time series - this holds (h|h)(t)
+        inner_products[channel] = masked_waveform_sq_fs.to_timeseries()
+    
+    # Compute the combined network SNR as sqrt(sum of squared individual inner products)
     combined_ip_squared = sum(abs(ip) ** 2 for ip in inner_products.values())
     inner_products['combined'] = combined_ip_squared ** 0.5
     
