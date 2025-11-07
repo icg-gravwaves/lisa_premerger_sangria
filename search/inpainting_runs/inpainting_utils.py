@@ -359,8 +359,7 @@ def compute_hh_inner_product(
             wf_white,
         )
     
-    # Also compute the combined inner product (sum of squares)
-    # This represents the network SNR squared as a function of time
+    # Compute the combined network SNR as sqrt(sum of squared individual SNRs)
     combined_ip_squared = sum(abs(ip) ** 2 for ip in inner_products.values())
     inner_products['combined'] = combined_ip_squared ** 0.5
     
