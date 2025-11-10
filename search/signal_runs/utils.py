@@ -640,7 +640,6 @@ def plot_best_waveform(
     ax.set_title(f'Template {snr_vals[0]}, {time_before / 86400} days before merger, {label} psd')
     fig.savefig(f'bestwf_snr_series_{label}.png')
 
-import ldc.io.hdf5 as hdfio
 from ldc_common import tools as ldc_tools
 from pycbc.types import TimeSeries
 from ldc.waveform.waveform import get_fd_tdixyz
@@ -750,4 +749,95 @@ def generate_waveform_for_data(
         start_time,
         end_time,
         delta_t
+    )
+
+
+def spin_conv(mag, pol):
+    return mag*np.cos(pol)
+
+def ldc_to_bbhx(
+    mbhb,
+    waveform_params_shared
+):
+    """Convert a waveform defined by the LDC files to one which can be used in BBHx generator"""
+
+    waveform = {}
+    psi, incl = ldc_tools.aziPolAngleL2PsiIncl(mbhb["EclipticLatitude"],
+                                        mbhb["EclipticLongitude"],
+                                        mbhb['InitialPolarAngleL'],
+                                        mbhb['InitialAzimuthalAngleL'])
+
+    waveform['mass1'] = mbhb['Mass1']
+    waveform['mass2'] = mbhb['Mass2']
+    waveform['spin1z'] = spin_conv(mbhb['Spin1'],mbhb['PolarAngleOfSpin1'])
+    waveform['spin2z'] = spin_conv(mbhb['Spin2'],mbhb['PolarAngleOfSpin2'])
+    waveform['distance'] = mbhb['Distance']
+    waveform['inclination'] = incl
+    waveform['polarization'] = psi % (2 * np.pi)
+    waveform['eclipticlatitude'] = mbhb['EclipticLatitude']
+    waveform['eclipticlongitude'] = mbhb['EclipticLongitude']
+    waveform['coa_phase'] = mbhb['PhaseAtCoalescence']
+
+    waveform.update(waveform_params_shared)
+
+    return waveform
+
+def get_full_snr_series(
+    params,
+    data_f,
+    psds,
+):
+    """equivalent of get_snr_series, but with no cutoff"""
+
+    waveforms = pycbc.waveform.get_fd_det_waveform(
+        ifos=['LISA_A','LISA_E'],
+        **params,
+    )
+
+    snr_A = pycbc.filter.matched_filter(
+        waveforms['LISA_A'],
+        data_f['LISA_A'],
+        psd=psds['LISA_A']
+    )
+    snr_E = pycbc.filter.matched_filter(
+        waveforms['LISA_E'],
+        data_f['LISA_E'],
+        psd=psds['LISA_E']
+    )
+
+    return abs(snr_A), abs(snr_E)
+
+def get_full_snr_point(
+    params,
+    data_f,
+    psds,
+):
+    """equivalent of get_snr_point, but with no cutoff"""
+    snr_A, snr_E = get_full_snr_series(
+        params,
+        data_f,
+        psds,
+    )
+
+    return abs(snr_A[0]), abs(snr_E[0])
+
+def get_full_optimal_snr(
+    waveform_params,
+    psds,
+):
+    """equivalent of get_optimal_snr, but with no cutoff"""
+
+    waveforms = pycbc.waveform.get_fd_det_waveform(
+        ifos=['LISA_A','LISA_E'],
+        **waveform_params,
+    )
+
+    wp = copy.deepcopy(waveform_params)
+    if 'distance' in wp.keys():
+        del wp['distance']
+    
+    return get_full_snr_point(
+        wp,
+        waveforms,
+        psds,
     )
