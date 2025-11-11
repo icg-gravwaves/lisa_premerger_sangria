@@ -263,8 +263,8 @@ def pre_process_data_lisa_pre_merger_inpaint(
     if gaps is not None:
         for gap_start_time, gap_end_time in gaps:
             # Convert times to indices
-            gap_start_idx = int(gap_start_time * sample_rate)
-            gap_end_idx = int(gap_end_time * sample_rate)
+            gap_start_idx = int((gap_start_time - data_timeseries['LISA_A']._epoch) * sample_rate)
+            gap_end_idx = int((gap_end_time - data_timeseries['LISA_A']._epoch) * sample_rate)
             
             data_painted['LISA_A'] = apply_inpainting(
                 data_painted['LISA_A'],
