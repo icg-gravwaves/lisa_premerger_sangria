@@ -32,7 +32,8 @@ from inpainting_utils import (
     generate_data_lisa_pre_merger_inpaint,
     generate_lisa_pre_merger_psds_inpaint,
     generate_waveform_lisa_pre_merger_inpaint,
-    pre_process_data_lisa_pre_merger_inpaint
+    pre_process_data_lisa_pre_merger_inpaint,
+    compute_hh_inner_product,
 )
 
 def generate_data_lisa_pre_merger(*args, **kwargs):
