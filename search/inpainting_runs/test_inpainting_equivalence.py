@@ -96,14 +96,14 @@ def test_gaps_functionality():
     Test that the gaps parameter works correctly in pre_process_data_lisa_pre_merger_inpaint.
     
     This test verifies that:
-    - Multiple gaps can be specified
-    - Gaps are properly inpainted
+    - Multiple gaps can be specified as time values (in seconds)
+    - Gaps are properly converted to indices and inpainted
     - The output is correctly whitened
     """
     if not PYCBC_AVAILABLE:
         pytest.skip("PyCBC not available")
     
-    # TODO: This test requires data, PSDs, and gap specifications
+    # TODO: This test requires data, PSDs, and gap specifications in time
     # For now, this is a placeholder that documents the expected behavior
     pass
 
@@ -115,14 +115,14 @@ def test_compute_hh_inner_product():
     This test verifies that:
     - The function produces a valid time-dependent (h|h)(t) inner product
     - The mask correctly zeros out points after inpaint_start
-    - Gaps are properly handled in the mask
-    - The combined inner product is computed correctly
+    - Gaps specified as time values are properly converted to indices and handled in the mask
     - Whitening uses sqrt(invpsd) as per the correct implementation
     """
     if not PYCBC_AVAILABLE:
         pytest.skip("PyCBC not available")
     
     # TODO: This test requires waveform parameters, PSDs, data_length, and inpaint_start
+    # Gaps should be specified as time values in seconds
     # For now, this is a placeholder that documents the expected behavior
     pass
 
