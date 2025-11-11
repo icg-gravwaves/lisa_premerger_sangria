@@ -230,8 +230,9 @@ def pre_process_data_lisa_pre_merger_inpaint(
     inpaint_end : int
         End index for main inpainting region
     gaps : list of tuples, optional
-        List of (start_idx, end_idx) tuples specifying additional gaps to inpaint.
-        For example: [(gap1_start, gap1_end), (gap2_start, gap2_end), ...]
+        List of (start_time, end_time) tuples specifying additional gaps to inpaint in seconds.
+        For example: [(gap1_start_time, gap1_end_time), (gap2_start_time, gap2_end_time), ...]
+        Times are converted to indices using the sample rate.
         
     Returns
     -------
@@ -260,18 +261,22 @@ def pre_process_data_lisa_pre_merger_inpaint(
     
     # If additional gaps are specified, apply inpainting to each gap
     if gaps is not None:
-        for gap_start, gap_end in gaps:
+        for gap_start_time, gap_end_time in gaps:
+            # Convert times to indices
+            gap_start_idx = int(gap_start_time * sample_rate)
+            gap_end_idx = int(gap_end_time * sample_rate)
+            
             data_painted['LISA_A'] = apply_inpainting(
                 data_painted['LISA_A'],
                 psds_for_whitening['LISA_A'],
-                gap_start,
-                gap_end
+                gap_start_idx,
+                gap_end_idx
             )
             data_painted['LISA_E'] = apply_inpainting(
                 data_painted['LISA_E'],
                 psds_for_whitening['LISA_E'],
-                gap_start,
-                gap_end
+                gap_start_idx,
+                gap_end_idx
             )
 
     inv_psd = {channel: 1. / psd for channel, psd in psds_for_whitening.items()}
@@ -315,8 +320,9 @@ def compute_hh_inner_product(
     inpaint_start : int
         Index where inpainting starts (points after this are zeroed in mask)
     gaps : list of tuples, optional
-        List of (start_idx, end_idx) tuples specifying gaps to zero in the mask.
-        For example: [(gap1_start, gap1_end), (gap2_start, gap2_end), ...]
+        List of (start_time, end_time) tuples specifying gaps to zero in the mask in seconds.
+        For example: [(gap1_start_time, gap1_end_time), (gap2_start_time, gap2_end_time), ...]
+        Times are converted to indices using the sample rate.
         
     Returns
     -------
@@ -350,8 +356,11 @@ def compute_hh_inner_product(
         
         # Add gaps to the mask by zeroing them out
         if gaps is not None:
-            for gap_start, gap_end in gaps:
-                mask[gap_start:gap_end] = 0
+            for gap_start_time, gap_end_time in gaps:
+                # Convert times to indices
+                gap_start_idx = int(gap_start_time * sample_rate)
+                gap_end_idx = int(gap_end_time * sample_rate)
+                mask[gap_start_idx:gap_end_idx] = 0
         
         # Compute inverse PSD and handle DC component
         invpsd = 1.0 / psds_for_whitening[channel]
