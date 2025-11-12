@@ -1,21 +1,19 @@
-name: PapwerPublish
+name: PaperPublish
 
 on:
-  # This section defines when the workflow runs. 
-  # This example runs on every push to main.
   push:
     branches:
       - main
       - paper_writing
-  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   publish_report:
-    # Use 'ubuntu-latest' or 'macos-latest' as the runner environment
     runs-on: ubuntu-latest
     
-    # The 'container' keyword replaces the 'image' keyword in GitLab
     container: igwn/publisher:latest
 
     steps:
