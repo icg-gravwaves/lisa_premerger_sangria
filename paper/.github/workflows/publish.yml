@@ -1,0 +1,44 @@
+name: PapwerPublish
+
+on:
+  # This section defines when the workflow runs. 
+  # This example runs on every push to main.
+  push:
+    branches:
+      - main
+      - paper_writing
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  publish_report:
+    # Use 'ubuntu-latest' or 'macos-latest' as the runner environment
+    runs-on: ubuntu-latest
+    
+    # The 'container' keyword replaces the 'image' keyword in GitLab
+    container: igwn/publisher:latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Report
+        run: |
+          cd paper
+          make pdf
+          
+      # Archive the built artifact
+      - name: Upload Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lisa_premerger_sangria_paper.pdf
+          path: paper/lisa_premerger_sangria_paper.pdf
+          retention-days: ${{ github.ref_name == 'main' && 28 || 0 }}
+
+      - name: Keep Latest Main Artifact for longer
+        if: github.ref_name == 'main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lisa_premerger_sangria_paper_LATEST.pdf
+          path: paper/lisa_premerger_sangria_paper.pdf
