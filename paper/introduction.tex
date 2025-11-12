@@ -1,2 +1,40 @@
 \section{Introduction}
 \label{sec:intro}
+
+The \ac{LISA} gravitational-wave observatory, planned for launch in the mid-to-late
+2030s~\cite{LISA:2017pwj, Colpi:2024xhw}, will unlock our ability to observe the universe
+in the low-frequency gravitational-wave band~\cite{LISA:2022yao}.
+
+A key science target
+for \ac{LISA} is the observation of \acp{MBHB}. The problem of observing and characterizing
+these mergers has been explored over the last two decades, primarily through the LISA Data
+Challenges~\cite{Arnaud:2006gm, MockLISADataChallengeTaskForce:2006sgi, Arnaud:2007vr,
+MockLISADataChallengeTaskForce:2007iof, Babak:2008aa, Arnaud:2007jy,
+MockLISADataChallengeTaskForce:2009wir, LDC_WEBSITE}. Because these signals will
+have a very large \ac{SNR}, the search for these sources is
+expected to be trivial~\cite{LISA:2022yao}.
+ 
+A particularly powerful capability of \ac{LISA} is the detection of these \ac{MBHB} systems
+in the weeks to months before they merge~\cite{CabournDavies:2024hea, Houba:2024mqj,
+Ruan:2024qch}. Such \textit{pre-merger} observations can provide early warnings and sky-localisation
+estimates~\cite{CabournDavies:2024hea, Kocsis:2007yu, McWilliams:2011zs, Saini:2022hrs}
+for these incredibly science-rich events~\cite{DalCanton:2019wsr}.
+This advanced notice is critical to enable multi-messenger astronomy, allowing
+electromagnetic facilities to be pointed at the source region rapidly to maximise observation.
+
+In contrast to prevailing methods for pre-merger \ac{MBHB} observation, which often rely on
+Fisher Matrix analyses or Bayesian inference with abruptly terminated waveforms, our
+technique introduced in~\cite{CabournDavies:2024hea} offers a more immediate analysis. It allows
+for the accurate computation of a matched filter without the need to wait (up to a day) for
+additional data to arrive. After this data has arrived, the observation window may have passed, or
+\ac{LISA} itself may have been turned off for repositioning or data downlink.
+
+In this paper, we present application of this technique to the latest data challenge dataset,
+Sangria-HM in Section~\ref{sec:fir_sangria}, showing the potential pitfalls of na\"ive implementation
+of the search. We then discuss utilising the inpainting technique as an alternative to the one-sided
+\ac{FIR} filter in Section~\ref{sec:inpainting}, and apply it in Section~\ref{sec:inpainting_sangria}
+
+All of our results and figures are fully reproducible, with the code
+used to make them publicly available. Please see the data release at
+\url{https://icg-gravwaves.github.io/lisa_premerger_sangria/}
+for more detail.
