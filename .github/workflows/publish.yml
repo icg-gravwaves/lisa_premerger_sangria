@@ -1,0 +1,43 @@
+name: PaperPublish
+
+on:
+  push:
+    branches:
+      - main
+      - paper_writing
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish_paper:
+    runs-on: ubuntu-latest
+    
+    container: igwn/publisher:latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Paper
+        run: |
+          cd paper
+          make pdf
+          
+      # Archive the built artifact
+      - name: Upload Paper Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lisa_premerger_sangria_paper.pdf
+          path: paper/lisa_premerger_sangria_paper.pdf
+          retention-days: ${{ github.ref_name == 'main' && 28 || 0 }}
+
+      - name: Keep Latest Main Artifact for longer
+        if: github.ref_name == 'main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lisa_premerger_sangria_paper_LATEST.pdf
+          path: paper/lisa_premerger_sangria_paper.pdf
+          retention-days: 90
