@@ -40,3 +40,4 @@ jobs:
         with:
           name: lisa_premerger_sangria_paper_LATEST.pdf
           path: paper/lisa_premerger_sangria_paper.pdf
+          retention-days: 90
