@@ -1,8 +1,22 @@
 \section{Inpainting}
 \label{sec:inpainting}
+\gscd{Need to be somewhat careful here, as it doesnt particularly follow on from the FIR filter method.
+Motivate its use first, then go into details}
 
 \subsection{Inpainting Gaps}
 \label{subsec:gaps}
+\gscd{This is probably where we can really big up inpainting - the FIR filter method can't deal with data gaps.}
 
-\subsection{Comparison to FIR Filter Method}
+\subsection{Inpainting as a Pre-merger Search}
 \label{subsec:fir_comparison}
+\gscd{Explain how we can use inpainting as a way to cut the data off before the end of the merger.}
+Inpainting does not require data either side in order to `bridge' a gap, and so
+we can consider the missing data in the future to simply be a one-sided gap.
+
+
+\subsection{Implementation}
+\label{subsec:inpainting_implementation}
+\subsubsection{$(h|s)$}
+\label{subsubsec:h_s}
+\subsubsection{$(h|h)$}
+\label{subsubsec:h_h}
