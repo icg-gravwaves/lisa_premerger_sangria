@@ -55,7 +55,7 @@ def inpaint_data(data, invpsd, start_idx, end_idx, copy=True):
     return gate_and_paint(data, start_idx, end_idx, invpsd, copy=False)
 
 
-samplerate=1
+samplerate=10
 for idx, i in enumerate([x / samplerate for x in range(25*samplerate, 0, -1)]):
     print("Running for", i, "days before merger")
     merger_time = 1931852406.9997194  # This is dependent on signum, should automate getting this value!
