@@ -1,0 +1,10 @@
+results/data_runs_raw_4_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_raw_7_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_remove_0.5_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_remove_14_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_remove_1_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_remove_4_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_remove_7_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_raw_0.5_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_raw_14_results.hdf filter=lfs diff=lfs merge=lfs -text
+results/data_runs_raw_1_results.hdf filter=lfs diff=lfs merge=lfs -text
