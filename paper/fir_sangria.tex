@@ -1,14 +1,32 @@
-\section{Applying the premerger search}
+\section{Applying the Premerger Search}
 \label{sec:fir_sangria}
 
-\subsection{The Sangria Dataset}
-\label{subsec:fir_sangria}
+Our search uses an \ac{FIR} filter such that data from the future is not required. A full
+description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
 
-\subsection{Striding through the data}
-\label{subsec:data_stride}
+We apply this search to the LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
+The LISA Data Challenges are designed to provide comprehensively modelled data as an introduction
+to LISA data analysis. The dataset considered here is Challenge 2a, also known as
+\textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
+This dataset is similar to Challenge 2: Sangria~\cite{LDC_WEBSITE_SANGRIA, le_jeune_2022_7132178};
+it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{}
+... \gscd{A couple of sentences of introduction to sangria - maybe this isnt a subsection?}
 
-\subsection{Double peaks in SNR}
+To apply this search, we set up the data so that we can truncate it, this was done in hourly intervals,
+and then apply the search at 14, 7, 4 and 1 days before merger.
+
+\subsection{Noise Estimation}
+\label{subsec:psds}
+\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the FIR filter banks?}
+
+\subsection{Secondary Peaks in Signal-to-Noise Ratio}
 \label{subsec:double_peaks}
+\gscd{Discussion of finding the secondary peaks in the SNR.}
 
 \subsection{Secondary Peak Removal}
 \label{subsec:peak_removal}
+\gscd{Removing the peaks, and the results of the search including removing the peaks. Discussion of whether assuming that the signal is known is valid or not}
+
+\subsection{Search Results}
+\label{subsec:fir_results}
+\gscd{Discussion of the analysis results}

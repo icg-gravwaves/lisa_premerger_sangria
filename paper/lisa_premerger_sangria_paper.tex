@@ -36,6 +36,7 @@ superscriptaddress,
 \definecolor{garibaldired}{HTML}{DD0000}
 \newcommand{\gscd}[1]{\textcolor{garibaldired}{[\textbf{GCD}: #1]}}
 
+% New command as we don't want to type it out too many times
 \newcommand{\portsmouth}{Institute of Cosmology \& Gravitation, University of Portsmouth, Portsmouth, United Kingdom}
 
 %---------- Document ----------
@@ -43,7 +44,7 @@ superscriptaddress,
 
 \preprint{APS/123-QED}
 
-\title{From in pain to inpainting; applying a pre-merger search for massive black hole binaries to realistic LISA datasets}
+\title{Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets}
 
 \author{Gareth {Cabourn Davies}}
 \email{gareth.cabourn-davies@port.ac.uk}
@@ -53,9 +54,19 @@ superscriptaddress,
 \affiliation{\portsmouth}
 
 \begin{abstract}
-    We apply a matched filtering pre-merger search to the LISA Data Challenge
-    dataset Sangria. We find that pre-merger searches are susceptible to ...
-    We add inpainting, which is good, as we can now handle gaps...
+    Pre-merger detection of massive black hole binaries by the Large 
+    Interferometer Space Antenna (LISA) will provide the best chance to
+    follow up potential signals, maximising the science of LISA and multi-messenger partners.
+    Providing early warning and locations in the weeks to months before merger
+    is critical to observe galactic mergers happening in real time. 
+    This paper shows results of applying a matched filtering pre-merger
+    search to the LISA Data Challenge dataset 2a: Sangria-HM. This matched filtering
+    search is based on a Finite Impulse Response (FIR) filter which does not
+    require data into the future. We find that pre-merger searches are susceptible
+    to significant artefacts which can render the search ineffective for close-in-time
+    mergers. Through signal subtraction, we show how we can mitigate these effects.
+    We also demonstrate pre-merger searches using inpainting, which can act without data in
+    the future, but are also resilient to data artefacts such as gaps or glitches.
 \end{abstract}
 
 \maketitle
@@ -65,20 +76,24 @@ superscriptaddress,
 \acrodef{PSD}[PSD]{Power Spectral Density}
 \acrodef{ASD}[ASD]{Amplitude Spectral Density}
 \acrodef{FAR}{false alarm rate}
+\acrodef{FIR}{finite impulse response}
+\acrodef{SNR}{signal-to-noise ratio}
 
 \input{introduction.tex}
 
 \input{fir_sangria.tex}
+
 \input{inpainting_introduction.tex}
+
 \input{inpainting_sangria.tex}
+
 \input{conclusions.tex}
 
 \begin{acknowledgments}
 This work was supported by a series of UKSA grants
 supporting the UK's contribution to LISA's Ground
 Segment activities.
-GCD and IH acknowledge support from ...
-
+GCD and IH acknowledge support from \gscd{FIXME}
 
 The authors are grateful for computational resources provided
 by Cardiff University, and funded by STFC awards supporting
@@ -90,10 +105,10 @@ Network (SEPNet) and the University of Portsmouth.
 
 \textit{Software} This work made use of the following software packages:
 \texttt{BBHx}~\cite{michael_katz_2023_7791640},
-\texttt{corner}~\cite{corner}, 
 \texttt{GstLAL}~\cite{Cannon:2020qnf},
 \texttt{matplotlib}~\cite{Hunter:2007},
 \texttt{numpy}~\cite{harris2020array},
+\texttt{PyCBC}~\cite{alex_nitz_2024_10473621},
 \texttt{scipy}~\cite{2020SciPy-NMeth}
 
 \end{acknowledgments}
