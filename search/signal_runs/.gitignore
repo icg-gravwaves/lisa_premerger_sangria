@@ -1,5 +1,9 @@
 __pycache__
-results
+results/0.5
+results/1
+results/4
+results/7
+results/14
 logs
 sub_files
 data_runs_results.hdf
