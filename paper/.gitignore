@@ -5,6 +5,5 @@
 *.fls
 *.log
 *.out
-*.pdf
+*./*pdf
 *.synctex.gz
-lisa_premerger_sangria_paperNotes.bib
