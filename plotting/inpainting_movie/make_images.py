@@ -197,6 +197,6 @@ for idx, i in enumerate([x / samplerate for x in range(25*samplerate, 0, -1)]):
     plt.tight_layout()
     plt.savefig(f'snr_inpaintendandgaps_{idx}.png', dpi=600)
     if int(i*20) // 20 in [14, 7, 4, 1]:
-        plt.savefig(f'snr_{i}_days_before_merger.pdf')
+        plt.savefig(f'../paper/images/snr_{i}_days_before_merger.pdf')
 
     plt.close(fig)
