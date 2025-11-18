@@ -3,20 +3,56 @@
 \gscd{Need to be somewhat careful here, as it doesnt particularly follow on from the FIR filter method.
 Motivate its use first, then go into details}
 
-\subsection{Inpainting Gaps}
-\label{subsec:gaps}
+Gaps in the data will cause significant issue in the \ac{LISA} data analysis\gscd{CITE}, and there is not a way to
+implementing the \ac{FIR} filter method to account for multiple gaps in the data.
+As a result, we consider the use of \textit{inpainting} - a data analysis technique used to fill in missing
+segments of detector data~\cite{Zackay:2019kkv}.
 \gscd{This is probably where we can really big up inpainting - the FIR filter method can't deal with data gaps.}
 
-\subsection{Inpainting as a Pre-merger Search}
-\label{subsec:fir_comparison}
-\gscd{Explain how we can use inpainting as a way to cut the data off before the end of the merger.}
+To describe inpainting, we consider matched filtering, and how the removal of data in each term
+must be considered.
+
+The basic \ac{SNR} calculation is
+\begin{equation}
+    \rho^2(t) = \frac{[(h|s)]^2}{(h|h)}
+\end{equation}
+
+where the inner product is
+\begin{equation}
+    (a|b)(t) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}}\frac{\tilde{a}(f)\tilde{b}^*(f)}{S_n(f)} \mathrm{e}^{2i \pi ft} \mathrm{d} f,
+\end{equation}
+
+$\tilde{a}$ defines the Fourier transform, $\tilde{b}^*(f)$ is the complex conjugate 
+of the Fourier transform, and $S_n(f)$ is the one-sided \ac{PSD} of the detector noise.
+
+\subsection{$(h|s)$}
+\label{subsubsec:h_s}
+Dividing the data $\tilde{s}(f)$ by the square root of the \ac{PSD} - the \ac{ASD}, $\sqrt{S_n(f)}$ -
+of the noise is often referred to as \textit{whitening} the data, as the spectral density of the data will
+become flat by this procedure. By performing this step twice on the data, we produce \textit{overwhitened} data
+\footnote{Also sometimes refered to as \textit{blued} data, particularly in \cite{Zackay:2019kkv}}.
+With overwhitened data, we are able to use un-whitened templates in the inner product calculation.
+
+The method of inpainting is to add values to the gap so that after the overwhitening procedure, data outside
+the gap time is unaffected, but data within the gap becomes zero. If the data within the gap can be identically
+zero after overwhitening, then the data from this time will not contribute to the \ac{SNR} calculation.
+
+The challenge to calculate the values to be added to the gap is one of linear algebra, fully described
+in~\cite{Zackay:2019kkv}, and implementated in \texttt{PyCBC} for~\cite{Capano:2021etf,Wang:2023ljx}, 
+
+\subsection{$(h|h)$}
+\label{subsubsec:h_h}
+
+
+\subsection{Use as a Premerger Search}
+\label{subsec:inpainting_premerger}
 Inpainting does not require data either side in order to `bridge' a gap, and so
 we can consider the missing data in the future to simply be a one-sided gap.
 
-
-\subsection{Implementation}
-\label{subsec:inpainting_implementation}
-\subsubsection{$(h|s)$}
-\label{subsubsec:h_s}
-\subsubsection{$(h|h)$}
-\label{subsubsec:h_h}
+For ringdown analyses, once can use inpainting to remove data from the inspiral~\cite{Capano:2021etf,Wang:2023ljx},
+so that the masses and spins can be inferred independently from the ringdown and inspiral, and cross-checked.
+Here, we propose a similar strategy, but removing data from the opposite end; by inpainting and setting all
+future data to zero, we can - similarly to~\cite{CabournDavies:2024hea} - implement a pre-merger search without
+the requirement to wait for future data.
+This solution works for LISA but not ground-based premerger searches \gscd{CITE!} as the speed requirements of
+ground-based pre-merger analyses mean that we cannot wait for teh inpainting procedure in real time \gscd{word this better}
