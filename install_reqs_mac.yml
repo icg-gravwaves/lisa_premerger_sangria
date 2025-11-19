@@ -25,6 +25,7 @@ dependencies:
  - jupyter-book
  - ghp-import
  - humanize
+ - wget
  - pip:
    - bbhx
    - git+https://github.com/gwastro/BBHX-waveform-model.git
