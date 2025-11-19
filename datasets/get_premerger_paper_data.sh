@@ -18,3 +18,6 @@ fi
 if ! [ -f signal_zero_noise_0.hdf ] ; then
     wget --show-progress $git_url/Data/data_files/data_optimistic_psd/signal_zero_noise_0.hdf
 fi
+if ! [ -f lisa_ew_1_day_optimistic.hdf ] ; then
+    wget --show-progress $git_url/Search/Template_Banks/lisa_ew_1_day_optimistic.hdf
+fi
