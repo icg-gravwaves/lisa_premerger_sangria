@@ -22,7 +22,7 @@ delta_f = 1 / (2**20 * 5)
 delta_t = 1 / sample_rate
 
 data = pycbc.types.timeseries.load_timeseries(
-        f'../../datasets/signal_{signumber}.hdf',
+        '../../datasets/signal_0.hdf',
         group=f"/LISA_A",
 )
 data._delta_t = 5  # Apparently it is not exactly this in the file, causing issues.
@@ -30,7 +30,7 @@ data_orig = data.copy()
 data.resize(zeroed_length)
 
 data_nonoise = pycbc.types.timeseries.load_timeseries(
-        f'../../datasets/signal_zero_noise_{signumber}.hdf',
+        '../../datasets/signal_zero_noise_0.hdf',
         group=f"/LISA_A",
 )
 data_nonoise._delta_t = 5
