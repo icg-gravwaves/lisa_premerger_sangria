@@ -36,57 +36,6 @@ from inpainting_utils import (
     compute_hh_inner_product,
 )
 
-def generate_data_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around generate_data_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-
-    if inpaint:
-        return generate_data_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _generate_data_lisa_pre_merger(*args, **kwargs)
-    
-
-
-def generate_waveform_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around generate_waveform_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return generate_waveform_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _generate_waveform_lisa_pre_merger(*args, **kwargs)
-    
-
-
-def pre_process_data_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around pre_process_data_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return pre_process_data_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _pre_process_data_lisa_pre_merger(*args, **kwargs)
-
-
-def generate_pre_merger_psds(*args, **kwargs):
-    """
-    Wrapper around generate_lisa_pre_merger_psds functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return generate_lisa_pre_merger_psds_inpaint(*args, **kwargs)
-    else:
-        return _generate_lisa_pre_merger_psds(*args, **kwargs)
-    
-
 
 ####################################################
 # Function to get SNR given data and wform params
@@ -101,7 +50,7 @@ def get_snr_series(
         delta_t=5
     ):
 
-    waveforms = generate_waveform_lisa_pre_merger(
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
         params,
         psds_for_whitening,
         sample_rate=1./delta_t,
@@ -253,14 +202,14 @@ def filter_some_waveforms(
 
     print(f"Time before {time_before}")
 
-    data = generate_data_lisa_pre_merger(
+    data = generate_data_lisa_pre_merger_inpaint(
         generation_waveform,
         psds_for_datagen,
         sample_rate=1. / delta_t,
         seed=random_seed,
         no_signal=nosignal,
     )
-    data = pre_process_data_lisa_pre_merger(
+    data = pre_process_data_lisa_pre_merger_inpaint(
         data,
         sample_rate=1. / delta_t,
         psds_for_whitening=psds_for_whitening,
@@ -273,14 +222,14 @@ def filter_some_waveforms(
     data_E_f = data['LISA_E'].to_frequencyseries()
 
     if not nosignal:
-        data_nn = generate_data_lisa_pre_merger(
+        data_nn = generate_data_lisa_pre_merger_inpaint(
             generation_waveform,
             psds_for_datagen,
             sample_rate=1./delta_t,
             no_signal=nosignal,
             zero_noise=True
         )
-        data_nn = pre_process_data_lisa_pre_merger(
+        data_nn = pre_process_data_lisa_pre_merger_inpaint(
             data_nn,
             sample_rate=1./delta_t,
             psds_for_whitening=psds_for_whitening,
@@ -382,7 +331,7 @@ def get_optimal_snr(
         kernel_length=17280,
     ):
 
-    waveforms = generate_waveform_lisa_pre_merger(
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
         waveform_params,
         psds_for_whitening,
         sample_rate=1. / delta_t,
@@ -487,7 +436,7 @@ def plot_best_waveform(
         f"{(snr[0]**2 + snr[1]**2)**0.5}"
     )
 
-    waveforms = generate_waveform_lisa_pre_merger(
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
             snr_vals[5],
             psds_for_whitening,
             sample_rate=1. / delta_t,

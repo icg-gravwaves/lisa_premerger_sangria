@@ -19,10 +19,13 @@ from pycbc.types import MultiDetOptionAction  # Custom action for argparse
 
 import ldc.io.hdf5 as hdfio
 
+from inpainting_utils import (
+    generate_lisa_pre_merger_psds_inpaint,
+    pre_process_data_lisa_pre_merger_inpaint,  # Function to preprocess data for LISA pre-merger
+    generate_waveform_lisa_pre_merger_inpaint,  # Function to generate waveform for LISA pre-merger
+)
+
 from utils import (
-    generate_pre_merger_psds,
-    pre_process_data_lisa_pre_merger,  # Function to preprocess data for LISA pre-merger
-    generate_waveform_lisa_pre_merger,  # Function to generate waveform for LISA pre-merger
     get_snr_from_series,  # Function to get SNR from a series
     plot_best_waveform,  # Function to plot the best waveform
     load_ldc_timeseries, # function to load timeseries
@@ -172,6 +175,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             logging.info("Signal %d not yet reached", i)
             continue
 
+        print(mbhb['CoalescenceTime'], args.end_time - args.data_length * args.sample_rate * 2)
         if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * args.sample_rate * 2):
             logging.info("Signal %d is well before the searched time - ignore it", i)
             continue
@@ -180,43 +184,44 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
         waveform_for_removal = generate_waveform_for_data(
             mbhb,
-            start_time,
-            args.end_time,
+            np.int32(data['LISA_A']._epoch), # Saved as LIGOTimgGPS - 
+            np.int32(data['LISA_A']._epoch + args.data_length / args.sample_rate),
             1. / args.sample_rate,
         )
 
-        plt.plot(
+        fig1, ax1 = plt.subplots(1)
+        ax1.plot(
             data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_A'],
             label='Data LISA A',
             alpha=0.25
         )
-        plt.plot(
+        ax1.plot(
             data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_E'],
             label='Data LISA E',
             alpha=0.25
         )
-        plt.plot(
+        ax1.plot(
             mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             mbhb_data['LISA_A'],
             c='tab:blue',
             label='MBHB LISA_A',
         )
-        plt.plot(
+        ax1.plot(
             mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             mbhb_data['LISA_E'],
             c='tab:orange',
             label='MBHB LISA_E',
         )
-        plt.plot(
+        ax1.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             waveform_for_removal['LISA_A'],
             c='tab:green',
             linestyle=':',
             label='Waveform LISA A'
         )
-        plt.plot(
+        ax1.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             waveform_for_removal['LISA_E'],
             c='tab:red',
@@ -224,11 +229,12 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             label='Waveform LISA E'
         )
 
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_for_removal.png")
+        ax1.grid()
+        ax1.axvline(0, color='black', linestyle='--', alpha=0.2)
+        # ax1.set_xlim(-2000, 1000)
+        ax1.set_ylim(-1e-19, 1e-19)
+        ax1.legend(loc='upper left')
+        fig1.savefig(f"waveform_for_removal_{i}.png")
 
         logging.info('Removing from data')
         subtracted = {
@@ -236,44 +242,45 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             for channel in data.keys()
         }
 
-        plt.figure()
-        plt.plot(
+        fig2, ax2 = plt.subplots(1)
+        ax2.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_A'],
             alpha=0.5,
             c='tab:blue',
             label='Original LISA A'
             )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_E'],
             alpha=0.5,
             c='tab:orange',
             label='Original LISA E'
         )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             subtracted['LISA_A'],
             c='tab:blue',
             label='Subtracted LISA A'
             )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             subtracted['LISA_E'],
             c='tab:orange',
             label='Subtracted LISA E'
         )
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_removed.png")
+        ax2.grid()
+        ax2.axvline(0, color='black', linestyle='--', alpha=0.2)
+        ax2.set_xlim(-2000, 1000)
+        ax2.set_ylim(-1e-19, 1e-19)
+        ax2.legend(loc='upper left')
+        fig2.savefig(f"waveform_removed_{i}.png")
 
         data = subtracted
 
 psds_for_whitening = {
     f'LISA_{channel}':  interpolate(
-        generate_pre_merger_psds(
+        generate_lisa_pre_merger_psds_inpaint(
             psd_file=args.psd_files[channel],
             duration=args.data_length,
             sample_rate=args.sample_rate,
@@ -290,7 +297,7 @@ lisa_a_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_A']
 lisa_e_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_E']
 
 #  For inpainting, this will be overwhitened with the 
-data = pre_process_data_lisa_pre_merger(
+data = pre_process_data_lisa_pre_merger_inpaint(
     data,
     sample_rate=args.sample_rate,
     psds_for_whitening=psds_for_whitening,

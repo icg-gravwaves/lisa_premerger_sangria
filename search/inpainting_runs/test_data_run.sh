@@ -1,33 +1,28 @@
-result_file_FIR=data_results_FIR.txt
-result_file_inpaint=data_results_inpaint.txt
+set -e
 
-rm ${result_file_FIR}
-rm ${result_file_inpaint}
-
-touch ${result_file_FIR}
-touch ${result_file_inpaint}
+result_file_inpaint=results/test_results_inpaint.txt
+result_file_zerol=results/test_results_zero_latency.txt
 
 shared_args="""
   --days-before-merger \
     1 \
   --psd-files \
-    A:../../estimate_psds/A_sangria_hm_SMOOTHED_PSD.txt \
-    E:../../estimate_psds/E_sangria_hm_SMOOTHED_PSD.txt \
+    A:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
+    E:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
   --f-lower 1e-6 \
   --bank-file \
-    /home/gareth/lisa/lisa_early_warning/lisa_premerger_paper/Search/Template_Banks/lisa_ew_1_day_optimistic.hdf \
+    ../../datasets/lisa_ew_1_day_optimistic.hdf \
   --data-file \
     ../../datasets/LDC2_sangria_hm_training.hdf \
   --end-time \
-    31 \
+    11528700 \
   --search-time 3600 \
   --reduce-bank-factor \
-    50
+    100 \
+  --remove-signals-after-coalescence \
+    43200
 """
 
 
-python ./data_runs.py $shared_args >> ${result_file_FIR}
-
-python ./data_runs.py $shared_args --inpaint >> ${result_file_inpaint}
-
-
+# python ./data_runs.py $shared_args > ${result_file_inpaint}
+python ../signal_runs/data_runs.py $shared_args > ${result_file_zerol}
