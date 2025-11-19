@@ -168,7 +168,8 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             logging.info("Signal %d not yet reached", i)
             continue
 
-        if mbhb['CoalescenceTime'] < (args.end_time - (args.data_length / args.sample_rate * 4)):
+        print(mbhb['CoalescenceTime'], args.end_time - args.data_length * args.sample_rate * 2)
+        if mbhb['CoalescenceTime'] < (args.end_time - (args.data_length / args.sample_rate * 2)):
             logging.info("Signal %d is well before the searched time - ignore it", i)
             continue
     
@@ -181,38 +182,39 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             1. / args.sample_rate,
         )
 
-        plt.plot(
+        fig1, ax1 = plt.subplots(1)
+        ax1.plot(
             data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_A'],
             label='Data LISA A',
             alpha=0.25
         )
-        plt.plot(
+        ax1.plot(
             data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_E'],
             label='Data LISA E',
             alpha=0.25
         )
-        plt.plot(
+        ax1.plot(
             mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             mbhb_data['LISA_A'],
             c='tab:blue',
             label='MBHB LISA_A',
         )
-        plt.plot(
+        ax1.plot(
             mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             mbhb_data['LISA_E'],
             c='tab:orange',
             label='MBHB LISA_E',
         )
-        plt.plot(
+        ax1.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             waveform_for_removal['LISA_A'],
             c='tab:green',
             linestyle=':',
             label='Waveform LISA A'
         )
-        plt.plot(
+        ax1.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             waveform_for_removal['LISA_E'],
             c='tab:red',
@@ -220,11 +222,12 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             label='Waveform LISA E'
         )
 
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_for_removal.png")
+        ax1.axvline(0, c='black', linestyle='--', alpha=0.5)
+        ax1.grid()
+        ax1.set_xlim(-2000, 1000)
+        ax1.set_ylim(-1e-19, 1e-19)
+        ax1.legend(loc='upper left')
+        fig1.savefig(f"waveform_for_removal_zerolatency_{i}.png")
 
         logging.info('Removing from data')
         subtracted = {
@@ -232,38 +235,39 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             for channel in data.keys()
         }
 
-        plt.figure()
-        plt.plot(
+        fig2, ax2 = plt.subplots(1)
+        ax2.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_A'],
             alpha=0.5,
             c='tab:blue',
             label='Original LISA A'
             )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             data['LISA_E'],
             alpha=0.5,
             c='tab:orange',
             label='Original LISA E'
         )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
             subtracted['LISA_A'],
             c='tab:blue',
             label='Subtracted LISA A'
             )
-        plt.plot(
+        ax2.plot(
             waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
             subtracted['LISA_E'],
             c='tab:orange',
             label='Subtracted LISA E'
         )
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_removed.png")
+        ax2.axvline(0, c='black', linestyle='--', alpha=0.5)
+        ax2.grid()
+        ax2.set_xlim(-2000, 1000)
+        ax2.set_ylim(-1e-19, 1e-19)
+        ax2.legend(loc='upper left')
+        fig2.savefig(f"waveform_removed_zerolatency_{i}.png")
 
         data = subtracted
 
