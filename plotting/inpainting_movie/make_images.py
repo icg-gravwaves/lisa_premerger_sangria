@@ -11,11 +11,7 @@ from matplotlib.ticker import MaxNLocator, FormatStrFormatter
 
 plt.style.use('../../paper.mplstyle')
 
-# We need to have https://github.com/icg-gravwaves/lisa_premerger_paper/
-# checked out
-premerger_paper_location = '/Users/iwharry/Work/LISA/lisa_premerger_paper'
-
-
+# Data files are fetched using the script in datasets/get_premerger_paper_data.sh
 psdname = 'optimistic'
 signumber = '0'
 data_length = 2592000
@@ -26,7 +22,7 @@ delta_f = 1 / (2**20 * 5)
 delta_t = 1 / sample_rate
 
 data = pycbc.types.timeseries.load_timeseries(
-        f'{premerger_paper_location}/Data/data_files/data_{psdname}_psd/signal_{signumber}.hdf',
+        '../../datasets/signal_0.hdf',
         group=f"/LISA_A",
 )
 data._delta_t = 5  # Apparently it is not exactly this in the file, causing issues.
@@ -34,14 +30,14 @@ data_orig = data.copy()
 data.resize(zeroed_length)
 
 data_nonoise = pycbc.types.timeseries.load_timeseries(
-        f'{premerger_paper_location}/Data/data_files/data_{psdname}_psd/signal_zero_noise_{signumber}.hdf',
+        '../../datasets/signal_zero_noise_0.hdf',
         group=f"/LISA_A",
 )
 data_nonoise._delta_t = 5
 data_nonoise.resize(zeroed_length)
 
 psd = pycbc.psd.from_txt(
-    f'{premerger_paper_location}/PSD_Files/model_AE_TDI1_SMOOTH_optimistic.txt.gz',
+    f'../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz',
     flen, delta_f, delta_f, is_asd_file=False
 )
 
