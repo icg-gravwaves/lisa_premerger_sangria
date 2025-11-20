@@ -22,7 +22,6 @@ import ldc.io.hdf5 as hdfio
 from inpainting_utils import (
     generate_lisa_pre_merger_psds_inpaint,
     pre_process_data_lisa_pre_merger_inpaint,  # Function to preprocess data for LISA pre-merger
-    generate_waveform_lisa_pre_merger_inpaint,  # Function to generate waveform for LISA pre-merger
 )
 
 from utils import (
@@ -102,12 +101,6 @@ parser.add_argument('--reduce-bank-factor', type=int,
                          "useful for performing the search quickly in testing"
                          "Default: don't do this")
 
-parser.add_argument(
-    '--inpaint',
-    action='store_true',
-    help='Use inpainting rather than FIR filter for analysis'
-)
-
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
@@ -168,15 +161,17 @@ for channel in data.keys():
     
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
     from matplotlib import pyplot as plt
-    mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
+    mbhbs, _ = hdfio.load_array(
+        args.data_file,
+        name="sky/mbhb/cat"
+    )
     for i, mbhb in enumerate(mbhbs):
 
         if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
             logging.info("Signal %d not yet reached", i)
             continue
 
-        print(mbhb['CoalescenceTime'], args.end_time - args.data_length * args.sample_rate * 2)
-        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * args.sample_rate * 2):
+        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
             logging.info("Signal %d is well before the searched time - ignore it", i)
             continue
     
@@ -184,8 +179,8 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
         waveform_for_removal = generate_waveform_for_data(
             mbhb,
-            np.int32(data['LISA_A']._epoch), # Saved as LIGOTimgGPS - 
-            np.int32(data['LISA_A']._epoch + args.data_length / args.sample_rate),
+            start_time,
+            args.end_time,
             1. / args.sample_rate,
         )
 
@@ -231,7 +226,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
         ax1.grid()
         ax1.axvline(0, color='black', linestyle='--', alpha=0.2)
-        # ax1.set_xlim(-2000, 1000)
+        ax1.set_xlim(-2000, 1000)
         ax1.set_ylim(-1e-19, 1e-19)
         ax1.legend(loc='upper left')
         fig1.savefig(f"waveform_for_removal_{i}.png")
@@ -284,7 +279,6 @@ psds_for_whitening = {
             psd_file=args.psd_files[channel],
             duration=args.data_length,
             sample_rate=args.sample_rate,
-            kernel_length=args.kernel_length
         )['FD'],
         1 / args.data_length
     )
@@ -296,20 +290,18 @@ logging.info("Generated PSD objects")
 lisa_a_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_A']
 lisa_e_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_E']
 
-#  For inpainting, this will be overwhitened with the 
-data = pre_process_data_lisa_pre_merger_inpaint(
+cutoff_idx = len(data['LISA_A']) - int(time_before * args.sample_rate)
+
+#  For inpainting, this will be overwhitened
+data_f = pre_process_data_lisa_pre_merger_inpaint(
     data,
     sample_rate=args.sample_rate,
     psds_for_whitening=psds_for_whitening,
-    window_length=window_length,
-    cutoff_time=cutoff_time,
-    forward_zeroes=args.kernel_length,
+    inpaint_start=cutoff_idx,
+    inpaint_end=len(data['LISA_A'])
 )
 
-data_f = {
-    channel: data[channel].to_frequencyseries()
-    for channel in ['LISA_A','LISA_E']
-}
+tlen = int(args.data_length * args.sample_rate)
 
 logging.info(f"Beginning filtering with bank %s", args.bank_file)
 max_snrsq = 0
@@ -339,11 +331,11 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             bank_wf,
             data_f,
             psds_for_whitening,
-            window_length=window_length,
-            cutoff_time=cutoff_time,
-            kernel_length=args.kernel_length,
             search_time=args.search_time,
             delta_t=1. / args.sample_rate,
+            time_samples=tlen,
+            cutoff_time=cutoff_time,
+            gaps=None,
         )
 
         snr_qs = snr[0] ** 2 + snr[1] ** 2
@@ -360,9 +352,7 @@ if args.plot_best_waveform:
         data_f,
         psds_for_whitening,
         time_before,
-        window_length,
         args.search_time,
-        args.kernel_length,
         delta_t=1. / args.sample_rate,
     )
 logging.info('Done!')
