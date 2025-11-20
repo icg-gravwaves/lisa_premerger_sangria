@@ -88,54 +88,41 @@ def generate_data_lisa_pre_merger_inpaint(
 
     # Generate injection
     outs = pycbc.waveform.get_fd_det_waveform(
-        ifos=['LISA_A','LISA_E','LISA_T'],
+        ifos=['LISA_A','LISA_E'],
         **waveform_params
     )
 
+    touts = {}
+    strain_w = {}
     # Shift waveform so the merger is not at the end of the data
-    outs['LISA_A'] = outs['LISA_A'].cyclic_time_shift(-waveform_params['additional_end_data'])
-    outs['LISA_E'] = outs['LISA_E'].cyclic_time_shift(-waveform_params['additional_end_data'])
+    for k, v in outs.items():
+        outs[k] = v.cyclic_time_shift(-waveform_params['additional_end_data'])
+        touts[k] = outs[k].to_timeseries()
 
-    # FS waveform to TD
-    tout_A = outs['LISA_A'].to_timeseries()
-    tout_E = outs['LISA_E'].to_timeseries()
 
-    # Generate TD noise from the original PSDs
-    strain_w_A = pycbc.noise.noise_from_psd(
-        len(tout_A),
-        tout_A.delta_t,
-        psds_for_datagen['LISA_A'],
-        seed=seed,
-    )
-    strain_w_E = pycbc.noise.noise_from_psd(
-        len(tout_E),
-        tout_E.delta_t,
-        psds_for_datagen['LISA_E'],
-        seed=seed + 1,
-    )
+        # Generate TD noise from the original PSDs
+        strain_w[k] = pycbc.noise.noise_from_psd(
+            len(touts[k]),
+            touts[k].delta_t,
+            psds_for_datagen[k],
+            seed=seed,
+        )
 
-    # We need to make sure the noise times match the signal
-    strain_w_A._epoch = tout_A._epoch
-    strain_w_E._epoch = tout_E._epoch
+        # We need to make sure the noise times match the signal
+        strain_w[k]._epoch = touts[k]._epoch
 
-    # If zero noise, set noise to zero
-    if zero_noise:
-        strain_w_A *= 0.0
-        strain_w_E *= 0.0
+        # If zero noise, set noise to zero
+        if zero_noise:
+            strain_w[k] *= 0.0
 
-    # Only add signal if no_signal=False
-    if not no_signal:
-        strain_w_A[:] += tout_A[:]
-        strain_w_E[:] += tout_E[:]
+        # Only add signal if no_signal=False
+        if not no_signal:
+            strain_w[k][:] += touts[k][:]
 
-    # Extend the data to zeroed_length by adding zeroes at the end
-    strain_w_A.resize(zeroed_length)
-    strain_w_E.resize(zeroed_length)
+        # Extend the data to zeroed_length by adding zeroes at the end
+        strain_w[k].resize(zeroed_length)
     
-    return {
-        "LISA_A": strain_w_A,
-        "LISA_E": strain_w_E,
-    }
+    return strain_w
 
 
 @cache
@@ -245,18 +232,13 @@ def pre_process_data_lisa_pre_merger_inpaint(
     
     # Initialize painted data with the main inpainting region
     data_painted = {
-        'LISA_A': apply_inpainting(
-            data_timeseries['LISA_A'],
-            psds_for_whitening['LISA_A'],
+        channel: apply_inpainting(
+            data_timeseries[channel],
+            psds_for_whitening[channel],
             inpaint_start,
             inpaint_end
-        ),
-        'LISA_E': apply_inpainting(
-            data_timeseries['LISA_E'],
-            psds_for_whitening['LISA_E'],
-            inpaint_start,
-            inpaint_end
-        ),
+        ) 
+        for channel in data_timeseries.keys()
     }
     
     # If additional gaps are specified, apply inpainting to each gap
@@ -265,21 +247,20 @@ def pre_process_data_lisa_pre_merger_inpaint(
             # Convert times to indices
             gap_start_idx = int((gap_start_time - data_timeseries['LISA_A']._epoch) * sample_rate)
             gap_end_idx = int((gap_end_time - data_timeseries['LISA_A']._epoch) * sample_rate)
-            
-            data_painted['LISA_A'] = apply_inpainting(
-                data_painted['LISA_A'],
-                psds_for_whitening['LISA_A'],
-                gap_start_idx,
-                gap_end_idx
-            )
-            data_painted['LISA_E'] = apply_inpainting(
-                data_painted['LISA_E'],
-                psds_for_whitening['LISA_E'],
-                gap_start_idx,
-                gap_end_idx
-            )
+            data_painted = {
+                channel: apply_inpainting(
+                    data_painted[channel],
+                    psds_for_whitening[channel],
+                    inpaint_start,
+                    inpaint_end
+                ) 
+                for channel in  data_timeseries.keys()
+            }
 
-    inv_psd = {channel: 1. / psd for channel, psd in psds_for_whitening.items()}
+    inv_psd = {
+        channel: 1. / psd
+        for channel, psd in psds_for_whitening.items()
+    }
     for channel in inv_psd:
         inv_psd[channel][0] = 0.0
 
@@ -350,7 +331,7 @@ def compute_hh_inner_product(
             delta_t=delta_t,
             epoch=waveform_ts._epoch
         )
-        
+
         # Zero out points after inpaint_start
         mask[inpaint_start:] = 0
         
