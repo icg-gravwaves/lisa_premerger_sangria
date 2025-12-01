@@ -9,7 +9,7 @@ shared_args="""
     E:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
   --f-lower 1e-6 \
   --bank-file \
-    ../../datasets/lisa_ew_1_day_optimistic.hdf \
+    ../../datasets/lisa_ew_7_day_optimistic.hdf \
   --data-file \
     ../../datasets/LDC2_sangria_hm_training.hdf \
   --end-time \
