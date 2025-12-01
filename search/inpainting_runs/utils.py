@@ -42,7 +42,7 @@ from inpainting_utils import (
 ####################################################
 def get_snr_series(
         params,
-        data_f,
+        data_ow_f,
         psds_for_whitening,
         delta_t=5,
         hh=None,
@@ -54,30 +54,29 @@ def get_snr_series(
         sample_rate=1./delta_t,
     )
 
-    snr_A = pycbc.filter.matched_filter(
-        waveforms['LISA_A'],
-        data_f['LISA_A'],
-        psd=psds_for_whitening['LISA_A']
-    )
-
-    snr_E = pycbc.filter.matched_filter(
-        waveforms['LISA_E'],
-        data_f['LISA_E'],
-        psd=psds_for_whitening['LISA_E']
-    )
+    snr = {}
+    for channel in waveforms.keys():
+        snr[channel] = pycbc.filter.matched_filter(
+            waveforms[channel],
+            data_ow_f[channel],
+            sigmasq=1
+        )
 
     if hh is not None:
         for channel, hh_array in hh.items():
-            hh_array._epoch = data_f[channel]._epoch
-            from matplotlib import pyplot as plt
-            fig, ax = plt.subplots(1)
-            ax.semilogy(hh_array)
-            fig.savefig(f'{channel}_hh.png')
+            hh_array._epoch = data_ow_f[channel]._epoch
+            snr[channel] /= (hh[channel] ** 0.5 * (2 ** 0.5))
+    else:
+        for channel in waveforms.keys():
+            # Normalise by (h|h), the standard one
+            hh_value = pycbc.filter.matched_filter(
+                waveforms[channel],
+                waveforms[channel],
+                sigmasq=1
+            )
+            snr[channel] /= (hh_value ** 0.5 * (2 ** 0.5))
 
-        snr_A /= hh['LISA_A'] ** 0.5 / 2 ** 0.5
-        snr_E /= hh['LISA_E'] ** 0.5 / 2 ** 0.5
-
-    return abs(snr_A), abs(snr_E)
+    return snr
 
 
 def get_snr_from_series(
@@ -88,6 +87,7 @@ def get_snr_from_series(
         delta_t=5,
         cutoff_time=0,
         time_samples=518400,
+        zeroed_length=2**20,
         gaps=None,
     ):
 
@@ -97,21 +97,22 @@ def get_snr_from_series(
         params,
         psds_for_whitening,
         sample_rate=1./delta_t,
-        data_length=time_samples,
         inpaint_start=cutoff_idx,
-        gaps=gaps
+        zeroed_length=zeroed_length,
+        gaps=gaps,
+        epoch=data_f['LISA_A'].epoch
     )
 
-    # TESTING - remove when possible
-    # hh = None
-
-    snr_A, snr_E = get_snr_series(
+    snrs = get_snr_series(
         params,
         data_f,
         psds_for_whitening,
         delta_t=delta_t,
         hh=hh,
     )
+
+    snr_A = abs(snrs['LISA_A'])
+    snr_E = abs(snrs['LISA_E'])
 
     if search_time is None:
         search_indices = len(snr_A)
