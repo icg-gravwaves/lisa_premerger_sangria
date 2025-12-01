@@ -86,6 +86,8 @@ parser.add_argument(
     help="If given, remove all galactic binaries from the dataset"
 )
 
+parser.add_argument('--zeroed-length', type=int, default=2 ** 20)
+
 # Add argument for the lower frequency cutoff with a default value
 parser.add_argument('--f-lower', type=float, default=1e-6)
 
@@ -112,24 +114,25 @@ args = parser.parse_args()
 pycbc.init_logging(True)
 logging.info(f"{args.days_before_merger} days before merger")
 
+delta_f = 1 / (args.zeroed_length / args.sample_rate) # delta_f is not the same for zero-latency vs inpainting as we add extra zeroes to inpainting
+
 # Set the defaults required for the waveform parameters
 waveform_params_shared = {
-    't_obs_start': args.data_length, # This is setting the data length.
     'f_lower': args.f_lower,
     'low-frequency-cutoff': 1e-6, 
-    'f_final': args.sample_rate / 2,
-    'delta_f': 1 / args.data_length,
     'tdi': '1.5',
     't_offset': 0,
     'cutoff_deltat': 0,
+    't_obs_start': int(args.zeroed_length / args.sample_rate + 0.5),
+    'delta_f': delta_f,
+    'f_final': args.sample_rate / 2 + delta_f / 2, # This is a hack to ensure we get the point at f_final returned
+    'approximant':'BBHX_PhenomD',
+    'mode_array':  [(2,2)],
 }
 
+cutoff_time = 86400 * args.days_before_merger
 
-time_before = 86400 * args.days_before_merger
-
-cutoff_time=time_before
 window_length=17280
-
 
 remove_noiseless_groups = []
 if args.remove_all_mbhbs:
@@ -273,33 +276,40 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
         data = subtracted
 
-psds_for_whitening = {
-    f'LISA_{channel}':  interpolate(
-        generate_lisa_pre_merger_psds_inpaint(
-            psd_file=args.psd_files[channel],
-            duration=args.data_length,
-            sample_rate=args.sample_rate,
-        )['FD'],
-        1 / args.data_length
+# Zero padding - this is vital!
+for channel in data.keys():
+    data[channel].resize(args.zeroed_length)
+
+flen = int(args.zeroed_length) // 2 + 1
+
+psds = {
+    f'LISA_{channel}': pycbc.psd.from_txt(
+        args.psd_files[channel],
+        flen,
+        delta_f,
+        delta_f,
+        is_asd_file=False,
     )
     for channel in ['A','E']
 }
 
 logging.info("Generated PSD objects")
 
-lisa_a_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_A']
-lisa_e_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_E']
-
-cutoff_idx = len(data['LISA_A']) - int(time_before * args.sample_rate)
+cutoff_idx = int((args.data_length - cutoff_time) * args.sample_rate)
 
 #  For inpainting, this will be overwhitened
-data_f = pre_process_data_lisa_pre_merger_inpaint(
+data_ow_f = pre_process_data_lisa_pre_merger_inpaint(
     data,
     sample_rate=args.sample_rate,
-    psds_for_whitening=psds_for_whitening,
+    psds_for_whitening=psds,
     inpaint_start=cutoff_idx,
-    inpaint_end=len(data['LISA_A'])
+    inpaint_end=int(args.data_length * args.sample_rate) + 10 # 10 samples added for safety at the end
 )
+
+fig, ax = plt.subplots()
+ax.loglog(data_ow_f['LISA_A'].sample_frequencies, abs(data_ow_f['LISA_A']))
+ax.loglog(data_ow_f['LISA_E'].sample_frequencies, abs(data_ow_f['LISA_E']))
+fig.savefig('data_ow_f.png')
 
 tlen = int(args.data_length * args.sample_rate)
 
@@ -308,13 +318,10 @@ max_snrsq = 0
 snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
     for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
-
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
                 # For testing: reduce the bank size by this factor to make the search quicker
                 continue
         bank_wf = copy.deepcopy(waveform_params_shared)
-        bank_wf['approximant'] = 'BBHX_PhenomD'
-        bank_wf['mode_array'] = [(2,2)]
         # Update waveform params to use the ones from the bank file
         bank_wf['tc'] = args.data_length
         bank_wf['mass1'] = bank_file['mass1'][idx]
@@ -329,11 +336,12 @@ with h5py.File(args.bank_file, 'r') as bank_file:
     
         snr, iidx, times = get_snr_from_series(
             bank_wf,
-            data_f,
-            psds_for_whitening,
+            data_ow_f,
+            psds,
             search_time=args.search_time,
             delta_t=1. / args.sample_rate,
             time_samples=tlen,
+            zeroed_length=args.zeroed_length,
             cutoff_time=cutoff_time,
             gaps=None,
         )
@@ -349,9 +357,9 @@ print(snr_vals)
 if args.plot_best_waveform:
     plot_best_waveform(
         snr_vals,
-        data_f,
-        psds_for_whitening,
-        time_before,
+        data_ow_f,
+        psds,
+        cutoff_time,
         args.search_time,
         delta_t=1. / args.sample_rate,
     )

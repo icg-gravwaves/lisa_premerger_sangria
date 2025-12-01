@@ -130,7 +130,6 @@ time_before = 86400 * args.days_before_merger
 cutoff_time=time_before
 window_length=17280
 
-
 remove_noiseless_groups = []
 if args.remove_all_mbhbs:
     remove_noiseless_groups.append('sky/mbhb/tdi')
@@ -168,8 +167,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             logging.info("Signal %d not yet reached", i)
             continue
 
-        print(mbhb['CoalescenceTime'], args.end_time - args.data_length * args.sample_rate * 2)
-        if mbhb['CoalescenceTime'] < (args.end_time - (args.data_length / args.sample_rate * 2)):
+        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
             logging.info("Signal %d is well before the searched time - ignore it", i)
             continue
     

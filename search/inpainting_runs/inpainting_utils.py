@@ -277,8 +277,9 @@ def compute_hh_inner_product(
     waveform_params,
     psds_for_whitening,
     sample_rate,
-    data_length,
+    zeroed_length,
     inpaint_start,
+    epoch=0,
     gaps=None,
 ):
     """
@@ -296,7 +297,7 @@ def compute_hh_inner_product(
         Dictionary of PSDs for each channel
     sample_rate : float
         Sample rate of the data in Hz
-    data_length : int
+    zeroed_length : int
         Total length of the data in samples (including any zero padding)
     inpaint_start : int
         Index where inpainting starts (points after this are zeroed in mask)
@@ -327,9 +328,9 @@ def compute_hh_inner_product(
         
         # Create a mask with ones
         mask = pycbc.types.TimeSeries(
-            np.ones(data_length, dtype=waveform_ts.dtype),
+            np.ones(zeroed_length, dtype=waveform_ts.dtype),
             delta_t=delta_t,
-            epoch=waveform_ts._epoch
+            epoch=epoch,
         )
 
         # Zero out points after inpaint_start

@@ -1,11 +1,9 @@
-set -e
-
 result_file_inpaint=results/test_results_inpaint.txt
 result_file_zerol=results/test_results_zero_latency.txt
 
 shared_args="""
   --days-before-merger \
-    1 \
+    7 \
   --psd-files \
     A:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
     E:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
@@ -20,9 +18,9 @@ shared_args="""
   --reduce-bank-factor \
     100 \
   --remove-signals-after-coalescence \
-    43200
+    43200 \
 """
 
 
-# python ./data_runs.py $shared_args > ${result_file_inpaint}
+python ./data_runs.py $shared_args > ${result_file_inpaint}
 python ../signal_runs/data_runs.py $shared_args > ${result_file_zerol}
