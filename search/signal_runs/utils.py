@@ -136,7 +136,7 @@ def get_snr_from_series(
     #print((snr[0] ** 2 + snr[1] ** 2) ** 0.5)
     A_time = (start_idx + amax_A)*snr_A._delta_t + float(snr_A._epoch)
     E_time = (start_idx + amax_E)*snr_E._delta_t + float(snr_E._epoch)
-    return snr, (start_idx + amax_A, start_idx + amax_E), (A_time, E_time)
+    return snr, (start_idx + amax_A, start_idx + amax_E), (A_time, E_time), {'LISA_A':snr_A, 'LISA_E':snr_E}
 
 def get_snr_point(
         params,
