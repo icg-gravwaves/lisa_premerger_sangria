@@ -46,6 +46,7 @@ def get_snr_series(
         psds_for_whitening,
         delta_t=5,
         hh=None,
+        original_length=None,
     ):
 
     waveforms = generate_waveform_lisa_pre_merger_inpaint(
@@ -76,6 +77,12 @@ def get_snr_series(
             )
             snr[channel] /= (hh_value ** 0.5 * (2 ** 0.5))
 
+    # Now we trim the beginning and end so that we dont look
+    # at things in the future
+    for channel in snr.keys():
+        # Trim to the original length
+        snr[channel] = snr[channel][:original_length]
+
     return snr
 
 
@@ -88,6 +95,7 @@ def get_snr_from_series(
         cutoff_time=0,
         time_samples=518400,
         zeroed_length=2**20,
+        original_length=None,
         gaps=None,
     ):
 
@@ -109,6 +117,7 @@ def get_snr_from_series(
         psds_for_whitening,
         delta_t=delta_t,
         hh=hh,
+        original_length=original_length,
     )
 
     snr_A = abs(snrs['LISA_A'])
@@ -169,7 +178,7 @@ def get_snr_from_series(
 
     A_time = (start_idx + amax_A)*snr_A._delta_t + float(snr_A._epoch)
     E_time = (start_idx + amax_E)*snr_E._delta_t + float(snr_E._epoch)
-    return snr, (start_idx + amax_A, start_idx + amax_E), (A_time, E_time)
+    return snr, (start_idx + amax_A, start_idx + amax_E), (A_time, E_time), {'LISA_A':snr_A, 'LISA_E':snr_E}
 
 def get_snr_point(
         params,
@@ -256,7 +265,7 @@ def filter_some_waveforms(
         data_A_f_nn = data_nn['LISA_A'].to_frequencyseries()
         data_E_f_nn = data_nn['LISA_E'].to_frequencyseries()
 
-        snr, _, _ = get_snr_from_series(
+        snr, _, _, _ = get_snr_from_series(
             filter_waveform,
             {'LISA_A': data_A_f_nn, 'LISA_E': data_E_f_nn},
             psds_for_whitening,
@@ -268,7 +277,7 @@ def filter_some_waveforms(
             f"{(snr[0]**2 + snr[1]**2)**0.5}"
         )
 
-        snr, _, _ = get_snr_from_series(
+        snr, _, _, _ = get_snr_from_series(
             filter_waveform,
             {'LISA_A': data_A_f, 'LISA_E': data_E_f},
             psds_for_whitening,
@@ -302,7 +311,7 @@ def filter_some_waveforms(
             params['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
             params['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
 
-            snr, iidx, times = get_snr_from_series(
+            snr, iidx, times, _ = get_snr_from_series(
                 params,
                 {'LISA_A': data_A_f, 'LISA_E': data_E_f},
                 psds_for_whitening,
@@ -556,7 +565,7 @@ def plot_best_waveform(
         linestyle=':',
     )
 
-    snr_best, _, times = get_snr_from_series(
+    snr_best, _, times, _ = get_snr_from_series(
         snr_vals[5],
         data_f,
         psds_for_whitening,
