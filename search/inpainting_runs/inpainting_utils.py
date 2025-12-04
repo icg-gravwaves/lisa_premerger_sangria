@@ -95,7 +95,7 @@ def generate_data_lisa_pre_merger_inpaint(
     touts = {}
     strain_w = {}
     # Shift waveform so the merger is not at the end of the data
-    for k, v in outs.items():
+    for i, (k, v) in enumerate(outs.items()):
         outs[k] = v.cyclic_time_shift(-waveform_params['additional_end_data'])
         touts[k] = outs[k].to_timeseries()
 
@@ -105,7 +105,7 @@ def generate_data_lisa_pre_merger_inpaint(
             len(touts[k]),
             touts[k].delta_t,
             psds_for_datagen[k],
-            seed=seed,
+            seed=seed + i,
         )
 
         # We need to make sure the noise times match the signal
@@ -251,8 +251,8 @@ def pre_process_data_lisa_pre_merger_inpaint(
                 channel: apply_inpainting(
                     data_painted[channel],
                     psds_for_whitening[channel],
-                    inpaint_start,
-                    inpaint_end
+                    gap_start_idx,
+                    gap_end_idx
                 ) 
                 for channel in  data_timeseries.keys()
             }

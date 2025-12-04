@@ -351,7 +351,6 @@ def get_optimal_snr(
         waveform_params,
         psds_for_whitening,
         sample_rate=1. / delta_t,
-        cutoff_time=cutoff_time,
     )
 
     snr = get_snr_point(
@@ -444,11 +443,9 @@ def plot_best_waveform(
     )
 
     waveforms = generate_waveform_lisa_pre_merger_inpaint(
-            snr_vals[5],
-            psds_for_whitening,
-            sample_rate=1. / delta_t,
-            window_length=window_length,
-            cutoff_time=time_before,
+        snr_vals[5],
+        psds_for_whitening,
+        sample_rate=1. / delta_t,
     )
 
     from matplotlib import pyplot as plt
