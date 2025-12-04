@@ -12,7 +12,6 @@ shared_args="""
     ../template_bank/output/lisa_ew_1_day.hdf \
   --data-file \
     ../../datasets/LDC2_sangria_hm_training.hdf \
-  --search-time 14400 \
   --reduce-bank-factor \
     3396 \
   --remove-signals-after-coalescence \
@@ -26,7 +25,7 @@ python ./data_runs.py $shared_args \
   --search-time 7200 \
   --end-time 11527200  > ${result_file_inpaint}
 
-# python ../signal_runs/data_runs.py $shared_args \
-#   --days-before-merger 1 \
-#   --search-time 3600 \
-#   --end-time 11527200 > ${result_file_zerol}
+python ../signal_runs/data_runs.py $shared_args \
+  --days-before-merger 1 \
+  --search-time 7200 \
+  --end-time 11527200 > ${result_file_zerol}
