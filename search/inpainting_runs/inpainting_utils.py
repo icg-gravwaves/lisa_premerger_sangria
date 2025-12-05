@@ -226,9 +226,6 @@ def pre_process_data_lisa_pre_merger_inpaint(
     dict
         Dictionary of whitened frequency series data for each channel
     """
-
-    # Number of samples to zero
-    data_length = len(data_timeseries['LISA_A'])
     
     # Initialize painted data with the main inpainting region
     data_painted = {
