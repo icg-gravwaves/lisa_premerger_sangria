@@ -10,7 +10,7 @@ if ! [ -f model_AE_TDI1_optimistic.txt.gz ] ; then
 fi
 
 if ! [ -f injections.json ] ; then
-    wget --show-progress $git_url/injections.json
+    wget --show-progress $git_url/Data/injections.json
 fi
 if ! [ -f signal_0.hdf ] ; then
     wget --show-progress $git_url/Data/data_files/data_optimistic_psd/signal_0.hdf

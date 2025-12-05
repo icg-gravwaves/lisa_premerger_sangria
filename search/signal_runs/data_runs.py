@@ -85,6 +85,11 @@ parser.add_argument(
     action='store_true',
     help="If given, remove all galactic binaries from the dataset"
 )
+parser.add_argument(
+    '--testing-plots',
+    help='Plots to help with testing, give directory where '
+    'the plots should go.',
+)
 
 # Add argument for the lower frequency cutoff with a default value
 parser.add_argument('--f-lower', type=float, default=1e-6)
@@ -122,14 +127,14 @@ waveform_params_shared = {
     'tdi': '1.5',
     't_offset': 0,
     'cutoff_deltat': 0,
+    'approximant': 'BBHX_PhenomD',
+    'mode_array': [(2,2)],
 }
-
 
 time_before = 86400 * args.days_before_merger
 
 cutoff_time=time_before
 window_length=17280
-
 
 remove_noiseless_groups = []
 if args.remove_all_mbhbs:
@@ -150,25 +155,28 @@ mbhb_data = load_ldc_timeseries(
 )
 
 end_idx = int(args.end_time * args.sample_rate) # seconds * hertz = unitless
-start_idx = int(end_idx - args.data_length * args.sample_rate) # unitless - unitless
+data_length_idx = int(args.data_length * args.sample_rate) # seconds * hertz = unitless
+start_idx = int(end_idx - data_length_idx) # unitless - unitless
 start_time = args.end_time - args.data_length # seconds - number of samples / (number of samples per second) = seconds
 
-logging.info("Cutting to %.3f seconds of data", args.data_length)
+logging.info("Cutting to %.0f seconds of data", args.data_length)
+logging.info(f'Data from {start_time:.0f} to {args.end_time:.0f}')
 
 for channel in data.keys():
     data[channel] = data[channel][start_idx:end_idx]
     mbhb_data[channel] = mbhb_data[channel][start_idx:end_idx]
     
+mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
+
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
     from matplotlib import pyplot as plt
-    mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
     for i, mbhb in enumerate(mbhbs):
 
         if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
             logging.info("Signal %d not yet reached", i)
             continue
 
-        if mbhb['CoalescenceTime'] < (args.end_time - (args.data_length / args.sample_rate * 4)):
+        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
             logging.info("Signal %d is well before the searched time - ignore it", i)
             continue
     
@@ -181,89 +189,96 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             1. / args.sample_rate,
         )
 
-        plt.plot(
-            data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-            data['LISA_A'],
-            label='Data LISA A',
-            alpha=0.25
-        )
-        plt.plot(
-            data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-            data['LISA_E'],
-            label='Data LISA E',
-            alpha=0.25
-        )
-        plt.plot(
-            mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-            mbhb_data['LISA_A'],
-            c='tab:blue',
-            label='MBHB LISA_A',
-        )
-        plt.plot(
-            mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-            mbhb_data['LISA_E'],
-            c='tab:orange',
-            label='MBHB LISA_E',
-        )
-        plt.plot(
-            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-            waveform_for_removal['LISA_A'],
-            c='tab:green',
-            linestyle=':',
-            label='Waveform LISA A'
-        )
-        plt.plot(
-            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-            waveform_for_removal['LISA_E'],
-            c='tab:red',
-            linestyle=':',
-            label='Waveform LISA E'
-        )
-
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_for_removal.png")
-
         logging.info('Removing from data')
         subtracted = {
             channel: data[channel] - waveform_for_removal[channel]
             for channel in data.keys()
         }
 
-        plt.figure()
-        plt.plot(
-            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-            data['LISA_A'],
-            alpha=0.5,
-            c='tab:blue',
-            label='Original LISA A'
+        if args.testing_plots is not None:
+            logging.info('Plotting waveform and data before and after removal')
+            fig1, ax1 = plt.subplots(1)
+            ax1.plot(
+                data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+                data['LISA_A'],
+                label='Data LISA A',
+                alpha=0.25
             )
-        plt.plot(
-            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-            data['LISA_E'],
-            alpha=0.5,
-            c='tab:orange',
-            label='Original LISA E'
-        )
-        plt.plot(
-            waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-            subtracted['LISA_A'],
-            c='tab:blue',
-            label='Subtracted LISA A'
+            ax1.plot(
+                data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+                data['LISA_E'],
+                label='Data LISA E',
+                alpha=0.25
             )
-        plt.plot(
-            waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-            subtracted['LISA_E'],
-            c='tab:orange',
-            label='Subtracted LISA E'
-        )
-        plt.axvline(0, c='r', linestyle=':')
-        plt.xlim(-2000, 1000)
-        plt.ylim(-1e-19, 1e-19)
-        plt.legend(loc='upper left')
-        plt.savefig("waveform_removed.png")
+            ax1.plot(
+                mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+                mbhb_data['LISA_A'],
+                c='tab:blue',
+                label='MBHB LISA_A',
+            )
+            ax1.plot(
+                mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+                mbhb_data['LISA_E'],
+                c='tab:orange',
+                label='MBHB LISA_E',
+            )
+            ax1.plot(
+                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+                waveform_for_removal['LISA_A'],
+                c='tab:green',
+                linestyle=':',
+                label='Waveform LISA A'
+            )
+            ax1.plot(
+                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+                waveform_for_removal['LISA_E'],
+                c='tab:red',
+                linestyle=':',
+                label='Waveform LISA E'
+            )
+
+            ax1.axvline(0, c='black', linestyle='--', alpha=0.5)
+            ax1.grid()
+            ax1.set_xlim(-2000, 1000)
+            ax1.set_ylim(-1e-19, 1e-19)
+            ax1.legend(loc='upper left')
+            fig1.savefig(f"{args.testing_plots}/waveform_for_removal_zerolatency_{i}.png")
+            plt.close(fig1)
+
+            fig2, ax2 = plt.subplots(1)
+            ax2.plot(
+                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+                data['LISA_A'],
+                alpha=0.5,
+                c='tab:blue',
+                label='Original LISA A'
+                )
+            ax2.plot(
+                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+                data['LISA_E'],
+                alpha=0.5,
+                c='tab:orange',
+                label='Original LISA E'
+            )
+            ax2.plot(
+                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
+                subtracted['LISA_A'],
+                c='tab:blue',
+                label='Subtracted LISA A'
+                )
+            ax2.plot(
+                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
+                subtracted['LISA_E'],
+                c='tab:orange',
+                label='Subtracted LISA E'
+            )
+            ax2.axvline(0, c='black', linestyle='--', alpha=0.5)
+            ax2.grid()
+            ax2.set_xlim(-2000, 1000)
+            ax2.set_ylim(-1e-19, 1e-19)
+            ax2.legend(loc='upper left')
+            fig2.savefig(f"{args.testing_plots}/waveform_removed_zerolatency_{i}.png")
+            plt.close(fig2)
 
         data = subtracted
 
@@ -282,10 +297,14 @@ psds_for_whitening = {
 
 logging.info("Generated PSD objects")
 
-lisa_a_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_A']
-lisa_e_zero_phase_kern_pycbc_fd = psds_for_whitening['LISA_E']
+if args.testing_plots is not None:
+    fig, ax = plt.subplots()
+    ax.plot(data['LISA_A'].sample_times, data['LISA_A'])
+    ax.plot(data['LISA_E'].sample_times, data['LISA_E'])
+    fig.savefig(f'{args.testing_plots}/data_zerolatency.png')
+    plt.close(fig)
 
-data = pre_process_data_lisa_pre_merger(
+data_pp = pre_process_data_lisa_pre_merger(
     data,
     sample_rate=args.sample_rate,
     psds_for_whitening=psds_for_whitening,
@@ -295,9 +314,27 @@ data = pre_process_data_lisa_pre_merger(
 )
 
 data_f = {
-    channel: data[channel].to_frequencyseries()
-    for channel in ['LISA_A','LISA_E']
+    channel: data_pp[channel].to_frequencyseries()
+    for channel in data_pp.keys()
 }
+
+
+if args.testing_plots is not None:
+    data_ow_f = {
+        channel: data_f[channel] * psds_for_whitening[channel]
+        for channel in data_f
+    }
+    fig, ax = plt.subplots()
+    ax.loglog(
+        data_ow_f['LISA_A'].sample_frequencies,
+        abs(data_ow_f['LISA_A'])
+    )
+    ax.loglog(
+        data_ow_f['LISA_E'].sample_frequencies,
+        abs(data_ow_f['LISA_E'])
+    )
+    fig.savefig(f'{args.testing_plots}/data_overwhitened_zerolatency.png')
+    plt.close(fig)
 
 logging.info(f"Beginning filtering with bank %s", args.bank_file)
 max_snrsq = 0
@@ -306,11 +343,9 @@ with h5py.File(args.bank_file, 'r') as bank_file:
     for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
 
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
-                # For testing: reduce the bank size by this factor to make the search quicker
-                continue
+            # For testing: reduce the bank size by this factor to make the search quicker
+            continue
         bank_wf = copy.deepcopy(waveform_params_shared)
-        bank_wf['approximant'] = 'BBHX_PhenomD'
-        bank_wf['mode_array'] = [(2,2)]
         # Update waveform params to use the ones from the bank file
         bank_wf['tc'] = args.data_length
         bank_wf['mass1'] = bank_file['mass1'][idx]
@@ -323,7 +358,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
         bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
     
-        snr, iidx, times = get_snr_from_series(
+        snr, iidx, times, series = get_snr_from_series(
             bank_wf,
             data_f,
             psds_for_whitening,
@@ -333,6 +368,35 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             search_time=args.search_time,
             delta_t=1. / args.sample_rate,
         )
+
+        if args.testing_plots is not None:
+            fig, ax = plt.subplots()
+            search_slice = slice(len(series['LISA_A'])-int(args.search_time * args.sample_rate), len(series['LISA_A']))
+            for mbhb in mbhbs:
+                ax.axvline(mbhb['CoalescenceTime'], c='k', linestyle='--')
+            ax.plot(
+                series['LISA_A'].sample_times[search_slice] + cutoff_time,
+                series['LISA_A'][search_slice],
+                label='Data LISA A'
+            )
+            ax.plot(
+                series['LISA_E'].sample_times[search_slice] + cutoff_time,
+                series['LISA_E'][search_slice],
+                label='Data LISA E'
+            )
+            ax.plot(
+                series['LISA_E'].sample_times[search_slice] + cutoff_time,
+                np.sqrt(series['LISA_A'][search_slice] ** 2 + series['LISA_E'][search_slice] ** 2),
+                label='Network'
+            )
+            ax.set_xlim([
+                float(series['LISA_E'][search_slice]._epoch) + cutoff_time,
+                float(series['LISA_E'][search_slice].sample_times[-1] + cutoff_time)
+            ])
+
+            ax.legend()
+            fig.savefig(f"{args.testing_plots}/series_{idx}_zerolatency.png")
+            plt.close(fig)
 
         snr_qs = snr[0] ** 2 + snr[1] ** 2
         if snr_qs > max_snrsq:

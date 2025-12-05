@@ -18,74 +18,15 @@ from pycbc.strain.gate import gate_and_paint
 from pycbc.waveform import get_fd_det_waveform
 import ldc.io.hdf5 as hdfio
 
-from pycbc.psd.lisa_pre_merger import (
-    generate_pre_merger_psds as _generate_lisa_pre_merger_psds
-)
+from matplotlib import pyplot as plt
 
-from pycbc.waveform.pre_merger_waveform import (
-    generate_data_lisa_pre_merger as _generate_data_lisa_pre_merger,
-    generate_waveform_lisa_pre_merger as _generate_waveform_lisa_pre_merger,
-    pre_process_data_lisa_pre_merger as _pre_process_data_lisa_pre_merger,
-)
 
 from inpainting_utils import (
     generate_data_lisa_pre_merger_inpaint,
-    generate_lisa_pre_merger_psds_inpaint,
     generate_waveform_lisa_pre_merger_inpaint,
     pre_process_data_lisa_pre_merger_inpaint,
     compute_hh_inner_product,
 )
-
-def generate_data_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around generate_data_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-
-    if inpaint:
-        return generate_data_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _generate_data_lisa_pre_merger(*args, **kwargs)
-    
-
-
-def generate_waveform_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around generate_waveform_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return generate_waveform_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _generate_waveform_lisa_pre_merger(*args, **kwargs)
-    
-
-
-def pre_process_data_lisa_pre_merger(*args, **kwargs):
-    """
-    Wrapper around pre_process_data_lisa_pre_merger functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return pre_process_data_lisa_pre_merger_inpaint(*args, **kwargs)
-    else:
-        return _pre_process_data_lisa_pre_merger(*args, **kwargs)
-
-
-def generate_pre_merger_psds(*args, **kwargs):
-    """
-    Wrapper around generate_lisa_pre_merger_psds functions which
-    decides whether we are using inpainting or the FIR filter method
-    """
-    inpaint = kwargs.pop('inpaint', False)
-    if inpaint:
-        return generate_lisa_pre_merger_psds_inpaint(*args, **kwargs)
-    else:
-        return _generate_lisa_pre_merger_psds(*args, **kwargs)
-    
 
 
 ####################################################
@@ -93,55 +34,147 @@ def generate_pre_merger_psds(*args, **kwargs):
 ####################################################
 def get_snr_series(
         params,
-        data_f,
+        data_ow_f,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
-        delta_t=5
+        delta_t=5,
+        hh=None,
+        original_length=None,
     ):
 
-    waveforms = generate_waveform_lisa_pre_merger(
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
         params,
         psds_for_whitening,
         sample_rate=1./delta_t,
-        window_length=window_length,
-        cutoff_time=cutoff_time,
-        forward_zeroes=kernel_length,
     )
 
-    snr_A = pycbc.filter.matched_filter(
-        waveforms['LISA_A'],
-        data_f['LISA_A'],
-    )
-    snr_E = pycbc.filter.matched_filter(
-        waveforms['LISA_E'],
-        data_f['LISA_E'],
-    )
+    snr = {}
+    for channel in waveforms.keys():
+        snr[channel] = pycbc.filter.matched_filter(
+            waveforms[channel],
+            data_ow_f[channel],
+            sigmasq=1
+        )
 
-    return abs(snr_A), abs(snr_E)
+    if hh is not None:
+        for channel, hh_array in hh.items():
+            hh_array._epoch = data_ow_f[channel]._epoch
+            snr[channel] /= (hh[channel] ** 0.5 * (2 ** 0.5))
+    else:
+        for channel in waveforms.keys():
+            # Normalise by (h|h), the standard one
+            hh_value = pycbc.filter.matched_filter(
+                waveforms[channel],
+                waveforms[channel],
+                sigmasq=1
+            )
+            snr[channel] /= (hh_value ** 0.5 * (2 ** 0.5))
+
+    # Now we trim the beginning and end so that we dont look
+    # at things in the future
+    if original_length is not None:
+        for channel in snr.keys():
+            # Trim to the original length
+            snr[channel] = snr[channel][:original_length]
+
+    return snr
+
+
+def pick_best_snr_pair(
+    snr_A, 
+    snr_E,
+    start_idx=0,
+):
+    """
+    Pick the best pair of SNR samples from snr_A and snr_E
+
+    Returns:
+      snr: tuple (snr_A_value, snr_E_value)
+      indices: tuple (index_A_abs, index_E_abs) absolute indices in the SNR series (provided start_idx is given)
+      times: tuple (A_time, E_time) times of the peaks
+    """
+
+    # Get max of A series 
+    argmax_A = np.argmax(
+        abs(snr_A.data)
+    )
+    max_idx = len(snr_A.data)
+
+    # Find the maximum value of E series over a small interval around this
+    mineval = max(argmax_A - 20, 0)
+    maxeval = min(argmax_A + 20, max_idx)
+
+    argmax_E = np.argmax(
+        abs(snr_E.data[mineval:maxeval])
+    )
+    argmax_E = argmax_E + mineval
+    snr = (
+        abs(snr_A.data[argmax_A]),
+        abs(snr_E.data[argmax_E])
+    )
+    snr_sq = abs(snr[0]**2 + snr[1]**2)
+
+    # Get max of E series
+    amax2_E = np.argmax(
+        abs(snr_E.data)
+    )
+    # Search a small window around the maximum of E to see if that is better
+    minaval = max(amax2_E - 20, 0)
+    maxaval = min(amax2_E + 20, max_idx)
+    amax2_A = np.argmax(
+        abs(snr_A.data[minaval:maxaval])
+    )
+    amax2_A = amax2_A + minaval
+    snr2 = (
+        abs(snr_A.data[amax2_A]),
+        abs(snr_E.data[amax2_E])
+    )
+    snr2_sq = abs(snr2[0]**2 + snr2[1]**2)
+    if snr2_sq > snr_sq:
+        snr = snr2
+        argmax_A = amax2_A
+        argmax_E = amax2_E
+
+    A_time = argmax_A*snr_A._delta_t + float(snr_A._epoch)
+    E_time = argmax_E*snr_E._delta_t + float(snr_E._epoch)
+
+    return snr, (start_idx + argmax_A, start_idx + argmax_E), (A_time, E_time)
 
 
 def get_snr_from_series(
         params,
         data_f,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
         search_time,
-        delta_t=5
+        delta_t=5,
+        cutoff_time=0,
+        time_samples=518400,
+        zeroed_length=2**20,
+        gaps=None,
     ):
 
-    snr_A, snr_E = get_snr_series(
+    cutoff_idx = int(time_samples - cutoff_time / delta_t)
+
+    hh = compute_hh_inner_product(
+        params,
+        psds_for_whitening,
+        sample_rate=1./delta_t,
+        inpaint_start=cutoff_idx,
+        zeroed_length=zeroed_length,
+        gaps=gaps,
+        epoch=data_f['LISA_A'].epoch
+    )
+
+    snrs = get_snr_series(
         params,
         data_f,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
-        delta_t=delta_t
+        delta_t=delta_t,
+        hh=hh,
+        original_length=time_samples,
     )
+
+    snr_A = abs(snrs['LISA_A'])
+    snr_E = abs(snrs['LISA_E'])
 
     if search_time is None:
         search_indices = len(snr_A)
@@ -149,64 +182,126 @@ def get_snr_from_series(
         search_indices = int(search_time//delta_t)
     start_idx = len(snr_A) - search_indices
     search_slice = slice(start_idx, len(snr_A))
-    
-    #snrsq_series = (snr_A ** 2 + snr_E ** 2)
-    #amax = np.argmax(snrsq_series[search_slice])
-    #idx_everywhere = start_idx + amax
 
-    #snr = (snr_A[idx_everywhere], snr_E[idx_everywhere])
-    #time = idx_everywhere*snr_A._delta_t + float(snr_A._epoch)
-    #return snr, idx_everywhere, time
+    # Use helper to pick the best SNR pair within the search slice
+    snr, indices, times = pick_best_snr_pair(
+        snr_A[search_slice],
+        snr_E[search_slice],
+        start_idx=start_idx,
+    )
+    return snr, indices, times, {'LISA_A':snr_A, 'LISA_E':snr_E}
 
-    amax_A = np.argmax(
-        abs(snr_A.data[search_slice])
-    )
-    #print(amax_A)
-    #print(abs(snr_A[amax_A]))
 
-    mineval = max(amax_A - 20, 0)
-    maxeval = min(amax_A + 20, search_indices)
+def get_snr_future_series(
+        params,
+        data_f,
+        psds_for_whitening,
+        delta_t=5,
+        original_length=518400,
+        forward_days=1.0,
+        time_points_days=None,
+        window_seconds=0.0,
+        zeroed_length=2**20,
+        gaps=None,
+        plot=False
+    ):
+    """
+    Compute SNR series starting at `start_index` and extending forward by `forward_days`.
+    """
 
-    amax_E = np.argmax(
-        abs(snr_E.data[search_slice][mineval:maxeval])
-    )
-    amax_E = amax_E + mineval
-    snr = (
-        (snr_A.data[search_slice][amax_A]),
-        (snr_E.data[search_slice][amax_E])
-    )
-    snr_sq = abs(snr[0]**2 + snr[1]**2)
+    # Compute hh inner product the same way get_snr_from_series does so the
+    # normalization is consistent with inpainting / cutoff handling.
 
-    amax2_E = np.argmax(
-        abs(snr_E.data[search_slice])
+    hh = compute_hh_inner_product(
+        params,
+        psds_for_whitening,
+        sample_rate=1. / delta_t,
+        inpaint_start=original_length,
+        zeroed_length=zeroed_length,
+        gaps=gaps,
+        epoch=data_f['LISA_A'].epoch
     )
-    minaval = max(amax2_E - 20, 0)
-    maxaval = min(amax2_E + 20, search_indices)
-    amax2_A = np.argmax(
-        abs(snr_A.data[search_slice][minaval:maxaval])
-    )
-    amax2_A = amax2_A + minaval
-    snr2 = (
-        (snr_A.data[search_slice][amax2_A]),
-        (snr_E.data[search_slice][amax2_E])
-    )
-    snr2_sq = abs(snr2[0]**2 + snr2[1]**2)
-    if snr2_sq > snr_sq:
-        snr = snr2
-        amax_A = amax2_A
-        amax_E = amax2_E
 
-    A_time = (start_idx + amax_A)*snr_A._delta_t + float(snr_A._epoch)
-    E_time = (start_idx + amax_E)*snr_E._delta_t + float(snr_E._epoch)
-    return snr, (start_idx + amax_A, start_idx + amax_E), (A_time, E_time)
+    snrs = get_snr_series(
+        params,
+        data_f,
+        psds_for_whitening,
+        delta_t=delta_t,
+        hh=hh,
+        original_length=None,
+    )
+
+    snr_A = snrs['LISA_A']
+    snr_E = snrs['LISA_E']
+
+    # Start at the original data length (time_samples) and go forward
+    secs_per_day = 86400.0
+    forward_samples = int(forward_days * secs_per_day / delta_t)
+
+    # if weve requested more time than there is, complain:
+    end_idx = original_length + forward_samples
+    assert end_idx <= len(snr_A)
+
+    if plot:
+        
+        fig, ax = plt.subplots()
+        ax.plot(snr_A.sample_times, abs(snr_A))
+        ax.plot(snr_E.sample_times, abs(snr_E))
+        ax.axvline(snr_A.sample_times[original_length], color='k', linestyle=':')
+        ax.axvline(snr_A.sample_times[end_idx], color='k', linestyle=':')
+        # ax.set_xlim(
+        #     snr_A.sample_times[original_length] - 3600,
+        #     snr_A.sample_times[end_idx] + 3600
+        # )
+        ax.set_yscale('log')
+        ax.set_ylim(bottom=0.1)
+        
+        fig.savefig('results/test/snr_series_inpainting_full.png')
+
+
+    # Slice the series for each channel
+    snr_slice_A = snr_A[original_length:end_idx]
+    snr_slice_E = snr_E[original_length:end_idx]
+
+    result = {
+        'snr_slice': {'LISA_A': snr_slice_A, 'LISA_E': snr_slice_E},
+        'windows': []
+    }
+
+    # If specific time points are requested, extract best SNR from windows around them
+    window_samples = int(window_seconds / delta_t)
+
+    for tp in time_points_days:
+        # tp is in days from original data end
+        end_window_index = int(tp * secs_per_day / delta_t)
+
+        # Clamp to available range
+        end_window = min(end_window_index, len(snr_slice_A))
+        start_window = max(end_window_index - window_samples, 0)
+        window_slice = slice(start_window, end_window)
+
+        snrs_window, window_indices, window_times = pick_best_snr_pair(
+            abs(snr_slice_A[window_slice]),
+            abs(snr_slice_E[window_slice]),
+            start_idx=start_window,
+        )
+
+        result['windows'].append({
+            'time_point_days': tp,
+            'centre_index': end_window_index,
+            'snr_A': snrs_window[0],
+            'snr_E': snrs_window[1],
+            'times': window_times,
+            'indices': window_indices,
+            'data': (abs(snr_slice_A[window_slice]), abs(snr_slice_E[window_slice]))
+        })
+
+    return result
 
 def get_snr_point(
         params,
         data,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
         delta_t=5,
     ):
 
@@ -214,9 +309,6 @@ def get_snr_point(
         params,
         data,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
         delta_t=delta_t
     )
 
@@ -231,12 +323,10 @@ def filter_some_waveforms(
         psds_for_whitening,
         time_before,
         tmpltbank,
-        kernel_length,
         nosignal=False,
         random_seed=137,
         delta_t=5,
         search_time=3600,
-        window_length=17280,
         reduce_bank_factor=None,
         label='Label',
         plot_best_wf=False,
@@ -253,51 +343,50 @@ def filter_some_waveforms(
 
     print(f"Time before {time_before}")
 
-    data = generate_data_lisa_pre_merger(
+    data = generate_data_lisa_pre_merger_inpaint(
         generation_waveform,
         psds_for_datagen,
         sample_rate=1. / delta_t,
         seed=random_seed,
         no_signal=nosignal,
     )
-    data = pre_process_data_lisa_pre_merger(
+    cutoff_idx = len(data['LISA_A']) - int(time_before / delta_t)
+ 
+    data = pre_process_data_lisa_pre_merger_inpaint(
         data,
         sample_rate=1. / delta_t,
         psds_for_whitening=psds_for_whitening,
-        window_length=window_length,
-        cutoff_time=time_before,
-        forward_zeroes=kernel_length,
+        inpaint_start=cutoff_idx,
+        inpaint_end=len(data['LISA_A'])
     )
 
     data_A_f = data['LISA_A'].to_frequencyseries()
     data_E_f = data['LISA_E'].to_frequencyseries()
 
     if not nosignal:
-        data_nn = generate_data_lisa_pre_merger(
+        data_nn = generate_data_lisa_pre_merger_inpaint(
             generation_waveform,
             psds_for_datagen,
             sample_rate=1./delta_t,
             no_signal=nosignal,
             zero_noise=True
         )
-        data_nn = pre_process_data_lisa_pre_merger(
+        cutoff_idx = len(data['LISA_A']) - int(time_before / delta_t)
+
+        data_nn = pre_process_data_lisa_pre_merger_inpaint(
             data_nn,
             sample_rate=1./delta_t,
             psds_for_whitening=psds_for_whitening,
-            window_length=window_length,
-            cutoff_time=time_before,
-            forward_zeroes=kernel_length,
+            inpaint_start=cutoff_idx,
+            inpaint_end=len(data['LISA_A'])
         )
         data_A_f_nn = data_nn['LISA_A'].to_frequencyseries()
         data_E_f_nn = data_nn['LISA_E'].to_frequencyseries()
 
-        snr, _, _ = get_snr_from_series(
+        snr, _, _, _ = get_snr_from_series(
             filter_waveform,
             {'LISA_A': data_A_f_nn, 'LISA_E': data_E_f_nn},
             psds_for_whitening,
-            window_length,
-            time_before,
-            kernel_length,
             search_time,
             delta_t=delta_t,
         )
@@ -306,13 +395,10 @@ def filter_some_waveforms(
             f"{(snr[0]**2 + snr[1]**2)**0.5}"
         )
 
-        snr, _, _ = get_snr_from_series(
+        snr, _, _, _ = get_snr_from_series(
             filter_waveform,
             {'LISA_A': data_A_f, 'LISA_E': data_E_f},
             psds_for_whitening,
-            window_length,
-            time_before,
-            kernel_length,
             search_time,
             delta_t=delta_t,
         )
@@ -343,13 +429,10 @@ def filter_some_waveforms(
             params['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
             params['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
 
-            snr, iidx, times = get_snr_from_series(
+            snr, iidx, times, _ = get_snr_from_series(
                 params,
                 {'LISA_A': data_A_f, 'LISA_E': data_E_f},
                 psds_for_whitening,
-                window_length,
-                time_before,
-                kernel_length,
                 search_time,
                 delta_t=delta_t,
             )
@@ -382,22 +465,16 @@ def get_optimal_snr(
         kernel_length=17280,
     ):
 
-    waveforms = generate_waveform_lisa_pre_merger(
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
         waveform_params,
         psds_for_whitening,
         sample_rate=1. / delta_t,
-        window_length=window_length,
-        cutoff_time=cutoff_time,
-        forward_zeroes=kernel_length,
     )
 
     snr = get_snr_point(
         waveform_params,
         waveforms,
         psds_for_whitening,
-        window_length,
-        cutoff_time,
-        kernel_length,
     )
 
     return snr
@@ -464,9 +541,7 @@ def plot_best_waveform(
     data_f,
     psds_for_whitening,
     time_before,
-    window_length,
     search_time,
-    kernel_length,
     delta_t=5,
     label='Label'
 ):
@@ -475,9 +550,7 @@ def plot_best_waveform(
         snr_vals[5],
         psds_for_whitening,
         cutoff_time=time_before,
-        window_length=window_length,
         delta_t=delta_t,
-        kernel_length=kernel_length,
     )
 
     data_length = (len(data_f['LISA_A']) - 1) * 2 * delta_t
@@ -487,16 +560,11 @@ def plot_best_waveform(
         f"{(snr[0]**2 + snr[1]**2)**0.5}"
     )
 
-    waveforms = generate_waveform_lisa_pre_merger(
-            snr_vals[5],
-            psds_for_whitening,
-            sample_rate=1. / delta_t,
-            window_length=window_length,
-            cutoff_time=time_before,
-            forward_zeroes=kernel_length,
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
+        snr_vals[5],
+        psds_for_whitening,
+        sample_rate=1. / delta_t,
     )
-
-    from matplotlib import pyplot as plt
 
     fig, ax = plt.subplots(1)
     for channel in ['LISA_A', 'LISA_E']:
@@ -545,49 +613,12 @@ def plot_best_waveform(
         ax.grid()
         ax.set_yscale('symlog', linthresh=1e-5)
 
-    ax0.set_xlim(
-        0,
-        kernel_length * delta_t,
-    )
-    ax1.set_xlim(
-        kernel_length * delta_t,
-        kernel_length * delta_t + window_length,
-    )
-    ax2.set_xlim(
-        kernel_length * delta_t,
-        data_length - time_before,
-    )
-    ax3.set_xlim(
-        data_length - time_before,
-        data_length
-    )
 
     for ax in [ax0, ax1, ax2, ax3]:
-        ax.axvspan(
-            kernel_length * delta_t + window_length,
-            data_length - time_before,
-            color='g',
-            zorder=-100,
-            alpha=0.25
-        )
         ax.axvspan(
             data_length - time_before,
             data_length,
             color='r',
-            zorder=-100,
-            alpha=0.25
-        )
-        ax.axvspan(
-            0,
-            kernel_length * delta_t,
-            color='r',
-            zorder=-100,
-            alpha=0.25
-        )
-        ax.axvspan(
-            kernel_length * delta_t,
-            kernel_length * delta_t + window_length,
-            color='y',
             zorder=-100,
             alpha=0.25
         )
@@ -607,9 +638,6 @@ def plot_best_waveform(
         snr_vals[5],
         data_f,
         psds_for_whitening,
-        window_length,
-        time_before,
-        kernel_length,
         delta_t=delta_t
     )
 
@@ -650,13 +678,10 @@ def plot_best_waveform(
         linestyle=':',
     )
 
-    snr_best, _, times = get_snr_from_series(
+    snr_best, _, times, _ = get_snr_from_series(
         snr_vals[5],
         data_f,
         psds_for_whitening,
-        window_length,
-        time_before,
-        kernel_length,
         delta_t=delta_t,
         search_time=search_time
     )
@@ -722,7 +747,6 @@ def AET(X,Y,Z, delta_t, epoch=0):
         {
             'LISA_A': waveform_A,
             'LISA_E': waveform_E,
-            'LISA_T': waveform_T,
         },
         delta_t,
         epoch=epoch
@@ -801,11 +825,14 @@ def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
         tdi2=False
     )
 
+    # Cut to the start/end time as appropriate
+    start_idx = int(start_time / dt)
+    end_idx = int(end_time / dt)
+
     return to_timeseries(
         {
-            'LISA_A': A,
-            'LISA_E': E,
-            'LISA_T': T,
+            'LISA_A': A[start_idx:end_idx],
+            'LISA_E': E[start_idx:end_idx],
         },
         dt,
         epoch=start_time
@@ -827,3 +854,20 @@ def generate_waveform_for_data(
         end_time,
         delta_t
     )
+
+
+def waveform_from_bank(bank_file, idx, waveform_params_shared, data_length):
+        bank_wf = copy.deepcopy(waveform_params_shared)
+        # Update waveform params to use the ones from the bank file
+        bank_wf['tc'] = data_length
+        bank_wf['mass1'] = bank_file['mass1'][idx]
+        bank_wf['mass2'] = bank_file['mass2'][idx]
+        bank_wf['inclination'] = bank_file['inclination'][idx]
+        bank_wf['polarization'] = bank_file['polarization'][idx]
+        bank_wf['spin1z'] = bank_file['spin1z'][idx]
+        bank_wf['spin2z'] = bank_file['spin2z'][idx]
+        #bank_wf['coa_phase'] = hfile['coa_phase'][idx]
+        bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
+        bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
+
+        return bank_wf
