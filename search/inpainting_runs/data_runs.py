@@ -9,6 +9,7 @@ import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
 import numpy as np
 from tqdm import tqdm  # Library for creating progress bars
+from matplotlib import pyplot as plt
 
 
 # Import specific modules from the PyCBC library
@@ -18,15 +19,15 @@ from pycbc.types import MultiDetOptionAction  # Custom action for argparse
 import ldc.io.hdf5 as hdfio
 
 from inpainting_utils import (
-    generate_lisa_pre_merger_psds_inpaint,
     pre_process_data_lisa_pre_merger_inpaint,  # Function to preprocess data for LISA pre-merger
 )
 
 from utils import (
-    get_snr_from_series,  # Function to get SNR from a series
+    get_snr_future_series,  # Function to get SNR from a series
     plot_best_waveform,  # Function to plot the best waveform
     load_ldc_timeseries, # function to load timeseries
     generate_waveform_for_data,
+    waveform_from_bank
 )
 
 # Set up argument parser for command-line arguments
@@ -53,8 +54,24 @@ parser.add_argument('--end-time', required=True, type=float,
 # valid of the SNR time series 
 parser.add_argument('--search-time', type=float, default=86400.)
 
-# Add argument for the number of days before merger (required)
-parser.add_argument('--days-before-merger', type=float, default=0)
+# Add argument for the number of days after the end of the 
+# data to search for signals. Default 21
+parser.add_argument('--days-to-search', type=float, default=21)
+
+parser.add_argument(
+    '--time-points-days',
+    nargs='+',
+    type=float,
+    default=[],
+    help=''
+)
+
+parser.add_argument(
+    '--time-point-window',
+    type=float,
+    default=1800,
+    help='Window arouns time-points-days (seconds) to search and report SNRs'
+)
 
 # Add argument for the data length with a default value (seconds)
 parser.add_argument('--data-length', type=int, default=2592000)
@@ -113,7 +130,6 @@ args = parser.parse_args()
 
 # Initialize logging for the PyCBC library
 pycbc.init_logging(True)
-logging.info(f"{args.days_before_merger} days before merger")
 
 delta_f = 1 / (args.zeroed_length / args.sample_rate) # delta_f is not the same for zero-latency vs inpainting as we add extra zeroes to inpainting
 
@@ -131,7 +147,7 @@ waveform_params_shared = {
     'mode_array':  [(2,2)],
 }
 
-cutoff_time = 86400 * args.days_before_merger
+future_search_time = args.days_to_search * 86400
 
 window_length=17280
 
@@ -170,19 +186,18 @@ mbhbs, _ = hdfio.load_array(
     )
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
-    from matplotlib import pyplot as plt
     
     for i, mbhb in enumerate(mbhbs):
 
         if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
-            logging.info("Signal %d not yet reached", i)
+            logging.info("Signal %d at time %.3f not yet reached", i, mbhb['CoalescenceTime'])
             continue
 
         if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
-            logging.info("Signal %d is well before the searched time - ignore it", i)
+            logging.info("Signal %d at time %.3f is well before the searched time - ignore it", i, mbhb['CoalescenceTime'])
             continue
     
-        logging.info("Removing signal %d from data", i)
+        logging.info("Removing signal %d at time %.3f from data", i, mbhb['CoalescenceTime'])
 
         waveform_for_removal = generate_waveform_for_data(
             mbhb,
@@ -191,11 +206,11 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
             1. / args.sample_rate,
         )
 
-        logging.info('Removing from data')
         subtracted = {
             channel: data[channel] - waveform_for_removal[channel]
             for channel in data.keys()
         }
+
         if args.testing_plots is not None:
             fig1, ax1 = plt.subplots(1)
             ax1.plot(
@@ -310,15 +325,17 @@ if args.testing_plots is not None:
     plt.close(fig)
 
 
-cutoff_idx = int((args.data_length - cutoff_time) * args.sample_rate)
+original_length = int(args.data_length * args.sample_rate)
 
+logging.info('Pre-processing data')
+logging.info('%d %d %d', args.zeroed_length, original_length, int(original_length + (future_search_time / args.sample_rate)))
 #  For inpainting, this will be overwhitened
 data_ow_f = pre_process_data_lisa_pre_merger_inpaint(
     data,
     sample_rate=args.sample_rate,
     psds_for_whitening=psds,
-    inpaint_start=cutoff_idx,
-    inpaint_end=int(cutoff_idx + (86400 * 7 * args.sample_rate)) # 7 days for now, I think this may need to be longer, but not sure
+    inpaint_start=original_length,
+    inpaint_end=int(original_length + (2 * 86400 * args.sample_rate))
 )
 
 if args.testing_plots is not None:
@@ -336,84 +353,97 @@ if args.testing_plots is not None:
 
 tlen = int(args.data_length * args.sample_rate)
 
+time_points_snrs = np.zeros((len(args.time_points_days), 2), dtype=float)
+time_points_times = np.zeros((len(args.time_points_days), 2), dtype=float)
+time_points_template_idx = np.zeros(len(args.time_points_days), dtype=int)
+time_points_data = [None] * len(args.time_points_days)
+
 logging.info(f"Beginning filtering with bank %s", args.bank_file)
-max_snrsq = 0
+
 snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
     for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue
-        bank_wf = copy.deepcopy(waveform_params_shared)
-        # Update waveform params to use the ones from the bank file
-        bank_wf['tc'] = args.data_length
-        bank_wf['mass1'] = bank_file['mass1'][idx]
-        bank_wf['mass2'] = bank_file['mass2'][idx]
-        bank_wf['inclination'] = bank_file['inclination'][idx]
-        bank_wf['polarization'] = bank_file['polarization'][idx]
-        bank_wf['spin1z'] = bank_file['spin1z'][idx]
-        bank_wf['spin2z'] = bank_file['spin2z'][idx]
-        #bank_wf['coa_phase'] = hfile['coa_phase'][idx]
-        bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
-        bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
+        bank_wf = waveform_from_bank(
+            bank_file,
+            idx,
+            waveform_params_shared,
+            args.data_length
+        )
     
-        snr, iidx, times, series = get_snr_from_series(
+        snr_future_series = get_snr_future_series(
             bank_wf,
             data_ow_f,
             psds,
-            search_time=args.search_time,
             delta_t=1. / args.sample_rate,
-            time_samples=tlen,
+            original_length=tlen,
             zeroed_length=args.zeroed_length,
-            cutoff_time=cutoff_time,
+            forward_days=args.days_to_search,
+            time_points_days=args.time_points_days, # The times (in days) to report back specific SNRs
+            window_seconds=args.time_point_window,
             gaps=None,
-            original_length=int(args.data_length * args.sample_rate)
+            plot=(idx == 10188)
         )
 
+        for i, (time_point, result) in enumerate(zip(args.time_points_days, snr_future_series['windows'])):
+            time_points_snrsq = result['snr_A'] ** 2 + result['snr_E'] ** 2
+            if time_points_snrsq > (time_points_snrs[i, :] ** 2).sum():
+                time_points_snrs[i, :] = [result['snr_A'], result['snr_E']]
+                time_points_times[i, :] = result['times']
+                time_points_template_idx[i] = idx
+                time_points_data[i] = result['data']
+
+
+    for i, time_point_days in enumerate(args.time_points_days):
+        if time_points_snrs[i, :].sum() == 0:
+            print('No SNRs above zero found for this time point')
+            continue
+        best_wf = waveform_from_bank(
+            bank_file,
+            time_points_template_idx[i],
+            waveform_params_shared,
+            args.data_length
+        )
+        print(
+            time_point_days,
+            [
+                time_points_template_idx[i],
+                tuple(time_points_snrs[i, :]),
+                np.sqrt((time_points_snrs[i, :] ** 2).sum()),
+                tuple(time_points_times[i, :]),
+                best_wf
+            ]
+        )
         if args.testing_plots is not None:
             fig, ax = plt.subplots()
-            search_slice = slice(len(series['LISA_A'])-int(args.search_time * args.sample_rate), len(series['LISA_A']))
+            snr_series_A, snr_series_E = time_points_data[i]
+
             for mbhb in mbhbs:
                 ax.axvline(mbhb['CoalescenceTime'], c='k', linestyle='--')
             ax.plot(
-                series['LISA_A'].sample_times[search_slice] + cutoff_time,
-                series['LISA_A'][search_slice],
-                label='Data LISA A'
+                snr_series_A.sample_times,
+                snr_series_A,
+                label='SNR LISA A'
             )
             ax.plot(
-                series['LISA_E'].sample_times[search_slice] + cutoff_time,
-                series['LISA_E'][search_slice],
-                label='Data LISA E'
+                snr_series_E.sample_times,
+                snr_series_E,
+                label='SNR LISA E'
             )
             ax.plot(
-                series['LISA_E'].sample_times[search_slice] + cutoff_time,
-                np.sqrt(series['LISA_A'][search_slice] ** 2 + series['LISA_E'][search_slice] ** 2),
+                snr_series_A.sample_times,
+                np.sqrt(snr_series_A ** 2 + snr_series_E ** 2),
                 label='Network'
             )
             ax.set_xlim([
-                float(series['LISA_E'][search_slice]._epoch) + cutoff_time,
-                float(series['LISA_E'][search_slice].sample_times[-1] + cutoff_time)
+                float(snr_series_A._epoch),
+                float(snr_series_A.sample_times[-1])
             ])
+
             ax.legend()
-            fig.savefig(f"{args.testing_plots}/series_{idx}_inpainting.png")
+            fig.savefig(f"{args.testing_plots}/series_{time_point_days}_inpainting.png")
             plt.close(fig)
 
-
-        snr_qs = snr[0] ** 2 + snr[1] ** 2
-        if snr_qs > max_snrsq:
-            max_snrsq = snr_qs
-            snr_vals = [idx, snr, max_snrsq ** 0.5, iidx, times, copy.deepcopy(bank_wf)]
-
-print(snr_vals)
-
-# The following is all for testing, so we exit here
-if args.plot_best_waveform:
-    plot_best_waveform(
-        snr_vals,
-        data_ow_f,
-        psds,
-        cutoff_time,
-        args.search_time,
-        delta_t=1. / args.sample_rate,
-    )
 logging.info('Done!')
