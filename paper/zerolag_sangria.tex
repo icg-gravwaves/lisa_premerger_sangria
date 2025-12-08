@@ -1,7 +1,7 @@
 \section{Applying the Premerger Search}
-\label{sec:fir_sangria}
+\label{sec:zerolag_sangria}
 
-Our search uses an \ac{FIR} filter such that data from the future is not required. A full
+Our search uses a zero-lag filter such that data from the future is not required. A full
 description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
 
 We apply this search to the LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
@@ -17,7 +17,10 @@ and then apply the search at 14, 7, 4 and 1 days before merger.
 
 \subsection{Noise Estimation}
 \label{subsec:psds}
-\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the FIR filter banks?}
+\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the zerolag filter banks?}
+
+\subsection{Template Banks}
+\label{subsec:zerolag_banks}
 
 \subsection{Secondary Peaks in Signal-to-Noise Ratio}
 \label{subsec:double_peaks}
@@ -28,5 +31,5 @@ and then apply the search at 14, 7, 4 and 1 days before merger.
 \gscd{Removing the peaks, and the results of the search including removing the peaks. Discussion of whether assuming that the signal is known is valid or not}
 
 \subsection{Search Results}
-\label{subsec:fir_results}
+\label{subsec:zerolag_results}
 \gscd{Discussion of the analysis results}
