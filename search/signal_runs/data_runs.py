@@ -10,6 +10,7 @@ import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
 from tqdm import tqdm  # Library for creating progress bars
 import numpy as np
+from matplotlib import pyplot as plt
 
 # Import specific modules from the PyCBC library
 import pycbc
@@ -169,18 +170,17 @@ for channel in data.keys():
 mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
-    from matplotlib import pyplot as plt
     for i, mbhb in enumerate(mbhbs):
 
         if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
-            logging.info("Signal %d not yet reached", i)
+            logging.info("Signal %d at %.0f not yet reached", i, mbhb['CoalescenceTime'])
             continue
 
         if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
-            logging.info("Signal %d is well before the searched time - ignore it", i)
+            logging.info("Signal %d at %.0f is well before the searched time - ignore it", i, mbhb['CoalescenceTime'])
             continue
     
-        logging.info("Removing signal %d from data", i)
+        logging.info("Removing signal %d at %.0f from data", i, mbhb['CoalescenceTime'])
 
         waveform_for_removal = generate_waveform_for_data(
             mbhb,
@@ -358,7 +358,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
         bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
     
-        snr, iidx, times, series = get_snr_from_series(
+        snr, _, times, series = get_snr_from_series(
             bank_wf,
             data_f,
             psds_for_whitening,
@@ -377,12 +377,12 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             ax.plot(
                 series['LISA_A'].sample_times[search_slice] + cutoff_time,
                 series['LISA_A'][search_slice],
-                label='Data LISA A'
+                label='SNR LISA A'
             )
             ax.plot(
                 series['LISA_E'].sample_times[search_slice] + cutoff_time,
                 series['LISA_E'][search_slice],
-                label='Data LISA E'
+                label='SNR LISA E'
             )
             ax.plot(
                 series['LISA_E'].sample_times[search_slice] + cutoff_time,
@@ -401,7 +401,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         snr_qs = snr[0] ** 2 + snr[1] ** 2
         if snr_qs > max_snrsq:
             max_snrsq = snr_qs
-            snr_vals = [idx, snr, max_snrsq ** 0.5, iidx, times, copy.deepcopy(bank_wf)]
+            snr_vals = [idx, snr, max_snrsq ** 0.5, times, copy.deepcopy(bank_wf)]
 
 print(snr_vals)
 
