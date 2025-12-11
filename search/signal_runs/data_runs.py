@@ -367,6 +367,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             kernel_length=args.kernel_length,
             search_time=args.search_time,
             delta_t=1. / args.sample_rate,
+            plot=args.testing_plots is not None
         )
 
         if args.testing_plots is not None:
