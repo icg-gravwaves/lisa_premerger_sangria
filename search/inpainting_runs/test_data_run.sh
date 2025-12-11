@@ -10,7 +10,7 @@ shared_args="""
   --data-file \
     ../../datasets/LDC2_sangria_hm_training.hdf \
   --reduce-bank-factor \
-    14188 \
+    141808 \
   --testing-plots results/test \
   --remove-signals-after-coalescence 7200 \
 """
