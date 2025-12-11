@@ -3,6 +3,7 @@ import copy
 from tqdm import tqdm
 import h5py
 import logging
+from matplotlib import pyplot as plt
 
 import pycbc
 import pycbc.psd
@@ -63,7 +64,8 @@ def get_snr_from_series(
         cutoff_time,
         kernel_length,
         search_time,
-        delta_t=5
+        delta_t=5,
+        plot=False
     ):
 
     snr_A, snr_E = get_snr_series(
@@ -76,6 +78,7 @@ def get_snr_from_series(
         delta_t=delta_t
     )
 
+
     if search_time is None:
         search_indices = len(snr_A)
     else:
@@ -83,6 +86,32 @@ def get_snr_from_series(
     start_idx = len(snr_A) - search_indices
     search_slice = slice(start_idx, len(snr_A))
     
+    if plot:
+        
+        fig, ax = plt.subplots()
+        ax.plot(snr_A.sample_times, abs(snr_A))
+        ax.plot(snr_E.sample_times, abs(snr_E))
+        ax.axvline(
+            snr_A.sample_times[start_idx],
+            color='k',
+            linestyle='--'
+        )
+        ax.axvline(
+            snr_A.sample_times[-1],
+            color='k',
+            linestyle='--'
+        )
+
+        
+        # ax.set_xlim(
+        #     snr_A.sample_times[original_length] - 3600,
+        #     snr_A.sample_times[end_idx] + 3600
+        # )
+        ax.set_yscale('log')
+        ax.set_ylim(bottom=0.1)
+        fig.savefig('results/test/snr_series_zerolatency_full.png')
+
+
     #snrsq_series = (snr_A ** 2 + snr_E ** 2)
     #amax = np.argmax(snrsq_series[search_slice])
     #idx_everywhere = start_idx + amax
