@@ -1,7 +1,7 @@
 \section{Applying the Premerger Search}
-\label{sec:fir_sangria}
+\label{sec:zerolatency_sangria}
 
-Our search uses an \ac{FIR} filter such that data from the future is not required. A full
+Our search uses a zero-latency filter such that data from the future is not required. A full
 description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
 
 We apply this search to the LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
@@ -17,7 +17,18 @@ and then apply the search at 14, 7, 4 and 1 days before merger.
 
 \subsection{Noise Estimation}
 \label{subsec:psds}
-\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the FIR filter banks?}
+Our first consideration is to check whether the data from the Sangria dataset has
+similar noise properties to the datasets used our previous work. 
+\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the zerolatency filter banks?}
+
+\begin{figure*}
+    \centering
+    \includegraphics[0.75\textwidth]{images/figure_X_psds_with_premerger_mbhbs.pdf}
+    \caption{}
+    \label{fig:psds}
+\end{figure*}
+
+As a result, we can use the template banks from the zero-latency search paper without significant issues.
 
 \subsection{Secondary Peaks in Signal-to-Noise Ratio}
 \label{subsec:double_peaks}
@@ -27,6 +38,10 @@ and then apply the search at 14, 7, 4 and 1 days before merger.
 \label{subsec:peak_removal}
 \gscd{Removing the peaks, and the results of the search including removing the peaks. Discussion of whether assuming that the signal is known is valid or not}
 
+Signal 1 appears to now be missed in the plot, however the former peak in SNR is from the 0.5 days after merger analysis
+matching to the peak itself.
+Signal 5 can now be seen, as the contamination from the louder Signal 4 is now no longer a problem.
+
 \subsection{Search Results}
-\label{subsec:fir_results}
+\label{subsec:zerolatency_results}
 \gscd{Discussion of the analysis results}
