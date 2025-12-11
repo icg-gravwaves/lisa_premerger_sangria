@@ -1,6 +1,6 @@
 MAIN = lisa_premerger_sangria_paper
 TEXFILES = *.tex 
-FIGURES = images/*.png
+FIGURES = images/*.pdf
 BIB = bibliography
 
 .PHONY: all pdf clean
