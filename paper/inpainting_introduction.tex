@@ -1,13 +1,13 @@
 \section{Inpainting}
 \label{sec:inpainting}
-\gscd{Need to be somewhat careful here, as it doesnt particularly follow on from the zerolag filter method.
+\gscd{Need to be somewhat careful here, as it doesnt particularly follow on from the zerolatency filter method.
 Motivate its use first, then go into details}
 
 Gaps in the data will cause significant issue in the \ac{LISA} data analysis\gscd{CITE}, and there is not a way to
-implement the zero-lag filter method to account for multiple gaps in the data.
+implement the zero-latency filter method to account for multiple gaps in the data.
 As a result, we consider the use of \textit{inpainting} - a data analysis technique used to fill in missing
 segments of detector data~\cite{Zackay:2019kkv}.
-\gscd{This is probably where we can really big up inpainting - the zerolag filter method can't deal with data gaps.}
+\gscd{This is probably where we can really big up inpainting - the zerolatency filter method can't deal with data gaps.}
 
 To describe inpainting, we consider matched filtering, and how the removal of data in each term
 must be considered.
