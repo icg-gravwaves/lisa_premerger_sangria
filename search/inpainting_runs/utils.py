@@ -247,15 +247,27 @@ def get_snr_future_series(
         fig, ax = plt.subplots()
         ax.plot(snr_A.sample_times, abs(snr_A))
         ax.plot(snr_E.sample_times, abs(snr_E))
-        ax.axvline(snr_A.sample_times[original_length], color='k', linestyle=':')
-        ax.axvline(snr_A.sample_times[end_idx], color='k', linestyle=':')
+        ax.axvline(
+            snr_A.sample_times[original_length],
+            color='k',
+            linestyle='--'
+        )
+        ax.axvline(
+            snr_A.sample_times[end_idx],
+            color='k',
+            linestyle='--'
+        )
         # ax.set_xlim(
         #     snr_A.sample_times[original_length] - 3600,
         #     snr_A.sample_times[end_idx] + 3600
         # )
         ax.set_yscale('log')
         ax.set_ylim(bottom=0.1)
-        
+        for tp in time_points_days:
+            ax.axvline(
+                snr_A.sample_times[original_length] + secs_per_day * tp,
+                c='r', linestyle=':'
+            )
         fig.savefig('results/test/snr_series_inpainting_full.png')
 
 
