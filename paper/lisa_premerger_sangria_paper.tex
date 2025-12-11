@@ -61,7 +61,7 @@ superscriptaddress,
     is critical to observe galactic mergers happening in real time. 
     This paper shows results of applying a matched filtering pre-merger
     search to the LISA Data Challenge dataset 2a: Sangria-HM. This matched filtering
-    search is based on a Finite Impulse Response (FIR) filter which does not
+    search is based on a zero-latency filter which does not
     require data into the future. We find that pre-merger searches are susceptible
     to significant artefacts which can render the search ineffective for close-in-time
     mergers. Through signal subtraction, we show how we can mitigate these effects.
@@ -76,12 +76,11 @@ superscriptaddress,
 \acrodef{PSD}[PSD]{Power Spectral Density}
 \acrodef{ASD}[ASD]{Amplitude Spectral Density}
 \acrodef{FAR}{false alarm rate}
-\acrodef{FIR}{finite impulse response}
 \acrodef{SNR}{signal-to-noise ratio}
 
 \input{introduction.tex}
 
-\input{fir_sangria.tex}
+\input{zerolatency_sangria.tex}
 
 \input{inpainting_introduction.tex}
 
@@ -114,5 +113,7 @@ Network (SEPNet) and the University of Portsmouth.
 \end{acknowledgments}
 
 \bibliography{bibliography}
+
+\include{appendix.tex}
 
 \end{document}
