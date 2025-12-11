@@ -8,6 +8,9 @@ fi
 if ! [ -f model_AE_TDI1_optimistic.txt.gz ] ; then
     wget --show-progress $git_url/PSD_Files/model_AE_TDI1_optimistic.txt.gz
 fi
+if ! [ -f AE_response_function.txt ] ; then
+    wget --show-progress $git_url/PSD_Files/AE_response_function.txt
+fi
 
 if ! [ -f injections.json ] ; then
     wget --show-progress $git_url/Data/injections.json
