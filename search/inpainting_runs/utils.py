@@ -58,20 +58,10 @@ def get_snr_series(
     if hh is not None:
         for channel, hh_array in hh.items():
             hh_array._epoch = data_ow_f[channel]._epoch
-            snr[channel] /= (hh[channel] ** 0.5 * (2 ** 0.5))
+            snr[channel] /= (hh_array ** 0.5 * (2 ** 0.5))
     else:
-        for channel in waveforms.keys():
-            # Normalise by (h|h), the standard one:
-            hh_value = pycbc.filter.matched_filter(
-                waveforms[channel],
-                waveforms[channel],
-                sigmasq=1
-            )
-            hh_value._epoch = data_ow_f[channel]._epoch
-            snr[channel] /= (hh_value ** 0.5 * (2 ** 0.5))
+        raise RuntimeError('Situation not yet supported')
 
-    # Now we trim the beginning so that we dont look
-    # at things in the past
     if original_length is not None:
         for channel in snr.keys():
             # Trim to the original length
@@ -210,9 +200,6 @@ def get_snr_future_series(
     Compute SNR series starting at `start_index` and extending forward by `forward_days`.
     """
 
-    # Compute hh inner product the same way get_snr_from_series does so the
-    # normalization is consistent with inpainting / cutoff handling.
-
     hh = compute_hh_inner_product(
         params,
         psds,
@@ -222,6 +209,19 @@ def get_snr_future_series(
         gaps=gaps,
         epoch=data_f['LISA_A'].epoch
     )
+    if plot:
+        fig, ax = plt.subplots()
+        ax.semilogy(hh['LISA_A'].sample_times, hh['LISA_A'], linestyle='-', label='A')
+        ax.semilogy(hh['LISA_E'].sample_times, hh['LISA_E'], linestyle='-', label='E')
+        ax.set_xlabel('Time (s)')
+        ax.set_ylabel('$(h|h)$ inner product')
+        ax.legend(loc='upper right')
+        for tp in time_points_days:
+            ax.axvline(
+                hh['LISA_A'].sample_times[original_length] + 86400 * tp,
+                c='r', linestyle=':'
+            )
+        fig.savefig('results/test/hh.png')
 
     snrs = get_snr_series(
         params,
@@ -234,6 +234,9 @@ def get_snr_future_series(
 
     snr_A = snrs['LISA_A']
     snr_E = snrs['LISA_E']
+    if plot:
+        logging.info(f'unsliced abs(SNR A) **2 series, mean:{abs(snr_A ** 2).data.mean() } std:{abs(snr_A ** 2).data.std()}')
+        logging.info(f'unsliced abs(SNR E) **2 series, mean:{abs(snr_E ** 2).data.mean() } std:{abs(snr_E ** 2).data.std()}')
 
     # Start at the original data length (time_samples) and go forward
     secs_per_day = 86400.0
@@ -241,22 +244,40 @@ def get_snr_future_series(
 
     # if weve requested more time than there is, complain:
     end_idx = original_length + forward_samples
-    assert end_idx <= len(snr_A)
+    if end_idx > len(snr_A):
+        raise RuntimeError(
+            f'Requesting more datapoints than available. {end_idx} vs {len(snr_A)}'
+        )
 
     if plot:
         
-        snrs_norm = get_snr_series(
-            params,
-            data_f,
-            psds,
-            delta_t=delta_t,
-            hh=None,
-            original_length=None, # Dont do the trimming in the get_snr_series function, basically for sanity plots
-        )
+        # snrs_norm = get_snr_series(
+        #     params,
+        #     data_f,
+        #     psds,
+        #     delta_t=delta_t,
+        #     hh=None,
+        #     original_length=None, # Dont do the trimming in the get_snr_series function, basically for sanity plots
+        # )
+        slc = slice(int(86400 / delta_t), len(snr_A) - int(86400 / delta_t))
         fig, ax = plt.subplots()
-        ax.plot(snr_A.sample_times, abs(snr_A), c='tab:blue')
-        ax.plot(snrs_norm['LISA_A'].sample_times, abs(snrs_norm['LISA_A']), c='k')
-        # ax.plot(snr_E.sample_times, abs(snr_E))
+        ax.plot(
+            snr_A.sample_times[slc],
+            abs(snr_A)[slc],
+            c='tab:blue',
+            label='A'
+        )
+        ax.plot(
+            snr_E.sample_times[slc],
+            abs(snr_E)[slc],
+            c='tab:orange',
+            label='E',
+            linestyle='--'
+        )
+        ax.set_ylabel('SNR')
+        ax.legend(loc='upper right')
+        ax.set_xlabel('Time (s)')
+        # ax.plot(snrs_norm['LISA_A'].sample_times, abs(snrs_norm['LISA_A']), c='k')
         ax.axvline(
             snr_A.sample_times[original_length],
             color='k',
@@ -267,13 +288,13 @@ def get_snr_future_series(
             color='k',
             linestyle='--'
         )
-        ax.plot(hh.sample_times, hh)
+        # ax.plot(hh['LISA_A'].sample_times, hh['LISA_A'])
         # ax.set_xlim(
-        #     snr_A.sample_times[original_length] - 3600,
+        #     float(snr_A._epoch) - 3600,
         #     snr_A.sample_times[end_idx] + 3600
         # )
         ax.set_yscale('log')
-        # ax.set_ylim(bottom=0.1)
+        ax.set_ylim(bottom=0.1)
         for tp in time_points_days:
             ax.axvline(
                 snr_A.sample_times[original_length] + secs_per_day * tp,
@@ -285,6 +306,10 @@ def get_snr_future_series(
     # Slice the series for each channel
     snr_slice_A = snr_A[original_length:end_idx]
     snr_slice_E = snr_E[original_length:end_idx]
+
+    if plot:
+        logging.info(f'abs(SNR A) **2 series, mean:{abs(snr_slice_A ** 2).data.mean() } std:{abs(snr_slice_A ** 2).data.std()}')
+        logging.info(f'abs(SNR E) **2 series, mean:{abs(snr_slice_E ** 2).data.mean() } std:{abs(snr_slice_E ** 2).data.std()}')
 
     result = {
         'snr_slice': {'LISA_A': snr_slice_A, 'LISA_E': snr_slice_E},
