@@ -2,6 +2,8 @@ set -e
 
 result_file_inpaint=results/test/test_results_inpaint.txt
 
+mkdir -p results/test
+
 shared_args="""
   --psd-files \
     A:../../datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz \
@@ -41,7 +43,7 @@ for days_before in 14 7 4 1 0.5 ; do
   python ../signal_runs/data_runs.py \
     $shared_args $shared_zerolag \
     --bank-file \
-      ../template_bank/output/lisa_ew_${days_before}_day.hdf \
+      ../template_bank/output/lisa_ew_1_day.hdf \
     --days-before-merger ${days_before} > ${result_file_zerol}
 
 done
