@@ -384,7 +384,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             time_points_days=args.time_points_days, # The times (in days) to report back specific SNRs
             window_seconds=args.time_point_window,
             gaps=None,
-            plot=(idx == 10188)
+            plot=(idx == 0)
         )
 
         for i, (time_point, result) in enumerate(zip(args.time_points_days, snr_future_series['windows'])):
