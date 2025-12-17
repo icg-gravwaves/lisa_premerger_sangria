@@ -26,7 +26,7 @@ init_time_inpainting=$(($init_time - 86400))
 
 python ./data_runs.py $shared_args \
   --bank-file \
-    ../template_bank/output/lisa_ew_1_day.hdf \
+    ../../datasets/lisa_ew_1_day_optimistic.hdf \
   --days-to-search 21 \
   --time-points-days 0.5 1 4 7 14  \
   --time-point-window 3600 \
@@ -43,7 +43,7 @@ for days_before in 14 7 4 1 0.5 ; do
   python ../signal_runs/data_runs.py \
     $shared_args $shared_zerolag \
     --bank-file \
-      ../template_bank/output/lisa_ew_1_day.hdf \
+      ../../datasets/lisa_ew_1_day_optimistic.hdf \
     --days-before-merger ${days_before} > ${result_file_zerol}
 
 done
