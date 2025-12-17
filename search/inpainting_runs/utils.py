@@ -61,16 +61,17 @@ def get_snr_series(
             snr[channel] /= (hh[channel] ** 0.5 * (2 ** 0.5))
     else:
         for channel in waveforms.keys():
-            # Normalise by (h|h), the standard one
+            # Normalise by (h|h), the standard one:
             hh_value = pycbc.filter.matched_filter(
                 waveforms[channel],
                 waveforms[channel],
                 sigmasq=1
             )
+            hh_value._epoch = data_ow_f[channel]._epoch
             snr[channel] /= (hh_value ** 0.5 * (2 ** 0.5))
 
-    # Now we trim the beginning and end so that we dont look
-    # at things in the future
+    # Now we trim the beginning so that we dont look
+    # at things in the past
     if original_length is not None:
         for channel in snr.keys():
             # Trim to the original length
@@ -195,7 +196,7 @@ def get_snr_from_series(
 def get_snr_future_series(
         params,
         data_f,
-        psds_for_whitening,
+        psds,
         delta_t=5,
         original_length=518400,
         forward_days=1.0,
@@ -214,7 +215,7 @@ def get_snr_future_series(
 
     hh = compute_hh_inner_product(
         params,
-        psds_for_whitening,
+        psds,
         sample_rate=1. / delta_t,
         inpaint_start=original_length,
         zeroed_length=zeroed_length,
@@ -225,10 +226,10 @@ def get_snr_future_series(
     snrs = get_snr_series(
         params,
         data_f,
-        psds_for_whitening,
+        psds,
         delta_t=delta_t,
         hh=hh,
-        original_length=None,
+        original_length=None, # Dont do the trimming in the get_snr_series function, basically for sanity plots
     )
 
     snr_A = snrs['LISA_A']
@@ -244,9 +245,18 @@ def get_snr_future_series(
 
     if plot:
         
+        snrs_norm = get_snr_series(
+            params,
+            data_f,
+            psds,
+            delta_t=delta_t,
+            hh=None,
+            original_length=None, # Dont do the trimming in the get_snr_series function, basically for sanity plots
+        )
         fig, ax = plt.subplots()
-        ax.plot(snr_A.sample_times, abs(snr_A))
-        ax.plot(snr_E.sample_times, abs(snr_E))
+        ax.plot(snr_A.sample_times, abs(snr_A), c='tab:blue')
+        ax.plot(snrs_norm['LISA_A'].sample_times, abs(snrs_norm['LISA_A']), c='k')
+        # ax.plot(snr_E.sample_times, abs(snr_E))
         ax.axvline(
             snr_A.sample_times[original_length],
             color='k',
@@ -257,12 +267,13 @@ def get_snr_future_series(
             color='k',
             linestyle='--'
         )
+        ax.plot(hh.sample_times, hh)
         # ax.set_xlim(
         #     snr_A.sample_times[original_length] - 3600,
         #     snr_A.sample_times[end_idx] + 3600
         # )
         ax.set_yscale('log')
-        ax.set_ylim(bottom=0.1)
+        # ax.set_ylim(bottom=0.1)
         for tp in time_points_days:
             ax.axvline(
                 snr_A.sample_times[original_length] + secs_per_day * tp,

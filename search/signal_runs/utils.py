@@ -107,9 +107,10 @@ def get_snr_from_series(
         #     snr_A.sample_times[original_length] - 3600,
         #     snr_A.sample_times[end_idx] + 3600
         # )
+        ax.set_title(f'{cutoff_time/86400} days pre-merger')
         ax.set_yscale('log')
         ax.set_ylim(bottom=0.1)
-        fig.savefig('results/test/snr_series_zerolatency_full.png')
+        fig.savefig(f'results/test/snr_series_zerolatency_full_{cutoff_time/86400}.png')
 
 
     #snrsq_series = (snr_A ** 2 + snr_E ** 2)
