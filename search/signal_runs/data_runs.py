@@ -34,7 +34,7 @@ from utils import (
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--verbose', action='count')
+pycbc.add_common_pycbc_options(parser)
 
 # Add argument for the PSD files (required) with custom action for multiple detectors
 parser.add_argument(
@@ -116,8 +116,11 @@ args = parser.parse_args()
 #############################
 
 # Initialize logging for the PyCBC library
+if args.verbose is None:
+    pycbc.init_logging(1)
+else:
+    pycbc.init_logging(args.verbose + 1)
 
-pycbc.init_logging(args.verbose, default_value=1)
 logging.info(f"{args.days_before_merger} days before merger")
 
 # Set the defaults required for the waveform parameters
