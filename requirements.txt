@@ -1,0 +1,8 @@
+numpy<2
+bbhx
+git+https://github.com/GarethCabournDavies/BBHX-waveform-model.git@shift_t_limits_fix
+git+https://github.com/icg-gravwaves/pycbc.git@lisa-premerger-sangria
+git+https://github.com/mj-will/nessai.git@pre-merger-mcmcflowproposal
+lisa-data-challenge
+lisabeta
+fastgb
