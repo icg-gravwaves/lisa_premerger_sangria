@@ -12,6 +12,7 @@ import pycbc.fft
 import pycbc.waveform
 import pycbc.filter
 from pycbc.strain.gate import gate_and_paint
+import logging
 
 def generate_lisa_pre_merger_psds_inpaint(
     psd_file,
@@ -155,6 +156,7 @@ def generate_waveform_lisa_pre_merger_inpaint(
     dict
         Dictionary of frequency-domain waveforms for LISA_A and LISA_E channels
     """
+    logging.debug('Generating waveform')
     outs = pycbc.waveform.get_fd_det_waveform(
         ifos=['LISA_A','LISA_E'], **waveform_params
     )
@@ -308,6 +310,7 @@ def compute_hh_inner_product(
     dict
         Dictionary containing the (h|h)(t) time series for each channel
     """
+    logging.debug('Generating waveform')
     # Generate waveforms
     waveforms = generate_waveform_lisa_pre_merger_inpaint(
         waveform_params,
@@ -320,10 +323,11 @@ def compute_hh_inner_product(
     
     # Compute (h|h)(t) for each channel
     for channel in waveforms:
+        logging.debug(f'Computing inner product for channel {channel}')
         # Get the waveform time series
         waveform_ts = waveforms[channel].to_timeseries()
         
-        # Create a mask with ones
+        logging.debug('Create a mask')
         mask = pycbc.types.TimeSeries(
             np.ones(zeroed_length, dtype=waveform_ts.dtype),
             delta_t=delta_t,
