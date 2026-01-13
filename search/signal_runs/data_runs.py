@@ -34,6 +34,7 @@ from utils import (
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
+parser.add_argument('--verbose', action='count')
 
 # Add argument for the PSD files (required) with custom action for multiple detectors
 parser.add_argument(
@@ -115,7 +116,8 @@ args = parser.parse_args()
 #############################
 
 # Initialize logging for the PyCBC library
-pycbc.init_logging(True)
+
+pycbc.init_logging(args.verbose, default_value=1)
 logging.info(f"{args.days_before_merger} days before merger")
 
 # Set the defaults required for the waveform parameters
@@ -341,10 +343,10 @@ max_snrsq = 0
 snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
     for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
-
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue
+        logging.debug(idx)
         bank_wf = copy.deepcopy(waveform_params_shared)
         # Update waveform params to use the ones from the bank file
         bank_wf['tc'] = args.data_length
@@ -358,6 +360,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
         bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
     
+        logging.debug('Generating waveform')
         snr, _, times, series = get_snr_from_series(
             bank_wf,
             data_f,
@@ -371,6 +374,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         )
 
         if args.testing_plots is not None:
+            logging.debug('plotting')
             fig, ax = plt.subplots()
             search_slice = slice(len(series['LISA_A'])-int(args.search_time * args.sample_rate), len(series['LISA_A']))
             for mbhb in mbhbs:

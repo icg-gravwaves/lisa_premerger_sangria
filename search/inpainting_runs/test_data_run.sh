@@ -25,6 +25,7 @@ init_time=26962425
 init_time_inpainting=$(($init_time - 86400))
 
 python ./data_runs.py $shared_args \
+  --verbose \
   --bank-file \
     ../template_bank/output/lisa_ew_1_day.hdf \
   --days-to-search 21 \

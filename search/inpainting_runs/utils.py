@@ -3,6 +3,7 @@ import copy
 from tqdm import tqdm
 import h5py
 import logging
+import os
 
 import pycbc
 import pycbc.psd
@@ -194,12 +195,14 @@ def get_snr_future_series(
         window_seconds=0.0,
         zeroed_length=2**20,
         gaps=None,
-        plot=False
+        plot=False,
+        plot_dir='.'
     ):
     """
     Compute SNR series starting at `start_index` and extending forward by `forward_days`.
     """
 
+    logging.debug('Calculating hh inner product')
     hh = compute_hh_inner_product(
         params,
         psds,
@@ -210,6 +213,7 @@ def get_snr_future_series(
         epoch=data_f['LISA_A'].epoch
     )
     if plot:
+        logging.debug('Plotting hh inner product')
         fig, ax = plt.subplots()
         ax.semilogy(hh['LISA_A'].sample_times, hh['LISA_A'], linestyle='-', label='A')
         ax.semilogy(hh['LISA_E'].sample_times, hh['LISA_E'], linestyle='-', label='E')
@@ -221,8 +225,9 @@ def get_snr_future_series(
                 hh['LISA_A'].sample_times[original_length] + 86400 * tp,
                 c='r', linestyle=':'
             )
-        fig.savefig('results/test/hh.png')
+        fig.savefig(os.path.join(plot_dir, 'hh.png'))
 
+    logging.debug('Calculating SNR series')
     snrs = get_snr_series(
         params,
         data_f,
@@ -250,6 +255,7 @@ def get_snr_future_series(
         )
 
     if plot:
+        logging.debug('Plotting SNR series')
         
         # snrs_norm = get_snr_series(
         #     params,
@@ -300,10 +306,10 @@ def get_snr_future_series(
                 snr_A.sample_times[original_length] + secs_per_day * tp,
                 c='r', linestyle=':'
             )
-        fig.savefig('results/test/snr_series_inpainting_full.png')
+        fig.savefig(os.path.join(plot_dir, 'snr_series_inpainting_full.png'))
 
 
-    # Slice the series for each channel
+    logging.debug('Slicing the series for each channel')
     snr_slice_A = snr_A[original_length:end_idx]
     snr_slice_E = snr_E[original_length:end_idx]
 
@@ -320,6 +326,7 @@ def get_snr_future_series(
     window_samples = int(window_seconds / delta_t)
 
     for tp in time_points_days:
+        logging.debug(f'Processing time point {tp}')
         # tp is in days from original data end
         end_window_index = int(tp * secs_per_day / delta_t)
 
