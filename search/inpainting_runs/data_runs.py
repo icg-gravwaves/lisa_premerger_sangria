@@ -346,12 +346,15 @@ if args.testing_plots is not None:
     fig, ax = plt.subplots()
     ax.loglog(
         data_ow_f['LISA_A'].sample_frequencies,
-        abs(data_ow_f['LISA_A'])
+        abs(data_ow_f['LISA_A']),
+        label='LISA A'
     )
     ax.loglog(
         data_ow_f['LISA_E'].sample_frequencies,
-        abs(data_ow_f['LISA_E'])
+        abs(data_ow_f['LISA_E']),
+        label='LISA E'
     )
+    ax.legend(loc='upper left')
     fig.savefig(f'{args.testing_plots}/data_overwhitened_inpainting.png')
     plt.close(fig)
 
