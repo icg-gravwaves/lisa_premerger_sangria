@@ -32,6 +32,7 @@ from utils import (
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
+pycbc.add_common_pycbc_options(parser)
 
 # Add argument for the PSD files (required) with custom action for multiple detectors
 parser.add_argument(
@@ -129,9 +130,14 @@ args = parser.parse_args()
 #############################
 
 # Initialize logging for the PyCBC library
-pycbc.init_logging(True)
+if args.verbose is None:
+    pycbc.init_logging(1)
+else:
+    pycbc.init_logging(args.verbose + 1)
 
 delta_f = 1 / (args.zeroed_length / args.sample_rate) # delta_f is not the same for zero-latency vs inpainting as we add extra zeroes to inpainting
+
+flen = args.zeroed_length // 2 + 1
 
 # Set the defaults required for the waveform parameters
 waveform_params_shared = {
@@ -145,6 +151,7 @@ waveform_params_shared = {
     'f_final': args.sample_rate / 2 + delta_f / 2, # This is a hack to ensure we get the point at f_final returned
     'approximant':'BBHX_PhenomD',
     'mode_array':  [(2,2)],
+    'length': flen,
 }
 
 future_search_time = args.days_to_search * 86400
@@ -302,8 +309,6 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 for channel in data.keys():
     data[channel].resize(args.zeroed_length)
 
-flen = int(args.zeroed_length) // 2 + 1
-
 psds = {
     f'LISA_{channel}': pycbc.psd.from_txt(
         args.psd_files[channel],
@@ -324,7 +329,6 @@ if args.testing_plots is not None:
     fig.savefig(f'{args.testing_plots}/data_inpainting.png')
     plt.close(fig)
 
-
 original_length = int(args.data_length * args.sample_rate)
 
 logging.info('Pre-processing data')
@@ -342,12 +346,15 @@ if args.testing_plots is not None:
     fig, ax = plt.subplots()
     ax.loglog(
         data_ow_f['LISA_A'].sample_frequencies,
-        abs(data_ow_f['LISA_A'])
+        abs(data_ow_f['LISA_A']),
+        label='LISA A'
     )
     ax.loglog(
         data_ow_f['LISA_E'].sample_frequencies,
-        abs(data_ow_f['LISA_E'])
+        abs(data_ow_f['LISA_E']),
+        label='LISA E'
     )
+    ax.legend(loc='upper left')
     fig.savefig(f'{args.testing_plots}/data_overwhitened_inpainting.png')
     plt.close(fig)
 
@@ -366,12 +373,15 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue
+        logging.debug(idx)
         bank_wf = waveform_from_bank(
             bank_file,
             idx,
             waveform_params_shared,
             args.data_length
         )
+
+        logging.debug('Getting SNR series')
     
         snr_future_series = get_snr_future_series(
             bank_wf,
@@ -384,7 +394,8 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             time_points_days=args.time_points_days, # The times (in days) to report back specific SNRs
             window_seconds=args.time_point_window,
             gaps=None,
-            plot=(idx == 0)
+            plot=(idx == 0),
+            plot_dir=args.testing_plots
         )
 
         for i, (time_point, result) in enumerate(zip(args.time_points_days, snr_future_series['windows'])):

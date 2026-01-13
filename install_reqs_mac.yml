@@ -1,15 +1,16 @@
-name: env_lisa_premerger
+name: env_lisa_premerger_sangria
 channels:
  - conda-forge
+ - pytorch
 dependencies:
- - python=3.10
+ - python=3.11
  - pip
  - clang_osx-arm64
  - clangxx_osx-arm64
  - gsl
  - openblas
  - liblapacke
- - numpy<2
+ - numpy
  - scipy
  - Cython
  - jupyter
@@ -23,12 +24,15 @@ dependencies:
  - ipykernel
  - pytorch
  - jupyter-book
+ - cpuonly
  - ghp-import
  - humanize
  - wget
  - pip:
-   - bbhx
+   - git+https://github.com/titodalcanton/BBHx.git@py39-and-cleanup
    - git+https://github.com/gwastro/BBHX-waveform-model.git
-   - git+https://github.com/icg-gravwaves/pycbc.git@lisa-pre-merger
+   - git+https://github.com/icg-gravwaves/pycbc.git@lisa-premerger-sangria
    - git+https://github.com/mj-will/nessai.git@pre-merger-mcmcflowproposal
    - lisa-data-challenge
+   - lisabeta
+   - fastgb
