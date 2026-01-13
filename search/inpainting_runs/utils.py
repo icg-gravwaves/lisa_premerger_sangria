@@ -32,34 +32,13 @@ from inpainting_utils import (
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from common_utils import (
-    to_timeseries as _to_timeseries,
-    AET as _AET,
-    load_ldc_timeseries as _load_ldc_timeseries,
-    fast_tdi as _fast_tdi,
-    generate_waveform_for_data as _generate_waveform_for_data,
+    to_timeseries,
+    AET,
+    load_ldc_timeseries,
+    fast_tdi,
+    generate_waveform_for_data,
     lisa_orbits
 )
-
-def remove_T(data_dict):
-    if 'LISA_T' in data_dict:
-        del data_dict['LISA_T']
-    return data_dict
-
-def to_timeseries(*args, **kwargs):
-    return _to_timeseries(*args, **kwargs)
-
-def AET(*args, **kwargs):
-    return remove_T(_AET(*args, **kwargs))
-
-def load_ldc_timeseries(*args, **kwargs):
-    return remove_T(_load_ldc_timeseries(*args, **kwargs))
-
-def fast_tdi(*args, **kwargs):
-    return remove_T(_fast_tdi(*args, **kwargs))
-
-def generate_waveform_for_data(*args, **kwargs):
-    return remove_T(_generate_waveform_for_data(*args, **kwargs))
-
 
 ####################################################
 # Function to get SNR given data and wform params
