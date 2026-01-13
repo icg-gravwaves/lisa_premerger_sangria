@@ -9,9 +9,11 @@ dependencies:
  - gxx_linux-64
  - gsl
  - lapack=3.6.1
- - numpy<2
+ - numpy
  - scipy
  - Cython
+ - jupyter
+ - ipython
  - matplotlib
  - lalsuite
  - ligo.skymap
@@ -19,7 +21,6 @@ dependencies:
  - astropy
  - corner
  - ipykernel
- - jupyter
  - pytorch
  - jupyter-book
  - ghp-import
