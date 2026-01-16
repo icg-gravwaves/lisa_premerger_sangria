@@ -287,6 +287,10 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
         data = subtracted
 
+for channel in data.keys():
+    mean_val = np.mean(data[channel])
+    data[channel] = data[channel] - mean_val
+
 psds_for_whitening = {
     f'LISA_{channel}':  interpolate(
         generate_pre_merger_psds(

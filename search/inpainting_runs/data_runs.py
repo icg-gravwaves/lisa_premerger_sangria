@@ -169,6 +169,7 @@ data = load_ldc_timeseries(
     remove_noiseless_groups=remove_noiseless_groups,
     delta_t=1./args.sample_rate
 )
+del data['LISA_T']
 
 mbhb_data = load_ldc_timeseries(
     args.data_file,
@@ -307,6 +308,8 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
 
 # Zero padding - this is vital!
 for channel in data.keys():
+    mean_val = np.mean(data[channel])
+    data[channel] = data[channel] - mean_val
     data[channel].resize(args.zeroed_length)
 
 psds = {
