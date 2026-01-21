@@ -280,6 +280,7 @@ def compute_hh_inner_product(
     inpaint_start,
     epoch=0,
     gaps=None,
+    waveforms=None,
 ):
     """
     Compute the (h|h)(t) inner product for a waveform.
@@ -312,11 +313,12 @@ def compute_hh_inner_product(
     """
     logging.debug('Generating waveform')
     # Generate waveforms
-    waveforms = generate_waveform_lisa_pre_merger_inpaint(
-        waveform_params,
-        psds_for_whitening,
-        sample_rate=sample_rate,
-    )
+    if waveforms is None:
+        waveforms = generate_waveform_lisa_pre_merger_inpaint(
+            waveform_params,
+            psds_for_whitening,
+            sample_rate=sample_rate,
+        )
     
     delta_t = 1.0 / sample_rate
     inner_products = {}

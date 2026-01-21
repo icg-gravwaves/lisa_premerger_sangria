@@ -50,13 +50,15 @@ def get_snr_series(
         delta_t=5,
         hh=None,
         original_length=None,
+        waveforms=None,
     ):
 
-    waveforms = generate_waveform_lisa_pre_merger_inpaint(
-        params,
-        psds_for_whitening,
-        sample_rate=1./delta_t,
-    )
+    if waveforms is None:
+        waveforms = generate_waveform_lisa_pre_merger_inpaint(
+            params,
+            psds_for_whitening,
+            sample_rate=1./delta_t,
+        )
 
     snr = {}
     for channel in waveforms.keys():
@@ -212,6 +214,13 @@ def get_snr_future_series(
     Compute SNR series starting at `start_index` and extending forward by `forward_days`.
     """
 
+    # Calculate waveforms once here
+    waveforms = generate_waveform_lisa_pre_merger_inpaint(
+        params,
+        psds,
+        sample_rate=1. / delta_t,
+    )
+
     logging.debug('Calculating hh inner product')
     hh = compute_hh_inner_product(
         params,
@@ -220,7 +229,8 @@ def get_snr_future_series(
         inpaint_start=original_length,
         zeroed_length=zeroed_length,
         gaps=gaps,
-        epoch=data_f['LISA_A'].epoch
+        epoch=data_f['LISA_A'].epoch,
+        waveforms=waveforms
     )
     if plot:
         logging.debug('Plotting hh inner product')
@@ -245,6 +255,7 @@ def get_snr_future_series(
         delta_t=delta_t,
         hh=hh,
         original_length=None, # Dont do the trimming in the get_snr_series function, basically for sanity plots
+        waveforms=waveforms,
     )
 
     snr_A = snrs['LISA_A']
