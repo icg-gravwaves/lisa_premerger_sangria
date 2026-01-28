@@ -1,5 +1,5 @@
 repo_dir=/home/gareth.cabourndavies/lisa_work/lisa_premerger_sangria/
-run_dir=$repo_dir/search/signal_runs
+run_dir=$repo_dir/search/zero_latency
 result_dir=$run_dir/results
 log_dir=$run_dir/logs
 
