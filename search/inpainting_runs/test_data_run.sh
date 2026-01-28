@@ -40,7 +40,7 @@ shared_zerolag=" \
 for days_before in 14 7 4 1 0.5 ; do
   result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
 
-  python ../signal_runs/data_runs.py \
+  python ../zero_latency/data_runs.py \
     $shared_args $shared_zerolag \
     --bank-file \
       ../../datasets/lisa_ew_1_day_optimistic.hdf \
