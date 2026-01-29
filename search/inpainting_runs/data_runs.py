@@ -14,6 +14,7 @@ from matplotlib import pyplot as plt
 
 # Import specific modules from the PyCBC library
 import pycbc
+import pycbc.psd
 from pycbc.types import MultiDetOptionAction  # Custom action for argparse
 
 import ldc.io.hdf5 as hdfio
@@ -322,6 +323,8 @@ psds = {
     )
     for channel in ['A','E']
 }
+for channel in ['LISA_A','LISA_E']:
+    psds[channel] = pycbc.psd.inverse_spectrum_truncation(psds[channel], 86400, delta_f, trunc_method='hann')
 
 logging.info("Generated PSD objects")
 
