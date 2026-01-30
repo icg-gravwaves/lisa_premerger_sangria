@@ -4,6 +4,7 @@ but with the same interface and outputs.
 """
 from scipy import signal
 from functools import cache
+from scipy.signal import windows
 
 import numpy as np
 import pycbc.psd
@@ -165,7 +166,15 @@ def generate_waveform_lisa_pre_merger_inpaint(
         # convert. However, if waveform generation dominates, then MEH.
         wf = outs[ifo].to_timeseries()
         # Cut last hour from waveform ... Hoping merger is at the end!!
-        wf[len(wf) - int(86400*0.1) // 5:len(wf)] = 0
+        # Also need to cut from the start because of wraparound
+        window_len = int(86400 * 0.1) // 5
+        taper = windows.hann(2 * window_len)
+        taper_start = taper[:window_len]
+        taper_end = taper[window_len:]
+        wf[0:window_len] = 0
+        wf[window_len: 2*window_len] *= taper_start
+        wf[len(wf) - 2*window_len:len(wf)-window_len] *= taper_end
+        wf[len(wf)-window_len:] = 0
         outs[ifo] = wf.to_frequencyseries()
 
     return outs
