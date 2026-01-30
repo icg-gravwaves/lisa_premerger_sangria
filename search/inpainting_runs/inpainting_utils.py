@@ -160,6 +160,13 @@ def generate_waveform_lisa_pre_merger_inpaint(
     outs = pycbc.waveform.get_fd_det_waveform(
         ifos=['LISA_A','LISA_E'], **waveform_params
     )
+    for ifo in ['LISA_A','LISA_E']:
+        # to_timesries and to_frequencyseries are not the fastest way to
+        # convert. However, if waveform generation dominates, then MEH.
+        wf = outs[ifo].to_timeseries()
+        # Cut last hour from waveform ... Hoping merger is at the end!!
+        wf[len(wf) - int(86400*0.1) // 5:len(wf)] = 0
+        outs[ifo] = wf.to_frequencyseries()
 
     return outs
 
