@@ -81,10 +81,9 @@ parser.add_argument('--data-length', type=int, default=2592000)
 parser.add_argument(
     '--remove-signals-after-coalescence',
     type=float,
-    help="Remove signals from the data this amount of time (s) after "
-         "the coalescence. e.g. if we consider that a signal would "
-         "be considered found accurately half an hour after the coalescence, "
-         "set this to 1800. Default - don't do this"
+    nargs='+', # Accepts one or more values
+    help="Remove signals after coalescence. Provide 1 value for all MBHBs, "
+         "or 15 space-separated values for individual control."
 )
 
 parser.add_argument(
@@ -103,7 +102,7 @@ parser.add_argument(
     '--testing-plots',
     help='Plots to help with testing, give directory where '
     'the plots should go. Default=CWD',
-    default='.',
+    default=None,
 )
 
 parser.add_argument('--zeroed-length', type=int, default=2 ** 20)
@@ -195,10 +194,20 @@ mbhbs, _ = hdfio.load_array(
     )
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
+    vals = args.remove_signals_after_coalescence
+
+    if len(vals) == 1:
+        # If one value is provided, broadcast it to all 15
+        offsets = vals * len(mbhbs)
+    elif len(vals) == len(mbhbs):
+        # If 15 values are provided, use them as is
+        offsets = vals
+    else:
+        raise ValueError(f"Expected 1 or {len(mbhbs)} values, but got {len(vals)}")
     
     for i, mbhb in enumerate(mbhbs):
 
-        if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
+        if args.end_time < (mbhb['CoalescenceTime'] + offsets[i]):
             logging.info("Signal %d at time %.3f not yet reached", i, mbhb['CoalescenceTime'])
             continue
 
