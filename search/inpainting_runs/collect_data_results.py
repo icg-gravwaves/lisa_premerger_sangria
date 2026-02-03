@@ -1,5 +1,6 @@
 import numpy
 import h5py
+import re
 
 from pycbc import init_logging, add_common_pycbc_options
 import logging
@@ -62,30 +63,71 @@ results = {
     for time_before in args.time_before
 }
 
+PAT = re.compile(
+    r'^(?:np|numpy)\.(?P<type>[A-Za-z_]\w*)\(\s*'
+    r'(?P<number>[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][-+]?\d+)?)'
+    r'\s*\)$'
+)
+
+def numpy_string_to_number(string):
+    """Convert a string to a number if the string has the format np.int64(X) or other numpy types
+    using the datatype defined"""
+    assert 'np' in string or 'numpy' in string
+    m = PAT.match(string.strip())
+    if not m:
+        print(string)
+        print(m)
+        raise ValueError("not a numpy-constructor string")
+    t = m.group('type')        # e.g. 'int64' or 'float64'
+    nstr = m.group('number')   # e.g. '-3.2e+01' or '5'
+    # convert according to type name
+    if 'int' in t:
+        # use int of float(...) to accept things like '5.0'
+        return int(float(nstr))
+    if 'float' in t or 'double' in t:
+        return float(nstr)
+
+def to_number(string, as_int=False):
+    if 'numpy' in string or 'np' in string:
+        return numpy_string_to_number(string)
+    else:
+        if as_int:
+            return int(string)
+        else:
+            return float(string)
+
+def clean_item(s):
+    snew = s.strip('()[]\,')
+    if '(' in snew:
+        snew += ')'
+    return snew
+    
 logging.info("Reading results files")
 for i, rfname in enumerate(result_files):
+    logging.info(rfname)
     with open(rfname, 'r') as rf:
-        data = rf.read().split('\n')
-        #remove empty lines
-        data = [d for d in data if not d == ""]
-        # remove lines that start with "No" or "Could"
-        data = [
-            d.split()
-            for d in data
-            if not d.startswith("No") and not d.startswith("Could")
-        ]
-        for dline in data:
-            time_before = float(dline[0])
+        raw_lines = rf.read().split('\n')
+
+        for ln in raw_lines:
+            parts = ln.split()
+            # Check that this line starts with a number - this means it is a result
             try:
-                time_idx = args.time_before.index(time_before)
-            except ValueError:
-                # Not in the list of time to be considered in this collection
+                float(parts[0])
+            except (ValueError, IndexError):
+                continue
+            # clean parts and filter out any leftover pure-type tokens
+            parts = [clean_item(p) for p in parts if not re.match(r"^<class\s+'numpy\.[^']+'>$", p)]
+            if len(parts) < 7:
+                # unexpected line format, skip
                 continue
 
-            template_id = int(dline[1].strip('[,'))
-            snr_A, snr_E = float(dline[2].strip('(,')), float(dline[3].strip('),'))
-            snr = float(dline[4].strip(','))
-            time_A, time_E = float(dline[5].strip('(,')), float(dline[6].strip(',)'))
+            time_before = to_number(parts[0])
+            template_id = to_number(parts[1], as_int=True)
+            snr_A = to_number(parts[2])
+            snr_E = to_number(parts[3])
+            snr = to_number(parts[4])
+            time_A = to_number(parts[5])
+            time_E = to_number(parts[6])
 
             results[time_before][i] = (template_id, snr_A, snr_E, snr, time_A, time_E)
 

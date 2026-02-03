@@ -1,9 +1,5 @@
 __pycache__
-results/0.5
-results/1
-results/4
-results/7
-results/14
 logs
-sub_files
+sub_dir
+results/psd_*
 data_runs_results.hdf
