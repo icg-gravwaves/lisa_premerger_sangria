@@ -71,7 +71,7 @@ def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
         orbits=lisa_orbits,
         modes=[(2,2), (2,1), (3,3), (3,2), (4,4), (4,3)]
     )
-    
+
     A, E, T = fast_hm.get_td_tdiaet(
         template=mbhb,
         tdi2=False
@@ -135,12 +135,12 @@ def plot_removed_waveforms(
     elif data_start_time > plot_start_time:
         # data starts after the start of the plot
         plot_entirely_within_data = False
-    
+
 
     if not plot_entirely_within_data:
         logging.info('Plot time is not fully contained by the data')
         return
-    
+
     logging.info('Plotting waveform and data before and after removal')
 
     logging.debug('Calculating valid datapoints')
@@ -236,7 +236,7 @@ def plot_removed_waveforms(
 
     ax1.set_ylabel('Strain')
     ax2.set_ylabel('Residual')
-    
+
     ax2.set_xlabel('Time relative to merger (zoomed, days)')
     ax4.set_xlabel('Time relative to merger (days)')
 
@@ -277,7 +277,7 @@ def remove_signals(
         if coalescence_time < (data_start_time - data_length_s * 2):
             logging.info("Signal %d at %.0f is well before the searched time - ignore it", i, coalescence_time)
             continue
-    
+
         logging.info("Removing signal %d at %.0f from data", i, coalescence_time)
 
         waveform_for_removal = generate_waveform_for_data(
