@@ -14,6 +14,8 @@ rm -f $dag_file
 mkdir -p $result_dir/out
 mkdir -p $log_dir
 
+psds="A:$repo_dir/estimate_psds/A_sangria_hm_SMOOTHED_PSD.txt E:$repo_dir/estimate_psds/E_sangria_hm_SMOOTHED_PSD.txt"
+
 for end_time in $(seq 2638 3472) ; do
   seconds=$((end_time * 3600))
   job_name="job_$(printf "%09d" $seconds)"
@@ -25,7 +27,7 @@ for end_time in $(seq 2638 3472) ; do
   echo "JOB $job_name job.sub" >> $dag_file
   
   # Pass the variables to the template
-  echo "VARS $job_name repo_dir=\"$repo_dir\" run_dir=\"$run_dir\" end_time_seconds=\"$seconds\" result_stem=\"$result_stem\" log_stem=\"$log_stem\"" >> $dag_file
+  echo "VARS $job_name repo_dir=\"$repo_dir\" run_dir=\"$run_dir\" end_time_seconds=\"$seconds\" result_stem=\"$result_stem\" log_stem=\"$log_stem\"" psds=\"$psds\"" >> $dag_file
   
   # Optional: Retry jobs twice on failure
   echo "RETRY $job_name 2" >> $dag_file

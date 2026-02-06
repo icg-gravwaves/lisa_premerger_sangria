@@ -24,10 +24,9 @@ from inpainting_utils import (
 )
 
 from utils import (
-    get_snr_future_series,  # Function to get SNR from a series
-    plot_best_waveform,  # Function to plot the best waveform
-    load_ldc_timeseries, # function to load timeseries
-    generate_waveform_for_data,
+    get_snr_future_series,
+    load_ldc_timeseries,
+    remove_signals,
     waveform_from_bank
 )
 
@@ -194,127 +193,16 @@ mbhbs, _ = hdfio.load_array(
     )
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
-    vals = args.remove_signals_after_coalescence
-
-    if len(vals) == 1:
-        # If one value is provided, broadcast it to all 15
-        offsets = vals * len(mbhbs)
-    elif len(vals) == len(mbhbs):
-        # If 15 values are provided, use them as is
-        offsets = vals
-    else:
-        raise ValueError(f"Expected 1 or {len(mbhbs)} values, but got {len(vals)}")
-    
-    for i, mbhb in enumerate(mbhbs):
-
-        if args.end_time < (mbhb['CoalescenceTime'] + offsets[i]):
-            logging.info("Signal %d at time %.3f not yet reached", i, mbhb['CoalescenceTime'])
-            continue
-
-        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
-            logging.info("Signal %d at time %.3f is well before the searched time - ignore it", i, mbhb['CoalescenceTime'])
-            continue
-    
-        logging.info("Removing signal %d at time %.3f from data", i, mbhb['CoalescenceTime'])
-
-        waveform_for_removal = generate_waveform_for_data(
-            mbhb,
-            start_time,
-            args.end_time,
-            1. / args.sample_rate,
-        )
-
-        subtracted = {
-            channel: data[channel] - waveform_for_removal[channel]
-            for channel in data.keys()
-        }
-
-        if args.testing_plots is not None:
-            fig1, ax1 = plt.subplots(1)
-            ax1.plot(
-                data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_A'],
-                label='Data LISA A',
-                alpha=0.25
-            )
-            ax1.plot(
-                data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_E'],
-                label='Data LISA E',
-                alpha=0.25
-            )
-            ax1.plot(
-                mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                mbhb_data['LISA_A'],
-                c='tab:blue',
-                label='MBHB LISA_A',
-            )
-            ax1.plot(
-                mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                mbhb_data['LISA_E'],
-                c='tab:orange',
-                label='MBHB LISA_E',
-            )
-            ax1.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                waveform_for_removal['LISA_A'],
-                c='tab:green',
-                linestyle=':',
-                label='Waveform LISA A'
-            )
-            ax1.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                waveform_for_removal['LISA_E'],
-                c='tab:red',
-                linestyle=':',
-                label='Waveform LISA E'
-            )
-
-            ax1.grid()
-            ax1.axvline(0, color='black', linestyle='--', alpha=0.2)
-            ax1.set_xlim(-2000, 1000)
-            ax1.set_ylim(-1e-19, 1e-19)
-            ax1.legend(loc='upper left')
-            fig1.savefig(f"{args.testing_plots}/waveform_for_removal_{i}.png")
-            plt.close(fig1)
-
-            fig2, ax2 = plt.subplots(1)
-            ax2.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_A'],
-                alpha=0.5,
-                c='tab:blue',
-                label='Original LISA A'
-                )
-            ax2.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_E'],
-                alpha=0.5,
-                c='tab:orange',
-                label='Original LISA E'
-            )
-            ax2.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                subtracted['LISA_A'],
-                c='tab:blue',
-                label='Subtracted LISA A'
-                )
-            ax2.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                subtracted['LISA_E'],
-                c='tab:orange',
-                label='Subtracted LISA E'
-            )
-            ax2.grid()
-            ax2.axvline(0, color='black', linestyle='--', alpha=0.2)
-            ax2.set_xlim(-2000, 1000)
-            ax2.set_ylim(-1e-19, 1e-19)
-            ax2.legend(loc='upper left')
-            fig2.savefig(f"{args.testing_plots}/waveform_removed_{i}.png")
-            plt.close(fig2)
-
-
-        data = subtracted
+    remove_signals(
+        data,
+        mbhbs,
+        mbhb_data,
+        data_end_time=args.end_time,
+        data_start_time=start_time,
+        relative_time_for_removal=args.remove_signals_after_coalescence,
+        delta_t=1. / args.sample_rate,
+        testing_plots=args.testing_plots,
+    )
 
 # Zero padding - this is vital!
 for channel in data.keys():

@@ -13,16 +13,17 @@ shared_args="""
     ../../datasets/LDC2_sangria_hm_training.hdf \
   --reduce-bank-factor \
     141808 \
-  --testing-plots results/test \
   --remove-signals-after-coalescence 7200 \
+  --testing-plots results/test/inpainting_plots \
 """
 
-# for signal, use 11527200 for init_time
-# for noise, use 26962425 for init_time
+# for signal, use 11527200 for init_time_zerolatency
+# for noise, use 26962425 for init_time_zerolatency
 
-init_time=26962425
+for init_time_inpainting in 4810020 8756480 11177840 11268570 11626940 12070960 13627110 16632190 17345150 18705750 20526220 22328060 23539830 24508760 29616090 ; do
 
-init_time_inpainting=$(($init_time - 86400))
+# init_time_inpainting=$(($init_time_zerolatency - 86400))
+init_time_zerolatency=$(($init_time_inpainting + 86400))
 
 python ./data_runs.py $shared_args \
   --bank-file \
@@ -34,16 +35,19 @@ python ./data_runs.py $shared_args \
 
 shared_zerolag=" \
 --search-time 3600 \
---end-time $init_time \
+--end-time $init_time_zerolatency \
+--testing-plots results/test/zerolatency_plots \
 "
 
-for days_before in 14 7 4 1 0.5 ; do
-  result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
+# for days_before in 1 ; do #4 7 4 1 0.5 ; do
+#   result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
 
-  python ../zero_latency/data_runs.py \
-    $shared_args $shared_zerolag \
-    --bank-file \
-      ../../datasets/lisa_ew_1_day_optimistic.hdf \
-    --days-before-merger ${days_before} > ${result_file_zerol}
+#   python ../zero_latency/data_runs.py \
+#     $shared_args $shared_zerolag \
+#     --bank-file \
+#       ../../datasets/lisa_ew_1_day_optimistic.hdf \
+#     --days-before-merger ${days_before} > ${result_file_zerol}
+
+# done
 
 done

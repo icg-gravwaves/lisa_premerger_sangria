@@ -1,6 +1,7 @@
 set -e
 
+for model in model estimate ; do
   python collect_data_results.py \
-    --result-dir ./results/psd_inv_spectrum_truncation/out/ \
-    --time-before 0.5 1 4 7 14 \
-    --output-file ./results/data_runs_ist_results.hdf
+    --result-dir ./results/psd_$model/ \
+    --output-file ./results/psd_$model/data_runs_results.hdf
+done
