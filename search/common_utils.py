@@ -9,6 +9,7 @@ from ldc.lisa import orbits
 from astropy import units as un
 import logging
 import copy
+import h5py
 
 from matplotlib import pyplot as plt
 
@@ -317,3 +318,98 @@ def remove_signals(
 
         data = subtracted
         mbhb_data = subtracted_mbhb
+
+
+# Utils for loading data from collected data files:
+def collect_data_results_zero_latency(results_filename):
+
+    # Load in data results
+    results_dict = {}
+    with h5py.File(results_filename, 'r') as f:
+        snr = f['snr'][:]
+        valid = snr > 0
+        results_dict["snr"] = snr[valid]
+        results_dict["snr_A"] = f['snr_A'][valid]
+        results_dict["snr_E"] = f['snr_E'][valid]
+        results_dict["time_A"] = f['time_A'][valid]
+        results_dict["time_E"] = f['time_E'][valid]
+        results_dict["template_id"] = f['template_id'][valid]
+        results_dict["time"] = (results_dict["time_A"] + results_dict["time_E"]) / 2
+        results_dict["data_end_time"] = f['data_end_time'][valid]
+
+    return results_dict
+
+def get_results_zero_latency(result_filename_format, times_before):
+    all_results = {
+        time_before: collect_data_results_zero_latency(result_filename_format.format(time_before=time_before))
+        for time_before in
+        times_before
+    }
+
+    results_snr = np.concatenate(
+        tuple(
+            all_results[time_before]['snr']
+            for time_before in times_before
+        )
+    )
+    
+    results_time = np.concatenate(
+        tuple(
+            all_results[time_before]['time']
+            for time_before in times_before
+        )
+    )
+    results_time_before = np.concatenate(
+        tuple(
+            np.ones_like(all_results[time_before]['time']) * time_before
+            for time_before in times_before
+        )
+    )
+
+    results_end_time = np.concatenate(
+        tuple(
+            all_results[time_before]['data_end_time']
+            for time_before in times_before
+        )
+    )
+
+    sort_key = np.argsort(results_time_before)
+
+    return {
+        "snr": results_snr[sort_key],
+        "time": results_time[sort_key],
+        "time_before": results_time_before[sort_key],
+        "data_end_time": results_end_time[sort_key],
+    }
+
+
+def get_results_inpainting(filename, filter_times_before=None, filter_time_before_window=0.00001):
+    # Load in data results
+    with h5py.File(filename, 'r') as f:
+        snr = f['snr'][:]
+        valid = snr > 0
+        results_snr = snr[valid]
+        results_time = (f['time_A'][valid] + f['time_E'][valid]) / 2
+        results_end_time = f['data_end_time'][valid]
+        results_time_before = f['time_before_merger'][valid]
+
+    if filter_times_before is not None:
+        # filter_time_before is a list of allowed times before
+        # merger where the result must be within filter_time_before_window
+        # to be included in results
+        tb_valid = np.zeros(len(results_snr), dtype=bool)
+        for ftb in filter_times_before:
+            tb_valid[abs(results_time_before - ftb) < filter_time_before_window] = True
+        results_snr = results_snr[tb_valid]
+        results_time = results_time[tb_valid]
+        results_end_time = results_end_time[tb_valid]
+        results_time_before = results_time_before[tb_valid]
+
+    sort_key = np.argsort(results_time_before)
+
+    return {
+        "snr": results_snr[sort_key],
+        "time": results_time[sort_key],
+        "time_before": results_time_before[sort_key],
+        "data_end_time": results_end_time[sort_key],
+    }

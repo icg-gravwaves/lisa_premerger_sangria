@@ -2,6 +2,8 @@ set -e
 
 for model in model estimate ; do
   python collect_data_results.py \
-    --result-dir ./results/psd_$model/ \
-    --output-file ./results/psd_$model/data_runs_results.hdf
+    --verbose \
+    --n-times 324 \
+    --result-dir ./results/psd_${model}/ \
+    --output-file ./results/data_runs_psd_${model}.hdf
 done

@@ -272,7 +272,7 @@ logging.info(f"Beginning filtering with bank %s", args.bank_file)
 
 snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
-    for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
+    for idx in range(len(bank_file['mass1'])):
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue

@@ -1,5 +1,5 @@
 __pycache__
 logs
 sub_dir
-results/psd_*
-data_runs_results.hdf
+results/psd_*/r*
+plots/

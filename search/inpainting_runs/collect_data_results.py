@@ -17,10 +17,10 @@ parser.add_argument(
     help='data directory'
 )
 parser.add_argument(
-    '--time-before',
-    nargs='+',
-    type=float,
-    help="Time-before-merger to be considered, days"
+    '--n-times',
+    type=int,
+    default=300,
+    help="Number of times before merger which are condidered"
 )
 parser.add_argument(
     '--output-file',
@@ -28,26 +28,12 @@ parser.add_argument(
     help='output file'
 )
 
-parser.add_argument(
-    '--require-string',
-    help="A string to require in the filenames we collect from"
-)
-
-parser.add_argument(
-    '--exclude-string',
-    help="A string to exclude from the filenames we collect from"
-)
 
 args = parser.parse_args()
 
 init_logging(args.verbose)
 
 result_files = sorted(glob(os.path.join(args.result_dir, '*.out')))
-if args.require_string is not None:
-    result_files = [f for f in result_files if args.require_string in f]
-
-if args.exclude_string is not None:
-    result_files = [f for f in result_files if args.exclude_string not in f]
 
 results_dtype = numpy.dtype([
     ('template_id', int),
@@ -55,13 +41,17 @@ results_dtype = numpy.dtype([
     ('snr_E', float),
     ('snr', float),
     ('time_A', float),
-    ('time_E', float)
+    ('time_E', float),
+    ('time_before_merger', float),
+    ('data_end_time', int)
 ])
 
-results = {
-    time_before: numpy.zeros(len(result_files), dtype=results_dtype)
-    for time_before in args.time_before
-}
+results = numpy.zeros(
+    int(len(result_files) * args.n_times * 1.1), # Add some extra, zeros will be removed anyway
+    dtype=results_dtype
+)
+
+logging.info('%d results files found', len(result_files))
 
 PAT = re.compile(
     r'^(?:np|numpy)\.(?P<type>[A-Za-z_]\w*)\(\s*'
@@ -75,8 +65,6 @@ def numpy_string_to_number(string):
     assert 'np' in string or 'numpy' in string
     m = PAT.match(string.strip())
     if not m:
-        print(string)
-        print(m)
         raise ValueError("not a numpy-constructor string")
     t = m.group('type')        # e.g. 'int64' or 'float64'
     nstr = m.group('number')   # e.g. '-3.2e+01' or '5'
@@ -103,8 +91,10 @@ def clean_item(s):
     return snew
     
 logging.info("Reading results files")
+count_valid = 0
 for i, rfname in enumerate(result_files):
-    logging.info(rfname)
+    logging.debug(rfname)
+    data_end_time = int(os.path.basename(rfname).split('.')[0].split('_')[-1])
     with open(rfname, 'r') as rf:
         raw_lines = rf.read().split('\n')
 
@@ -129,18 +119,18 @@ for i, rfname in enumerate(result_files):
             time_A = to_number(parts[5])
             time_E = to_number(parts[6])
 
-            results[time_before][i] = (template_id, snr_A, snr_E, snr, time_A, time_E)
+            results[count_valid] = (template_id, snr_A, snr_E, snr, time_A, time_E, time_before, data_end_time)
+            count_valid += 1
 
+logging.info('%d result lines found', count_valid)
 logging.info("Writing results to file")
 with h5py.File(args.output_file, 'w') as f:
-    for i, t in enumerate(args.time_before):
-        t_grp = f.create_group(f'time_{t}')
-
-        for k in results_dtype.names:
-            # print(k, results[k])
-            t_grp.create_dataset(
-                k,
-                data=results[t][k]
-            )
-        
+    valid = results['snr'] > 0
+    for k in results_dtype.names:
+        # print(k, results[k])
+        f.create_dataset(
+            k,
+            data=results[k][valid]
+        )
+    
 logging.info("Done")
