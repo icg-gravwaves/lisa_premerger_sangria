@@ -320,16 +320,13 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             waveform_params_shared,
             args.data_length
         )
-        print(
-            time_point_days,
-            [
-                time_points_template_idx[i],
-                tuple(time_points_snrs[i, :]),
-                np.sqrt((time_points_snrs[i, :] ** 2).sum()),
-                tuple(time_points_times[i, :]),
-                best_wf
-            ]
-        )
+        print('\t'.join([
+            '%.6f' % time_point_days,
+            '%d' % time_points_template_idx[i],
+            *['%.5f' % s for s in  tuple(time_points_snrs[i, :])],
+            '%.5f' % np.sqrt((time_points_snrs[i, :] ** 2).sum()),
+            *['%.0f' % t for t in tuple(time_points_times[i, :])],
+        ]))
         if args.testing_plots is not None:
             fig, ax = plt.subplots()
             snr_series_A, snr_series_E = time_points_data[i]
