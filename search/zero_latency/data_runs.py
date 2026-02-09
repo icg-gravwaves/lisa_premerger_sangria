@@ -311,7 +311,15 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         snr_qs = snr[0] ** 2 + snr[1] ** 2
         if snr_qs > max_snrsq:
             max_snrsq = snr_qs
-            snr_vals = [idx, snr, max_snrsq ** 0.5, times, copy.deepcopy(bank_wf)]
+            snr_vals = '\t'.join(
+                [
+                    '%d' % idx,
+                    *["%.5f" % s for s in snr],
+                    '%.5f' % max_snrsq ** 0.5,
+                    *["%.0f" % t for t in times]
+                ]
+            )
+            # , copy.deepcopy(bank_wf)]
 
 print(snr_vals)
 
