@@ -39,15 +39,15 @@ shared_zerolag=" \
 --testing-plots results/test/zerolatency_plots \
 "
 
-# for days_before in 1 ; do #4 7 4 1 0.5 ; do
-#   result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
+for days_before in 1 ; do #4 7 4 1 0.5 ; do
+  result_file_zerol=results/test/test_results_zero_latency_${days_before}.txt
 
-#   python ../zero_latency/data_runs.py \
-#     $shared_args $shared_zerolag \
-#     --bank-file \
+  python ../zero_latency/data_runs.py \
+    $shared_args $shared_zerolag \
+    --bank-file \
     ../template_bank/output/lisa_ew_${days_before}_day.hdf \
-#     --days-before-merger ${days_before} > ${result_file_zerol}
+    --days-before-merger ${days_before} > ${result_file_zerol}
 
-# done
+done
 
 done
