@@ -10,7 +10,6 @@ Downloads data files from the [lisa_premerger_paper](https://github.com/icg-grav
 - PSD files (model_AE_TDI1_SMOOTH_optimistic.txt.gz, model_AE_TDI1_optimistic.txt.gz)
 - Injection parameters (injections.json)
 - Signal data files (signal_0.hdf, signal_zero_noise_0.hdf)
-- Template banks (lisa_ew_1_day_optimistic.hdf)
 
 **Usage:**
 ```bash

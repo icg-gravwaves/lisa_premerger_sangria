@@ -27,7 +27,7 @@ init_time_zerolatency=$(($init_time_inpainting + 86400))
 
 python ./data_runs.py $shared_args \
   --bank-file \
-    ../../datasets/lisa_ew_1_day_optimistic.hdf \
+    ../template_bank/output/lisa_ew_1_day.hdf \
   --days-to-search 21 \
   --time-points-days 0.5 1 4 7 14  \
   --time-point-window 3600 \
@@ -45,7 +45,7 @@ shared_zerolag=" \
 #   python ../zero_latency/data_runs.py \
 #     $shared_args $shared_zerolag \
 #     --bank-file \
-#       ../../datasets/lisa_ew_1_day_optimistic.hdf \
+    ../template_bank/output/lisa_ew_${days_before}_day.hdf \
 #     --days-before-merger ${days_before} > ${result_file_zerol}
 
 # done
