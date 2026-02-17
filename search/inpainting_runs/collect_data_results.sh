@@ -1,6 +1,9 @@
 set -e
 
+for model in model estimate ; do
   python collect_data_results.py \
-    --result-dir ./results/out/ \
-    --time-before 0.5 1 4 7 14 \
-    --output-file ./results/data_runs_results.hdf
+    --verbose \
+    --n-times 324 \
+    --result-dir ./results/psd_${model}/ \
+    --output-file ./results/data_runs_psd_${model}.hdf
+done

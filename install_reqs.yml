@@ -1,0 +1,33 @@
+name: env_lisa_premerger
+channels:
+ - conda-forge
+ - pytorch
+dependencies:
+ - python=3.10
+ - pip
+ - gcc_linux-64
+ - gxx_linux-64
+ - gsl
+ - lapack=3.6.1
+ - numpy<2
+ - scipy
+ - Cython
+ - matplotlib
+ - lalsuite
+ - ligo.skymap
+ - seaborn
+ - astropy
+ - corner
+ - ipykernel
+ - jupyter
+ - pytorch
+ - jupyter-book
+ - ghp-import
+ - cpuonly
+ - humanize
+ - pip:
+   - git+https://github.com/mikekatz04/BBHx.git@4fff509
+   - git+https://github.com/gwastro/BBHX-waveform-model.git
+   - git+https://github.com/icg-gravwaves/pycbc.git@lisa-pre-merger
+   - git+https://github.com/mj-will/nessai.git@pre-merger-mcmcflowproposal
+   - lisa-data-challenge

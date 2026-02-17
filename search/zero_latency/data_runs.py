@@ -29,7 +29,7 @@ from utils import (
     get_snr_from_series,  # Function to get SNR from a series
     plot_best_waveform,  # Function to plot the best waveform
     load_ldc_timeseries, # function to load timeseries
-    generate_waveform_for_data,
+    remove_signals,
 )
 
 # Set up argument parser for command-line arguments
@@ -69,10 +69,9 @@ parser.add_argument('--data-length', type=int, default=2592000)
 parser.add_argument(
     '--remove-signals-after-coalescence',
     type=float,
-    help="Remove signals from the data this amount of time (s) after "
-         "the coalescence. e.g. if we consider that a signal would "
-         "be considered found accurately half an hour after the coalescence, "
-         "set this to 1800. Default - don't do this"
+    nargs='+', # Accepts one or more values
+    help="Remove signals after coalescence. Provide 1 value for all MBHBs, "
+         "or space-separated values for individual MBHBs in the catalog."
 )
 
 parser.add_argument(
@@ -175,117 +174,16 @@ for channel in data.keys():
 mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
-    for i, mbhb in enumerate(mbhbs):
-
-        if args.end_time < (mbhb['CoalescenceTime'] + args.remove_signals_after_coalescence):
-            logging.info("Signal %d at %.0f not yet reached", i, mbhb['CoalescenceTime'])
-            continue
-
-        if mbhb['CoalescenceTime'] < (args.end_time - args.data_length * 2):
-            logging.info("Signal %d at %.0f is well before the searched time - ignore it", i, mbhb['CoalescenceTime'])
-            continue
-    
-        logging.info("Removing signal %d at %.0f from data", i, mbhb['CoalescenceTime'])
-
-        waveform_for_removal = generate_waveform_for_data(
-            mbhb,
-            start_time,
-            args.end_time,
-            1. / args.sample_rate,
-        )
-
-        logging.info('Removing from data')
-        subtracted = {
-            channel: data[channel] - waveform_for_removal[channel]
-            for channel in data.keys()
-        }
-
-        if args.testing_plots is not None:
-            logging.info('Plotting waveform and data before and after removal')
-            fig1, ax1 = plt.subplots(1)
-            ax1.plot(
-                data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_A'],
-                label='Data LISA A',
-                alpha=0.25
-            )
-            ax1.plot(
-                data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_E'],
-                label='Data LISA E',
-                alpha=0.25
-            )
-            ax1.plot(
-                mbhb_data['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                mbhb_data['LISA_A'],
-                c='tab:blue',
-                label='MBHB LISA_A',
-            )
-            ax1.plot(
-                mbhb_data['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                mbhb_data['LISA_E'],
-                c='tab:orange',
-                label='MBHB LISA_E',
-            )
-            ax1.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                waveform_for_removal['LISA_A'],
-                c='tab:green',
-                linestyle=':',
-                label='Waveform LISA A'
-            )
-            ax1.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                waveform_for_removal['LISA_E'],
-                c='tab:red',
-                linestyle=':',
-                label='Waveform LISA E'
-            )
-
-            ax1.axvline(0, c='black', linestyle='--', alpha=0.5)
-            ax1.grid()
-            ax1.set_xlim(-2000, 1000)
-            ax1.set_ylim(-1e-19, 1e-19)
-            ax1.legend(loc='upper left')
-            fig1.savefig(f"{args.testing_plots}/waveform_for_removal_zerolatency_{i}.png")
-            plt.close(fig1)
-
-            fig2, ax2 = plt.subplots(1)
-            ax2.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_A'],
-                alpha=0.5,
-                c='tab:blue',
-                label='Original LISA A'
-                )
-            ax2.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                data['LISA_E'],
-                alpha=0.5,
-                c='tab:orange',
-                label='Original LISA E'
-            )
-            ax2.plot(
-                waveform_for_removal['LISA_A'].sample_times - mbhb['CoalescenceTime'],
-                subtracted['LISA_A'],
-                c='tab:blue',
-                label='Subtracted LISA A'
-                )
-            ax2.plot(
-                waveform_for_removal['LISA_E'].sample_times - mbhb['CoalescenceTime'],
-                subtracted['LISA_E'],
-                c='tab:orange',
-                label='Subtracted LISA E'
-            )
-            ax2.axvline(0, c='black', linestyle='--', alpha=0.5)
-            ax2.grid()
-            ax2.set_xlim(-2000, 1000)
-            ax2.set_ylim(-1e-19, 1e-19)
-            ax2.legend(loc='upper left')
-            fig2.savefig(f"{args.testing_plots}/waveform_removed_zerolatency_{i}.png")
-            plt.close(fig2)
-
-        data = subtracted
+    remove_signals(
+        data,
+        mbhbs,
+        mbhb_data,
+        data_end_time=args.end_time,
+        data_start_time=start_time,
+        relative_time_for_removal=args.remove_signals_after_coalescence,
+        delta_t=1. / args.sample_rate,
+        testing_plots=args.testing_plots,
+    )
 
 for channel in data.keys():
     mean_val = np.mean(data[channel])
@@ -349,7 +247,7 @@ logging.info(f"Beginning filtering with bank %s", args.bank_file)
 max_snrsq = 0
 snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
-    for idx in tqdm(range(len(bank_file['mass1'])), disable=False):
+    for idx in range(len(bank_file['mass1'])):
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue
@@ -413,7 +311,15 @@ with h5py.File(args.bank_file, 'r') as bank_file:
         snr_qs = snr[0] ** 2 + snr[1] ** 2
         if snr_qs > max_snrsq:
             max_snrsq = snr_qs
-            snr_vals = [idx, snr, max_snrsq ** 0.5, times, copy.deepcopy(bank_wf)]
+            snr_vals = '\t'.join(
+                [
+                    '%d' % idx,
+                    *["%.5f" % s for s in snr],
+                    '%.5f' % max_snrsq ** 0.5,
+                    *["%.0f" % t for t in times]
+                ]
+            )
+            # , copy.deepcopy(bank_wf)]
 
 print(snr_vals)
 

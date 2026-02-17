@@ -1,0 +1,14 @@
+# job.sub
+executable = /home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/bin/python
+arguments = $(run_dir)/data_runs.py --psd-files $(psds) --f-lower 1e-6 --bank-file $(repo_dir)/search/template_bank/output/lisa_ew_$(days_before_merger)_day.hdf --data-file $(repo_dir)/datasets/LDC2_sangria_hm_training.hdf --end-time $(end_time_seconds) --search-time 3600 --days-before-merger $(days_before_merger) $(remove_instruction)
+
+output = $(result_stem).out
+error = $(log_stem).err
+log = $(log_stem).log
+
+request_memory = 10GB
+request_cpus = 1
+request_disk = 2GB
+
+accounting_group = ligo.dev.o4.cbc.bbh.pycbcoffline
+queue
