@@ -1,7 +1,33 @@
 \section{Inpainting}
 \label{sec:inpainting}
+
+\iwh{This section should contain the theoretical motivation behind inpainting and the details of how it is applied \emph{in general}. I'm trying to work on this at the moment.}
+
 \gscd{Need to be somewhat careful here, as it doesnt particularly follow on from the zerolatency filter method.
 Motivate its use first, then go into details}
+
+We have showed in the previous section, and in our previous work~\cite{CabournDavies:2024hea}, that the zero-latency filter method, used successfully for many years in ground-based low-latency analysis~\cite{Tsukada:2017cuf} is directly applicable to
+solve the \ac{MBHB} premerger problem in LISA.
+
+However, when considering the case of LISA, there are some issues with this method that warrant considering alternatives. The premerger analysis that we carried out with the zero-latency filter here analyzes 30 days of data to identify mergers up to 14 days before merger. LISA data is expected to have gaps \iwh{say a bit about expected cadence of gaps and cite some LISA design/white paper}. We do not have a method for dealing with these gaps using the zero-latency filter and therefore if there is a gap in the recorded LISA data in the days before a \ac{MBHB} merger it might result in a delay in identifying that the merger is about to happen.
+
+Here we consider an alternative technique, which is also adapted from ground-based analyses. In particular the observation of the first binary neutron star merger, GW170817, was significantly hampered by the presence of a loud non-Gaussian artefact in the seconds before the merger. At the time of observation the glitch was manually excised from the data, in a process known as "gating". However, this gating might result in spectral leakage in the whitened strain, as described in~\cite{Zackay:2019kkv}, which can cause issues for detection pipelines and bias inference algorithms.
+
+The method of ``inpainting'' for proposed in~\cite{Zackay:2019kkv} as an
+alternative for safely removing non-Gaussianities or, equivalently, for analysing over data gaps. The full derivation is given in~\cite{Zackay:2019kkv,Capano:2021etf} but the basic idea is that we want the ``overwhitened'' strain to be 0s for the duration of the gap. If we consider the matched-filter between signal, $s$ and data $h$
+%
+\begin{equation}
+    (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}}\frac{\tilde{h}(f)\tilde{s}^*(f)}{S_n(f)} \mathrm{d} f,
+\end{equation}
+%
+we can rewrite this as
+%
+\begin{equation}
+    (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \frac{\tilde{s}^*(f)}{S_n(f)} \mathrm{d} f,
+\end{equation}
+%
+where $\tilde{s}^*(f) / S_n(f)$ is the ``overwhitened'' strain. The matched-filter is then the cross correlation between the overwhitened strain and the template waveform and therefore any 0s in the overwhitened strain will not contribute to the overall matched-filter. Choosing values that the data should take in the gap of the [unwhitened] strain such that the overwhitened strain is 0 boils down to a linear algebra problem.
+
 
 Gaps in the data will cause significant issue in the \ac{LISA} data analysis\gscd{CITE}, and there is not a way to
 implement the zero-latency filter method to account for multiple gaps in the data.
