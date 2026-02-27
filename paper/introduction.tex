@@ -41,3 +41,41 @@ All of our results and figures are fully reproducible, with the code
 used to make them publicly available. Please see the data release at
 \url{https://icg-gravwaves.github.io/lisa_premerger_sangria/}
 for more detail.
+
+
+\subsection{Noise Estimation}
+\label{subsec:psds}
+Our first consideration is to check whether the data from the Sangria dataset has
+similar noise properties to the datasets used our previous work. 
+\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the zerolatency filter banks?}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{images/figure_X_psds_with_sources.pdf}
+    \caption{
+        Comparison of PSDs used in this work.
+        The PSD is estimated from the Sangria dataset using the welch method with a segment duration of 18.25 days.
+        The model shown is the noise model used to produce the Sangria dataset, and includes unresolvable galactic binary sources.
+        Both the model and the estimated PSD require smoothing over the dip to zero at 0.06Hz.
+        This smoothing is done using a Hann window to transition between the original PSD and a straight line between the peaks of the PSD model either side of the dip.
+        We also show the characteristic strain for a MBHB signal from Sangria (Signal 4), which shows that at 14, 7 and 4 days-before-merger, the MBHB does not overlap
+        the galactic binary confusion noise in frequency, but when the signal reaches around one day before merger,
+        the galactic binary confusion noise starts to overlap with the signal.
+    }
+    \label{fig:psds}
+\end{figure*}
+
+\begin{table*}
+    \input{characteristic_strain_table.tex}
+    \caption{
+        Characteristic SNRs for signals in the Sangria dataset.
+        These are computed by comparing characteristic strain for the signal to the
+        noise model PSD.
+        We see that Signals 5 and 14 are unlikely to be seen even 0.5 days pre-merger, and 
+        that signals 
+    }
+    \label{tab:characteristic_strain_snr}
+\end{table*}
+
+As a result, we can use the template banks from the zero-latency search paper without significant issues.
+
