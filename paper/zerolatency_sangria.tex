@@ -22,21 +22,6 @@ it contains exactly the same sources but uses a different waveform model, \textt
 To apply this search, we set up the data so that we can truncate it, this was done in hourly intervals,
 and then apply the search at 14, 7, 4 and 1 days before merger.
 
-\subsection{Noise Estimation}
-\label{subsec:psds}
-Our first consideration is to check whether the data from the Sangria dataset has
-similar noise properties to the datasets used our previous work. 
-\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the zerolatency filter banks?}
-
-\begin{figure*}
-    \centering
-    \includegraphics[width=0.75\textwidth]{images/figure_X_psds_with_sources.pdf}
-    \caption{}
-    \label{fig:psds}
-\end{figure*}
-
-As a result, we can use the template banks from the zero-latency search paper without significant issues.
-
 \subsection{Secondary Peaks in Signal-to-Noise Ratio}
 \label{subsec:double_peaks}
 \gscd{Discussion of finding the secondary peaks in the SNR.}
