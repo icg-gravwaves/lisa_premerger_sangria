@@ -80,7 +80,9 @@ def plot_around_time(
     filter_around_merger=None,
     color_one=None,
     color_two=None,
-    legend_loc='upper left'
+    legend_loc='upper left',
+    marker_one='x',
+    marker_two='o'
 ):
     width = plt.rcParams["figure.figsize"][0] * 1.25
     height = plt.rcParams["figure.figsize"][1]
@@ -94,7 +96,7 @@ def plot_around_time(
         start_time_offset,
         end_time_offset,
         signal_truth_time,
-        marker='x',
+        marker=marker_one,
         times_before=times_before,
         predicted_time=predicted_time,
         filter_around_merger=filter_around_merger,
@@ -111,7 +113,7 @@ def plot_around_time(
             end_time_offset,
             signal_truth_time,
             times_before=times_before,
-            marker='o',
+            marker=marker_two,
             predicted_time=predicted_time,
             filter_around_merger=filter_around_merger,
             color=color_two,
