@@ -152,6 +152,7 @@ def plot_around_time(
     cb = fig.colorbar(sm, ax=ax)
     cb.set_ticks(times_before)
     cb.set_ticklabels(times_before)
+    cb.set_label('Days Before Merger', rotation=270)
 
     lines = []
     labels = []
