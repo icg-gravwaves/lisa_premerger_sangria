@@ -82,10 +82,12 @@ def plot_around_time(
     color_two=None,
     legend_loc='upper left',
     marker_one='x',
-    marker_two='o'
+    marker_two='o',
+    width_factor=1,
+    height_factor=1
 ):
-    width = plt.rcParams["figure.figsize"][0] * 1.25
-    height = plt.rcParams["figure.figsize"][1]
+    width = plt.rcParams["figure.figsize"][0] * width_factor
+    height = plt.rcParams["figure.figsize"][1] * height_factor
     fig, ax = plt.subplots(1, figsize=(width, height),)
 
     max_snr = 0
