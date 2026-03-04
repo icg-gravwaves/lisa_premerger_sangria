@@ -34,7 +34,7 @@ for psd_model in model estimate ; do
         # Define the job in the DAG
         echo "JOB $job_id job.sub" >> $dag_file
         if [[ "$remove" == "remove" ]] ; then
-            remove_instruction="--remove-signals-after-coalescence '-28800'"
+            remove_instruction="--remove-signals-after-coalescence -7200"
         else
             remove_instruction=""
         fi
@@ -42,7 +42,7 @@ for psd_model in model estimate ; do
         if [[ "$psd_model" == "estimate" ]] ; then
             psds="A:$repo_dir/estimate_psds/A_sangria_hm_SMOOTHED_PSD.txt E:$repo_dir/estimate_psds/E_sangria_hm_SMOOTHED_PSD.txt"
         else
-            psds="A:$repo_dir/datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz E:$repo_dir/datasets/model_AE_TDI1_SMOOTH_optimistic.txt.gz"
+            psds="A:$repo_dir/estimate_psds/model_AE_SMOOTHED_PSD.txt E:$repo_dir/estimate_psds/model_AE_SMOOTHED_PSD.txt"
         fi
         
         seconds=$(($end_time * 3600))
