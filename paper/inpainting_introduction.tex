@@ -43,7 +43,14 @@ With the inpainting approach we can simultaneously search for a given template w
 \end{equation}
 %
 This can be directly applied here as well. Where the signal waveform overlaps with the zeroed-out
-overwhitened data there is no contribution to $(h|s)$ and so we can easily obtain this as a function of shifting merger time. However, there is a complication that for this to be interpreted as a signal-to-noise ratio we need to normalize by the template amplitude; $\rho = (h|s) / (h|h)^{0.5}$. In this application, the template amplitude $(h|h)$ must now be modelled as time dependent because any power in the template waveform at times where there is not data should not be included. However, as described in~\cite{Zackay:2019kkv} this can be done. The operation to do this is perhaps best visualised in the time domain, where $(h|h)$, without any gaps, is computed as the integral of the whitened template waveform multiplied by itself. One can then compute $(h|h)$ at any given value of merger time by zeroing out those parts of the template waveform that lie in the gaps. One can then take the cross-correlation between a vector whose values are 1 where data is present and 0 where there is gaps, and the squared, whitened template waveform, to obtain $(h|h)(t)$. This is more efficiently computed in the frequency domain via the convolution theorem
+overwhitened data there is no contribution to $(h|s)$ and so we can easily obtain this as a function of shifting merger time.
+However, there is a complication that for this to be interpreted as a signal-to-noise ratio we need to normalize by the template amplitude; $\rho = (h|s) / (h|h)^{0.5}$.
+In this application, the template amplitude $(h|h)$ must now be modelled as time dependent because any power in the template waveform at times where there is not data should not be included.
+However, as described in~\cite{Zackay:2019kkv} this can be done.
+The operation to do this is perhaps best visualised in the time domain, where $(h|h)$, without any gaps, is computed as the integral of the whitened template waveform multiplied by itself.
+One can then compute $(h|h)$ at any given value of merger time by zeroing out those parts of the template waveform that lie in the gaps.
+One can then take the cross-correlation between a vector whose values are 1 where data is present and 0 where there is gaps, and the squared, whitened template waveform, to obtain $(h|h)(t)$.
+This is more efficiently computed in the frequency domain via the convolution theorem
 %
 \begin{equation}
     (h|h)(t) = 4\mathrm{Re}\int \tilde{h_2}(f) \tilde{z}(f) e^{2 i \pi f t} \mathrm{d} f,
@@ -54,9 +61,14 @@ of the vector containing 1 where data is present and 0 where there are gaps.
 
 \subsection{A template bank to search for a signal at all time}
 
-The final step to be able to apply inpainting to a premerger search is that we need to create a set of filter waveforms, or template bank. The template banks created for the zero-latency search are created assuming a signal either 0.5, 1, 4, 7 or 14 days before merger and so are not guaranteed to be applicable here. To demonstrate this method we simply \iwh{Gareth, what did we do here? Did we just combine the banks together?}
+The final step to be able to apply inpainting to a premerger search is that we need to create a set of filter waveforms, or template bank.
+The template banks created for the zero-latency search are created assuming a signal either 0.5, 1, 4, 7 or 14 days before merger and so are not guaranteed to be applicable here.
+To demonstrate this method though, we simply use the 1 day before merger bank.
 
-However, a better approach for the future would be to create a template bank specifically for this analysis. Stochastic placement, as we used for the zero-latency search~\cite{CabournDavies:2024hea}, could be used. However, when simulating signals we would draw the time before merger when selecting a proposal point, alongside the other parameters. We would then check if that signal would be recovered by the existing template bank and add if it would not be recovered below a specified match threshold.
+A better approach for the future would be to create a template bank specifically for this analysis.
+Stochastic placement, as we used for the zero-latency search~\cite{CabournDavies:2024hea}, could be used.
+However, when simulating signals we would draw the time before merger when selecting a proposal point, alongside the other parameters.
+We would then check if that signal would be recovered by the existing template bank and add if it would not be recovered below a specified match threshold.
 
 \subsection{Numerical stability}
 
