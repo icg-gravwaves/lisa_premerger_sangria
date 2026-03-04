@@ -61,8 +61,8 @@ legend.handlelength: 1.375
 legend.labelspacing: 0.4
 legend.columnspacing: 1
 legend.facecolor: 'white'
-legend.edgecolor: 'black'
-legend.framealpha: 1
+legend.edgecolor: 'white'
+legend.framealpha: 0.8
 legend.title_fontsize: 8
 
 ### Figure size
