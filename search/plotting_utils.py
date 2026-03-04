@@ -15,6 +15,7 @@ def calculate_plot_within(
     predicted_time=True,
     filter_around_merger=None,
     color= None,
+    zorder=None
 ):
 
     norm = mcolors.LogNorm(vmin=min(times_before), vmax=max(times_before))
@@ -58,7 +59,8 @@ def calculate_plot_within(
         facecolors='none' if marker=='o' else colors_rgba,
         edgecolors=colors_rgba if marker=='o' else None,
         alpha=alpha,
-        rasterized=True
+        rasterized=True,
+        zorder=zorder
     )
 
     return max(results['snr'][used_in_plot]), sm
@@ -77,7 +79,8 @@ def plot_around_time(
     label_two='Remove',
     filter_around_merger=None,
     color_one=None,
-    color_two=None
+    color_two=None,
+    legend_loc='upper left'
 ):
     width = plt.rcParams["figure.figsize"][0] * 1.25
     height = plt.rcParams["figure.figsize"][1]
@@ -95,7 +98,8 @@ def plot_around_time(
         times_before=times_before,
         predicted_time=predicted_time,
         filter_around_merger=filter_around_merger,
-        color=color_one
+        color=color_one,
+        zorder=20
     )
     max_snr = max(max_snr, max_snr_one)
 
@@ -110,7 +114,8 @@ def plot_around_time(
             marker='o',
             predicted_time=predicted_time,
             filter_around_merger=filter_around_merger,
-            color=color_two
+            color=color_two,
+            zorder=25
         )
         max_snr = max(max_snr, max_snr_two)
 
@@ -120,11 +125,13 @@ def plot_around_time(
     sm = sm_one if sm_one is not None else sm_two
     
     # Add pink lines for when the coalescences are:
-    for truth_time_s in truth_times:
-        ax.axvline(
-            (truth_time_s - signal_truth_time) / 86400,
-            c='tab:pink'
-        )
+    if truth_times is not None:
+        for truth_time_s in truth_times:
+            ax.axvline(
+                (truth_time_s - signal_truth_time) / 86400,
+                c='tab:pink',
+                zorder=10
+            )
 
     # Add lines for when the data ended (if predicted)
     # when the data predicts (if not)
@@ -134,7 +141,8 @@ def plot_around_time(
             ax.axvline(
                 time_to_plot,
                 c=sm.to_rgba(time_before),
-                linestyle=':'
+                linestyle=':',
+                zorder=15
             )
 
     label_start = "Forecast Merger Time" if predicted_time else "Data End Time"
@@ -154,12 +162,14 @@ def plot_around_time(
         lines.append(ax.scatter([], [], marker='o', facecolors='none', edgecolors='k'),)
         labels.append(label_two)
     labels.append('Coalescences')
-    lines.append(ax.axvline(np.nan, c='tab:pink'))
+    if truth_times is not None:
+        lines.append(ax.axvline(np.nan, c='tab:pink'))
 
-    ax.legend(
-        lines, labels, loc='upper left'
+    leg = ax.legend(
+        handles=lines, labels=labels, loc=legend_loc,
     )
-    ax.grid()
+    leg.set_zorder(50)
+    ax.grid(zorder=0)
 
     if start_time_offset is not None:
         ax.set_xlim(left=start_time_offset)
@@ -170,4 +180,4 @@ def plot_around_time(
     ax.set_ylim(top=max(max_snr * 1.1, 10))
     if signal_number is not None:
         ax.set_title(f"Signal {signal_number}: {signal_truth_time:.1f}s")
-    return fig, ax
+    return fig, (ax, labels, lines)
