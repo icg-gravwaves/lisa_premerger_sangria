@@ -76,7 +76,7 @@ def plot_around_time(
     times_before=[0.5,1,4,7,14],
     predicted_time=True,
     label_one='Raw',
-    label_two='Remove',
+    label_two='Removed',
     filter_around_merger=None,
     color_one=None,
     color_two=None,
