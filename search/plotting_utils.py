@@ -84,7 +84,10 @@ def plot_around_time(
     marker_one='x',
     marker_two='o',
     width_factor=1,
-    height_factor=1
+    height_factor=1,
+    alpha_one=1,
+    alpha_two=1,
+    title=None
 ):
     width = plt.rcParams["figure.figsize"][0] * width_factor
     height = plt.rcParams["figure.figsize"][1] * height_factor
@@ -103,6 +106,7 @@ def plot_around_time(
         predicted_time=predicted_time,
         filter_around_merger=filter_around_merger,
         color=color_one,
+        alpha=alpha_one,
         zorder=20
     )
     max_snr = max(max_snr, max_snr_one)
@@ -119,7 +123,8 @@ def plot_around_time(
             predicted_time=predicted_time,
             filter_around_merger=filter_around_merger,
             color=color_two,
-            zorder=25
+            zorder=25,
+            alpha=alpha_two
         )
         max_snr = max(max_snr, max_snr_two)
 
@@ -161,10 +166,22 @@ def plot_around_time(
     lines = []
     labels = []
     if results_one:
-        lines.append(ax.scatter([], [], marker='x', facecolors='k', edgecolors=None),)
+        lines.append(ax.scatter(
+            [],
+            [],
+            marker=marker_one,
+            facecolors='none' if marker_one=='o' else 'k',
+            edgecolors='k' if marker_one=='o' else None,
+            ),)
         labels.append(label_one)
     if results_two:
-        lines.append(ax.scatter([], [], marker='o', facecolors='none', edgecolors='k'),)
+        lines.append(ax.scatter(
+            [],
+            [],
+            marker=marker_two,
+            facecolors='none' if marker_two=='o' else 'k',
+            edgecolors='k' if marker_two=='o' else None,
+        ),)
         labels.append(label_two)
     labels.append('Coalescences')
     if truth_times is not None:
@@ -183,6 +200,6 @@ def plot_around_time(
         
     ax.set_ylim(bottom=4)
     ax.set_ylim(top=max(max_snr * 1.1, 10))
-    if signal_number is not None:
-        ax.set_title(f"Signal {signal_number}: {signal_truth_time:.1f}s")
+    if signal_number is not None and title is not 'off':
+        ax.set_title(f"Signal {signal_number}: {signal_truth_time/86400:.2f} days")
     return fig, (ax, labels, lines)
