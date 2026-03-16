@@ -7,6 +7,9 @@ from pycbc.waveform import get_fd_det_waveform
 import ldc.io.hdf5 as hdfio
 from ldc.common import tools as ldc_tools
 
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../search')))
+import common_utils
 
 import argparse
 
@@ -67,15 +70,34 @@ wf['distance'] = mbhb['Distance']
 
 # Generate Waveform
 A_sig_psd = get_fd_det_waveform(
-    ifos=['LISA_A'],
+    ifos=['LISA_A', 'LISA_E'],
     **wf,
 )
 A_sig_psd = A_sig_psd['LISA_A']
+
+lisabetawav = common_utils.generate_waveform_for_data(
+    mbhb,
+    0,
+    365*86400,
+    5,
+)
+from pycbc.types import TimeSeries
+ts = TimeSeries(lisabetawav['LISA_A'], delta_t=5)
+fs_lb_a = ts.to_frequencyseries()
+ts = TimeSeries(lisabetawav['LISA_E'], delta_t=5)
+fs_lb_e = ts.to_frequencyseries()
 
 # compute characteristic strain from waveform
 freqs = A_sig_psd.sample_frequencies.numpy()
 amp = np.abs(A_sig_psd.numpy())
 h_c = (2.0 * freqs * amp)
+
+# And for LISA B
+freqs_lb = fs_lb_a.sample_frequencies.numpy()
+amp_lb_a = np.abs(fs_lb_a.numpy())
+lb_a = 2 * freqs_lb * amp_lb_a
+amp_lb_e = np.abs(fs_lb_e.numpy())
+lb_e = 2 * freqs_lb * amp_lb_e
 
 # save the characteristic strain psd
 np.savetxt(
@@ -83,9 +105,10 @@ np.savetxt(
     list(zip(freqs, h_c))
 )
 
-hc_all[sig_num] = {
-    0: h_c
-}
+np.savetxt(
+    f'characteristic_strain/characteristic_strain_{sig_num}_full_lb.txt',
+    list(zip(freqs_lb, lb_a, lb_e)),
+)
 
 # map time before merger -> GW frequency using get_inspiral_tf
 track_t, track_f = get_inspiral_tf(
@@ -106,13 +129,21 @@ for i, days in enumerate(cutoff_days):
 
     # zero out frequencies above f_cut
     mask = A_sig_psd.sample_frequencies > (f_cut + 1e-12)
+    mask2 = freqs_lb > (f_cut + 1e-12)
     h_c_tbefore = deepcopy(h_c)
     h_c_tbefore[mask] = 0
 
-    hc_all[sig_num][days] = h_c_tbefore
+    lb_a_before = deepcopy(lb_a)
+    lb_a_before[mask2] = 0
+    lb_e_before = deepcopy(lb_e)
+    lb_e_before[mask2] = 0
 
     # save the characteristic strain psd
     np.savetxt(
         f'characteristic_strain/characteristic_strain_{sig_num}_{days}.txt',
         list(zip(freqs, h_c_tbefore))
+    )
+    np.savetxt(
+        f'characteristic_strain/characteristic_strain_{sig_num}_{days}_lb.txt',
+        list(zip(freqs, lb_a_before, lb_e_before)),
     )

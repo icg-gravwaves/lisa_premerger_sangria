@@ -4,4 +4,4 @@ for signal in {0..14} ; do
 done
 
 # Convert the characteristic strain txt files into a hdf file for ease of use
-python collect_characteristic_strain.py
+#python collect_characteristic_strain.py
