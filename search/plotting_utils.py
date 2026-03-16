@@ -18,7 +18,7 @@ def calculate_plot_within(
     zorder=None
 ):
 
-    norm = mcolors.LogNorm(vmin=min(times_before), vmax=max(times_before))
+
     used_in_plot = np.ones_like(results['snr'], dtype=bool)
     # print('Using time' if predicted_time else 'Using data_end_time')
     result_times = results['time'] if predicted_time else results['data_end_time']
@@ -46,8 +46,7 @@ def calculate_plot_within(
     if not any(used_in_plot):
         return 0, None
 
-    cmap = cm.get_cmap('rainbow')
-    sm = cm.ScalarMappable(norm=norm, cmap=cmap)
+    sm = get_sm(vmin=min(times_before), vmax=max(times_before))
     colors_rgba = sm.to_rgba(results['time_before'][used_in_plot])
     if color is not None:
         colors_rgba = 'k'
@@ -203,3 +202,30 @@ def plot_around_time(
     if signal_number is not None and title is not 'off':
         ax.set_title(f"Signal {signal_number}: {signal_truth_time/86400:.2f} days")
     return fig, (ax, labels, lines)
+
+
+def get_sm(vmin, vmax):
+    norm = mcolors.LogNorm(vmin=vmin, vmax=vmax)
+    cmap = cm.get_cmap('rainbow')
+    return cm.ScalarMappable(
+        norm=norm,
+        cmap=cmap
+    )
+
+def get_colors(values=None, vmax=None, vmin=None):
+    """
+    Get the colors used for plotting
+    """
+    if vmin is None:
+        # Use minimum of values
+        vmin = min(values)
+    if vmax is None:
+        # Use maximum of values
+        vmax = max(values)
+
+    sm = get_sm(vmin=vmin, vmax=vmax)
+
+    return {
+        value: sm.to_rgba(value)
+        for value in values
+    }

@@ -1,8 +1,10 @@
 import numpy as np
 from copy import deepcopy
+import logging
 
 from pycbc.pnutils import get_inspiral_tf
 from pycbc.waveform import get_fd_det_waveform
+from pycbc import add_common_pycbc_options, init_logging
 
 import ldc.io.hdf5 as hdfio
 from ldc.common import tools as ldc_tools
@@ -10,11 +12,29 @@ from ldc.common import tools as ldc_tools
 
 import argparse
 
+import sys
+import os
+
+search_dir = os.path.abspath("../search")
+
+if search_dir not in sys.path:
+    sys.path.insert(0, search_dir)
+
+
+# Everything plotted in this notebook is done using these helper modules
+from common_utils import generate_waveform_for_data
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--signal-number', type=int, required=True)
+add_common_pycbc_options(parser)
 args = parser.parse_args()
 
+
+# Initialize logging for the PyCBC library
+if args.verbose is None:
+    init_logging(1)
+else:
+    init_logging(args.verbose + 1)
 
 input_data = '../datasets/LDC2_sangria_hm_training.hdf' # The Sangria dataset
 
@@ -31,7 +51,8 @@ def spin_conv(mag, pol):
 
 hc_all = {}
 sig_num = args.signal_number
-print(f'Signal {sig_num}')
+
+logging.info('Generating waveform for signal %s', sig_num)
 mbhb = mbhbs[sig_num]
 psi, incl = ldc_tools.aziPolAngleL2PsiIncl(
     mbhb["EclipticLatitude"],
@@ -41,51 +62,69 @@ psi, incl = ldc_tools.aziPolAngleL2PsiIncl(
 )
 # Generate the waveform with BBHx
 wf = {
-    't_obs_start': data_length, # This is setting the data length.
-    'f_lower': 1e-6,
-    'low-frequency-cutoff': 1e-6, 
-    'f_final': 0.1,
-    'delta_f': 1 / data_length,
-    'tdi': '1.5',
-    't_offset': 0,
-    'cutoff_deltat': 0,
-    'approximant': 'BBHX_PhenomD',
-    'mode_array': [(2,2)],
+    # 't_obs_start': data_length, # This is setting the data length.
+    # 'f_lower': 1e-6,
+    # 'low-frequency-cutoff': 1e-6, 
+    # 'f_final': 0.1,
+    # 'delta_f': 1 / data_length,
+    # 'tdi': '1.5',
+    # 't_offset': 0,
+    # 'cutoff_deltat': 0,
+    # 'approximant': 'BBHX_PhenomD',
+    # 'mode_array': [(2,2)],
 }
 # Update waveform params to use the ones from the bank file
-wf['tc'] = data_length
+# wf['tc'] = data_length
 wf['mass1'] = mbhb['Mass1']
 wf['mass2'] = mbhb['Mass2']
 wf['spin1z'] = spin_conv(mbhb['Spin1'],mbhb['PolarAngleOfSpin1'])
 wf['spin2z'] = spin_conv(mbhb['Spin2'],mbhb['PolarAngleOfSpin2'])
-wf['inclination'] = incl
-wf['polarization'] = psi % (2 * np.pi)
-wf['eclipticlatitude'] = mbhb['EclipticLatitude']
-wf['eclipticlongitude'] = mbhb['EclipticLongitude']
-wf['coa_phase'] = mbhb['PhaseAtCoalescence']
-wf['distance'] = mbhb['Distance']      
+# wf['inclination'] = incl
+# wf['polarization'] = psi % (2 * np.pi)
+# wf['eclipticlatitude'] = mbhb['EclipticLatitude']
+# wf['eclipticlongitude'] = mbhb['EclipticLongitude']
+# wf['coa_phase'] = mbhb['PhaseAtCoalescence']
+# wf['distance'] = mbhb['Distance']      
+
+sig_ts = generate_waveform_for_data(
+    mbhb,
+    0,
+    365.25*86400,
+    5,
+)
+A_sig_psd = {}
+for channel, sig_psd in sig_ts.items():
+    A_sig_psd[channel] = sig_psd.to_frequencyseries()
+    # print(sig_fs[channel].delta_f)
+
+# print(sig_fs)
 
 # Generate Waveform
-A_sig_psd = get_fd_det_waveform(
-    ifos=['LISA_A'],
-    **wf,
-)
-A_sig_psd = A_sig_psd['LISA_A']
+# A_sig_psd = get_fd_det_waveform(
+#     ifos=['LISA_A', 'LISA_E'],
+#     **wf,
+# )
+
+# print(A_sig_psd['LISA_A'].delta_f)
+
+# from matplotlib import pyplot as plt
+# plt.loglog(A_sig_psd['LISA_A'].sample_frequencies, abs(A_sig_psd['LISA_A']))
+# plt.loglog(sig_fs['LISA_A'].sample_frequencies, abs(sig_fs['LISA_A']))
+# plt.savefig('test_wf_gen_same.png')
+# exit(1)
 
 # compute characteristic strain from waveform
-freqs = A_sig_psd.sample_frequencies.numpy()
-amp = np.abs(A_sig_psd.numpy())
-h_c = (2.0 * freqs * amp)
+freqs = A_sig_psd['LISA_A'].sample_frequencies.numpy()
+amp_A = np.abs(A_sig_psd['LISA_A'].numpy())
+amp_E = np.abs(A_sig_psd['LISA_E'].numpy())
+h_c_A = (2.0 * freqs * amp_A)
+h_c_E = (2.0 * freqs * amp_E)
 
 # save the characteristic strain psd
 np.savetxt(
     f'characteristic_strain/characteristic_strain_{sig_num}_full.txt',
-    list(zip(freqs, h_c))
+    list(zip(freqs, h_c_A, h_c_E))
 )
-
-hc_all[sig_num] = {
-    0: h_c
-}
 
 # map time before merger -> GW frequency using get_inspiral_tf
 track_t, track_f = get_inspiral_tf(
@@ -98,21 +137,21 @@ track_t, track_f = get_inspiral_tf(
 )
 
 for i, days in enumerate(cutoff_days):
-    print(f'{days} days before merger')
+    logging.info(f'{days} days before merger')
     t_before = days * 86400
 
     # Find cut frequency
     f_cut = float(np.interp(-t_before, track_t, track_f))
 
     # zero out frequencies above f_cut
-    mask = A_sig_psd.sample_frequencies > (f_cut + 1e-12)
-    h_c_tbefore = deepcopy(h_c)
-    h_c_tbefore[mask] = 0
+    mask = freqs > (f_cut + 1e-12)
+    h_c_A_tbefore = deepcopy(h_c_A)
+    h_c_A_tbefore[mask] = 0
+    h_c_E_tbefore = deepcopy(h_c_E)
+    h_c_E_tbefore[mask] = 0
 
-    hc_all[sig_num][days] = h_c_tbefore
-
-    # save the characteristic strain psd
+    logging.info('Saving A channel')
     np.savetxt(
         f'characteristic_strain/characteristic_strain_{sig_num}_{days}.txt',
-        list(zip(freqs, h_c_tbefore))
+        list(zip(freqs, h_c_A_tbefore, h_c_E_tbefore))
     )
