@@ -1,8 +1,17 @@
 \section{The Sangria HM Dataset}
 \label{sec:dataset}
-Our first consideration is to check whether the data from the Sangria dataset has
-similar noise properties to the datasets used our previous work. 
-\gscd{How does the Sangria dataset compare to the PSDs that we used to set up the zerolatency filter banks?}
+
+We test our search methods on the latest LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
+The LISA Data Challenges are designed to provide comprehensively modelled data as an introduction
+to LISA data analysis. The dataset considered here is Challenge 2a, also known as
+\textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
+This dataset is similar to Challenge 2: Sangria~\cite{LDC_WEBSITE_SANGRIA, le_jeune_2022_7132178};
+it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{}
+... \gscd{A couple more sentences of introduction to sangria}
+
+In applying our pre-merger search to the Sangria dataset, our first consideration is to check whether
+the data has similar noise properties to our assumptions in our previous work. 
+Figure~\ref{fig:psds} shows the PSD  
 
 \begin{figure*}
     \centering
@@ -26,8 +35,8 @@ similar noise properties to the datasets used our previous work.
         Characteristic SNRs for signals in the Sangria dataset.
         These are computed by comparing characteristic strain for the signal to the
         noise model PSD.
-        We see that Signals 5 and 14 are unlikely to be seen even 0.5 days pre-merger, and 
-        that signals 
+        We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and 
+        that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days before merger.
     }
     \label{tab:characteristic_strain_snr}
 \end{table}

@@ -31,6 +31,7 @@ superscriptaddress,
 \usepackage{hyperref}
 \usepackage{threeparttable}
 \usepackage{subcaption}
+\usepackage{orcidlink}
 
 %---------- Colours ----------
 \definecolor{garibaldired}{HTML}{DD0000}
@@ -47,10 +48,10 @@ superscriptaddress,
 
 \title{Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets}
 
-\author{Gareth {Cabourn Davies}}
+\author{Gareth {Cabourn Davies}\orcidlink{0000-0002-4289-3439}}
 \email{gareth.cabourn-davies@port.ac.uk}
 \affiliation{\portsmouth}
-\author{Ian Harry}%
+\author{Ian Harry\orcidlink{0000-0002-5304-9372}}
 \email{ian.harry@port.ac.uk}
 \affiliation{\portsmouth}
 
@@ -71,6 +72,13 @@ superscriptaddress,
 \end{abstract}
 
 \maketitle
+
+% Credit statement as a footnote beneath the emails
+\begingroup
+    \renewcommand\thefootnote{}
+    \footnotetext{Both authors contributed equally to this work.}
+    \addtocounter{footnote}{-1}
+\endgroup
 
 \acrodef{LISA}[LISA]{Laser Interferometer Space Antenna}
 \acrodef{MBHB}[MBHB]{Massive Black Hole Binary}
