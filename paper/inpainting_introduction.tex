@@ -1,17 +1,14 @@
 \section{Inpainting}
 \label{sec:inpainting}
 
-\iwh{This section should contain the theoretical motivation behind inpainting and the details of how it is applied \emph{in general}. I'm trying to work on this at the moment.}
-
-We have showed in the previous section, and in our previous work~\cite{CabournDavies:2024hea}, that the zero-latency filter method, used successfully for many years in ground-based low-latency analysis~\cite{Tsukada:2017cuf} is directly applicable to
+We have shown in the previous section, and in our previous work~\cite{CabournDavies:2024hea}, that the zero-latency filter method, used successfully for many years in ground-based low-latency analysis~\cite{Tsukada:2017cuf} is directly applicable to
 solve the \ac{MBHB} premerger problem in LISA.
 
-However, there are some issues with this method, when applied to LISA data, that warrant considering alternatives. The premerger analysis that we carried out with the zero-latency filter here analyzes 30 days of data to identify mergers up to 14 days before merger. LISA data is expected to have gaps \iwh{say a bit about expected cadence of gaps and cite some LISA design/white paper}. We do not have a method for dealing with these gaps using the zero-latency filter and therefore if there is a gap in the recorded LISA data in the days before a \ac{MBHB} merger it might result in a delay in identifying that the merger is about to happen. Additionally, the zero-latency search we propose only runs at fixed time before merger. If a system became visible 13 days before merger our method would require waiting 6 days before a detection was made. One could of course solve this by searching at more times than we do here, but that comes at an increase in computational cost.
+However, there are some issues with this method, when applied to LISA data, that warrant considering alternatives. The premerger analysis that we carried out with the zero-latency filter here analyzes 30 days of data to identify mergers up to 14 days before merger. LISA data is expected to have gaps arising both from planned antenna re-pointing and maneuvers as well as through unexpected outages~\cite{Colpi:2024xhw}. Gaps lasting of the order hours are predicted to occur roughly every two weeks, with shorter, 100s long gaps expected on a daily cadence~\cite{Castelli:2024sdb}. We do not have a method for dealing with these gaps using the zero-latency filter and therefore if there is a gap in the recorded LISA data in the days before a \ac{MBHB} merger it might result in a delay in identifying that the merger is about to happen. Additionally, the zero-latency search we propose only runs at fixed time before merger. If a system became visible 13 days before merger our method would require waiting 6 days before a detection was made. One could of course solve this by searching at more times than we do here, but that comes at an increase in computational cost.
 
-Here we consider an alternative technique, which is also adapted from ground-based analyses. In particular the observation of the first binary neutron star merger, GW170817, was significantly hampered by the presence of a loud non-Gaussian artefact in the seconds before the merger. At the time of observation the glitch was manually excised from the data, in a process known as ``gating". However, this gating results in spectral leakage in the whitened strain, as described in~\cite{Zackay:2019kkv}, which can cause issues for detection pipelines and bias inference algorithms.
+Here we consider an alternative technique, which is also adapted from ground-based analyses. In particular the observation of the first binary neutron star merger, GW170817, was significantly hampered by the presence of a loud non-Gaussian artefact in the seconds before the merger. At the time of observation the glitch was manually excised from the data, in a process known as ``gating". While this gating removes the immediate artifact, it introduces spectral leakage in the whitened strain, as described in~\cite{Zackay:2019kkv}, which can cause issues for detection pipelines and bias inference algorithms.
 
-The method of ``inpainting'' was proposed in~\cite{Zackay:2019kkv} as an
-alternative technique for safely removing non-Gaussianities and can equivalently be directly applied for analysing over data gaps. The full derivation is given in~\cite{Zackay:2019kkv,Capano:2021etf} and we refer the interested reader there for a full description, here we briefly cover the main principle. Consider the matched-filter between signal, $s$ and data $h$
+A method for first removing and then ``inpainting'' these non-Gaussianities was proposed in~\cite{Zackay:2019kkv} and can equivalently be directly applied for analyzing over data gaps. The full derivation is given in~\cite{Zackay:2019kkv,Capano:2021etf} and we refer the interested reader there for a full description, here we briefly cover the main principle. Consider the matched-filter between signal, $s$ and data $h$
 %
 \begin{equation}
     (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}}\frac{\tilde{h}(f)\tilde{s}^*(f)}{S_n(f)} \mathrm{d} f,
@@ -20,40 +17,35 @@ alternative technique for safely removing non-Gaussianities and can equivalently
 we can rewrite this as
 %
 \begin{equation}
-    (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \frac{\tilde{s}^*(f)}{S_n(f)} \mathrm{d} f,
+    (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \tilde{u}(f)  \mathrm{d} f,
 \end{equation}
 %
-where $\tilde{s}^*(f) / S_n(f)$ is the ``overwhitened'' strain. The matched-filter is then simply the cross correlation between the overwhitened strain and the template waveform and so any times where the overwhitened strain is 0 do not contribute to the overall matched-filter. However, if we begin with raw, unwhitened, data with a gap in it, the whitening, or overwhitening, process will ``bleed'' data from the valid points into the gap and so the values of the overwhitened data in the gap will not be 0. The inpainting technique works by setting values into the gap of the unwhitened data such that after overwhitening all values in the gap are 0. Choosing values that the unwhitened data should take in the gap such that this happens boild down to a linear algebra problem, which can be solved by a Toeplitz solver~\cite{Zackay:2019kkv}.
+where $\tilde{u}(f) = \tilde{s}^*(f) / S_n(f)$ is the ``overwhitened'' strain. The matched-filter is then simply the cross correlation between the overwhitened strain and the template waveform and so any times where the overwhitened strain is 0 do not contribute to the overall matched-filter. However, if we begin with raw, unwhitened, data with a gap in it, the whitening, or overwhitening, process will ``bleed'' data from the valid points into the gap according to the length of the [over]whitening filter in the time-domain. This results in the values of the overwhitened data in the gap not being 0.  The inpainting technique works by choosing appropriate values of the unwhitened data, in the gap, such that after overwhitening all values in the gap are 0. Choosing values that the unwhitened data should take in the gap to acheive this boils down to a linear algebra problem, which can be solved by a Toeplitz solver~\cite{Zackay:2019kkv}.
 
-\subsection{Implementing inpainting for a premerger search}
+\subsection{Implementing inpainting to simultaneously search for a signal at all times}
 
-\iwh{Here just need to say that we inpaint on the end and over any gaps
-using the PyCBC implementation. Prob only one paragraph.}
+The ``inpainting'' procedure is implemented in the \texttt{PyCBC} toolkit as described in~\cite{Capano:2021etf}. We first describe how we use this to inpaint the raw strain, and then how we perform matched-filtering on the inpainted data to obtain signal-to-noise ratio as a function of the time before merger.
 
-Inpainting has been used in the context of addressing gaps in LISA data in \cite{Blelly:2021oim},
-but here we apply it to a `gap' at the end of the data stream. We also apply the technique to gaps
-in the data as a demonstration in Section~\ref{subsec:inpainting_gaps}.
+To apply \texttt{PyCBC}'s inpainting to our search, where we have gaps in the middle of the data we simply apply it directly, allowing it to select values in the raw strain to make the overwhitened strain in the gap 0. To be able to analyse data that ends abruptly, where we are searching for signals merging in the future, we add a long stretch of zeroes to the end of the data, adding at least a week of extra zeroed data~\footnote{We add extra zeroes to resize the data to have length equal to $2^{N}$ where N is the smallest integer that is large enough to include the original data and a week of zeroes, to allow for more efficient Fast Fourier Transforms.}. We then apply the inpainting over this ``gap'', simultaneously dealing with any issues due to abrupt end of the data, but also smoothing out the abrupt start.
 
-Here, we use the implementation available in \texttt{PyCBC}~\cite{Capano:2021etf}.
+% I don't think this is the same thing ... which does lead to confusion over the
+% terminology
+% Inpainting has been used in the context of addressing gaps in LISA data in \cite{Blelly:2021oim},
 
-\subsection{Simultaneously searching for a signal at all times}
-
-When implementing our zero-latency filter, as described above, we choose to truncate our filter template waveforms at a number of distinct points before merger (0.5, 1, 4, 7 and 14 days before merger). However, this can be non ideal because a signal might have become observable 6 days before merger and so with this approach we either need more distinct sets of templates truncated at more times before merger, or accept a delay in identifying a signal.
-
-With the inpainting approach we can simultaneously search for a given template waveform at all times before merger. It is common in ground based analyses to evaluate $(h|s)$ as a function of time by introducing a frequency dependent time shift and evaluating the resulting expression using a fast Fourier Transform algorithm
+With the inpainting approach we can simultaneously search for a signal matching a given template waveform at all times before merger. It is common in ground based detection analyses~\cite{Allen:2005fk} to evaluate $(h|s)$ as a function of time by introducing a frequency dependent time shift and evaluating the resulting expression using a Fast Fourier Transform
 %
 \begin{equation}
     (h|s)(t) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \frac{\tilde{s}^*(f)}{S_n(f)} e^{2 i \pi f t} \mathrm{d} f.
 \end{equation}
 %
 This can be directly applied here as well. Where the signal waveform overlaps with the zeroed-out
-overwhitened data there is no contribution to $(h|s)$ and so we can easily obtain this as a function of shifting merger time.
-However, there is a complication that for this to be interpreted as a signal-to-noise ratio we need to normalize by the template amplitude; $\rho = (h|s) / (h|h)^{0.5}$.
+overwhitened data there is no contribution to $(h|s)$ and so we can easily obtain $(h|s)$ as a function of shifting merger time.
+However, there is a complication. For this to be interpreted as a signal-to-noise ratio we need to normalize by the template amplitude; $\rho = (h|s) / (h|h)^{0.5}$.
 In this application, the template amplitude $(h|h)$ must now be modelled as time dependent because any power in the template waveform at times where there is not data should not be included.
-However, as described in~\cite{Zackay:2019kkv} this can be done.
-The operation to do this is perhaps best visualised in the time domain, where $(h|h)$, without any gaps, is computed as the integral of the whitened template waveform multiplied by itself.
-One can then compute $(h|h)$ at any given value of merger time by zeroing out those parts of the template waveform that lie in the gaps.
-One can then take the cross-correlation between a vector whose values are 1 where data is present and 0 where there is gaps, and the squared, whitened template waveform, to obtain $(h|h)(t)$.
+In~\cite{Zackay:2019kkv} a method for computing a time-dependent $(h|h)$ was proposed, and we adopt it here.
+Consider computing $(h|h)$ in the time domain, where $(h|h)$, without gaps, is computed as the integral of the whitened template waveform multiplied by itself.
+Then $(h|h)$ can be computed at any given value of the merger time by zeroing out the parts of the template waveform that lie in the gaps.
+To obtain $(h|h)(t)$ one can compute the cross-correlation between a vector whose values are 1 where data is present and 0 where there are gaps, and the whitened template waveform multiplied by itself.
 This is more efficiently computed in the frequency domain via the convolution theorem
 %
 \begin{equation}
@@ -62,20 +54,17 @@ This is more efficiently computed in the frequency domain via the convolution th
 %
 where $\tilde{h_2}(f)$ is the Fourier transform of the whitened template waveform multiplied by itself and $\tilde{z}$ is the Fourier transform
 of the vector containing 1 where data is present and 0 where there are gaps.
+This gives us everything we need to compute $\rho(t)$ given a template waveform that might merge in the future and with the presence of data gaps.
 
 \subsection{A template bank to search for a signal at all time}
 
 The final step to be able to apply inpainting to a premerger search is that we need to create a set of filter waveforms, or template bank.
 The template banks created for the zero-latency search are created assuming a signal either 0.5, 1, 4, 7 or 14 days before merger and so are not guaranteed to be applicable here.
-To demonstrate this method though, we simply use the 1 day before merger bank.
+To demonstrate this method here we simply use the template bank computed assuming a signal 1 day before merger, the largest of the 5 banks produced.
 
-A better approach for the future would be to create a template bank specifically for this analysis.
-Stochastic placement, as we used for the zero-latency search~\cite{CabournDavies:2024hea}, could be used.
+An alternative method, which we encourage to be explored for future applications of this method, would be to create a template bank that is effectual for observing any signals in a given range of times before merger.
+Stochastic placement, as we used for the zero-latency search~\cite{CabournDavies:2024hea}, could be used to build such a bank.
 However, when simulating signals we would draw the time before merger when selecting a proposal point, alongside the other parameters.
 We would then check if that signal would be recovered by the existing template bank and add if it would not be recovered below a specified match threshold.
-
-\subsection{Numerical stability}
-
-\iwh{Do we want to briefly talk about potential issues of the algorithm and mention that the merger is removed from waveforms as the bit where we're most likely to see issues and that SYR folks are working on improving this.}
 
 
