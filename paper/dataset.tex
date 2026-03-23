@@ -9,22 +9,25 @@ This dataset is similar to Challenge 2: Sangria~\cite{LDC_WEBSITE_SANGRIA, le_je
 it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{Garcia-Quiros:2020qpx}.
 
 The Sangria-HM dataset contains Gaussian instrumental noise and simulations of astrophysical sources;
-Galactic \ac{WD} binaries and merging \acp{MBHB} systems with parameters derived from an astrophysical model.
+Galactic \ac{WD} binaries and merging \acp{MBHB} systems with parameters derived from astrophysical models.
 Here we use the training dataset, where we know the source parameters of signals, the model of instrumental noise used,
 and the form of LISA's orbit used to generate the data.
 
 In applying our pre-merger search to the Sangria dataset, our first consideration is to check whether
 the data has similar enough properties to our previously-assumed noise that our approach is directly transferable.
-The main difference between the noise assumptions we made before and the Sangria-HM dataset is that
-the Sangria-HM dataset contains millions of \ac{WD} binaries; these are long-lived sources, and
-occupy the same frequency space as mergers of \acp{MBHB}. Many of the \ac{WD} systems are not expected to be resolvable,
-and so must be considered an extra source of noise for our purposes. In fact we treat all \ac{WD} signals as noise in this paper, and the
+The main difference between the noise assumptions we made before and the Sangria-HM dataset is the
+inclusion of millions of \ac{WD} binaries; these are long-lived sources, and
+occupy the same frequency space as mergers of \acp{MBHB}.
+Many of the \ac{WD} systems are not expected to be resolvable,
+and so must be considered an extra source of noise for \ac{MBHB} searches.
+In fact we treat all \ac{WD} signals as noise in this paper, and the
 search is based on the `day-one' PSD of the data.
-This means that as the \ac{WD} sources are reolved and can be removed from the data, \ac{MBHB} searches will become more sensitive,
+This means that as the \ac{WD} sources are resolved and can be removed from the data, \ac{MBHB} searches will become more sensitive,
 but that is not considered here.
 
-The \ac{WD} confusion noise overlaps with the \ac{MBHB} mergers in frequency space, but our search is not for the mergers,
-rather the inspiral stage of the signal, many days before merger, and so we consider whether the 
+The \ac{WD} confusion noise overlaps with the \ac{MBHB} mergers in frequency space. But our search is not \textit{for} the mergers,
+rather the inspiral stage of the signal, many days before merger, and so we consider whether the frequency overlaps with the
+particular times-before-merger for our signals.
 
 Figure~\ref{fig:psds} shows the PSD directly estimated from the data, along with the model, and an example
 characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr}
@@ -44,6 +47,10 @@ for a description).
     }
     \label{fig:psds}
 \end{figure*}
+
+From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
+in frequency with the unresolvable galactic binary confusion noise. At 1 and 0.5 days before merger, the galactic binary confusion
+noise begins to overlap the \ac{MBHB}.
 
 \subsection{Smoothing the PSD}
 \label{subsec:smoothing}
@@ -77,15 +84,14 @@ Characteristic strain has a neat property; when the area between the characteris
 PSD in the frequency domain is calculated, this is the expected SNR for the signal.
 We compute this for each signal in the Sangria-HM dataset, with cutoffs set according to the
 time--frequency evolution expected for an inspiralling \ac{MBHB} signal.
-We calculate the waveforms using \gscd{FIXME: COMPLETE}
-The PSD used is the modelled and smoothed A/E PSD.
 
 \begin{table}
     \input{characteristic_strain_table.tex}
     \caption{
         Characteristic SNRs for signals in the Sangria dataset.
-        These are computed by comparing characteristic strain for the signal to the
+        These are computed by comparing characteristic strain for the signal to the smoothed
         noise model PSD.
+        Characteristic strain is calculated from waveforms using FastBHB as implemented in lisabeta \cite{Marsat:2020rtl}.
         We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and 
         that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days before merger.
     }
