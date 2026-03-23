@@ -1,17 +1,32 @@
 \section{The Sangria HM Dataset}
 \label{sec:dataset}
 
-We test our search methods on the latest LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
+We test our search methods on the LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
 The LISA Data Challenges are designed to provide comprehensively modelled data as an introduction
 to LISA data analysis. The dataset considered here is Challenge 2a, also known as
 \textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
 This dataset is similar to Challenge 2: Sangria~\cite{LDC_WEBSITE_SANGRIA, le_jeune_2022_7132178};
-it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{}
-... \gscd{A couple more sentences of introduction to sangria}
+it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{Garcia-Quiros:2020qpx}.
+
+The Sangria-HM dataset contains Gaussian instrumental noise and simulations of astrophysical sources;
+Galactic \ac{WD} binaries and merging \acp{MBHB} systems with parameters derived from an astrophysical model.
+Here we use the training dataset, where we know the source parameters of signals, the model of instrumental noise used,
+and the form of LISA's orbit used to generate the data.
 
 In applying our pre-merger search to the Sangria dataset, our first consideration is to check whether
-the data has similar noise properties to our assumptions in our previous work. 
-Figure~\ref{fig:psds} shows the PSD  
+the data has similar enough properties that our approach is directly transferable.
+We know that the Sangria-HM dataset contains millions of \ac{WD} binaries, which are long-lived, and
+occupy the same frequency space as mergers of \acp{MBHB}. Many of the \ac{WD} systems are not expected to be resolvable,
+and so mist be considered an extra source of noise. In fact we treat all \ac{WD} signals as noise in this paper, and the
+search is based on the day-one PSD of the data.
+This means that the later, archival, analyses of the data will be more sensitive, but 
+
+However our search is not for the mergers,
+rather the inspiral stage of the signal, many days before merger.
+
+Figure~\ref{fig:psds} shows the PSD directly estimated from the data, along with the model, and an example
+characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr}
+for a description).
 
 \begin{figure*}
     \centering
@@ -29,20 +44,15 @@ Figure~\ref{fig:psds} shows the PSD
     \label{fig:psds}
 \end{figure*}
 
-\begin{table}
-    \input{characteristic_strain_table.tex}
-    \caption{
-        Characteristic SNRs for signals in the Sangria dataset.
-        These are computed by comparing characteristic strain for the signal to the
-        noise model PSD.
-        We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and 
-        that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days before merger.
-    }
-    \label{tab:characteristic_strain_snr}
-\end{table}
-
 \subsection{Smoothing the PSD}
-PSD goes to zero at 60mHz - problem!
+\label{subsec:smoothing}
+At 60mHz, we see a dip in the PSD, this is an artefact of \gscd{what?}, and is not physical.
+The problem arises here that it is effectively an inverse delta function in the PSD, and delta functions in the
+PSD lead to broad-band noise - known as spectral leakage - in the time domain.
+
+To remove this noise, we smooth over it. We identify peaks in the model either side of the dip, and draw a line between them,
+so that this is not introducing discontinuities in the spectrum, we use a Hann window to smoothly transition between the PSD
+and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
 
 \begin{figure}
     \centering
@@ -57,3 +67,26 @@ PSD goes to zero at 60mHz - problem!
     \label{fig:smoothing}
 \end{figure}
 
+\subsection{Expected SNRs for signals}
+\label{subsec:expected_snr}
+For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
+strain}~\ref{} for the example of Signal 2, characteristic strain has a neat property; when the area
+between the characteristic strain and the PSD in the frequency domain is calculated, this is the
+expected SNR for the signal.
+We compute this for each signal in the Sangria-HM dataset, with cutoffs set according to the
+time--frequency evolution expected for an inspiralling \ac{MBHB} signal.
+We calculate the waveforms using \gscd{FIXME: COMPLETE}
+The PSD used is the modelled A/E PSD 
+
+
+\begin{table}
+    \input{characteristic_strain_table.tex}
+    \caption{
+        Characteristic SNRs for signals in the Sangria dataset.
+        These are computed by comparing characteristic strain for the signal to the
+        noise model PSD.
+        We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and 
+        that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days before merger.
+    }
+    \label{tab:characteristic_strain_snr}
+\end{table}
