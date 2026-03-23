@@ -1,8 +1,10 @@
 repo_dir=/home/gareth.cabourndavies/lisa_work/lisa_premerger_sangria/
 working_dir=$repo_dir/search/overlap_runs
-python_exe=/home/gareth.cabourndavies/environments/env_lisa_premerger/bin/python
+python_exe=/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/bin/python
 
+mkdir -p sub_files
 rm sub_files/optimal_snr_over_time.sub
+touch sub_files/optimal_snr_over_time.sub
 for signal_number in {0..14} ; do
 echo """
 executable=$python_exe
@@ -28,7 +30,7 @@ request_memory = 4GB
 request_cpus = 1
 request_disk = 1GB
 
-accounting_group = aluk.dev.o4.cbc.explore.test
+accounting_group = ligo.dev.o4.cbc.bbh.pycbcoffline
 
 queue
 """ >> sub_files/optimal_snr_over_time.sub
