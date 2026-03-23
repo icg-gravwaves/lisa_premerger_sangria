@@ -14,15 +14,17 @@ Here we use the training dataset, where we know the source parameters of signals
 and the form of LISA's orbit used to generate the data.
 
 In applying our pre-merger search to the Sangria dataset, our first consideration is to check whether
-the data has similar enough properties that our approach is directly transferable.
-We know that the Sangria-HM dataset contains millions of \ac{WD} binaries, which are long-lived, and
+the data has similar enough properties to our previously-assumed noise that our approach is directly transferable.
+The main difference between the noise assumptions we made before and the Sangria-HM dataset is that
+the Sangria-HM dataset contains millions of \ac{WD} binaries; these are long-lived sources, and
 occupy the same frequency space as mergers of \acp{MBHB}. Many of the \ac{WD} systems are not expected to be resolvable,
-and so mist be considered an extra source of noise. In fact we treat all \ac{WD} signals as noise in this paper, and the
-search is based on the day-one PSD of the data.
-This means that the later, archival, analyses of the data will be more sensitive, but 
+and so must be considered an extra source of noise for our purposes. In fact we treat all \ac{WD} signals as noise in this paper, and the
+search is based on the `day-one' PSD of the data.
+This means that as the \ac{WD} sources are reolved and can be removed from the data, \ac{MBHB} searches will become more sensitive,
+but that is not considered here.
 
-However our search is not for the mergers,
-rather the inspiral stage of the signal, many days before merger.
+The \ac{WD} confusion noise overlaps with the \ac{MBHB} mergers in frequency space, but our search is not for the mergers,
+rather the inspiral stage of the signal, many days before merger, and so we consider whether the 
 
 Figure~\ref{fig:psds} shows the PSD directly estimated from the data, along with the model, and an example
 characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr}
@@ -46,7 +48,8 @@ for a description).
 
 \subsection{Smoothing the PSD}
 \label{subsec:smoothing}
-At 60mHz, we see a dip in the PSD, this is an artefact of \gscd{what?}, and is not physical.
+At $\sim60$\,mHz, we see a dip in the PSD, this is an artefact where gravitational waves at this frequency have a wavelength
+of $5\times10^{9}$\,m, which is exactly double the arm length of LISA, and is not physical.
 The problem arises here that it is effectively an inverse delta function in the PSD, and delta functions in the
 PSD lead to broad-band noise - known as spectral leakage - in the time domain.
 
@@ -60,8 +63,8 @@ and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
     \caption{
         The method used to smooth over the dip in the PSD at 60 mHz.
         We draw a straight line between the two peaks either side of this point, and smoothly
+        transition between the estimated PSD and the straight line using a Hann window.
         This ensures that there are no immediate jumps in the PSD to cause spectral leakage.
-        transition betweem the estimated PSD and the straight line using a Hann window.
         This is applied to both the estimated and modelled PSDs used in later analysis.
     }
     \label{fig:smoothing}
@@ -70,14 +73,13 @@ and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
 \subsection{Expected SNRs for signals}
 \label{subsec:expected_snr}
 For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
-strain}~\ref{} for the example of Signal 2, characteristic strain has a neat property; when the area
-between the characteristic strain and the PSD in the frequency domain is calculated, this is the
-expected SNR for the signal.
+strain}~\cite{Moore:2014lga} for the example of Signal 2.
+Characteristic strain has a neat property; when the area between the characteristic strain and the
+PSD in the frequency domain is calculated, this is the expected SNR for the signal.
 We compute this for each signal in the Sangria-HM dataset, with cutoffs set according to the
 time--frequency evolution expected for an inspiralling \ac{MBHB} signal.
 We calculate the waveforms using \gscd{FIXME: COMPLETE}
-The PSD used is the modelled A/E PSD 
-
+The PSD used is the modelled and smoothed A/E PSD.
 
 \begin{table}
     \input{characteristic_strain_table.tex}
