@@ -3,7 +3,6 @@
 
 \iwh{ Things I think should appear here:
 \begin{itemize}
-    \item A description of the dataset and PSDs used, including Figure 1 ... I actually wonder whether this should be its own section as it's nothing to do with the zero-latency filter.
     \item Results of running the zero-latency search on the dataset. The overly-optimistic (ie. no GBs) model PSD is probably not going to give meaningful output, but the estimated PSD should be close enough to the model PSD + WD background. A table of how far before merger we find each of the signals with high significance might be useful.
     \item I would blank out the region of 4 signals for now and just say that we'll discuss this special case later and then go straight into inpainting.
 \end{itemize}}
@@ -11,13 +10,63 @@
 Our search uses a zero-latency filter such that data from the future is not required. A full
 description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
 
-To apply this search, we set up the data so that we can truncate it, this was done in hourly intervals,
-and then apply the search at 14, 7, 4 and 1 days before merger.
+To apply this search to the Sangria-HM dataset, we truncate the data at one hour intervals, and then search for signals which merge 0.5, 1, 4, 7 and 14 days
+from that time. We allow a one hour search window so that signals which do not merge on an integer hour
+can be recovered.
 
+\subsection{Template Bank}
+\label{subsec:template_bank}
+In order to utilise a matched filter search, we must first set up a set of waveforems -- a \textit{template bank} -- to which
+we compare the data.
+We use stochastic bank placement~\cite{Babak:2008rb, Harry:2009ea} in the same way as~\cite{CabournDavies:2024hea},
+with parameter limits set from Table~\ref{tab:parameter_space}.
+In constructing the bank, we calculate the match for signals only using frequencies up to the point corresponding to the desired
+time-before-merger for the signal.
 
-\subsection{Secondary Peaks in Signal-to-Noise Ratio}
-\label{subsec:double_peaks}
-\gscd{Discussion of finding the secondary peaks in the SNR.}
+\begin{table}[ht]
+\begin{centering}
+\begin{tabular}{|c| c|c|}
+\hline
+  Parameter & Limits & Distribution\\
+  \hline
+  Total Mass, $M_\odot$ & 1e6 -- 2e7 & uniform \\
+  Mass ratio, $q$ & 1 -- 4 & uniform \\
+  Component Spins, $\chi_1, \chi_2$ & -0.9 -- 0.9 & uniform\\
+  Ecliptic Longitude, $\lambda$ & 0 -- $2\pi$ & uniform \\
+  Ecliptic Latitude, $\beta$ & $-\pi / 2$ -- $\pi / 2$ & uniform in $\sin(\beta)$\\
+  Inclination, $\iota$ & 0 -- $\pi / 2$ & uniform in $\cos(\iota)$ \\
+  Polarisation & 0 -- $2 \pi$ & uniform \\  
+\hline
+\end{tabular}
+\caption{Parameter space used in setting up the template banks for the zero-latency filter search
+\label{tab:parameter_space}
+}
+\end{centering}
+\end{table}
+
+We must define a PSD used for the match calculations used in deciding the stochastic placement and so in this work, we consider
+the modelled PSD with Galactic Binary confusion, and the estimated PSD. The banks used in~\cite{CabournDavies:2024hea} used a modelled PSD
+without \ac{GB} confusion noise.
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different PSDs.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/figure_X_bank_size.pdf}
+    \caption{
+        Template bank sizes assuming different \acp{PSD}.
+        Inclusion of unresolvable \ac{GB} foreground in the model increases bank size by a factor between 2.1 and 2.6.
+        Using the estimated rather than modelled \ac{PSD} increases bank size by a factor between 1.0 and 1.9.
+    }
+    \label{fig:bank_size}
+\end{figure}
+
+For the searches in this paper, we use the template banks calculated from the estimated \ac{PSD}.
+
+\subsection{Initial Results}
+\label{subsec:initial_results}
+Our first attempt is straightforward; we simply apply the search used previously as we step through the data with no changes to the search method.
+
+In doing so, we face our first hurdle; the presence of the merger in the data. The data 
 
 \subsection{Secondary Peak Removal}
 \label{subsec:peak_removal}
@@ -33,7 +82,7 @@ Signal 5 can now be seen, as the contamination from the louder Signal 4 is now n
     \centering
     \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_X_signal_10_removed.pdf}
     \caption{
-        Signal 6 results, showing the secondary peaks removed as the signal is removed just before merger
+        Signal 10 results, showing results with and without the secondary peaks, for the removed results, the signal is removed from the data two hours before merger.
     }
     \label{fig:zerolatency_signal_removed_raw}
 \end{figure}
@@ -46,7 +95,7 @@ Signal 5 can now be seen, as the contamination from the louder Signal 4 is now n
     \centering
     \includegraphics[width=\textwidth]{images/zero_latency_results/psd_model/figure_X_zerolatency_result.png}
     \caption{
-        Search Results for the Zero Latency Search
+        Search results for the zero-latency filter search
     }
     \label{fig:zerolatency_remove_all}
 \end{figure*}
