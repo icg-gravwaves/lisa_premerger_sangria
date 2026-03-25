@@ -412,7 +412,10 @@ def get_results_inpainting(filename, filter_times_before=None, filter_time_befor
         results_end_time = results_end_time[tb_valid]
         results_time_before = results_time_before[tb_valid]
 
-    sort_key = np.argsort(results_time_before)
+    sort_key = np.lexsort(
+        (results_time_before,
+         results_time)
+    )
 
     return {
         "snr": results_snr[sort_key],
