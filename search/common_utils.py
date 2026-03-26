@@ -316,10 +316,6 @@ def remove_signals(
                 plot_file=f"{testing_plots}/waveform_for_removal_{i}.png",
             )
 
-        # Assign the subtracted timeseries back into the passed-in dicts
-        # (mutate the dictionaries in-place) so callers that don't capture
-        # a return value observe the changes. Rebinding the local names
-        # would not modify the caller's objects.
         for channel in list(data.keys()):
             data[channel] = subtracted[channel]
 
