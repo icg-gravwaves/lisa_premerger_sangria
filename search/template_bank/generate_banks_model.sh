@@ -34,8 +34,7 @@ for time_before in 0.5 1 4 7 14 ; do
       --output-file $output_dir/lisa_ew_model_${time_before}_day.hdf \
       --time-before $time_before_s \
       --psd-file $repo_dir/estimate_psds/model_AE_SMOOTHED_PSD.txt \
-      --low-frequency-cutoff .000001 \
-      --psd-inverse-length 86400
+      --low-frequency-cutoff .000001 
 
     output = $logs_dir/lisa_ew_model_${time_before}_day.out
     error = $logs_dir/lisa_ew_model_${time_before}_day.err
@@ -47,7 +46,7 @@ for time_before in 0.5 1 4 7 14 ; do
 
     accounting_group = ligo.dev.o4.cbc.bbh.pycbcoffline
     queue
-    """ > $logs_dir/lisa_ew_${time_before}_day.sub
+    """ > $logs_dir/lisa_ew_model_${time_before}_day.sub
 
-    condor_submit $logs_dir/lisa_ew_${time_before}_day.sub
+    condor_submit $logs_dir/lisa_ew_model_${time_before}_day.sub
 done
