@@ -316,6 +316,10 @@ def remove_signals(
                 plot_file=f"{testing_plots}/waveform_for_removal_{i}.png",
             )
 
+        # Assign the subtracted timeseries back into the passed-in dicts
+        # (mutate the dictionaries in-place) so callers that don't capture
+        # a return value observe the changes. Rebinding the local names
+        # would not modify the caller's objects.
         for channel in list(data.keys()):
             data[channel] = subtracted[channel]
 
@@ -408,10 +412,7 @@ def get_results_inpainting(filename, filter_times_before=None, filter_time_befor
         results_end_time = results_end_time[tb_valid]
         results_time_before = results_time_before[tb_valid]
 
-    sort_key = np.lexsort(
-        (results_time_before,
-         results_time)
-    )
+    sort_key = np.argsort(results_time_before)
 
     return {
         "snr": results_snr[sort_key],
