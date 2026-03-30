@@ -1,7 +1,15 @@
 \section{Applying the Premerger Search}
 \label{sec:zerolatency_sangria}
 
-We now apply our previous zero-latency filter based search method to the Sangria-HM Training dataset to demonstrate its ability to observe premerger \acp{MBHB}. A full description of the method can be found in~\cite{CabournDavies:2024hea} and, other than some necessary differences which we will highlight below, we use the same method, and implementation, here.
+We now apply our previous zero-latency filter based search method to the Sangria-HM Training dataset to demonstrate its ability to observe premerger \acp{MBHB}.
+A full description of the method can be found in~\cite{CabournDavies:2024hea} and, other than some necessary differences which we will highlight below, we use the same method, and implementation, here.
+
+Our search uses a zero-latency filter such that data from the future is not required. A full
+description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
+
+To apply this search to the Sangria-HM dataset, we truncate the data at one hour intervals, and then search for signals which merge 0.5, 1, 4, 7 and 14 days
+from that time.
+We allow a one hour search window so that signals which do not merge on an integer hour can be recovered.
 
 \subsection{Template Bank}
 \label{subsec:template_bank}
@@ -26,6 +34,11 @@ We now apply our previous zero-latency filter based search method to the Sangria
 }
 \end{centering}
 \end{table}
+
+We must define a \ac{PSD} used for the match calculations used in deciding the stochastic placement and so in this work, we consider
+the modelled \ac{PSD} with \ac{GB} confusion, and the estimated \ac{PSD}.
+The banks used in~\cite{CabournDavies:2024hea} used a modelled \ac{PSD} without \ac{GB} confusion noise.
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different \acp{PSD} .
 
 \begin{figure}
     \centering
@@ -98,16 +111,7 @@ Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the
 
 
 \iwh{I removed the "residuals after removal" plots from the paper. This might be okay in an appendix though, if you wanted to move it there.}
-%Signal removal is not perfect, as shown in Figure~\ref{fig:removal_residual}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=\columnwidth]{images/figure_X_removal_residual.pdf}
-%    \caption{
-%        Residuals after removal 
-%        Equivalent plots for all signals are included in the data release.
-%    }
-%    \label{fig:removal_residual}
-%\end{figure}
+
 
 
 
