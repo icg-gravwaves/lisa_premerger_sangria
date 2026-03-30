@@ -1,18 +1,6 @@
 \section{Applying inpainting to search Sangria data}
 \label{sec:inpainting_sangria}
 
-\iwh{This should mostly discuss the inpainting results. A brief discussion
-of the template bank we used is needed perhaps alongside how one might improve this in the future. However, the focus here is results. We want to show that we still observe X signals, but now we want to have numbers that are not 14/7/4/1 but 13.56 or whatever. Some nice plots showing the overall picture will also be useful. As before, leave the dense region}
-
-\iwh{THEN add a new section called "overlapping signals" or similar and present the focused region and how the various searches have handled this. The timetable within the inpainting search where it finds signal 3 \emph{before} signal 2 is important to show nicely here as well.}
-
-Having established the methodology by which we will use the inpainting technique to search for premerger signals, we apply the method to the Sangria dataset. We use the same dataset as we used early for the zero-latency filter and search for signals that are between 14 days and 2 hours before merger. Following section~\ref{sec:zerolatency_sangria} we remove signals 2 hours before merger so that a loud merger doesn't interfere with rapid observation of subsequent signals.
-
-The results are presented in Figure~\ref{fig:inpainting_estimate} where we show signal-to-noise ratio as a function of the time before merger. We also show in Table~\ref{tab:when_found} the details of how long before merger each signal was identified and with what signal-to-noise ratio. This is compared to the previous zero-latency results. We notice that not being restricted to search at discrete times before merger allows us to detect some of the signals days earlier. We remind that the zero-latency search could be run at more times before merger, but the computational cost would grow linearly with the number of times before merger searched.
-
-We also observe that for signals 0 and 3 the zero-latency search identifies the signal 7 days before merger, whereas the inpainting search identifies it 14 days before merger. Additionally, signal 4 is found with a larger signal-to-noise ratio with the inpainting search 14 days before merger. Although there is some overlap between signal 3 and signal 4, which we will discuss shortly, this is a direct comparison and both searches should be affected the same way by this. We believe that this improved efficiency at 14 days before merger is due to how the data is conditioned. For the zero-latency search we apply a long taper to the waveform over the first $\sim$ day of data to avoid any abrupt start effects and to remove and wraparound from the ringdown. The same is not performed for the inpainting. This results in more power being available for the 14-day before merger search. This is not a fundamental limitation. We chose to demonstrate the zero-latency method, and inpainting, on 28 days of data, but if more data was available, with non-negligible power there, once could simply increase the analysis window. However, for the zero-latency search, this increases the chance of gaps being present, which it cannot handle.
-
-
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{images/inpainting_results/figure_X_forecast_inpainting_estimate.png}
@@ -22,27 +10,40 @@ We also observe that for signals 0 and 3 the zero-latency search identifies the 
     \label{fig:inpainting_estimate}
 \end{figure*}
 
-\subsection{Gaps}
-\label{subsec:inpainting_gaps}
-
-One of the main motivations for the inpainting approach was that it could effectively handle gaps in the data. To demonstrate this, we reanalyse signal 0 with gaps added to the data 10.5 - 9.5, 5.5 - 4.5 and 2.5 - 1.5 days before merger. We then search for signal 0 using inpainting to mitigate the gaps and show the results in Figure~\ref{fig:signal_zero_timeline}. The plot shows the result of searching for the signal with the zero-latency search without gaps, the inpainting search without gaps and the inpainting search with the gaps added. We note that the overall signal-to-noise ratio recovered when gaps are present is smaller, which is expected because data, and signal power, is missing, but the search still accrues signal-to-noise at times when data is available, maximizing the chance of finding a signal like this. If, for example, signal 0 was 4 times further away, such that the signal-to-noise were reduced by a factor of 4 compared to what we see, the inpainting or zero-latency search could find this a little before 1 day before merger. However, if the data contains gaps then the zero-latency search would not be able to identify this 
-signal at all with our current implementation, whereas the inpainting search ginds it just after 1 day before merger.
-
-\iwh{Gareth can you find the exact times at which the lines cross SNR = 40}
-
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{images/inpainting_results/figure_X_signal_0_timeline.png}
     \caption{
-        Timeline of results for Signal Zero
+        Timeline of results for Signal Zero \iwh{PLEASE WRITE PROPER CAPTION}
     }
     \label{fig:signal_zero_timeline}
 \end{figure}
 
-\subsection{Comparison to zero-latency search}
 \begin{table*}[tbp]
         \centering
         \input{tables/results_when_found.tex}
-        \caption{}
+        \caption{\iwh{PLEASE ADD WORDS}}
         \label{tab:when_found}
 \end{table*}
+
+Having established the methodology by which we will use the inpainting technique to search for premerger signals, we apply the method to the Sangria dataset. We use the same dataset as we used early for the zero-latency filter and search for signals that are between 14 days and 2 hours before merger. In section~\ref{sec:zerolatency_sangria}, we remove signals 2 hours before merger so that a loud merger does not interfere with rapid observation of subsequent signals.
+
+The results are presented in Figure~\ref{fig:inpainting_estimate} where we show signal-to-noise ratio as a function of the time before merger. We also show in Table~\ref{tab:when_found} the details of how long before merger each signal was identified and with what signal-to-noise ratio. This is compared to the previous zero-latency results. The main thing we observe from this is the the inpainting procedure is doing what we expect, recovering signals at roughly the time before
+merger that we expect from Table~\ref{tab:characteristic_strain_snr}. We expect some variation due to Table~\ref{tab:characteristic_strain_snr} being produced with a frequency-domain cut, rather than an abrupt termination in the time domain, discreteness of the template banks used and the noise realisation. 
+
+We notice that as the inpainting search is not restricted to search at discrete times before merger we are able to detect some of the signals days earlier than our zero-latency search. The zero-latency search \emph{could} be run at more times before merger to alleviate this, but the computational cost would grow linearly with the number of times before merger searched.
+We also observe that for signals 0 and 3 the zero-latency search identifies the signal 7 days before merger, whereas the inpainting search identifies it 14 days before merger
+Additionally, signal 4 is found with a larger signal-to-noise ratio with the inpainting search 14 days before merger.
+We believe that this improved efficiency at 14 days before merger is due to how the data is conditioned.
+For the zero-latency search we apply a long taper to the waveform over the first $\sim$ day of data to avoid any abrupt start effects and to remove and wraparound from the ringdown.
+The same is not performed for the inpainting. This results in more power being available for inpainting search when searching 14 days before merger. This is not a fundamental limitation; we chose to demonstrate the zero-latency method, and inpainting, on 28 days of data, but if more data was available, with non-negligible power there, once could simply increase the analysis window. However, for the zero-latency search, this increases the chance of gaps being present, which it cannot handle.
+
+
+\subsection{Gaps}
+\label{subsec:inpainting_gaps}
+
+One of the main motivations for the inpainting approach was that it could effectively handle gaps in the data. To demonstrate this, we reanalyse signal 0 with gaps added to the data 10.5 - 9.5, 5.5 - 4.5 and 2.5 - 1.5 days before merger. We then search for signal 0 using inpainting to mitigate the gaps and show the results in Figure~\ref{fig:signal_zero_timeline}. The plot shows the result of searching for the signal with the zero-latency search without gaps, the inpainting search without gaps and the inpainting search with the aforementioned gaps added. We note that the overall signal-to-noise ratio recovered when gaps are present is smaller--which is expected, because data, and therefore signal power, is missing--but the search still accrues signal-to-noise at times when data is available, maximizing the chance of finding a signal like this. If, for example, signal 0 was 4 times further away, such that the signal-to-noise were reduced by a factor of 4 compared to what we see, the inpainting or zero-latency search could find this a little before 1 day before merger. However, if the data contains gaps then the zero-latency search would not be able to identify this 
+signal at all with our current implementation, whereas the inpainting search would find it just after 1 day before merger.
+
+\iwh{Gareth can you find the exact times at which the lines cross SNR = 40}
+
