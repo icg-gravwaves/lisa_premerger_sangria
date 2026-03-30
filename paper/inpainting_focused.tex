@@ -1,11 +1,27 @@
 \section{Overlapping Signals}
 \label{sec:focused}
 
+\begin{table}
+\include{tables/focused_removal_times.tex}
+\caption{
+    Times-before-merger at which we remove signals from the data in the focused region.
+    Signal 4 is removed 14 days before merger, which corresponds to 10.9 days before signal 3's merger.
+    Signal 3 and 4 are removed 9.95 and 984 days before Signal 2 merges respectfully.
+    \label{tab:focused_removal_times}
+}
+\end{table}
+
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{images/inpainting_results/figure_X_focused_region_variable_removal.png}
     \caption{
-        Timeline of results in the congested period of days 110-140 of the Sangria Dataset
+        Timeline of results in the congested period of days 110-140 of the Sangria-HM dataset.
+        These are inpainting results filtered to be at the 0,5,1,4,7,14 days-before-merger that were used in the zero latency search (\gscd{Should we redo this plot without filtering those??}).
+        We see that Signal 4 - the loudest signal - dominates the SNR, and can actually be found before signals 2 and 3.
+        We remove signal 4 14 days before merger
+        Signal 3 can be detected almost immediately after signal 4 is removed from the data, and is then removed 11 days before merger 
+        Signal 2 can then be found around a day before merger.
+        There remains a peak for the 1 and 0.5 days-before-merger results for signal 4 - this is due to imperfect removal 
     }
     \label{fig:variable_removal}
 \end{figure}

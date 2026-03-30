@@ -23,22 +23,21 @@ superscriptaddress,
 %---------- Packages ----------
 \usepackage{xcolor}
 \usepackage{multirow}
-\usepackage{tabularx}
+% \usepackage{tabularx}
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
 \usepackage{acronym}
 \usepackage{hyperref}
-\usepackage{threeparttable}
-\usepackage{subcaption}
 \usepackage{orcidlink}
+\usepackage{array}
 
 %---------- Colours ----------
 \definecolor{garibaldired}{HTML}{DD0000}
 \newcommand{\gscd}[1]{\textcolor{garibaldired}{[\textbf{GCD}: #1]}}
 \newcommand{\iwh}[1]{\textcolor{magenta}{[\textbf{IWH}: #1]}}
 
-% New command as we don't want to type it out too many times
+\newcommand{\strutrow}{\rule{0pt}{2.5ex}} % This gives a little extra space in tables
 \newcommand{\portsmouth}{Institute of Cosmology \& Gravitation, University of Portsmouth, Portsmouth, United Kingdom}
 
 %---------- Document ----------
