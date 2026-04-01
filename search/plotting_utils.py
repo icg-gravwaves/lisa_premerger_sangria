@@ -199,7 +199,7 @@ def plot_around_time(
         
     ax.set_ylim(bottom=4)
     ax.set_ylim(top=max(max_snr * 1.1, 10))
-    if signal_number is not None and title is not 'off':
+    if signal_number is not None and title != 'off':
         ax.set_title(f"Signal {signal_number}: {signal_truth_time/86400:.2f} days")
     return fig, (ax, labels, lines)
 
@@ -229,3 +229,65 @@ def get_colors(values=None, vmax=None, vmin=None):
         value: sm.to_rgba(value)
         for value in values
     }
+
+def plot_optimal_snr_match(
+    cutoff_days,
+    optimal_snr_data,
+    match_cut_results,
+    signal_number=None,
+    title=None,
+):
+    min_days = cutoff_days.min()
+    max_days = cutoff_days.max()
+    premerger_days = match_cut_results.keys()
+    premerger_colours = get_colors(values=premerger_days, vmin=0.5, vmax=14)
+    width = plt.rcParams["figure.figsize"][0]
+    height = plt.rcParams["figure.figsize"][1] * 1.25
+
+    fig, ax = plt.subplots(1, figsize=(width, height),)
+    opt_line, = ax.plot(
+        cutoff_days,
+        optimal_snr_data,
+        label='Optimal',
+        c='k'
+    )
+    ax2 = ax.twinx()
+    ax2.axhline(1, linestyle=':', c='k', zorder=0)
+
+    lines1 = [opt_line]
+    for premerger_day in premerger_days:
+        line1, = ax.plot(
+            cutoff_days,
+            match_cut_results[premerger_day],
+            label=f'{premerger_day:.0f} days',
+            c=premerger_colours[premerger_day]
+        )
+        lines1.append(line1)
+        ax2.plot(
+            cutoff_days,
+            match_cut_results[premerger_day] / optimal_snr_data,
+            linestyle=':',
+            c=premerger_colours[premerger_day],
+        )
+
+    ax.semilogy()
+    ax.grid()
+    ax.set_xlabel('Cutoff time relative to merger (days)')
+    ax.set_ylim(bottom=5e-3)
+
+    ax.set_xlim(min_days, max_days)
+    ax.set_ylabel('SNR')
+
+    ax2.set_ylim(0,1.05)
+    ax2.set_ylabel('Match')
+    leg = ax2.legend(handles=lines1, loc='upper left')
+    # leg.get_frame().set_alpha(1)
+    leg.set_zorder(10)
+    line_ff, = ax2.plot([],[],linestyle=':', c='k')
+    leg2 = ax2.legend([line_ff], ['Match'], loc='lower right')
+    leg2.set_zorder(10)
+    # leg2.get_frame().set_alpha(1)
+    ax2.add_artist(leg)
+    if title != 'off':
+        ax.set_title(f'Optimal SNR & Match vs time, Signal {signal_number}')
+    return fig, (ax, ax2)

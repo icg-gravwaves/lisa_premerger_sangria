@@ -2,7 +2,7 @@ repo_dir=/home/gareth.cabourndavies/lisa/lisa_premerger_sangria/
 working_dir=$repo_dir/search/overlap_runs
 python_exe=/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/bin/python
 
-signal_number=5
+signal_number=14
 
 $python_exe $working_dir/optimal_snr_over_time.py \
     --verbose \

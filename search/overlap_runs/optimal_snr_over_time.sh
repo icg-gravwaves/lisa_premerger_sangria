@@ -11,8 +11,6 @@ $python_exe $working_dir/optimal_snr_over_time.py \
     --f-lower 1e-6 \
     --data-file \
         $repo_dir/datasets/LDC2_sangria_hm_training.hdf \
-    --output-plot-format \
-        $working_dir/results/optimal_snr_over_time_{signal_no}.png \
     --output-file \
         $working_dir/results/optimal_snr_over_time.hdf \
     --n-points 500 \

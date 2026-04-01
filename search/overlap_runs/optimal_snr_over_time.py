@@ -41,7 +41,7 @@ from common_utils import(
     insert_bank_options,
     load_bank
 )
-from plotting_utils import get_colors
+from plotting_utils import get_colors, plot_optimal_snr_match
 
 rtsumsq = lambda x: np.sqrt(sum(xi ** 2 for xi in x))
 
@@ -160,7 +160,7 @@ logging.info('Using %d points', cutoff_days.size)
 with h5py.File(args.output_file,'w') as ofile:
     ofile.create_dataset(
         'cutoff_days',
-        data=-cutoff_days[::-1],
+        data=-cutoff_days,
     )
 
 if args.calculate_fitting_factor:
@@ -245,56 +245,13 @@ for signal_number, mbhb in enumerate(mbhbs):
 
     if args.output_plot_format is not None:
         logging.info('Plotting')
-        fig, ax = plt.subplots(1, figsize=(width, height),)
-        ax.plot(
+        fig, _ = plot_optimal_snr_match(
             -cutoff_days,
             optimal_snr_over_time,
-            label='Optimal',
-            c='k'
+            cut_match_over_time_all,
+            signal_number=signal_number
         )
-        ax2 = ax.twinx()
-        ax2.axhline(1, linestyle=':', c='k', zorder=0)
 
-        lines1 = []
-        for premerger_day in args.premerger_days:
-            line1, = ax.plot(
-                -cutoff_days,
-                cut_match_over_time_all[premerger_day],
-                label=f'{premerger_day:.0f} days',
-                c=premerger_colours[premerger_day]
-            )
-            lines1.append(line1)
-            ax2.plot(
-                -cutoff_days,
-                cut_match_over_time_all[premerger_day] / optimal_snr_over_time,
-                linestyle=':',
-                c=premerger_colours[premerger_day],
-            )
-
-        ax.semilogy()
-        ax.set_title(f'Optimal SNR & Match vs time, signal {signal_number}')
-        ax.grid()
-        ax.set_xlabel('Cutoff time relative to merger')
-        ax.set_ylim(bottom=5e-3)
-
-        if args.space == 'linear':
-            ax.set_xlim(-args.days_before, args.days_after)
-        if args.space == 'log':
-            ax.set_xscale('symlog', linthresh=linthresh, linscale=0.2)
-            ax.set_xlim(-args.days_before, args.days_after)
-        ax.set_ylabel('SNR')
-
-        ax2.set_ylim(0,1.05)
-        ax2.set_ylabel('Match')
-        n_columns = np.ceil(len(args.premerger_days) / 3) if args.space == 'log' else 1
-        leg = ax2.legend(handles=lines1, loc='upper left', ncol=n_columns)
-        # leg.get_frame().set_alpha(1)
-        leg.set_zorder(10)
-        line_ff, = ax2.plot([],[],linestyle=':', c='k')
-        leg2 = ax2.legend([line_ff],['Normalised to Optimal'],loc='lower right')
-        leg2.set_zorder(10)
-        # leg2.get_frame().set_alpha(1)
-        ax2.add_artist(leg)
         output_fname = args.output_plot_format.format(signal_no=signal_number)
         logging.info("Outputting to %s", output_fname)
         fig.savefig(output_fname)
