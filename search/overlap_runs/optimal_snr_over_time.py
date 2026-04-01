@@ -11,6 +11,10 @@ import logging  # Library for logging messages
 from tqdm import tqdm  # Library for creating progress bars
 import numpy as np
 from matplotlib import pyplot as plt
+# Use the style file defined in the repository route
+plt.style.use('../../paper.mplstyle')
+
+
 
 # Import specific modules from the PyCBC library
 import pycbc
@@ -22,14 +26,23 @@ from pycbc.waveform.pre_merger_waveform import (
     pre_process_data_lisa_pre_merger,  # Function to preprocess data for LISA pre-merger
     generate_waveform_lisa_pre_merger,  # Function to generate waveform for LISA pre-merger
 )
+from pycbc.strain.gate import gate_and_paint
 import ldc.io.hdf5 as hdfio
 
-from utils import (
-    ldc_to_bbhx,
-    get_optimal_snr,
-    get_full_optimal_snr,
-    get_snr_series
+import sys, os
+
+parent_dir = os.path.abspath("..")
+
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from common_utils import(
+    generate_waveform_for_data,
+    insert_bank_options,
+    load_bank
 )
+from plotting_utils import get_colors
+
 rtsumsq = lambda x: np.sqrt(sum(xi ** 2 for xi in x))
 
 # Set up argument parser for command-line arguments
@@ -44,13 +57,22 @@ parser.add_argument(
 # Add argument for the data file (required)
 parser.add_argument('--data-file', required=True)
 
+# Time before and after to plot the optimal SNR and fitting factor
 parser.add_argument("--days-before", type=float, default=25)
+parser.add_argument('--days-after', type=float, default=5)
+# How many points to calculate optimal SNR and fitting factor for
+parser.add_argument('--n-points', type=int, default=1200)
 
-# Add argument for the kernel length with a default value
-parser.add_argument('--kernel-length', type=int, default=17280)
+# Time before merger to cut the merger and apply the zero latency filter
+parser.add_argument('--premerger-days', type=float, nargs='+')
 
-# Add argument for the data length with a default value (seconds)
-parser.add_argument('--data-length', type=int, default=2592000)
+parser.add_argument(
+    '--data-pad',
+    type=float,
+    default=15,
+    help='Number of days data to add before and after the '
+    'days-before/days-after argument to allow for data corruption/wraparound effects'
+)
 
 # Add argument for the lower frequency cutoff with a default value
 parser.add_argument('--f-lower', type=float, default=1e-6)
@@ -61,15 +83,16 @@ parser.add_argument('--sample-rate', type=float, default=0.2)
 parser.add_argument('--output-file', required=True)
 
 parser.add_argument('--output-plot-format')
-
-parser.add_argument('--n-points', type=int, default=1200)
-
-parser.add_argument('--days-after', type=float, default=5)
+parser.add_argument('--space', default='linear', choices=['log', 'linear'])
 
 parser.add_argument('--signal-number', type=int, choices=np.arange(15),
                     help="If given, restrict the signal number loop "
                          "to only this signal")
 
+parser.add_argument('--calculate-fitting-factor', action='store_true')
+parser.add_argument('--kernel-length', type=int, default=17280)
+
+insert_bank_options(parser, bank_required=False)
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
@@ -79,35 +102,12 @@ window_length = 17280
 
 mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
 
-waveform_params_shared = {
-    't_obs_start': args.data_length, # This is setting the data length.
-    'f_lower': args.f_lower,
-    'low-frequency-cutoff': 1e-6, 
-    'f_final': args.sample_rate / 2,
-    'delta_f': 1 / args.data_length,
-    'tdi': '1.5',
-    't_offset': 0,
-    'approximant': 'BBHX_PhenomD',
-    'mode_array': [(2,2)],
-    'tc': args.data_length,
-}
+seconds_before_data = (args.days_before + args.data_pad) * 86400
+seconds_after_data = (args.days_after + args.data_pad) * 86400
+data_length_s = seconds_before_data + seconds_after_data
 
-
-psds_for_whitening = {
-    f'LISA_{channel}': interpolate(
-        generate_pre_merger_psds(
-            psd_file=args.psd_files[channel],
-            duration=args.data_length,
-            sample_rate=args.sample_rate,
-            kernel_length=args.kernel_length
-        )['FD'],
-        1 / args.data_length
-    )
-    for channel in ['A','E']
-}
-
-flen = int(args.data_length * args.sample_rate) // 2 + 1
-delta_f = 1 / args.data_length
+flen = int(data_length_s * args.sample_rate) // 2 + 1
+delta_f = 1 / data_length_s
 
 psds_standard = {
     f'LISA_{channel}': pycbc.psd.from_txt(
@@ -120,12 +120,42 @@ psds_standard = {
     for channel in ['A','E']
 }
 
+if args.space == 'linear':
+    cutoff_days = np.linspace(
+        -args.days_after,
+        args.days_before,
+        args.n_points
+    )
+else:
+    if args.days_after != 5:
+        # if args.days after is not the default, warn but dont fail
+        logging.warning('--days-after and ---space log are given, ignoring --days-after')
 
-cutoff_days = np.linspace(
-    -args.days_after,
-    args.days_before,
-    args.n_points
-)[::-1]
+    # Use points on a log scale
+    linthresh = 0.1
+    n_before = int(args.n_points * args.days_before / (args.days_before + args.days_after))
+    n_after = args.n_points - n_before
+    print(n_before, n_after)
+    cutoff_days_before = np.logspace(
+        np.log10(linthresh),
+        np.log10(args.days_before),
+        num=n_before
+    )
+    cutoff_days_after = -np.logspace(
+        np.log10(linthresh),
+        np.log10(args.days_after),
+        num=n_after
+    )
+    cutoff_days = np.concatenate((cutoff_days_before, cutoff_days_after))
+
+
+# Make sure that the premerger days in the plot are also in the cutoff_days array
+cutoff_days = np.sort(np.concatenate((
+    cutoff_days,
+    args.premerger_days + [0]
+)))[::-1]
+
+logging.info('Using %d points', cutoff_days.size)
 
 with h5py.File(args.output_file,'w') as ofile:
     ofile.create_dataset(
@@ -133,55 +163,138 @@ with h5py.File(args.output_file,'w') as ofile:
         data=-cutoff_days[::-1],
     )
 
-for signal_number in np.arange(15):
+if args.calculate_fitting_factor:
+    bank_array = load_bank(args)
+
+premerger_colours = get_colors(values=args.premerger_days, vmin=0.5, vmax=14)
+width = plt.rcParams["figure.figsize"][0]
+height = plt.rcParams["figure.figsize"][1] * 1.25
+
+for signal_number, mbhb in enumerate(mbhbs):
     if args.signal_number is not None and not signal_number == args.signal_number:
         continue
     logging.info("Signal number %d", signal_number)
-    optimal_snr_over_time = np.zeros_like(cutoff_days)
-    signal_waveform = ldc_to_bbhx(
-        mbhbs[signal_number],
-        waveform_params_shared
+    coalescence_time = mbhb['CoalescenceTime']
+    logging.info('Generating signal')
+    signal = generate_waveform_for_data(
+        mbhb,
+        coalescence_time - seconds_before_data,
+        coalescence_time + seconds_after_data,
+        delta_t = 1. / args.sample_rate
     )
-    logging.info("Calculating optimal SNR over time")
-    for i, cutoff_day in enumerate(tqdm(cutoff_days)):
+    del signal['LISA_T']
 
-        cutoff_s = cutoff_day * 86400
-        optimal_snr = get_optimal_snr(
-            signal_waveform,
-            psds_for_whitening,
-            cutoff_s,
-            window_length=window_length,
-            delta_t=1. / args.sample_rate,
-            kernel_length=args.kernel_length,
+    cut_match_over_time_all = {}
+    cut_match_over_time_ts_all = {}
+    logging.info('Calculating match with pre-merger cut waveforms')
+    for premerger_day in args.premerger_days:
+        signal_premerger = copy.deepcopy(signal)
+        snrsq_cm = np.zeros_like(signal['LISA_A'].sample_times)
+        for channel in signal_premerger.keys():
+            start_idx = int((coalescence_time - 86400 * premerger_day - signal_premerger[channel]._epoch) * args.sample_rate)
+            signal_premerger[channel][start_idx:] = 0
+
+            snrsq_ts = abs(pycbc.filter.matched_filter(
+                signal_premerger[channel],
+                signal[channel],
+                psd=psds_standard[channel],
+                low_frequency_cutoff=delta_f,
+            ))
+            snrsq_ts = snrsq_ts.cyclic_time_shift(-86400 * (premerger_day + args.days_after + args.data_pad))
+            snrsq_cm += np.abs(snrsq_ts._data) ** 2
+        cut_match_over_time_ts = np.sqrt(snrsq_cm)
+
+        cut_match_over_time = np.interp(
+            -cutoff_days * 86400,
+            signal['LISA_A'].sample_times - coalescence_time,
+            cut_match_over_time_ts
         )
-
-        optimal_snr_over_time[i] = rtsumsq(optimal_snr)
-
-    logging.info(
-        "Updating zero cutoff time and later to be the full signal"
-    )
-
-    optimal_snr_over_time[cutoff_days <= 0] = rtsumsq(get_full_optimal_snr(
-        signal_waveform,
-        psds_standard
-    ))
-
+        cut_match_over_time_all[premerger_day] = cut_match_over_time
+        cut_match_over_time_ts_all[premerger_day] = cut_match_over_time_ts
+    
+    logging.info('Calculating Optimal SNR')
+    optimal_snr_over_time = np.zeros_like(cutoff_days)
+    for i, cutoff_day in enumerate(cutoff_days):
+        cutoff_s = cutoff_day * 86400
+        signal_cutoff = copy.deepcopy(signal)
+        snrsq_optimal = 0
+        for channel in signal_cutoff.keys():
+            to_zero = signal_cutoff[channel].sample_times > (coalescence_time - cutoff_s)
+            signal_cutoff[channel]._data[to_zero] = 0
+            snrsq_optimal += pycbc.filter.sigmasq(
+                signal_cutoff[channel],
+                psd=psds_standard[channel],
+                low_frequency_cutoff=delta_f,
+            )
+        optimal_snr_over_time[i] = np.sqrt(snrsq_optimal)
 
     with h5py.File(args.output_file,'a') as ofile:
-        ofile.create_dataset(
-            f'optimal_snr_signal_{signal_number}',
-            data=optimal_snr_over_time[::-1],
+        signal_grp = ofile.create_group(
+            f'signal_{signal_number:d}',
         )
+        signal_grp.create_dataset(
+            'optimal_snr',
+            data=optimal_snr_over_time,
+        )
+        for premerger_day in args.premerger_days:
+            signal_grp.create_dataset(
+                f'match_cut_{premerger_day:.0f}_days',
+                data=cut_match_over_time_all[premerger_day]
+            )
+
 
     if args.output_plot_format is not None:
-        fig, ax = plt.subplots()
+        logging.info('Plotting')
+        fig, ax = plt.subplots(1, figsize=(width, height),)
         ax.plot(
             -cutoff_days,
-            optimal_snr_over_time
+            optimal_snr_over_time,
+            label='Optimal',
+            c='k'
         )
+        ax2 = ax.twinx()
+        ax2.axhline(1, linestyle=':', c='k', zorder=0)
+
+        lines1 = []
+        for premerger_day in args.premerger_days:
+            line1, = ax.plot(
+                -cutoff_days,
+                cut_match_over_time_all[premerger_day],
+                label=f'{premerger_day:.0f} days',
+                c=premerger_colours[premerger_day]
+            )
+            lines1.append(line1)
+            ax2.plot(
+                -cutoff_days,
+                cut_match_over_time_all[premerger_day] / optimal_snr_over_time,
+                linestyle=':',
+                c=premerger_colours[premerger_day],
+            )
+
         ax.semilogy()
-        ax.set_title(f'Optimal SNR vs time, signal {signal_number}')
+        ax.set_title(f'Optimal SNR & Match vs time, signal {signal_number}')
         ax.grid()
-        ax.set_xlabel('Cutoff time')
-        ax.set_ylabel('Optimal SNR')
-        fig.savefig(args.output_plot_format.format(signal_no=signal_number))
+        ax.set_xlabel('Cutoff time relative to merger')
+        ax.set_ylim(bottom=5e-3)
+
+        if args.space == 'linear':
+            ax.set_xlim(-args.days_before, args.days_after)
+        if args.space == 'log':
+            ax.set_xscale('symlog', linthresh=linthresh, linscale=0.2)
+            ax.set_xlim(-args.days_before, args.days_after)
+        ax.set_ylabel('SNR')
+
+        ax2.set_ylim(0,1.05)
+        ax2.set_ylabel('Match')
+        n_columns = np.ceil(len(args.premerger_days) / 3) if args.space == 'log' else 1
+        leg = ax2.legend(handles=lines1, loc='upper left', ncol=n_columns)
+        # leg.get_frame().set_alpha(1)
+        leg.set_zorder(10)
+        line_ff, = ax2.plot([],[],linestyle=':', c='k')
+        leg2 = ax2.legend([line_ff],['Normalised to Optimal'],loc='lower right')
+        leg2.set_zorder(10)
+        # leg2.get_frame().set_alpha(1)
+        ax2.add_artist(leg)
+        output_fname = args.output_plot_format.format(signal_no=signal_number)
+        logging.info("Outputting to %s", output_fname)
+        fig.savefig(output_fname)
