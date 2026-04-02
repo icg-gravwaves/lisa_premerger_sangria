@@ -11,9 +11,9 @@
 }
 \end{table}
 
-\begin{figure}
+\begin{figure*}
     \centering
-    \includegraphics[width=\columnwidth]{images/inpainting_results/figure_X_focused_region_variable_removal.png}
+    \includegraphics[width=1.5\columnwidth]{images/inpainting_results/figure_X_focused_region_variable_removal.png}
     \caption{
         Timeline of results in the congested period of days 110-140 of the Sangria-HM dataset.
         These are inpainting results filtered to be at the 0,5,1,4,7,14 days-before-merger that were used in the zero latency search (\gscd{Should we redo this plot without filtering those??}).
@@ -24,7 +24,7 @@
         There remains a peak for the 1 and 0.5 days-before-merger results for signal 4 - this is due to imperfect removal 
     }
     \label{fig:variable_removal}
-\end{figure}
+\end{figure*}
 
 The Sangria training dataset that we use contains 15 MBHB signals with end times chosen uniformly within the dataset. This resulted in 4 signals, signals 2 - 5, having end times that are all within 10 days of each other, with signal 2 and 3 separated by only 1.05 days.  This proximity of signals can lead to some overlap between them. In Figure~\ref{NEED_TO_MAKE} we show the results of the zero-latency search, without any signal removal, for the \iwh{inpainting/zero-latency whichever we have doesn't matter} search. We can \iwh{hopefully clearly see a lot of cross talk between the signals, especially as the merger of signals 3 and 4 causes an increase in the signal-to-noise ratio for a long time afterwards}. In Figure~\ref{fig:zerolatency_signal_removed_raw} we demonstrated the need to remove signals before merger to avoid this. We also show the effect of doing this for \iwh{both? the inpainting and zero-latency searches} in Figure~\ref{NEED_TO_MAKE}. The distinction between the signals is clearer now, but it is still hard to distinguish signal 3 from signal 4 and both signal 2 and signal 5 remain masked by the louder signals 
 
