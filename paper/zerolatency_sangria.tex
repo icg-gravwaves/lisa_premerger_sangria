@@ -3,7 +3,7 @@
 
 \iwh{ Things I think should appear here:
 \begin{itemize}
-    \item Results of running the zero-latency search on the dataset. The overly-optimistic (ie. no GBs) model \ac{PSD} is probably not going to give meaningful output, but the estimated \ac{PSD} should be close enough to the model \ac{PSD} + WD background. A table of how far before merger we find each of the signals with high significance might be useful.
+    \item Results of running the zero-latency search on the dataset. The overly-optimistic (ie. no Galactic binaries) model power-spectral density is probably not going to give meaningful output, but the estimated power-spectral density should be close enough to the model power-spectral density + white dwarf background. A table of how far before merger we find each of the signals with high significance might be useful.
     \item I would blank out the region of 4 signals for now and just say that we'll discuss this special case later and then go straight into inpainting.
 \end{itemize}}
 
@@ -44,23 +44,22 @@ time-before-merger for the signal.
 \end{centering}
 \end{table}
 
-We must define a \ac{PSD} used for the match calculations used in deciding the stochastic placement and so in this work, we consider
-the modelled \ac{PSD} with \ac{GB} confusion, and the estimated \ac{PSD} . The banks used in~\cite{CabournDavies:2024hea} used a modelled \ac{PSD} 
-without \ac{GB} confusion noise.
-In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different \acp{PSD} .
+We must define a power-spectral density used for the match calculations used in deciding the stochastic placement and so in this work, we consider
+the modelled power-spectral density with Galactic binary confusion, and the estimated power-spectral density. The banks used in~\cite{CabournDavies:2024hea} used a modelled power-spectral density without Galactic binary confusion noise.
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different power-spectral densities.
 
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{images/figure_X_bank_size.pdf}
     \caption{
-        Template bank sizes assuming different \acp{PSD}.
-        Inclusion of unresolvable \ac{GB} foreground in the model increases bank size by a factor between 2.1 and 2.6.
-        Using the estimated rather than modelled \ac{PSD} increases bank size by a factor between 1.0 and 1.9.
+        Template bank sizes assuming different power-spectral densities.
+        Inclusion of unresolvable Galactic binary foreground in the model increases bank size by a factor between 2.1 and 2.6.
+        Using the estimated rather than modelled power-spectral density increases bank size by a factor between 1.0 and 1.9.
     }
     \label{fig:bank_size}
 \end{figure}
 
-For the searches in this paper, we use the template banks calculated from the estimated \ac{PSD}.
+For the searches in this paper, we use the template banks calculated from the estimated power-spectral density.
 
 \subsection{Initial Results}
 \label{subsec:initial_results}
@@ -72,7 +71,7 @@ In doing so, we face our first hurdle; the presence of the merger in the data. T
     \centering
     \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_X_opt_snr_match_signal_14.pdf}
     \caption{
-        Optimal SNR build-up and SNR of premerger-truncated signals matched filtered against the full signal for Signal 14.
+        Optimal signal-to-noise ratio build-up and signal-to-noise ratio of premerger-truncated signals matched filtered against the full signal for signal 14.
         We see that the premerger-truncated signals SNRs are a product 
         Equivalent plots for all signals are included in the data release.
     }
@@ -84,7 +83,7 @@ In doing so, we face our first hurdle; the presence of the merger in the data. T
 \label{subsec:peak_removal}
 \gscd{Removing the peaks, and the results of the search including removing the peaks. Discussion of whether assuming that the signal is known is valid or not}
 
-\gscd{Discussion of how we remove the secondary peaks in the \ac{SNR} .}
+\gscd{Discussion of how we remove the secondary peaks in the signal-to-noise ratio .}
 
 \begin{figure}
     \centering
