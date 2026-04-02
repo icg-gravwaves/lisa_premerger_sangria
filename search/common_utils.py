@@ -8,7 +8,6 @@ from ldc.waveform.lisabeta import FastBHB
 from ldc.lisa import orbits
 from astropy import units as un
 import logging
-import copy
 import h5py
 
 from matplotlib import pyplot as plt

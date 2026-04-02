@@ -1,24 +1,9 @@
 import numpy as np
 import copy
-from tqdm import tqdm
 import h5py
 import logging
 import os
 import sys
-
-import pycbc
-import pycbc.psd
-import pycbc.fft
-import pycbc.types
-import pycbc.waveform
-import pycbc.strain.strain
-import pycbc.noise
-import pycbc.pnutils
-import pycbc.filter
-from pycbc.strain.gate import gate_and_paint
-
-from pycbc.waveform import get_fd_det_waveform
-import ldc.io.hdf5 as hdfio
 
 from matplotlib import pyplot as plt
 

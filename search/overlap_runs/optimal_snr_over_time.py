@@ -3,12 +3,9 @@ This is a script to run the search analysis using a file as input.
 """
 
 # Import necessary libraries
-import h5py  # Library for interacting with HDF5 files
 import copy  # Library for creating copies of objects
-import json  # Library for parsing JSON data
 import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
-from tqdm import tqdm  # Library for creating progress bars
 import numpy as np
 from matplotlib import pyplot as plt
 # Use the style file defined in the repository route
@@ -17,17 +14,7 @@ plt.style.use('../../paper.mplstyle')
 
 
 # Import specific modules from the PyCBC library
-import pycbc
-import pycbc.types
-from pycbc.psd import interpolate
 from pycbc.types import MultiDetOptionAction  # Custom action for argparse
-from pycbc.psd.lisa_pre_merger import generate_pre_merger_psds  # Function to generate pre-merger PSDs
-from pycbc.waveform.pre_merger_waveform import (
-    pre_process_data_lisa_pre_merger,  # Function to preprocess data for LISA pre-merger
-    generate_waveform_lisa_pre_merger,  # Function to generate waveform for LISA pre-merger
-)
-from pycbc.strain.gate import gate_and_paint
-import ldc.io.hdf5 as hdfio
 
 import sys, os
 

@@ -1,6 +1,5 @@
 import numpy as np
 import copy
-from tqdm import tqdm
 import h5py
 import logging
 from matplotlib import pyplot as plt
@@ -8,12 +7,7 @@ import os
 import sys
 
 import pycbc
-import pycbc.psd
-import pycbc.fft
-import pycbc.types
 import pycbc.waveform
-import pycbc.strain.strain
-import pycbc.noise
 import pycbc.pnutils
 import pycbc.filter
 from pycbc.waveform.pre_merger_waveform import (
@@ -21,8 +15,6 @@ from pycbc.waveform.pre_merger_waveform import (
     generate_waveform_lisa_pre_merger,
     pre_process_data_lisa_pre_merger,
 )
-from pycbc.waveform import get_fd_det_waveform
-import ldc.io.hdf5 as hdfio
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from common_utils import (
