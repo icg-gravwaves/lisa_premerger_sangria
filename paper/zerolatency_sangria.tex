@@ -3,7 +3,7 @@
 
 \iwh{ Things I think should appear here:
 \begin{itemize}
-    \item Results of running the zero-latency search on the dataset. The overly-optimistic (ie. no GBs) model PSD is probably not going to give meaningful output, but the estimated PSD should be close enough to the model PSD + WD background. A table of how far before merger we find each of the signals with high significance might be useful.
+    \item Results of running the zero-latency search on the dataset. The overly-optimistic (ie. no GBs) model \ac{PSD} is probably not going to give meaningful output, but the estimated \ac{PSD} should be close enough to the model \ac{PSD} + WD background. A table of how far before merger we find each of the signals with high significance might be useful.
     \item I would blank out the region of 4 signals for now and just say that we'll discuss this special case later and then go straight into inpainting.
 \end{itemize}}
 
@@ -16,7 +16,7 @@ can be recovered.
 
 \subsection{Template Bank}
 \label{subsec:template_bank}
-In order to utilise a matched filter search, we must first set up a set of waveforems -- a \textit{template bank} -- to which
+In order to utilise a matched filter search, we must first set up a set of waveforms -- a \textit{template bank} -- to which
 we compare the data.
 We use stochastic bank placement~\cite{Babak:2008rb, Harry:2009ea} in the same way as~\cite{CabournDavies:2024hea},
 with parameter limits set from Table~\ref{tab:parameter_space}.
@@ -25,17 +25,17 @@ time-before-merger for the signal.
 
 \begin{table}[ht]
 \begin{centering}
-\begin{tabular}{|c| c|c|}
+\begin{tabular}{|c|r @{ -- } l|c|} % this means the table is aligned on the dash - upper and lower are technically different columns, just with a dash between them
 \hline
-  Parameter & Limits & Distribution\\
+  Parameter & \multicolumn{2}{c|}{Limits} & Distribution\\
   \hline
-  Total Mass, $M_\odot$ & 1e6 -- 2e7 & uniform \\
-  Mass ratio, $q$ & 1 -- 4 & uniform \\
-  Component Spins, $\chi_1, \chi_2$ & -0.9 -- 0.9 & uniform\\
-  Ecliptic Longitude, $\lambda$ & 0 -- $2\pi$ & uniform \\
-  Ecliptic Latitude, $\beta$ & $-\pi / 2$ -- $\pi / 2$ & uniform in $\sin(\beta)$\\
-  Inclination, $\iota$ & 0 -- $\pi / 2$ & uniform in $\cos(\iota)$ \\
-  Polarisation & 0 -- $2 \pi$ & uniform \\  
+  \strutrow Total Mass, $M_\odot$ & $10^6$ & $2\times 10^7$ & uniform \\
+  Mass ratio, $q$ & 1 & 4 & uniform \\
+  Component Spins, $\chi_1, \chi_2$ & -0.9 & 0.9 & uniform\\
+  Ecliptic Longitude, $\lambda$ & 0 & $2\pi$ & uniform \\
+  Ecliptic Latitude, $\beta$ & $-\pi / 2$ & $\pi / 2$ & uniform in $\sin(\beta)$\\
+  Inclination, $\iota$ & 0 & $\pi / 2$ & uniform in $\cos(\iota)$ \\
+  Polarisation & 0 & $2 \pi$ & uniform \\  
 \hline
 \end{tabular}
 \caption{Parameter space used in setting up the template banks for the zero-latency filter search
@@ -44,10 +44,10 @@ time-before-merger for the signal.
 \end{centering}
 \end{table}
 
-We must define a PSD used for the match calculations used in deciding the stochastic placement and so in this work, we consider
-the modelled PSD with Galactic Binary confusion, and the estimated PSD. The banks used in~\cite{CabournDavies:2024hea} used a modelled PSD
+We must define a \ac{PSD} used for the match calculations used in deciding the stochastic placement and so in this work, we consider
+the modelled \ac{PSD} with \ac{GB} confusion, and the estimated \ac{PSD} . The banks used in~\cite{CabournDavies:2024hea} used a modelled \ac{PSD} 
 without \ac{GB} confusion noise.
-In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different PSDs.
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different \acp{PSD} .
 
 \begin{figure}
     \centering
@@ -68,24 +68,48 @@ Our first attempt is straightforward; we simply apply the search used previously
 
 In doing so, we face our first hurdle; the presence of the merger in the data. The data 
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_X_opt_snr_match_signal_14.pdf}
+    \caption{
+        Optimal SNR build-up and SNR of premerger-truncated signals matched filtered against the full signal for Signal 14.
+        We see that the premerger-truncated signals SNRs are a product 
+        Equivalent plots for all signals are included in the data release.
+    }
+    \label{fig:double_peak}
+\end{figure}
+
+
 \subsection{Secondary Peak Removal}
 \label{subsec:peak_removal}
 \gscd{Removing the peaks, and the results of the search including removing the peaks. Discussion of whether assuming that the signal is known is valid or not}
 
-Signal 1 appears to now be missed in the plot, however the former peak in SNR is from the 0.5 days post merger analysis
-matching to the peak itself.
-Signal 5 can now be seen, as the contamination from the louder Signal 4 is now no longer a problem.
-
-\gscd{Discussion of how we remove the secondary peaks in the SNR.}
+\gscd{Discussion of how we remove the secondary peaks in the \ac{SNR} .}
 
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_X_signal_10_removed.pdf}
     \caption{
-        Signal 10 results, showing results with and without the secondary peaks, for the removed results, the signal is removed from the data two hours before merger.
+        Signal 10 results, showing results with and without the secondary peaks, for the removed results,
+        the signal is removed from the data two hours before merger.
+        We also see peaks in the data before merger, these are the post-signal peaks for Signal 9, which is 21 days before Signal 10.
+        Equivalent plots for all signals are included in the data release.
     }
     \label{fig:zerolatency_signal_removed_raw}
 \end{figure}
+
+Signal removal is not perfect, as shown in Figure~\ref{fig:removal_residual}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/figure_X_removal_residual.pdf}
+    \caption{
+        Residuals after removal 
+        Equivalent plots for all signals are included in the data release.
+    }
+    \label{fig:removal_residual}
+\end{figure}
+
+
 
 \subsection{Search Results}
 \label{subsec:zerolatency_results}
