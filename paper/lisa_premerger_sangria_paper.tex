@@ -55,19 +55,17 @@ superscriptaddress,
 \affiliation{\portsmouth}
 
 \begin{abstract}
-    Pre-merger detection of massive black hole binaries by the Large 
-    Interferometer Space Antenna (LISA) will provide the best chance to
-    follow up potential signals, maximising the science of LISA and multi-messenger partners.
-    Providing early warning and locations in the weeks to months before merger
-    is critical to observe galactic mergers happening in real time. 
-    This paper shows results of applying a matched filtering pre-merger
-    search to the LISA Data Challenge dataset 2a: Sangria-HM. This matched filtering
-    search is based on a zero-latency filter which does not
-    require data into the future. We find that pre-merger searches are susceptible
-    to significant artefacts which can render the search ineffective for close-in-time
-    mergers. Through signal subtraction, we show how we can mitigate these effects.
-    We also demonstrate pre-merger searches using inpainting, which can act without data in
-    the future, but are also resilient to data artefacts such as gaps or glitches.
+    A key science target of the Large Interferometer Space Antenna (LISA) is to carry out
+    multi-messenger observations of massive black hole binaries, observing the merger
+    simulataneously in gravitational waves and with electromagnetic observatories.
+    Identifying that a merger is happening and providing an updating estimate of the sky location in the hours, days and weeks before the merger is critical to enable electromagnetic observations of the merger event. 
+    In this work we demonstrate and compare two methods for premerger identification of massive
+    black hole binaries; a zero-latency filter approach and, for the first time, an approach using an ``inpainting'' technique.
+    We apply these methods to the LISA Data Challenge dataset 2a: Sangria-HM and demonstrate the
+    successful recovery of the 14 signals in the dataset that we expected to be identifiable at
+    least half a day before merger.
+    We demonstrate that the inpainting method can identify premerger signals even when gaps are present in the data, demonstrating the recovery of signal 0 even when 3 day-long data gaps are added to the 14 days preceding merger.
+    Finally, we explore the challenge of overlapping signals, using signals 2 - 5, all of which merge within a 10-day window, and show how removing signals that have been confidently identified from the data allows us to identify quieter signals in the same period.
 \end{abstract}
 
 \maketitle
