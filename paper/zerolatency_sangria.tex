@@ -7,12 +7,14 @@ A full description of the method can be found in~\cite{CabournDavies:2024hea} an
 Our search uses a zero-latency filter such that data from the future is not required. A full
 description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
 
-To apply this search to the Sangria-HM dataset, we truncate the data at one hour intervals, and then search for signals which merge 0.5, 1, 4, 7 and 14 days
-from that time.
-We allow a one hour search window so that signals which do not merge on an integer hour can be recovered.
-
 \subsection{Template Bank}
 \label{subsec:template_bank}
+In order to utilise a matched filter search, we must first set up a set of waveforms -- a \textit{template bank} -- to which
+we compare the data.
+We use stochastic bank placement~\cite{Babak:2008rb, Harry:2009ea} in the same way as~\cite{CabournDavies:2024hea},
+with parameter limits set from Table~\ref{tab:parameter_space}.
+In constructing the bank, we calculate the match for signals only using frequencies up to the point corresponding to the desired
+time-before-merger for the signal.
 
 \begin{table}[ht]
 \begin{centering}
@@ -64,9 +66,15 @@ For the searches in this paper, we use the template banks calculated from the es
 \subsection{Applying the search to Sangria-HM}
 \label{subsec:application}
 
-In \cite{CabournDavies:2024hea} we simulated 30 days of data, which a merger occurring at some point after that, and attempted to recover the signal. Here we wish to recover the 15 signals by searching for them in the full 365 days of data. We also with to identify the signals as \emph{early} as possible. To simulate this we begin by taking the first 30 days of data and searching for mergers 0.5, 1, 4, 7 and 14 days from the end of that data (ie. signals that would merge 0.5, 1, 4, 7 or 14 days in the future). We allow a one hour search window in each case, and therefore search for signals 6 days 23 hours to 7 days premerger (and similar), but do so using waveforms that are truncated 7 days premerger.
+In \cite{CabournDavies:2024hea} we simulated 30 days of data, which a merger occurring at some point after that, and attempted to recover the signal.
+Here we wish to recover the 15 signals by searching for them in the full 365 days of data.
+We also with to identify the signals as \emph{early} as possible.
+To simulate this we begin by taking the first 30 days of data and searching for mergers 0.5, 1, 4, 7 and 14 days from the end of that data (ie. signals that would merge 0.5, 1, 4, 7 or 14 days in the future).
+We allow a one hour search window in each case, and therefore search for signals 6 days 23 hours to 7 days premerger (and similar), but do so using waveforms that are truncated 7 days premerger.
 
-We then read the next hour of data, and ``forget'' the first hour of data and repeat the process. By repeating this, we walk through the entire year-long data set, hour-by-hour, simulating how data might arrive in real time while continuously searching for premerger signals. We consider a signal to be detected if we recover it with a signal-to-noise ratio larger than 10, which is more conservative than the thresholds we computed empirically in~\cite{CabournDavies:2024hea} but allows for some uncertainty in the noise model.
+We then read the next hour of data, and ``forget'' the first hour of data and repeat the process.
+By repeating this, we walk through the entire year-long data set, hour-by-hour, simulating how data might arrive in real time while continuously searching for premerger signals.
+We consider a signal to be detected if we recover it with a signal-to-noise ratio larger than 10, which is more conservative than the thresholds we computed empirically in~\cite{CabournDavies:2024hea} but allows for some uncertainty in the noise model.
 
 
 \subsection{Signal removal before merger}
@@ -111,8 +119,6 @@ Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the
 
 
 \iwh{I removed the "residuals after removal" plots from the paper. This might be okay in an appendix though, if you wanted to move it there.}
-
-
 
 
 \subsection{Search Results}
