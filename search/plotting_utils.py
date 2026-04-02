@@ -199,7 +199,7 @@ def plot_around_time(
         
     ax.set_ylim(bottom=4)
     ax.set_ylim(top=max(max_snr * 1.1, 10))
-    if signal_number is not None and title is not 'off':
+    if signal_number is not None and title != 'off':
         ax.set_title(f"Signal {signal_number}: {signal_truth_time/86400:.2f} days")
     return fig, (ax, labels, lines)
 
@@ -229,3 +229,209 @@ def get_colors(values=None, vmax=None, vmin=None):
         value: sm.to_rgba(value)
         for value in values
     }
+
+def plot_optimal_snr_match(
+    cutoff_days,
+    optimal_snr_data,
+    match_cut_results,
+    signal_number=None,
+    title=None,
+):
+    min_days = cutoff_days.min()
+    max_days = cutoff_days.max()
+    premerger_days = match_cut_results.keys()
+    premerger_colours = get_colors(values=premerger_days, vmin=0.5, vmax=14)
+    width = plt.rcParams["figure.figsize"][0]
+    height = plt.rcParams["figure.figsize"][1] * 1.25
+
+    fig, ax = plt.subplots(1, figsize=(width, height),)
+    opt_line, = ax.plot(
+        cutoff_days,
+        optimal_snr_data,
+        label='Optimal',
+        c='k'
+    )
+    ax2 = ax.twinx()
+    ax2.axhline(1, linestyle=':', c='k', zorder=0)
+
+    lines1 = [opt_line]
+    for premerger_day in premerger_days:
+        line1, = ax.plot(
+            cutoff_days,
+            match_cut_results[premerger_day],
+            label=f'{premerger_day:.0f} days',
+            c=premerger_colours[premerger_day]
+        )
+        lines1.append(line1)
+        ax2.plot(
+            cutoff_days,
+            match_cut_results[premerger_day] / optimal_snr_data,
+            linestyle=':',
+            c=premerger_colours[premerger_day],
+        )
+
+    ax.semilogy()
+    ax.grid()
+    ax.set_xlabel('Cutoff time relative to merger (days)')
+    ax.set_ylim(bottom=5e-3)
+
+    ax.set_xlim(min_days, max_days)
+    ax.set_ylabel('SNR')
+
+    ax2.set_ylim(0,1.05)
+    ax2.set_ylabel('Match')
+    leg = ax2.legend(handles=lines1, loc='upper left')
+    # leg.get_frame().set_alpha(1)
+    leg.set_zorder(10)
+    line_ff, = ax2.plot([],[],linestyle=':', c='k')
+    leg2 = ax2.legend([line_ff], ['Match'], loc='lower right')
+    leg2.set_zorder(10)
+    # leg2.get_frame().set_alpha(1)
+    ax2.add_artist(leg)
+    if title != 'off':
+        ax.set_title(f'Optimal SNR & Match vs time, Signal {signal_number}')
+    return fig, (ax, ax2)
+
+
+def plot_residual_snr(
+    signal_number,
+    mbhb,
+    data,
+    mbhb_data,
+    data_residual,
+    mbhb_residual,
+    residual_data_snrs,
+    generated,
+    title=True,
+    plot_bounds = (-2000, 1000),
+    truth_times_s=None,
+):
+    
+    width = plt.rcParams["figure.figsize"][0]
+    height = plt.rcParams["figure.figsize"][1] * 1.25
+    coalescence_time = mbhb['CoalescenceTime']
+    max_residual = 0
+    max_data = 0
+
+    times = data['LISA_A'].sample_times - coalescence_time
+    within_plot = np.logical_and(
+        times >= plot_bounds[0],
+        times <= plot_bounds[1]
+    )
+    
+    # Cut the data to only the time around the coalescence
+    fig, axes = plt.subplots(
+        3,
+        sharex='col',
+        height_ratios=[3, 1, 1],
+        figsize=(width, height),
+    )
+    ax1, ax2, ax3 = axes
+    
+    channel_colours = {
+        'LISA_A': 'tab:blue',
+        'LISA_E': 'tab:orange',
+    }
+    generated_colours = {
+        'LISA_A': 'tab:green',
+        'LISA_E': 'tab:red',
+    }
+    for channel in data.keys():
+        channel_str = channel.split('_')[-1]
+        max_data = max(max_data, max(abs(data[channel][within_plot])))
+        max_residual = max(max_residual, max(abs(data_residual[channel][within_plot])))
+        # max_snr = max(max_snr, max(snr[channel][within_plot]))
+        mean_data = np.mean(data[channel][within_plot])
+        ax1.plot(
+            times[within_plot],
+            data[channel][within_plot] - mean_data,
+            label=f'Data {channel_str}',
+            linestyle='-',
+            c=channel_colours[channel],
+            alpha=0.4
+        )
+        ax1.plot(
+            times[within_plot],
+            mbhb_data[channel][within_plot],
+            label=f'MBHB {channel_str}',
+            linestyle='--',
+            c=channel_colours[channel]
+        )
+        ax1.plot(
+            times[within_plot],
+            generated[channel][within_plot],
+            label=f'Generated {channel_str}',
+            linestyle=':',
+            c=generated_colours[channel]
+        )
+        ax2.plot(
+            times[within_plot],
+            data_residual[channel][within_plot] - mean_data,
+            label=f'Data {channel_str}',
+            linestyle='-',
+            c=channel_colours[channel],
+            alpha=0.4
+        )
+        ax2.plot(
+            times[within_plot],
+            mbhb_residual[channel][within_plot],
+            label=f'MBHB {channel_str}',
+            linestyle='--',
+            c=generated_colours[channel]
+        )
+        ax3.plot(
+            times[within_plot],
+            residual_data_snrs[signal_number][channel],
+            label=f'SNR {channel_str}',
+            linestyle='-',
+            c=channel_colours[channel],
+        )
+    if truth_times_s is not None:
+        for truth_time_s in truth_times_s:
+            ax1.axvline((truth_time_s - coalescence_time), zorder=-100, c='tab:pink')
+            ax2.axvline((truth_time_s - coalescence_time), zorder=-100, c='tab:pink')
+            ax3.axvline((truth_time_s - coalescence_time), zorder=-100, c='tab:pink')
+        
+    ax2.set_xlim(-2000, 1000)
+    ax1.set_ylim(-1.1 * max_data, 1.1 * max_data)
+    ax2.set_ylim(-1.1 * max_residual, 1.1 * max_residual)
+    ax3.set_ylim(0,10)
+    ax1.legend(loc='center left', bbox_to_anchor=(1.05, 0.5))
+    ax2.legend(loc='center left', bbox_to_anchor=(1.05, 0.5))
+    ax3.legend(loc='center left', bbox_to_anchor=(1.05, 0.5))
+    ax1.set_ylabel('Strain')
+    ax2.set_ylabel('Residual')
+    ax3.set_ylabel('Residual\nSNR')
+    ax1.grid()
+    ax2.grid()
+    ax3.grid()
+
+    if title:
+        axes[0].set_title(f'Signal {signal_number}')
+
+    axes[-1].set_xlabel('Time relative to merger, s')
+
+    fig.subplots_adjust(hspace=0.1, right=0.8, top=0.93, bottom=0.08)
+
+    plt.setp(ax1.get_xticklabels(), visible=False)
+    plt.setp(ax2.get_xticklabels(), visible=False)
+
+    fig.canvas.draw() 
+
+    for ax in [ax1, ax2]:
+        ot = ax.yaxis.get_offset_text()
+        offset_str = ot.get_text()
+        ot.set_visible(False)
+        
+        if offset_str:
+            ax.text(
+                0.02, 0.96, offset_str,
+                transform=ax.transAxes,
+                ha='left', va='top',
+                fontsize='small',
+                fontweight='bold',
+                # Adding a white background helps if it overlaps data
+                bbox=dict(facecolor='white', alpha=0.7, edgecolor='none', pad=0)
+            )
+
+    return fig

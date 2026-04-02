@@ -8,7 +8,6 @@ from ldc.waveform.lisabeta import FastBHB
 from ldc.lisa import orbits
 from astropy import units as un
 import logging
-import copy
 import h5py
 
 from matplotlib import pyplot as plt
@@ -420,3 +419,39 @@ def get_results_inpainting(filename, filter_times_before=None, filter_time_befor
         "time_before": results_time_before[sort_key],
         "data_end_time": results_end_time[sort_key],
     }
+
+def insert_bank_options(parser, bank_required=True):
+    # Add argument for the bank file
+    parser.add_argument('--bank-file', required=bank_required)
+
+    # Add argument for reducing the bank factor
+    parser.add_argument(
+        '--reduce-bank-factor',
+        type=int,
+        help="Reduce the bank by a factor of this number, "
+             "useful for looping quickly in testing"
+             "Default: don't do this"
+        )
+
+bank_dtype=np.dtype([
+    ('mass1', np.float64),
+    ('mass2', np.float64),
+    ('spin1z', np.float64),
+    ('spin2z', np.float64),
+    ('eclipticlatitude', np.float64),
+    ('eclipticlongitude', np.float64),
+    ('inclination', np.float64),
+    ('polarization', np.float64)
+])
+
+def load_bank(args):
+    with h5py.File(args.bank_file,'r') as bank_file:
+        n_templates = bank_file['mass1'].size
+
+    bank_array = np.zeros(n_templates, dtype=bank_dtype)
+    with h5py.File(args.bank_file,'r') as bank_file:
+        for k in bank_dtype.names:
+            bank_array[k] = bank_file[k][:]
+
+    # Reduce the bank by the given factor
+    return bank_array[::args.reduce_bank_factor]

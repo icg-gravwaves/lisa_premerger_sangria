@@ -4,11 +4,9 @@ This is a script to run the search analysis using a file as input.
 
 # Import necessary libraries
 import h5py  # Library for interacting with HDF5 files
-import copy  # Library for creating copies of objects
 import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
 import numpy as np
-from tqdm import tqdm  # Library for creating progress bars
 from matplotlib import pyplot as plt
 
 
