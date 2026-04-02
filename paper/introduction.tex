@@ -6,38 +6,47 @@ The \ac{LISA} gravitational-wave observatory, planned for launch in the mid-to-l
 in the low-frequency gravitational-wave band~\cite{LISA:2022yao}.
 
 A key science target
-for \ac{LISA} is the observation of \acp{MBHB}. The problem of observing and characterizing
-these mergers has been explored over the last two decades, primarily through the LISA Data
+for \ac{LISA} is the observation of \acp{MBHB}. These signals are expected to have a very large
+signal-to-noise ratio, making the problem of identifying them trivial~\cite{LISA:2022yao}.
+A significant challenge lies in reliable inferring the parameters of these sources, especially
+given a large population of other sources present in the data, and this problem has been
+extensively explored over the last two decades, primarily through the LISA Data
 Challenges~\cite{Arnaud:2006gm, MockLISADataChallengeTaskForce:2006sgi, Arnaud:2007vr,
 MockLISADataChallengeTaskForce:2007iof, Babak:2008aa, Arnaud:2007jy,
-MockLISADataChallengeTaskForce:2009wir, Baghi:2022ucj, LDC_WEBSITE}. Because these signals will
-have a very large \ac{SNR}, the search for these sources is
-expected to be trivial~\cite{LISA:2022yao}.
- 
-A particularly powerful capability of \ac{LISA} is the detection of these \ac{MBHB} systems
+MockLISADataChallengeTaskForce:2009wir, Baghi:2022ucj, LDC_WEBSITE}.
+
+The large signal-to-noise ratios that \acp{MBHB} are expected to have unlocks a particularly
+interesting possibility; that of observing these systems
 in the weeks to months before they merge~\cite{CabournDavies:2024hea, Houba:2024mqj,
-Ruan:2024qch}. Such \textit{pre-merger} observations can provide early warnings and sky-localisation
+Ruan:2024qch}. Such \textit{pre-merger} observations provide an early warning that a loud merger
+event is about to happen and can provide sky-localisation
 estimates~\cite{CabournDavies:2024hea, Kocsis:2007yu, McWilliams:2011zs, Saini:2022hrs}
 for these incredibly science-rich events~\cite{DalCanton:2019wsr}.
 This advanced notice is critical to enable multi-messenger astronomy, allowing
-electromagnetic facilities to be directed toward the source region rapidly to maximise observation.
+electromagnetic facilities to be directed toward the source region rapidly to maximise
+observation and to potentially reschedule any planned repositioning operations
+to reduce the chance that \ac{LISA} is not taking data when the merger arrives.
 
-In contrast to prevailing methods for pre-merger \ac{MBHB} observation, which often rely on
-Fisher Matrix analyses or Bayesian inference with abruptly terminated waveforms, our
-technique introduced in~\cite{CabournDavies:2024hea} offers a more immediate analysis. It allows
-for the accurate computation of a matched filter without the need to wait (up to a day) for
+In contrast to prevailing methods for premerger \ac{MBHB} observation, which often rely on
+Fisher Matrix analyses or Bayesian inference with abruptly terminated waveforms, the
+technique that we introduced in~\cite{CabournDavies:2024hea} offers a more immediate analysis. It allows for the accurate computation of a matched filter without the need to wait (up to a day) for
 additional data to arrive. After this data has arrived, the observation window may have passed, or
 \ac{LISA} itself may have been turned off for repositioning or data downlink.
 
-In this paper, we present application of this technique to the LISA data challenge dataset,
-Sangria-HM, described in Section~\ref{sec:dataset}, with results in
-Section~\ref{sec:zerolatency_sangria}, showing the potential pitfalls of na\"ive implementation
-of the search.
+However, this method is not robust to gaps in the LISA data and only searches for signals at
+discrete values of the gap to merger. We therefore introduce a second possibility for premerger
+observation, applying the inpainting technique of~\cite{Zackay:2019kkv} as an alternative to the
+zero-latency whitening filter.
 
-These pitfalls lead us to consider utilising the inpainting technique of~\cite{Zackay:2019kkv} as an
-alternative to the zero-latency filter of~\cite{CabournDavies:2024hea}.
-Our implementation is described in Section~\ref{sec:inpainting}, and applied it in
-Section~\ref{sec:inpainting_sangria}.
+In this paper, we present the application of both the zero-latency and inpainting to the
+``Sangria-HM dataset''. We demonstrate that, where there are no gaps in the data, both methods
+compare very well, and identify 14 of the 15 \ac{MBHB} signals in the dataset at least 0.5 days before merger, the remaining signal being too quiet for detection 0.5 days before merger. We demonstrate how the inpainting technique works well when gaps are added to the dataset, allowing premerger identification accumulating power over 3 stretches of data separated by day-long gaps.
+
+
+The paper is organized as follows: In section~\ref{dataset} we described the Sangria-HM dataset and evaluate the potential for premerger detection of the 15 \ac{MBHB} signals added to it.
+In section~\ref{sec:zerolatency_sangria} we present the results of our zero-latency search on this dataset. In section~\ref{sec:inpainting} we describe how we adapt the inpainting technique of~\cite{Zackay:2019kkv} to the problem of premerger observation of \acp{MBHB} before presenting results of that search in section~\ref{sec:inpainting_sangria}. In section~\ref{sec:focused}
+we discuss the analysis of signals 2 - 5, whose merger times are all contained within a single
+10-day window, causing some overlap in their identification. Finally we conclude in section~\ref{sec:conclusion}.
 
 All of our results and figures are fully reproducible, with the code
 used to make them publicly available. Please see the data release at
