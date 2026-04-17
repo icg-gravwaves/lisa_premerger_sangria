@@ -1,31 +1,24 @@
 \section{The Sangria HM Dataset}
 \label{sec:dataset}
 
-We test our search methods on the LISA Data Challenge dataset~\cite{Baghi:2022ucj, LDC_WEBSITE}.
-The LISA Data Challenges are designed to provide comprehensively modelled data as an introduction
-to LISA data analysis. The dataset considered here is Challenge 2a, also known as
+The LISA Data Challenges were designed to simulate comprehensively modelled data as an introduction
+to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}. Here we use the dataset known as Challenge 2a, also known as
 \textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
-This dataset is similar to Challenge 2: Sangria~\cite{LDC_WEBSITE_SANGRIA, le_jeune_2022_7132178};
-it contains exactly the same sources but uses a different waveform model, \texttt{PhenomHM}~\cite{Garcia-Quiros:2020qpx}.
-
-The Sangria-HM dataset contains Gaussian instrumental noise and simulations of astrophysical sources; a foreground of
+Challenge 2a consists of both a ``training'' and ``blind'' dataset, we analyse here the training dataset to more easily compare the values of the signals to our results.
+The Sangria-HM training dataset is a year long and contains Gaussian instrumental noise, a foreground of
 Galactic binaries and \ac{MBHB} systems, both with parameters derived from astrophysical models.
+The \acp{MBHB} are simulated using the \texttt{PhenomHM} waveform model~\cite{Garcia-Quiros:2020qpx}.
 Here we use the training dataset, where we know the source parameters of signals, the model of instrumental noise used,
 and the form of LISA's orbit used to generate the data.
 
-In applying our pre-merger search to the Sangria dataset, our first consideration is to check whether
-the data has similar enough properties to our previously-assumed noise that our approach is directly transferable.
-The main difference between the noise assumptions we made before and the Sangria-HM dataset is the
-inclusion of a Galactic binary foreground made up of millions of white dwarf binaries in our galaxy; these are continuous sources, and
-occupy the same frequency space as mergers of \acp{MBHB}.
-Many of the white dwarf systems are not expected to be resolvable, and so must be considered an extra source of noise for \ac{MBHB}
-searches.
-In fact we treat all white dwarf signals as noise in this paper, whether they would be resolved or not, and the
-search is based on the `day-one' power-spectral density of the data.
-The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented
-towards or away from the galactic centre.
-This means that as the white dwarf sources are resolved and can be removed from the data, or when LISA is optimally oriented,
-\ac{MBHB} searches will become more sensitive, but effects of that are not considered here.
+In our previous work~\cite{CabournDavies:2024hea}, we demonstrated the zero-latency technique
+on a dataset that did not include a foreground of Galactic binaries.
+This foreground, made up of millions of white dwarf binaries in our galaxy largely continuous in frequency, occupy the same frequency range as mergers of \acp{MBHB}.
+Many of the white dwarf systems are not expected to be resolvable, and so must be considered an extra source of noise for \ac{MBHB} searches.
+% MOVE THIS TO LATER
+%In this work we treat all white dwarf signals as noise in this paper, whether they would be resolved or not, and the search is based on the `day-one' power-spectral density of the data.
+The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented towards or away from the galactic centre.
+As the loudest white dwarf sources are resolved and can be removed from the data, sensitivity to \ac{MBHB} signals will naturally increase.
 
 The white dwarf confusion noise overlaps with \ac{MBHB} mergers in frequency space. But our search is not \textit{for} the mergers,
 rather the inspiral stage of the signal, many days before merger, and so we consider whether the frequency overlaps with the
@@ -51,18 +44,43 @@ for a description).
 
 From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
 in frequency with the unresolvable Galactic binary confusion noise. At 1 and 0.5 days before merger, the Galactic binary confusion
-noise begins to overlap the \ac{MBHB}.
+noise begins to overlap the \ac{MBHB}. However, the ``day 0'' sensitivity curve, where no resolvable galactic binaries have been removed, qualitatively agrees with the modelled sensitivity curve where resolvables binaries are removed. This is important because it indicates that \emph{premerger detection of \ac{MBHB} is not a ``Global Fit'' problem}. The frequency content of premerger \acp{MBHB} are broadly separated from any other resolvable source, and therefore one would not need to simultaneously perform inference of premerger \acp{MBHB} and any other source because premerger inference could run perfectly well on data where no sources have been removed from it. It also indicates that the techniques to observe \ac{MBHB} sources could largely run separately from Global
+Fit analyses, where all sources are being simultaneously fit\footnote{As we will show later, there is sufficient correlation between premerger \acp{MBHB} and \ac{MBHB} mergers that one would want to remove observed \acp{MBHB} from the data as they are observed to aid detection of potentially overlapping premerger \acp{MBHB}.}.
+
+\subsection{MBHB signals in the Sangria-HM data set}
+\label{subsec:expected_snr}
+
+\begin{table}
+    \input{tables/characteristic_strain_table.tex}
+    \caption{
+        Characteristic signal-to-noise ratios for signals in the Sangria dataset.
+        These are computed by comparing characteristic strain for the signal to the smoothed
+        noise model power-spectral density.
+        Characteristic strain is calculated from waveforms using FastBHB as implemented in lisabeta \cite{Marsat:2020rtl}.
+    }
+    \label{tab:characteristic_strain_snr}
+\end{table}
+
+There are 15 \ac{MBHB} signals in the Sangria-HM Challenge 2a training dataset. In Table~\ref{tab:characteristic_strain_snr} we summarize these signals, showing the merger
+times and the signal-to-noise ratio of the full signal. We also show the signal-to-noise ratios
+for each of the 15 \ac{MBHB} signals, at 14, 7, 4, 1 and 0.5 days before merger.
+We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12 and 13 - would be seen 4 days or more before merger.
+
+For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
+strain}~\cite{Moore:2014lga} for the example of Signal 2.
+Characteristic strain has a desirable property for visualization; when the area between the characteristic strain and the
+power-spectral density in the frequency domain corresponds to the expected signal-to-noise ratio for the signal.
 
 
 \subsection{Smoothing the power spectral density}
 \label{subsec:smoothing}
 At $\sim60$\,mHz, we see a dip in the power-spectral density, this is an artifact where gravitational waves at this frequency have a wavelength
-of $5\times10^{9}$\,m, which is exactly double the arm length of LISA, and is not physical.
-The problem arises here that it is effectively an inverse delta function in the power-spectral density, and delta functions in the
-power-spectral density lead to broad-band noise--known as spectral leakage--in the time domain.
+of $5\times10^{9}$\,m, which is exactly double the arm length of LISA, and the TDI combination process results in cancellation at this frequency. Despite appearances, it is \emph{not} a point of infinite sensitivity, it is a point of zero sensitivity because any potential signal is cancelled completely at this point. However, a problem arises when creating a whitening filter
+to ``whiten'' this because it is effectively a delta function in the inverse power-spectral density, which would require an infinitely long time-domain whitening filter to effectively whiten.
 
-To remove this noise, we smooth over it. We identify peaks in the model either side of the dip, and draw a line between them,
-so that this is not introducing discontinuities in the spectrum, we use a Hann window to smoothly transition between the power-spectral density
+Instead, following out previous work~\cite{CabournDavies:2024hea} we choose not to whiten this feature, especially as the signals we are looking for are at frequencies two orders of magnitude
+smaller than this. To do this we simply smooth the feature out of the power spectrum. We identify peaks in the model either side of the dip, and draw a line between them.
+To avoid this introducing discontinuities in the spectrum, we use a Hann window to smoothly transition between the power-spectral density
 and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
 
 \begin{figure}
@@ -78,27 +96,4 @@ and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
     \label{fig:smoothing}
 \end{figure}
 
-\subsection{Expected signal-to-noise ratios for signals}
-\label{subsec:expected_snr}
-For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
-strain}~\cite{Moore:2014lga} for the example of Signal 2.
-Characteristic strain has a neat property; when the area between the characteristic strain and the
-power-spectral density in the frequency domain is calculated, this is the expected SNR for the signal.
 
-Characteristic strains at the times-before-merger that we consider are shown in
-Table~\ref{tab:characteristic_strain_snr}.
-We compute this for each signal in the Sangria-HM dataset, with cutoffs set according to the
-time--frequency evolution expected for an inspiralling \ac{MBHB} signal.
-We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals -
-0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days or more before merger.
-
-\begin{table}
-    \input{tables/characteristic_strain_table.tex}
-    \caption{
-        Characteristic signal-to-noise ratios for signals in the Sangria dataset.
-        These are computed by comparing characteristic strain for the signal to the smoothed
-        noise model power-spectral density.
-        Characteristic strain is calculated from waveforms using FastBHB as implemented in lisabeta \cite{Marsat:2020rtl}.
-    }
-    \label{tab:characteristic_strain_snr}
-\end{table}
