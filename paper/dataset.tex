@@ -2,7 +2,8 @@
 \label{sec:dataset}
 
 The LISA Data Challenges were designed to simulate comprehensively modelled data as an introduction
-to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}. Here we use the dataset known as Challenge 2a, also known as
+to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}.
+Here we use the dataset known as Challenge 2a, also known as
 \textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
 Challenge 2a consists of both a ``training'' and ``blind'' dataset, we analyse here the training dataset to more easily compare the values of the signals to our results.
 The Sangria-HM training dataset is a year long and contains Gaussian instrumental noise, a foreground of
@@ -20,12 +21,12 @@ Many of the white dwarf systems are not expected to be resolvable, and so must b
 The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented towards or away from the galactic centre.
 As the loudest white dwarf sources are resolved and can be removed from the data, sensitivity to \ac{MBHB} signals will naturally increase.
 
-The white dwarf confusion noise overlaps with \ac{MBHB} mergers in frequency space. But our search is not \textit{for} the mergers,
+The white dwarf confusion noise overlaps with \ac{MBHB} mergers in frequency space.
+But our search is not \textit{for} the mergers,
 rather the inspiral stage of the signal, many days before merger, and so we consider whether the frequency overlaps with the
 particular times-before-merger for our signals.
 
 Figure~\ref{fig:psds} shows the power-spectral density directly estimated from the data, the modelled power-spectral density with and without Galactic binary foreground noise, and an example
-
 characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr}
 for a description).
 
@@ -33,7 +34,7 @@ for a description).
     \includegraphics[width=\textwidth]{images/dataset/figure_X_psds_with_sources.png}
     \caption{
         Comparison of \acp{PSD} used in this work.
-        The \ac{PSD} is estimated from the Sangria dataset using the welch method with a segment duration of 18.25 days.
+        The \ac{PSD} is estimated from the Sangria dataset using the Welch method with a segment duration of 18.25 days.
         The model shown is the noise model used to produce the Sangria dataset, and is shown with and without unresolvable \ac{GB} sources.
         We show the \ac{PSD} model and estimate smoothed using the method described in Section~\ref{subsec:smoothing}.
         We also show the characteristic strain for a representative \ac{MBHB} signal from Sangria (Signal 2), which shows that at 14, 7 and 4 days-before-merger, the \ac{MBHB} does not overlap
@@ -44,8 +45,9 @@ for a description).
 \end{figure*}
 
 From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
-in frequency with the unresolvable Galactic binary confusion noise. At 1 and 0.5 days before merger, the Galactic binary confusion
-noise begins to overlap the \ac{MBHB}. However, the ``day 0'' sensitivity curve, where no resolvable galactic binaries have been removed, qualitatively agrees with the modelled sensitivity curve where resolvables binaries are removed.
+in frequency with the unresolvable Galactic binary confusion noise.
+At 1 and 0.5 days before merger, the Galactic binary confusion noise begins to overlap the \ac{MBHB}.
+However, the ``day 0'' sensitivity curve, where no resolvable galactic binaries have been removed, qualitatively agrees with the modelled sensitivity curve where resolvables binaries are removed.
 This is important because it indicates that \emph{premerger detection of \ac{MBHB} is not a ``Global Fit'' problem}.
 The frequency content of premerger \acp{MBHB} are broadly separated from any other resolvable source, and therefore one would not need to simultaneously perform inference of premerger \acp{MBHB} and any other source because premerger inference could run perfectly well on data where no sources have been removed from it.
 It also indicates that the techniques to observe \ac{MBHB} sources could largely run separately from Global
@@ -75,9 +77,10 @@ We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that o
     \label{tab:characteristic_strain_snr}
 \end{table}
 
-There are 15 \ac{MBHB} signals in the Sangria-HM Challenge 2a training dataset. In Table~\ref{tab:characteristic_strain_snr} we summarize these signals, showing the merger
-times and the signal-to-noise ratio of the full signal. We also show the signal-to-noise ratios
-for each of the 15 \ac{MBHB} signals, at 14, 7, 4, 1 and 0.5 days before merger.
+There are 15 \ac{MBHB} signals in the Sangria-HM Challenge 2a training dataset.
+In Table~\ref{tab:characteristic_strain_snr} we summarize these signals, showing the merger
+times and the signal-to-noise ratio of the full signal.
+We also show the signal-to-noise ratios for each of the 15 \ac{MBHB} signals, at 14, 7, 4, 1 and 0.5 days before merger.
 We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12 and 13 - would be seen 4 days or more before merger.
 
 For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
@@ -95,9 +98,12 @@ However, a problem arises when creating a whitening filter
 to ``whiten'' this because it is effectively a delta function in the inverse power-spectral density, which would require an infinitely long time-domain whitening filter to effectively whiten.
 
 Instead, following out previous work~\cite{CabournDavies:2024hea} we choose not to whiten this feature, especially as the signals we are looking for are at frequencies two orders of magnitude
-smaller than this. To do this we simply smooth the feature out of the power spectrum. We identify peaks in the model either side of the dip, and draw a line between them.
+smaller than this.
+To do this we simply smooth the feature out of the power spectrum.
+We identify peaks in the model either side of the dip, and draw a line between them.
 To avoid this introducing discontinuities in the spectrum, we use a Hann window to smoothly transition between the power-spectral density
-and the straight line. We illustrate this in Figure~\ref{fig:smoothing}.
+and the straight line.
+We illustrate this in Figure~\ref{fig:smoothing}.
 
 \begin{figure}
     \centering
