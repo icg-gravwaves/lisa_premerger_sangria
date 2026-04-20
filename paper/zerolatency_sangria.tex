@@ -4,9 +4,6 @@
 We now apply our previous zero-latency filter based search method to the Sangria-HM Training dataset to demonstrate its ability to observe premerger \acp{MBHB}.
 A full description of the method can be found in~\cite{CabournDavies:2024hea} and, other than some necessary differences which we will highlight below, we use the same method, and implementation, here.
 
-Our search uses a zero-latency filter such that data from the future is not required. A full
-description is in~\cite{CabournDavies:2024hea}, and is based on work from~\cite{Tsukada:2017cuf}.
-
 \subsection{Template Bank}
 \label{subsec:template_bank}
 In order to utilise a matched filter search, we must first set up a set of waveforms -- a \textit{template bank} -- to which
@@ -38,9 +35,9 @@ time-before-merger for the signal.
 \end{table}
 
 We must define a \ac{PSD} used for the match calculations used in deciding the stochastic placement and so in this work, we consider
-the modelled \ac{PSD} with \ac{GB} confusion, and the estimated \ac{PSD}.
+the modelled \ac{PSD} with \ac{GB} confusion, and the \ac{PSD} estimated directly from the data.
 The banks used in~\cite{CabournDavies:2024hea} used a modelled \ac{PSD} without \ac{GB} confusion noise.
-In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different \acp{PSD} .
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different \acp{PSD}.
 
 \begin{figure}
     \centering
@@ -106,16 +103,30 @@ We consider a signal to be detected if we recover it with a signal-to-noise rati
 
 Finally, before we apply the search to the Sangria data we consider the cross-correlation between
 the merger of a \ac{MBHB} signal and a template waveform searching for premerger waveforms.
-In Figure~\ref{fig:double_peak} we show a number of things to illustrate this. First (black solid line), we show the integrated signal-to-noise ratio of one of the signals in the Sangria dataset as a function of time before (and after) merger, noting, as is well known, that the power peaks sharply in the hour leading up to merger. Second (dotted lines) we show the normalized match between waveforms truncated 1, 4, 7 and 14 days before merger, and the signal, as a function of the signal's time before merger. This is normalized such that a value of 1 indicates perfect agreement, and all the integrated signal-to-noise would be recovered, a value of 0 indicates complete disagreement, and no signal-to-noise ratio would be recovered, a value of 0.5 indicates that 50\% of the signal-to-noise ratio would be recovered. This value peaks sharply to 1 at the expected times when the waveform and merger are both at the same time before merger and rapidly drops on both sides. This (solid) lines, we show the product of the normalized matches and the integrated signal-to-noise, represented the signal-to-noise ratio that would be recovered by searching with the waveform truncated at the stated point before merger. We see the expected peaks at the desired time before merger. However, we also see secondary peaks close to the merger time. These are points where the normalized match is low, but because the integrated signal-to-noise is larger (over 100) the product of the 2 can result in values that are comparable, in terms of signal-to-noise, to a premerger signal. In short, this shows that there is enough cross-correlation between pre-merger signals and loud merger events that it has the potential to confuse our search.
+In Figure~\ref{fig:double_peak} we show a number of things to illustrate this.
+First (black solid line), we show the integrated signal-to-noise ratio of one of the signals in the Sangria dataset as a function of time before (and after) merger, noting, as is well known, that the power peaks sharply in the hour leading up to merger.
+Second (dotted lines) we show the normalized match between waveforms truncated 1, 4, 7 and 14 days before merger, and the signal, as a function of the signal's time before merger.
+This is normalized such that a value of 1 indicates perfect agreement, and all the integrated signal-to-noise would be recovered, a value of 0 indicates complete disagreement, and no signal-to-noise ratio would be recovered, a value of 0.5 indicates that 50\% of the signal-to-noise ratio would be recovered.
+This value peaks sharply to 1 at the expected times when the waveform and merger are both at the same time before merger and rapidly drops on both sides.
+This (solid) lines, we show the product of the normalized matches and the integrated signal-to-noise, represented the signal-to-noise ratio that would be recovered by searching with the waveform truncated at the stated point before merger.
+We see the expected peaks at the desired time before merger.
+However, we also see secondary peaks close to the merger time.
+These are points where the normalized match is low, but because the integrated signal-to-noise is larger (over 100) the product of the 2 can result in values that are comparable, in terms of signal-to-noise, to a premerger signal.
+In short, this shows that there is enough cross-correlation between pre-merger signals and loud merger events that it has the potential to confuse our search.
 
 We therefore want to avoid confusing actual mergers as premerger signals, or having a merger mask a second incoming \ac{MBHB}.
-There are techniques, for example~\cite{Allen:2004gu}, that could be used to distinguish between genuine premerger signals, and premerger template waveforms overlapping with \ac{MBHB} mergers. However, in this case, it is easier to simply remove the signals from the data before merger.
+There are techniques, for example~\cite{Allen:2004gu}, that could be used to distinguish between genuine premerger signals, and premerger template waveforms overlapping with \ac{MBHB} mergers.
+However, in this case, it is easier to simply remove the signals from the data before merger.
 To do this, we remove each signal 2 hours before its corresponding merger time.
 When removing the signal, we assume that we know the waveform perfectly and remove the full waveform from the data. 
-This is a simplification; some waveforms would be identified quite a bit before 2 hours premerger, whereas some quieter signals may not be detected until close to merger, although all 15 of the signals we consider are detectable 2 hours before merger. In a real-world scenario one could consider a scenario where we remove signals as they become detectable, which we will explore later
-Additionally, we will not have a perfect waveform model, and there will be some level of residual due to mismatch. However, in the real-world scenario the goal will not be perfect removal of the signal, but to remove the possibility of confusing premerger signals with loud \ac{MBHB} mergers, which would be possible with even a rough subtraction of the signal.
+This is a simplification; some waveforms would be identified quite a bit before 2 hours premerger, whereas some quieter signals may not be detected until close to merger, although all 15 of the signals we consider are detectable 2 hours before merger.
+In a real-world scenario one could consider a scenario where we remove signals as they become detectable, which we will explore later
+Additionally, we will not have a perfect waveform model, and there will be some level of residual due to mismatch.
+However, in the real-world scenario the goal will not be perfect removal of the signal, but to remove the possibility of confusing premerger signals with loud \ac{MBHB} mergers, which would be possible with even a rough subtraction of the signal.
 
-Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the merger when searching for signal 10. Without the merger removed, we ``detect'' additional mergers 14, 7, 4 and 1 day after the merger of signal 10, due to this cross-correlation. With the merger removed, we recover the expected result of the signal being detected first 4 days before merger with signal-to-noise increasing as the signal nears merger.
+Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the merger when searching for signal 10.
+Without the merger removed, we ``detect'' additional mergers 14, 7, 4 and 1 day after the merger of signal 10, due to this cross-correlation.
+With the merger removed, we recover the expected result of the signal being detected first 4 days before merger with signal-to-noise increasing as the signal nears merger.
 
 
 \iwh{I removed the "residuals after removal" plots from the paper. This might be okay in an appendix though, if you wanted to move it there.}
