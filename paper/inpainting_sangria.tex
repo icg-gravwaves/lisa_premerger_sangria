@@ -6,9 +6,10 @@
     \includegraphics[width=\textwidth]{images/inpainting_results/figure_X_forecast_inpainting_estimate.png}
     \caption{
         Signal-to-noise ratio (SNR) as a function of the forecast merger time and the time before merger. 
-        roduced using the inpainting technique to analyse the Sangria-HM dataset.
+        Produced using the inpainting technique to analyse the Sangria-HM dataset.
         Signals have been removed from the data once they reach 2 hours before merger.
         \iwh{Is the plot too busy? Does it look better if only showing 14, 7, 4, 1 and 0.5 days premerger?}
+        \gscd{Possibly, but I think we want to show the ability to search for non-discrete times before merger.}
     }
     \label{fig:inpainting_estimate}
 \end{figure*}
@@ -60,9 +61,7 @@ To demonstrate this, we reanalyse Signal 0 with gaps added to the data 10.5 - 9.
 We then search for Signal 0 using inpainting to mitigate the gaps and show the results in Figure~\ref{fig:signal_zero_timeline}.
 The plot shows the result of searching for the signal with the zero-latency search without gaps, the inpainting search without gaps and the inpainting search with the aforementioned gaps added.
 We note that the overall signal-to-noise ratio recovered when gaps are present is smaller--which is expected, because data, and therefore signal power, is missing--but the search still accrues signal-to-noise at times when data is available, maximizing the chance of finding a signal like this.
-If, for example, signal 0 was 4 times further away, such that the signal-to-noise were reduced by a factor of 4 compared to what we see, the inpainting or zero-latency search could find this a little before 1 day before merger.
+If, for example, Signal 0 was 4 times further away, such that the signal-to-noise were reduced by a factor of 4 compared to what we see, the inpainting or zero-latency search could find this signal 1.22 days before merger.
 However, if the data contains gaps then the zero-latency search would not be able to identify this 
-signal at all with our current implementation, whereas the inpainting search would find it just after 1 day before merger.
-
-\iwh{Gareth can you find the exact times at which the lines cross SNR = 40}
+signal at all with our current implementation, whereas the inpainting search would still find it 0.8 days before merger.
 
