@@ -64,8 +64,9 @@ superscriptaddress,
     We apply these methods to the LISA Data Challenge dataset 2a: Sangria-HM and demonstrate the
     successful recovery of the 14 signals in the dataset that we expected to be identifiable at
     least half a day before merger.
-    We demonstrate that the inpainting method can identify premerger signals even when gaps are present in the data, demonstrating the recovery of signal 0 even when 3 day-long data gaps are added to the 14 days preceding merger.
-    Finally, we explore the challenge of overlapping signals, using signals 2 - 5, all of which merge within a 10-day window, and show how removing signals that have been confidently identified from the data allows us to identify quieter signals in the same period.
+    We demonstrate that the inpainting method can identify premerger signals even when gaps are present in the data,
+    demonstrating the recovery of a signal even when 3 day-long data gaps are added to the 14 days preceding merger.
+    Finally, we explore the challenge of overlapping signals, using a region of overlapping signals in the Sangria-HM dataset, all of which merge within a 10-day window, and show how removing signals that have been confidently identified from the data allows us to identify quieter signals in the same period.
 \end{abstract}
 
 \maketitle
@@ -116,10 +117,11 @@ Network (SEPNet) and the University of Portsmouth.
 \textit{Software} This work made use of the following software packages:
 \texttt{BBHx}~\cite{michael_katz_2023_7791640},
 \texttt{GstLAL}~\cite{Cannon:2020qnf},
+\texttt{lisabeta} \cite{Marsat:2020rtl},
 \texttt{matplotlib}~\cite{Hunter:2007},
 \texttt{numpy}~\cite{harris2020array},
 \texttt{PyCBC}~\cite{alex_nitz_2024_10473621},
-\texttt{scipy}~\cite{2020SciPy-NMeth}
+\texttt{scipy}~\cite{2020SciPy-NMeth}.
 
 Large Language Models were used in this work to generate code snippets efficiently,
 debug errors, and provide editing assistance in the writing of this manuscript.
