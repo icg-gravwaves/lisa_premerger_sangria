@@ -179,6 +179,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
         relative_time_for_removal=args.remove_signals_after_coalescence,
         delta_t=1. / args.sample_rate,
         testing_plots=args.testing_plots,
+        add_to_offset_times=time_before,
     )
 
 # Subtract the mean from the data
