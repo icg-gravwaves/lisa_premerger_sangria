@@ -16,20 +16,36 @@
     \includegraphics[width=1.5\columnwidth]{images/inpainting_results/figure_X_focused_region_variable_removal.png}
     \caption{
         Timeline of results in the congested period of days 110-140 of the Sangria-HM dataset.
-        These are inpainting results filtered to be at the 0,5,1,4,7,14 days-before-merger that were used in the zero latency search (\gscd{Should we redo this plot without filtering those??}).
-        We see that Signal 4 - the loudest signal - dominates the SNR, and can actually be found before signals 2 and 3.
-        We remove signal 4 14 days before merger
-        Signal 3 can be detected almost immediately after signal 4 is removed from the data, and is then removed 11 days before merger 
+        These are inpainting results filtered to be at the 0,5,1,4,7,14 days-before-merger that were used in the zero latency search.
+        We see that Signal 4 - the loudest signal - dominates the SNR, and can actually be found before Signals 2 and 3.
+        We remove Signal 4 14 days before merger.
+        Signal 3 can be detected almost immediately after Signal 4 is removed from the data, and is therefore removed 11 days before merger.
         Signal 2 can then be found around a day before merger.
-        There remains a peak for the 1 and 0.5 days-before-merger results for signal 4 - this is due to imperfect removal 
+        Peaks remain for the 1 and 0.5 days-before-merger results for Signals 3 and 4 - this is due to imperfect removal of the signal from the data, see Appendix~\ref{sec:signal_removal}.
     }
     \label{fig:variable_removal}
 \end{figure*}
 
-The Sangria training dataset that we use contains 15 MBHB signals with end times chosen uniformly within the dataset. This resulted in 4 signals, signals 2 - 5, having end times that are all within 10 days of each other, with signal 2 and 3 separated by only 1.05 days.  This proximity of signals can lead to some overlap between them. In Figure~\ref{NEED_TO_MAKE} we show the results of the zero-latency search, without any signal removal, for the \iwh{inpainting/zero-latency whichever we have doesn't matter} search. We can \iwh{hopefully clearly see a lot of cross talk between the signals, especially as the merger of signals 3 and 4 causes an increase in the signal-to-noise ratio for a long time afterwards}. In Figure~\ref{fig:zerolatency_signal_removed_raw} we demonstrated the need to remove signals before merger to avoid this. We also show the effect of doing this for \iwh{both? the inpainting and zero-latency searches} in Figure~\ref{NEED_TO_MAKE}. The distinction between the signals is clearer now, but it is still hard to distinguish signal 3 from signal 4 and both signal 2 and signal 5 remain masked by the louder signals 
+The Sangria-HM training dataset that we use contains 15 MBHB signals with end times chosen uniformly within the dataset.
+This resulted in 4 signals, signals 2 - 5, having end times that are all within 10 days of each other, with signal 2 and 3 separated by only 1.05 days.
+This proximity of signals can lead to some overlap between them.
+In Figure~\ref{NEED_TO_MAKE} we show the results of the zero-latency search, without any signal removal, for the \iwh{inpainting/zero-latency whichever we have doesn't matter} search.
+We can \iwh{hopefully clearly see a lot of cross talk between the signals, especially as the merger of signals 3 and 4 causes an increase in the signal-to-noise ratio for a long time afterwards}.
+In Figure~\ref{fig:zerolatency_signal_removed_raw} we demonstrated the need to remove signals before merger to avoid this.
+We also show the effect of doing this for \iwh{both? the inpainting and zero-latency searches} in Figure~\ref{NEED_TO_MAKE}.
+The distinction between the signals is clearer now, but it is still hard to distinguish signal 3 from signal 4 and both signal 2 and signal 5 remain masked by the louder signals.
 
-This highlights that is important not just to remove the merger of these MBHB signals from the data when searching for other MBHBs, but to remove loud signals from the data as they are observed to be able to reliably identify multiple signals in the data. To remove such signals from the data will require low-latency premerger inference of the properties of the signals, which is not the scope of this paper. Here we assume that we are able to reliably model the signals found in the data and search again over the region containing signals 2 - 5, using the inpainting search and removing signals 2,3,4,5 at \iwh{[??, ??, 14, ??]} days before merger. These times are a little more conservative than those quoted in Table~\ref{tab:when_found} reflecting human uncertainty of initially identifying signals 3 and 4 as separate signals and similarly disentangling signals 2 and 5 from the louder 2 signals around it.
+This highlights that is important not just to remove the merger of these MBHB signals from the data when searching for other MBHBs, but to remove loud signals from the data as they are observed to be able to reliably identify multiple signals in the data.
+To remove such signals from the data will require low-latency premerger inference of the properties of the signals, which is not the scope of this paper.
+Here we assume that we are able to reliably model the signals found in the data and search again over the region containing Signals 2 - 5, using the inpainting search and removing Signals 2,3,4,5 at \iwh{[??, ??, 14, ??]} days before merger.
+These times are a little more conservative than those quoted in Table~\ref{tab:when_found} reflecting human uncertainty of initially identifying signals 3 and 4 as separate signals and similarly disentangling Signals 2 and 5 from the louder 2 signals around it.
 
-We then show results of this search, removing signals as they are identified, in Figure~\ref{fig:variable_removal}. This is now showing the signal identification as a function of wall clock time, as opposed to the predicted merger time used in other plots. This is done to highlight the asynchronous order in which the signals are identified. In particular, once we reach signal 4 being 14 days out of merger it is possible to clearly identify that two separate signals (3 and 4) are present in the data, which are then removed at almost the same point. Following this, almost 10 days later, signal 2 is identified as it nears merger, before signal 5 is observed also within a day of it merging. \iwh{Gareth, the numbers in Table III don't agree with this, we're claiming observation of signals 2 and 5 too early!}
+We then show results of this search, removing signals as they are identified, in Figure~\ref{fig:variable_removal}.
+This is now showing the signal identification as a function of wall clock time, as opposed to the predicted merger time used in other plots.
+This is done to highlight the asynchronous order in which the signals are identified.
+In particular, once we reach Signal 4 being 14 days out of merger it is possible to clearly identify that two separate signals (3 and 4) are present in the data, which are then removed at almost the same point.
+Following this, almost 10 days later, Signal 2 is identified as it nears merger, before signal 5 is observed also within a day of it merging.
+\iwh{Gareth, the numbers in Table III don't agree with this, we're claiming observation of signals 2 and 5 too early!}
 
-An additional peak is seen at the time when signal 4 merges, this is erroneous, although we are removing signal 4 using identical parameters to how it was added to the data it seems that we are not able to reproduce the waveform with complete accuracy, perhaps due to code version mismatch, which leaves a noticeable residual at the merger of this loud signal.
+An additional peak is seen at the time when Signal 4 merges, this is erroneous, although we are removing Signal 4 using identical parameters to how it was added to the data it seems that we are not able to reproduce the waveform with complete accuracy, perhaps due to code version mismatch, which leaves a noticeable residual at the merger of this loud signal.
+This is explored further in Appendix~\ref{sec:signal_removal}.

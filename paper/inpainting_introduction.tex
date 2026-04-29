@@ -20,19 +20,29 @@ we can rewrite this as
     (h|s) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \tilde{u}(f)  \mathrm{d} f,
 \end{equation}
 %
-where $\tilde{u}(f) = \tilde{s}^*(f) / S_n(f)$ is the ``overwhitened'' strain. The matched-filter is then simply the cross correlation between the overwhitened strain and the template waveform and so any times where the overwhitened strain is 0 do not contribute to the overall matched-filter. However, if we begin with raw, unwhitened, data with a gap in it, the whitening, or overwhitening, process will ``bleed'' data from the valid points into the gap according to the length of the [over]whitening filter in the time-domain. This results in the values of the overwhitened data in the gap not being 0.  The inpainting technique works by choosing appropriate values of the unwhitened data, in the gap, such that after overwhitening all values in the gap are 0. Choosing values that the unwhitened data should take in the gap to acheive this boils down to a linear algebra problem, which can be solved by a Toeplitz solver~\cite{Zackay:2019kkv}.
+where $\tilde{u}(f) = \tilde{s}^*(f) / S_n(f)$ is the ``overwhitened'' strain.
+The matched-filter is then simply the cross correlation between the overwhitened strain and the template waveform and so any times where the overwhitened strain is 0 do not contribute to the overall matched-filter.
+However, if we begin with raw, unwhitened, data with a gap in it, the whitening, or overwhitening, process will ``bleed'' data from the valid points into the gap according to the length of the [over]whitening filter in the time-domain.
+This results in the values of the overwhitened data in the gap not being 0.
+The inpainting technique works by choosing appropriate values of the unwhitened data, in the gap, such that after overwhitening all values in the gap are 0.
+Choosing values that the unwhitened data should take in the gap to acheive this boils down to a linear algebra problem, which can be solved by a Toeplitz solver~\cite{Zackay:2019kkv}.
 
 \subsection{Implementing inpainting to simultaneously search for a signal at all times}
 
-The ``inpainting'' procedure is implemented in the \texttt{PyCBC} toolkit as described in~\cite{Capano:2021etf}. We first describe how we use this to inpaint the raw strain, and then how we perform matched-filtering on the inpainted data to obtain signal-to-noise ratio as a function of the time before merger.
+The ``inpainting'' procedure is implemented in the \texttt{PyCBC} toolkit as described in~\cite{Capano:2021etf}.
+We first describe how we use this to inpaint the raw strain, and then how we perform matched-filtering on the inpainted data to obtain signal-to-noise ratio as a function of the time before merger.
 
-To apply \texttt{PyCBC}'s inpainting to our search, where we have gaps in the middle of the data we simply apply it directly, allowing it to select values in the raw strain to make the overwhitened strain in the gap 0. To be able to analyse data that ends abruptly, where we are searching for signals merging in the future, we add a long stretch of zeroes to the end of the data, adding at least a week of extra zeroed data~\footnote{We add extra zeroes to resize the data to have length equal to $2^{N}$ where N is the smallest integer that is large enough to include the original data and a week of zeroes, to allow for more efficient Fast Fourier Transforms.}. We then apply the inpainting over this ``gap'', simultaneously dealing with any issues due to abrupt end of the data, but also smoothing out the abrupt start.
+To apply \texttt{PyCBC}'s inpainting to our search, where we have gaps in the middle of the data we simply apply it directly, allowing it to select values in the raw strain to make the overwhitened strain in the gap 0.
+To be able to analyse data that ends abruptly, where we are searching for signals merging in the future, we add a long stretch of zeroes to the end of the data, adding at least a week of extra zeroed data
+~\footnote{We add extra zeroes to resize the data to have length equal to $2^{N}$ where N is the smallest integer that is large enough to include the original data and a week of zeroes, to allow for more efficient Fast Fourier Transforms.}.
+We then apply the inpainting over this ``gap'', simultaneously dealing with any issues due to the abrupt end of the data, but also smoothing out the abrupt start.
 
 % I don't think this is the same thing ... which does lead to confusion over the
 % terminology
 % Inpainting has been used in the context of addressing gaps in LISA data in \cite{Blelly:2021oim},
 
-With the inpainting approach we can simultaneously search for a signal matching a given template waveform at all times before merger. It is common in ground based detection analyses~\cite{Allen:2005fk} to evaluate $(h|s)$ as a function of time by introducing a frequency dependent time shift and evaluating the resulting expression using a Fast Fourier Transform
+With the inpainting approach we can simultaneously search for a signal matching a given template waveform at all times before merger.
+It is common in ground based detection analyses~\cite{Allen:2005fk} to evaluate $(h|s)$ as a function of time by introducing a frequency dependent time shift and evaluating the resulting expression using a Fast Fourier Transform.
 %
 \begin{equation}
     (h|s)(t) = 4\mathrm{Re}\int_{f_\mathrm{low}}^{f_\mathrm{high}} \tilde{h}(f) \frac{\tilde{s}^*(f)}{S_n(f)} e^{2 i \pi f t} \mathrm{d} f.
