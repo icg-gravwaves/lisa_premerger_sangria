@@ -252,6 +252,7 @@ def remove_signals(
     relative_time_for_removal=[0],
     delta_t=5.,
     testing_plots=None,
+    add_to_offset_times=0,
 ):
     eg_channel = list(data.keys())[0]
     n_catalog = len(mbhb_catalog)
@@ -264,6 +265,8 @@ def remove_signals(
         )
     else:
         offsets = relative_time_for_removal
+
+    offsets = [(offset + add_to_offset_times) for offset in offsets]
 
     data_length_s = len(data[eg_channel]) * delta_t
 
