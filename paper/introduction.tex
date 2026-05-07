@@ -27,6 +27,22 @@ to reduce the chance that it is not taking data when the merger arrives.
 
 The technique that we introduced in~\cite{CabournDavies:2024hea} offers a method for immediate analysis of LISA data. It allows for the accurate computation of a matched filter using an acausal whitening filter that alleviates the the need to wait (up to a day) for additional data to arrive before being able to filter. If one has to wait an additional day, the observation window may have passed, or \ac{LISA} itself may have been turned off for repositioning or data downlink.
 
+% The figure is included here so that it appears higher-up in the paper.
+% It doesnt actually get discussed in this section.
+\begin{figure*}
+    \includegraphics[width=\textwidth]{images/dataset/figure_X_psds_with_sources.png}
+    \caption{
+        Comparison of power spectral densities used in this work.
+        The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
+        The model shown is the noise model used to produce the Sangria-HM dataset, and is shown with and without unresolvable Galactic binary sources.
+        We show the power spectral density model and estimate smoothed using the method described in Section~\ref{subsec:smoothing}.
+        We also show the characteristic strain for a representative \ac{MBHB} signal from Sangria-HM (Signal 2), which shows that at 14, 7 and 4 days-before-merger, the \ac{MBHB} does not overlap
+        the Galactic binary confusion noise in frequency, but when the signal reaches around one day before merger (blue line),
+        the Galactic binary confusion noise starts to overlap with the signal.
+    }
+    \label{fig:psds}
+\end{figure*}
+
 However, our method is not robust to gaps in the LISA data and only searches for signals at
 discrete values of the gap to merger. We therefore introduce a second possibility for premerger
 observation, applying the inpainting technique of~\cite{Zackay:2019kkv} as an alternative to the

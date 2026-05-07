@@ -14,6 +14,7 @@ __pycache__/
 results/test*
 results/psd_*
 results/focused_*
+results/out
 results/signal_0_gaps
 sub_dir
 logs

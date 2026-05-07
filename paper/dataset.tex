@@ -1,6 +1,7 @@
 \section{The Sangria-HM Dataset}
 \label{sec:dataset}
 
+
 The LISA Data Challenges were designed to simulate comprehensively modelled data as an introduction
 to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}.
 Here we use the dataset known as Challenge 2a, also known as
@@ -30,19 +31,6 @@ Figure~\ref{fig:psds} shows the power-spectral density directly estimated from t
 characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr}
 for a description).
 
-\begin{figure*}
-    \includegraphics[width=\textwidth]{images/dataset/figure_X_psds_with_sources.png}
-    \caption{
-        Comparison of power spectral densities used in this work.
-        The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
-        The model shown is the noise model used to produce the Sangria-HM dataset, and is shown with and without unresolvable Galactic binary sources.
-        We show the power spectral density model and estimate smoothed using the method described in Section~\ref{subsec:smoothing}.
-        We also show the characteristic strain for a representative \ac{MBHB} signal from Sangria-HM (Signal 2), which shows that at 14, 7 and 4 days-before-merger, the \ac{MBHB} does not overlap
-        the Galactic binary confusion noise in frequency, but when the signal reaches around one day before merger (blue line),
-        the Galactic binary confusion noise starts to overlap with the signal.
-    }
-    \label{fig:psds}
-\end{figure*}
 
 From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
 in frequency with the unresolvable Galactic binary confusion noise.
