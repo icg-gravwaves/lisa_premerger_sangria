@@ -4,7 +4,7 @@
 The Sangria-HM training dataset that we use contains 15 MBHB signals with end times chosen uniformly within the dataset.
 This resulted in 4 signals, Signals 2 - 5, having end times that are all within 10 days of each other, with Signals 2 and 3 separated by only 1.05 days.
 This proximity of signals can lead to some overlap between them.
-In Figure~\ref{fig:focused_no_2hr_removal} we show the results, without any signal removal (\ref{fig_noremoval}), or with signal removal 2 hours before merger (\ref{fig:2hr_removal}) for the inpainting search.
+In Figure~\ref{fig:focused_no_2hr_removal} we show the results, without any signal removal (\ref{fig:no_removal}), or with signal removal 2 hours before merger (\ref{fig:2hr_removal}) for the inpainting search.
 
 \begin{figure*}
     \centering
@@ -63,7 +63,7 @@ We then show results of this search, removing signals as they are identified, in
         We remove Signal 4 14 days before merger.
         Signal 3 can be detected almost immediately after Signal 4 is removed from the data, and is therefore removed 11 days before merger.
         Signal 2 can then be found around a day before merger.
-        Peaks remain for the 1 and 0.5 days-before-merger results for Signals 3 and 4 - this is due to imperfect removal of the signal from the data, see Appendix~\ref{sec:signal_removal}.
+        Peaks remain for the 1 and 0.5 days-before-merger results for Signals 3 and 4 - this is due to imperfect removal of the signal from the data. %, see Appendix~\ref{sec:signal_removal}.
     }
     \label{fig:variable_removal}
 \end{figure*}
@@ -75,4 +75,4 @@ Following this, almost 10 days later, Signal 2 is identified as it nears merger,
 We see here that more realistic resuls for when Signals 2, 3, 4 and 5 cross the SNR threshold of 10 would be 
 
 An additional peak is seen at the time when Signal 4 merges, this is erroneous, although we are removing Signal 4 using identical parameters to how it was added to the data it seems that we are not able to reproduce the waveform with complete accuracy, perhaps due to code version mismatch, which leaves a noticeable residual at the merger of this loud signal.
-This is explored further in Appendix~\ref{sec:signal_removal}.
+% This is explored further in Appendix~\ref{sec:signal_removal}.
