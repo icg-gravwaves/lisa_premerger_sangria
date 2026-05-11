@@ -10,17 +10,16 @@ Sangria-HM  consists of both a ``training'' and ``blind'' dataset, we analyse he
 The Sangria-HM training dataset is a year long and contains Gaussian instrumental noise, a foreground of
 Galactic binaries and \ac{MBHB} systems, both with parameters derived from astrophysical models.
 The \acp{MBHB} are simulated using the \texttt{PhenomHM} waveform model~\cite{Garcia-Quiros:2020qpx}.
-By using the training dataset, we know the true source parameters of signals, the model of instrumental noise used,
-and the form of LISA's orbit used to generate the data.
 
 In our previous work~\cite{CabournDavies:2024hea}, we demonstrated the zero-latency technique
 on a dataset that did not include a foreground of Galactic binaries.
-This foreground, made up of millions of white dwarf binaries in our galaxy largely continuous \gscd{monochromatic?} in frequency, occupy the same frequency range as mergers of \acp{MBHB}.
+This foreground, made up of millions of white dwarf binaries in our galaxy largely monochromatic in frequency, occupy the same frequency range as mergers of \acp{MBHB}.
 Many of the Galactic binary systems are not expected to be resolvable, and so must be considered an extra source of noise for \ac{MBHB} searches.
 % MOVE THIS TO LATER
 %In this work we treat all white dwarf signals as noise in this paper, whether they would be resolved or not, and the search is based on the `day-one' power-spectral density of the data.
 The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented towards or away from the galactic centre.
 As the loudest Galactic binary sources are resolved and can be removed from the data, sensitivity to \ac{MBHB} signals will naturally increase.
+\iwh{We do need citations in this paragraph}
 
 The Galactic binary confusion noise overlaps with \ac{MBHB} mergers in frequency space.
 But we emphasise that our search is not \textit{for} the mergers,
@@ -71,8 +70,10 @@ times and the signal-to-noise ratio of the full signal calculated from character
 We also show the signal-to-noise ratios for each of the 15 \ac{MBHB} signals, at 14, 7, 4, 1 and 0.5 days before merger using frequency-domain cuts.
 We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12 and 13 - would be seen 4 days or more before merger.
 
-For the example characteristic strain in Figure~\ref{fig:psds}, we use the \textit{characteristic
-strain}~\cite{Moore:2014lga} for the example of Signal 2.
+For the example signal shown in Figure~\ref{fig:psds}, we use the \textit{characteristic
+strain}~\cite{Moore:2014lga}.
+Characteristic strain has a desirable property for visualization; the area between the characteristic strain and the
+power-spectral density in the frequency domain corresponds to the expected signal-to-noise ratio for the signal.
 
 
 \subsection{Smoothing the power spectral density}
@@ -81,7 +82,7 @@ At $\sim60$\,mHz, we see a dip in the power-spectral density, this is an artifac
 of $5\times10^{9}$\,m, which is exactly double the arm length of LISA, and the TDI combination process results in cancellation at this frequency.
 Despite appearances, it is \emph{not} a point of infinite sensitivity, it is a point of zero sensitivity because any potential signal is cancelled completely at this point.
 However, a problem arises when creating a whitening filter
-to ``whiten'' this because it is effectively a delta function in the inverse power-spectral density, which would require an infinitely long time-domain whitening filter to effectively whiten.
+to ``whiten'' this because it is effectively a delta function in the inverse power-spectral density, which would require an infinitely long time-domain whitening filter to correctly whiten.
 
 Instead, following our previous work~\cite{CabournDavies:2024hea} we choose not to whiten this feature, especially as the signals we are looking for are at frequencies two orders of magnitude
 smaller than this.
