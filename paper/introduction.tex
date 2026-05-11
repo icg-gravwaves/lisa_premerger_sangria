@@ -17,15 +17,15 @@ The large signal-to-noise ratios that \acp{MBHB} are expected to have unlocks a 
 interesting possibility; that of observing these systems
 in the weeks to months before they merge~\cite{CabournDavies:2024hea, Houba:2024mqj,
 Ruan:2024qch}. Such \textit{pre-merger} observations provide an early warning that a loud merger
-event is about to happen and can provide sky-localisation
+event is about to happen and can provide sky-localization
 estimates~\cite{CabournDavies:2024hea, Kocsis:2007yu, McWilliams:2011zs, Saini:2022hrs}
 for these incredibly science-rich events~\cite{DalCanton:2019wsr}.
 This advanced notice is critical to enable
-electromagnetic facilities to be directed toward the source region rapidly to maximise
+electromagnetic facilities to be directed toward the source region rapidly to maximize
 the possibility of multi-messenger observation and to potentially reschedule any planned repositioning operations of \ac{LISA} itself 
-to reduce the chance that it is not taking data when the merger arrives.
+to reduce the chance that it is not taking data when the merger arrives~\cite{Colpi:2024xhw,Castelli:2024sdb}.
 
-The technique that we introduced in~\cite{CabournDavies:2024hea} offers a method for immediate analysis of LISA data. It allows for the accurate computation of a matched filter using an acausal whitening filter that alleviates the the need to wait (up to a day) for additional data to arrive before being able to filter. If one has to wait an additional day, the observation window may have passed, or \ac{LISA} itself may have been turned off for repositioning or data downlink.
+The technique that we introduced in~\cite{CabournDavies:2024hea} offers a method for immediate analysis of LISA data. It allows for the accurate computation of a matched filter using an acausal, zero-latency whitening filter that alleviates the need to wait (up to a day) for additional data to arrive before being able to filter. If one has to wait an additional day, the observation window may have passed, or \ac{LISA} itself may not be taking data while repositioning~\cite{Colpi:2024xhw,Castelli:2024sdb}.
 
 However, our method is not robust to gaps in the LISA data and only searches for signals at
 discrete values of the gap to merger. We therefore introduce a second possibility for premerger
@@ -37,7 +37,7 @@ In this paper, we present the application of both the zero-latency and inpaintin
 We demonstrate that, where there are no gaps in the data, both methods
 compare very well, and identify 14 of the 15 \ac{MBHB} signals in the dataset at least 0.5 days before merger--the remaining signal being too quiet for detection 0.5 days before merger. We demonstrate how the inpainting technique works well when gaps are added to the dataset, allowing premerger identification even in an example where the data contains 3 separate day-long gaps.
 
-The paper is organized as follows: In section~\ref{sec:dataset} we described the Sangria-HM dataset and evaluate the potential for premerger detection of the 15 \ac{MBHB} signals added to it.
+The paper is organized as follows: In section~\ref{sec:dataset} we describe the Sangria-HM dataset and evaluate the potential for premerger detection of the 15 \ac{MBHB} signals added to it.
 In section~\ref{sec:zerolatency_sangria} we present the results of our zero-latency search on this dataset. In section~\ref{sec:inpainting} we describe how we adapt the inpainting technique of~\cite{Zackay:2019kkv} to the problem of premerger observation of \acp{MBHB} before presenting results of that search in section~\ref{sec:inpainting_sangria}. In section~\ref{sec:focused}
 we discuss the analysis of signals 2 - 5, whose merger times are all contained within a single
 10-day window, causing some overlap in their identification. Finally we conclude in section~\ref{sec:conclusion}.
