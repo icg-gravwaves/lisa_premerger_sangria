@@ -17,7 +17,7 @@ Although we did create such template banks in~\cite{CabournDavies:2024hea}, the 
 Galactic binary confusion noise in Sangria-HM changes the sensitivity curves and requires that we create new banks for this work. 
 
 We create separate template banks for each of our 5 premerger search times (0.5, 1, 4, 7, and 14 days before merger) and simulate the termination of the waveforms by computing the numerical
-match between waveforms only using frequencies up to frequency corresponding to the frequency of the dominant gravitational-wave mode at that time-before-merger for that signal. 
+match between waveforms only using frequencies up to frequency corresponding to the dominant gravitational-wave mode at that time-before-merger for that signal. 
 
 
 \begin{table}[ht]
@@ -47,7 +47,7 @@ the modelled power spectral density with Galactic binary confusion, and the powe
 The banks used in~\cite{CabournDavies:2024hea} used a modelled power spectral density without Galactic binary confusion noise.
 
 In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different power spectral densities.
-We compute this using 3 of the sensitivity curves shown earlier in Figure~\ref{fig:psds}; the modelled power-spectral density with Galactic binary confusion, the modelled curve without Galactic binary confusion, and a power-spectral density estimated from data.
+We compute this using three of the sensitivity curves shown earlier in Figure~\ref{fig:psds}; the modelled power-spectral density with Galactic binary confusion, the modelled curve without Galactic binary confusion as used in~\cite{CabournDavies:2024hea}, and a power-spectral density estimated from data.
 
 \begin{figure}
     \centering
@@ -87,7 +87,7 @@ We consider a signal to be detected if we recover it with a signal-to-noise rati
     \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_X_opt_snr_match_signal_10.pdf}
     \caption{
         Optimal signal-to-noise ratio (SNR) build-up and signal-to-noise ratio of premerger-truncated signals matched filtered against the full signal for Signal 10.
-        We see that the premerger-truncated signals signal-to-noise ratios are a product of the optimal signal-to-noise and the match between the full and truncated signals.
+        We see that the premerger-truncated signals' signal-to-noise ratios are a product of the optimal signal-to-noise and the match between the full and truncated signals.
         Equivalent plots for all signals are included in the data release.
     }
     \label{fig:double_peak}
@@ -112,11 +112,21 @@ First (black solid line), we show the integrated signal-to-noise ratio of one of
 Second (dotted lines) we show the normalized match between waveforms truncated 1, 4, 7 and 14 days before merger, and the signal, as a function of the signal's time before merger.
 This is normalized such that a value of 1 indicates perfect agreement, and all the integrated signal-to-noise would be recovered, a value of 0 indicates complete disagreement, and no signal-to-noise ratio would be recovered, a value of 0.5 indicates that 50\% of the signal-to-noise ratio would be recovered.
 This value peaks sharply to 1 at the expected times when the waveform and merger are both at the same time before merger and rapidly drops on both sides.
-Finally (solid lines), we show the product of the normalized matches and the integrated signal-to-noise, represented the signal-to-noise ratio that would be recovered by searching with the waveform truncated at the stated point before merger.
+Finally (solid lines), we show the product of the normalized matches and the integrated signal-to-noise, representing the signal-to-noise ratio that would be recovered by searching with the waveform truncated at the stated point before merger.
 We see the expected peaks at the desired time before merger.
 However, we also see secondary peaks close to the merger time.
-These are points where the normalized match is low, but because the integrated signal-to-noise is larger (over 100) the product of the 2 can result in values that are comparable, in terms of signal-to-noise, to a premerger signal.
+These are points where the normalized match is low, but because the integrated signal-to-noise is larger (over 100) the product of the two can result in values that are comparable, in terms of signal-to-noise, to a premerger signal.
 In short, this shows that there is enough cross-correlation between pre-merger signals and loud merger events that it has the potential to confuse our search.
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{images/zero_latency_results/psd_model/figure_X_zerolatency_result.png}
+    \caption{
+        Search results for the zero-latency filter search
+    }
+    \label{fig:zerolatency_remove_all}
+\end{figure*}
 
 We therefore want to avoid confusing actual mergers as premerger signals, or having a merger mask a second incoming \ac{MBHB}.
 There are techniques, for example~\cite{Allen:2004gu}, that could be used to distinguish between genuine premerger signals, and premerger template waveforms overlapping with \ac{MBHB} mergers.
@@ -128,26 +138,17 @@ In a real-world scenario one could consider a scenario where we remove signals a
 Additionally, we will not have a perfect waveform model, and there will be some level of residual due to mismatch.
 However, in the real-world scenario the goal will not be perfect removal of the signal, but to remove the possibility of confusing premerger signals with loud \ac{MBHB} mergers, which would be possible with even a rough subtraction of the signal.
 
-Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the merger when searching for signal 10.
-Without the merger removed, we ``detect'' additional mergers 14, 7, 4 and 1 day after the merger of signal 10, due to this cross-correlation.
+Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the merger when searching for Signal 10.
+Without the merger removed, we ``detect'' additional mergers 14, 7, 4 and 1 day after the merger of Signal 10, due to this cross-correlation.
 With the merger removed, we recover the expected result of the signal being detected first 4 days before merger with signal-to-noise increasing as the signal nears merger.
 
 
 \subsection{Search Results}
 \label{subsec:zerolatency_results}
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{images/zero_latency_results/psd_model/figure_X_zerolatency_result.png}
-    \caption{
-        Signal-to-noise ratio (SNR) as a function of the forecast merger time for our zero-latency filter search searching for signals 14,
-        7, 4, 1 and 0.5 days before merger in the Sangria dataset. Signals have been removed from the data once they reach 2 hours before merger.
-    }
-    \label{fig:zerolatency_remove_all}
-\end{figure*}
-
-Finally, we show the results from searching the full year-long dataset in Figure~\ref{fig:zerolatency_remove_all}. We can see that peaks in the signal-to-noise ratio timeseries corresponding to all signals except signal 1, which we did not expect to recover.
-In Table~\ref{tab:when_found}, alongside our inpainting results, which we'll discuss shortly,
+Finally, we show the results from searching the full year-long dataset in Figure~\ref{fig:zerolatency_remove_all}.
+We can see that peaks in the signal-to-noise ratio timeseries corresponding to all signals except Signal 1, which we did not expect to recover.
+In Table~\ref{tab:when_found}, alongside our inpainting results, which we'll discuss later in Section~\ref{sec:inpainting_sangria},
 we show when each signal is recovered, and with what signal-to-noise ratio. We recover all of the signals at times comparable to what was predicted in Table~\ref{tab:characteristic_strain_snr}.
-We note that signals 2 - 5 are visibly overlapping in Figure~\ref{fig:zerolatency_remove_all}.
+We note that Signals 2 - 5 are visibly overlapping in Figure~\ref{fig:zerolatency_remove_all}.
 We leave a discussion of identifying each of these as separate signals to Section~\ref{sec:focused} so that we can do so in the context of both our zero-latency and inpainting search results.
