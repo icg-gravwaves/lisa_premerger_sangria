@@ -13,7 +13,7 @@ Challenges~\cite{Arnaud:2006gm, MockLISADataChallengeTaskForce:2006sgi, Arnaud:2
 MockLISADataChallengeTaskForce:2007iof, Babak:2008aa, Arnaud:2007jy,
 MockLISADataChallengeTaskForce:2009wir, Baghi:2022ucj, LDC_WEBSITE}.
 
-The large signal-to-noise ratios that \acp{MBHB} are expected to have unlocks a particularly
+The large signal-to-noise ratio that \acp{MBHB} are expected to have unlocks a particularly
 interesting possibility; that of observing these systems
 in the weeks to months before they merge~\cite{CabournDavies:2024hea, Houba:2024mqj,
 Ruan:2024qch}. Such \textit{pre-merger} observations provide an early warning that a loud merger
@@ -25,7 +25,9 @@ electromagnetic facilities to be directed toward the source region rapidly to ma
 the possibility of multi-messenger observation and to potentially reschedule any planned repositioning operations of \ac{LISA} itself 
 to reduce the chance that it is not taking data when the merger arrives~\cite{Colpi:2024xhw,Castelli:2024sdb}.
 
-The technique that we introduced in~\cite{CabournDavies:2024hea} offers a method for immediate analysis of LISA data. It allows for the accurate computation of a matched filter using an acausal, zero-latency whitening filter that alleviates the need to wait (up to a day) for additional data to arrive before being able to filter. If one has to wait an additional day, the observation window may have passed, or \ac{LISA} itself may not be taking data while repositioning~\cite{Colpi:2024xhw,Castelli:2024sdb}.
+The technique that we introduced in~\cite{CabournDavies:2024hea} offers a method for immediate analysis of LISA data.
+It allows for the accurate computation of a matched filter using an acausal, zero-latency whitening filter that alleviates the need to wait (up to a day) for additional data to arrive before being able to filter.
+If one has to wait an additional day, the observation window may have passed, or \ac{LISA} itself may not be taking data while repositioning~\cite{Colpi:2024xhw,Castelli:2024sdb} or data downlink \gscd{add citation}.
 
 % The figure is included here so that it appears higher-up in the paper.
 % It doesnt actually get discussed in this section.
@@ -51,12 +53,15 @@ zero-latency whitening filter.
 In this paper, we present the application of both the zero-latency and inpainting techniques to the
 ``Sangria-HM dataset'' produced as part of the LISA Data Challenges.
 We demonstrate that, where there are no gaps in the data, both methods
-compare very well, and identify 14 of the 15 \ac{MBHB} signals in the dataset at least 0.5 days before merger--the remaining signal being too quiet for detection 0.5 days before merger. We demonstrate how the inpainting technique works well when gaps are added to the dataset, allowing premerger identification even in an example where the data contains 3 separate day-long gaps.
+compare very well, and identify 14 of the 15 \ac{MBHB} signals in the dataset at least 0.5 days before merger--the remaining signal being too quiet for detection 0.5 days before merger.
+We demonstrate how the inpainting technique works well when gaps are added to the dataset, allowing premerger identification even in an example where the data contains three separate day-long gaps.
 
 The paper is organized as follows: In section~\ref{sec:dataset} we describe the Sangria-HM dataset and evaluate the potential for premerger detection of the 15 \ac{MBHB} signals added to it.
-In section~\ref{sec:zerolatency_sangria} we present the results of our zero-latency search on this dataset. In section~\ref{sec:inpainting} we describe how we adapt the inpainting technique of~\cite{Zackay:2019kkv} to the problem of premerger observation of \acp{MBHB} before presenting results of that search in section~\ref{sec:inpainting_sangria}. In section~\ref{sec:focused}
-we discuss the analysis of signals 2 - 5, whose merger times are all contained within a single
-10-day window, causing some overlap in their identification. Finally we conclude in section~\ref{sec:conclusion}.
+
+In section~\ref{sec:zerolatency_sangria} we present the results of our zero-latency search on this dataset.
+In section~\ref{sec:inpainting} we describe how we adapt the inpainting technique of~\cite{Zackay:2019kkv} to the problem of premerger observation of \acp{MBHB} before presenting results of that search in section~\ref{sec:inpainting_sangria}.
+In section~\ref{sec:focused} we discuss the analysis of Signals 2 - 5, whose merger times are all contained within a single ten-day window, causing some overlap in their identification.
+Finally we conclude in section~\ref{sec:conclusion}.
 
 All of our results and figures are fully reproducible, with the code
 used to make them publicly available. Please see the data release at
