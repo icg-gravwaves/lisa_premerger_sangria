@@ -32,3 +32,4 @@ search/zero_latency/results/psd_model/data_runs_remove_0.5_results.hdf filter=lf
 search/zero_latency/results/psd_estimate/data_runs_raw_4_results.hdf filter=lfs diff=lfs merge=lfs -text
 search/zero_latency/results/psd_estimate/data_runs_raw_7_results.hdf filter=lfs diff=lfs merge=lfs -text
 search/zero_latency/results/psd_/*.hdf filter=lfs diff=lfs merge=lfs -text
+arxiv_submission.tar.gz filter=lfs diff=lfs merge=lfs -text
