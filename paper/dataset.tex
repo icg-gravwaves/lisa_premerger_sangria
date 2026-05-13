@@ -2,11 +2,11 @@
 \label{sec:dataset}
 
 
-The LISA Data Challenges were designed to simulate comprehensively modelled data as an introduction
+The LISA Data Challenges were designed to simulate comprehensively modeled data as an introduction
 to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}.
 Here we use the dataset known as Challenge 2a, also known as
 \textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
-Sangria-HM  consists of both a ``training'' and ``blind'' dataset, we analyse here the training dataset to more easily compare the values of the signals to our results.
+Sangria-HM  consists of both a ``training'' and ``blind'' dataset, we analyze here the training dataset to more easily compare the values of the signals to our results.
 The Sangria-HM training dataset is a year long and contains Gaussian instrumental noise, a foreground of
 Galactic binaries and \ac{MBHB} systems, both with parameters derived from astrophysical models.
 The \acp{MBHB} are simulated using the \texttt{PhenomHM} waveform model~\cite{Garcia-Quiros:2020qpx}.
@@ -16,23 +16,23 @@ on a dataset that did not include a foreground of Galactic binaries.
 This foreground, made up of millions of white dwarf binaries in our galaxy which are nearly monochromatic in frequency, occupy the same frequency range as mergers of \acp{MBHB}.
 Many of the Galactic binary systems are not expected to be resolvable, and so must be considered an extra source of noise for \ac{MBHB} searches.
 
-The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented towards or away from the galactic centre.
+The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented toward or away from the galactic center.
 As the loudest Galactic binary sources are resolved and can be removed from the data, sensitivity to \ac{MBHB} signals will naturally increase.
 \iwh{We do need citations in this paragraph}
 
 The Galactic binary confusion noise overlaps with \ac{MBHB} mergers in frequency space.
-But we emphasise that our search is not \textit{for} the mergers,
+But we emphasize that our search is not \textit{for} the mergers,
 rather the inspiral stage of the signal, many days before merger, and so we consider whether the frequency overlaps with the
 particular times-before-merger for our signals.
 
-Figure~\ref{fig:psds} shows the power-spectral density directly estimated from the data, the modelled power-spectral density with and without Galactic binary foreground noise, and an example
+Figure~\ref{fig:psds} shows the power-spectral density directly estimated from the data, the modeled power-spectral density with and without Galactic binary foreground noise, and an example
 characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr} for a description).
 
 
 From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
 in frequency with the unresolvable Galactic binary confusion noise.
 At 1 and 0.5 days before merger, the Galactic binary confusion noise begins to overlap the \ac{MBHB}.
-However, the ``day 0'' sensitivity curve, where no resolvable Galactic binaries have been removed, qualitatively agrees with the modelled sensitivity curve where resolvable binaries are removed.
+However, the ``day 0'' sensitivity curve, where no resolvable Galactic binaries have been removed, qualitatively agrees with the modeled sensitivity curve where resolvable binaries are removed.
 This is important because it indicates that \emph{premerger detection of \ac{MBHB} is not a ``Global Fit'' problem}.
 The frequency content of premerger \acp{MBHB} are broadly separated from any other resolvable source, and therefore one would not need to simultaneously perform inference of premerger \acp{MBHB} and any other source because premerger inference could run perfectly well on data where no sources have been removed from it.
 It also indicates that the techniques to observe \ac{MBHB} sources could largely run separately from Global
@@ -47,7 +47,7 @@ Fit analyses, where all sources are being simultaneously fit\footnote{As we will
         We draw a straight line between the two peaks either side of this point, and smoothly
         transition between the estimated power-spectral density and the straight line using a Hann window.
         This ensures that there are no immediate jumps in the power-spectral density to cause spectral leakage.
-        This is applied to both the estimated and modelled power-spectral density used in later analysis.
+        This is applied to both the estimated and modeled power-spectral density used in later analysis.
     }
     \label{fig:smoothing}
 \end{figure}
