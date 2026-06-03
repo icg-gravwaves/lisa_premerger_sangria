@@ -1,4 +1,4 @@
-title: Premerger observation of super-massive black hole binaries in the Sangria Dataset
+title: "Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets"
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -17,7 +17,7 @@ latex:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/GarethCabournDavies/lisa_premerger_sangria/
+  url: https://github.com/icg-gravwaves/lisa_premerger_sangria/
   branch: main 
 
 # Add GitHub buttons to your book
