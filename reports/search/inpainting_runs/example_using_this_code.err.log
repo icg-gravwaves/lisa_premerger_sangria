@@ -39,10 +39,10 @@ snrs_function = get_snr_series(
 )
 
 fig, ax = plt.subplots(figsize=(4,4))
-ax.plot(snrs_function['LISA_A'], label='LISA A SNR function')
-ax.plot(snrs['LISA_A'], linestyle=':', label='LISA A SNR')
-ax.plot(snrs_function['LISA_E'], label='LISA E SNR function')
-ax.plot(snrs['LISA_E'], linestyle=':', label='LISA E SNR')
+ax.plot(snrs_function['LISA_A'], label='LISA\_A SNR function')
+ax.plot(snrs['LISA_A'], linestyle=':', label='LISA\_A SNR')
+ax.plot(snrs_function['LISA_E'], label='LISA\_E SNR function')
+ax.plot(snrs['LISA_E'], linestyle=':', label='LISA\_E SNR')
 ax.legend(loc='upper right')
 
 for channel in ['LISA_A', 'LISA_E']:
@@ -67,7 +67,7 @@ for channel in ['LISA_A', 'LISA_E']:
 [32m     18[39m [43m    [49m[43mhh[49m[43m=[49m[43mhh_function[49m[43m,[49m
 [32m     19[39m [43m)[49m
 [32m     21[39m fig, ax = plt.subplots(figsize=([32m4[39m,[32m4[39m))
-[32m     22[39m ax.plot(snrs_function[[33m'[39m[33mLISA_A[39m[33m'[39m], label=[33m'[39m[33mLISA A SNR function[39m[33m'[39m)
+[32m     22[39m ax.plot(snrs_function[[33m'[39m[33mLISA_A[39m[33m'[39m], label=[33m'[39m[33mLISA[39m[33m\[39m[33m_A SNR function[39m[33m'[39m)
 
 [36mFile [39m[32m~/lisa/lisa_premerger_sangria/search/inpainting_runs/utils.py:46[39m, in [36mget_snr_series[39m[34m(params, data_ow_f, psds_for_whitening, delta_t, hh, original_length, waveforms)[39m
 [32m     44[39m snr = {}

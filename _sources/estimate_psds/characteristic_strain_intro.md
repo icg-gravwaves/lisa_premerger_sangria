@@ -1,0 +1,3 @@
+# Characteristic Strain
+
+To calculate characteristic strain, and the expected SNR we ....
