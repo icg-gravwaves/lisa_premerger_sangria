@@ -1,3 +1,0 @@
-# Zero Latency Searches
-
-Lorem ipsum ...

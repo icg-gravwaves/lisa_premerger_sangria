@@ -1,3 +1,0 @@
-# Template Banks
-
-Lorem ipsum ....
