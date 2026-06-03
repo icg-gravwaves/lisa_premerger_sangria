@@ -1,0 +1,1358 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Results plots for Focused region with densely-packed signals &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'search/inpainting_runs/plot_focused_data_results';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Plot results from searching in data using the inpainting search" href="plot_data_results.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../data_release.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../data_release.html">
+                    Data Release
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Inpainting Search Results</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Results plots for Focused region with densely-packed signals</a></li>
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/icg-gravwaves/lisa_premerger_sangria" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/search/inpainting_runs/plot_focused_data_results.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Results plots for Focused region with densely-packed signals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Results plots for Focused region with densely-packed signals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-and-no-removal-same-plot">Variable removal and no removal - same plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps">Gaps</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-plots-for-all-signals">Timeline plots for all signals</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="results-plots-for-focused-region-with-densely-packed-signals">
+<h1>Results plots for Focused region with densely-packed signals<a class="headerlink" href="#results-plots-for-focused-region-with-densely-packed-signals" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># Use the style file defined in the repository route</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../../paper.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># This is the folder where results plots will be saved:</span>
+<span class="n">paper_plots_dir</span> <span class="o">=</span> <span class="s1">&#39;../../paper/images/inpainting_results&#39;</span>
+
+<span class="c1"># The common and plotting utils modules are in the parent</span>
+<span class="c1"># `search` directory</span>
+<span class="c1"># Here we add the `search` directory to the python path so we can</span>
+<span class="c1"># do a local import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">parent_dir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">)</span>
+
+
+<span class="c1"># Everything plotted in this notebook is done using these helper modules</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotting_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">common_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_results_inpainting</span> <span class="k">as</span> <span class="n">get_results</span><span class="p">,</span> <span class="n">get_results_zero_latency</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+
+SWIGLAL standard output/error redirection is enabled in IPython.
+This may lead to performance penalties. To disable locally, use:
+
+with lal.no_swig_redirect_standard_output_error():
+    ...
+
+To disable globally, use:
+
+lal.swig_redirect_standard_output_error(False)
+
+Note however that this will likely lead to error messages from
+LAL functions being either misdirected or lost when called from
+Jupyter notebooks.
+
+To suppress this warning, use:
+
+import warnings
+warnings.filterwarnings(&quot;ignore&quot;, &quot;Wswiglal-redir-stdio&quot;)
+import lal
+
+  import lal as _lal
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+
+<span class="n">results_noremoval</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;results/data_runs_focused_noremoval.hdf&quot;</span><span class="p">,</span>
+    <span class="n">filter_times_before</span><span class="o">=</span><span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="n">results_varremoval</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;results/data_runs_focused_varied_removal.hdf&quot;</span><span class="p">,</span>
+    <span class="n">filter_times_before</span><span class="o">=</span><span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="n">results_2hrremoval</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;results/data_runs_psd_estimate.hdf&quot;</span><span class="p">,</span>
+    <span class="n">filter_times_before</span><span class="o">=</span><span class="n">times_before</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the truth times</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ldc.io.hdf5</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hdfio</span>
+
+<span class="n">input_data</span> <span class="o">=</span> <span class="s1">&#39;../../datasets/LDC2_sangria_hm_training.hdf&#39;</span>
+<span class="n">mbhb_sky</span> <span class="o">=</span> <span class="n">hdfio</span><span class="o">.</span><span class="n">load_array</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sky/mbhb/cat&quot;</span><span class="p">)</span>
+
+<span class="n">truth_times_s</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Some definitions for when signals are removed</span>
+
+<span class="n">signals_in_region</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">removal_time_s</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7200</span><span class="p">,</span> <span class="mi">11</span><span class="o">*</span><span class="mi">86400</span><span class="p">,</span> <span class="mi">14</span><span class="o">*</span><span class="mi">86400</span><span class="p">,</span> <span class="mi">7200</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="variable-removal-and-no-removal-same-plot">
+<h2>Variable removal and no removal - same plot<a class="headerlink" href="#variable-removal-and-no-removal-same-plot" title="Link to this heading">#</a></h2>
+<p>This is quite hard to see on the same plot, so we show the same things separately in the next cells</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_predict</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">results_two</span><span class="o">=</span><span class="n">results_varremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;No Removal&#39;</span><span class="p">,</span>
+    <span class="n">label_two</span><span class="o">=</span><span class="s1">&#39;Variable Removal&#39;</span><span class="p">,</span>
+    <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a1ef3bb97e7826320416f39d689330c9adf14fbe68fccf1a62feb64aa3e990ee.png" src="../../_images/a1ef3bb97e7826320416f39d689330c9adf14fbe68fccf1a62feb64aa3e990ee.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_dataend</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">results_two</span><span class="o">=</span><span class="n">results_varremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;No Removal&#39;</span><span class="p">,</span>
+    <span class="n">label_two</span><span class="o">=</span><span class="s1">&#39;Variable Removal&#39;</span><span class="p">,</span>
+    <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/57cdfeba8cb5e874dcc720129b77ef540d38780fdd30c57004bde9a1e5fc9086.png" src="../../_images/57cdfeba8cb5e874dcc720129b77ef540d38780fdd30c57004bde9a1e5fc9086.png" />
+</div>
+</div>
+</section>
+<section id="no-removal-predicted-time-with-upper-limit-to-plot">
+<h2>No Removal - predicted time, with upper limit to plot:<a class="headerlink" href="#no-removal-predicted-time-with-upper-limit-to-plot" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_predict</span><span class="p">,</span> <span class="n">ax_focused_predict</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;No Removal&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d974562a89c9bfa2f58b7329e8204c0c1c3427ec8ad6e8446109e3b07c20202b.png" src="../../_images/d974562a89c9bfa2f58b7329e8204c0c1c3427ec8ad6e8446109e3b07c20202b.png" />
+</div>
+</div>
+</section>
+<section id="variable-removal-predicted-time">
+<h2>Variable removal - predicted time<a class="headerlink" href="#variable-removal-predicted-time" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_var_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_varremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Variable Removal&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9d7a80d2bd599084b9dfc8171b48c278db2e7052b0775e145b3a93ef60dd3ad9.png" src="../../_images/9d7a80d2bd599084b9dfc8171b48c278db2e7052b0775e145b3a93ef60dd3ad9.png" />
+</div>
+</div>
+</section>
+<section id="variable-removal-end-time">
+<h2>Variable removal - end time<a class="headerlink" href="#variable-removal-end-time" title="Link to this heading">#</a></h2>
+<p>A better, labelled, version of this is made later to appear in the paper - that one uses filtered times-before-merger so is a bit clearer</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_var_end_time</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_varremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Variable Removal&#39;</span><span class="p">,</span>
+    <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cfa95b91ebc330f560a9ef534be2e5f45006d30a96b1712f156c582762c56f14.png" src="../../_images/cfa95b91ebc330f560a9ef534be2e5f45006d30a96b1712f156c582762c56f14.png" />
+</div>
+</div>
+</section>
+<section id="no-removal-predicted-time">
+<h2>No removal - predicted time<a class="headerlink" href="#no-removal-predicted-time" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_no_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Results Without Removal&#39;</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dd3065bd990f5b278d11bf16ed216982d1d0c8d0bd3e22aba857c234b9ac77a8.png" src="../../_images/dd3065bd990f5b278d11bf16ed216982d1d0c8d0bd3e22aba857c234b9ac77a8.png" />
+</div>
+</div>
+</section>
+<section id="no-removal-data-end-time">
+<h2>No removal - data end time<a class="headerlink" href="#no-removal-data-end-time" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_no_dataend</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Results Without Removal&#39;</span><span class="p">,</span>
+    <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8f0d640d48e63ae1ba583951dc31536ea9cf40c76c143b18b5cdb4cd6839eb29.png" src="../../_images/8f0d640d48e63ae1ba583951dc31536ea9cf40c76c143b18b5cdb4cd6839eb29.png" />
+</div>
+</div>
+</section>
+<section id="removal-2-hours-before-merger-predicted-time">
+<h2>Removal 2 hours before merger - predicted time<a class="headerlink" href="#removal-2-hours-before-merger-predicted-time" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_2hr_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_2hrremoval</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Removal 2 hours before merger&#39;</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e05e9fec760276114c6502dbf95ba081a91f7d9395f026d19746d83cbae72efd.png" src="../../_images/e05e9fec760276114c6502dbf95ba081a91f7d9395f026d19746d83cbae72efd.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_predict</span><span class="p">,</span> <span class="n">ax_focused_predict</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_noremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;No Removal&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
+<span class="p">)</span>
+
+<span class="n">ax_focused_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">fig_focused_predict</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_9a_focused_region_no_removal.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3d603206d6a17cc092d5b6d4e10fac60fa81602f83363dd989f8888da62dc3ac.png" src="../../_images/3d603206d6a17cc092d5b6d4e10fac60fa81602f83363dd989f8888da62dc3ac.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_predict</span><span class="p">,</span> <span class="n">ax_focused_predict</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_2hrremoval</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Merger Removal&#39;</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax_focused_predict</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">fig_focused_predict</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_9b_focused_region_2hr_removal.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ba7dd87ba66832899ff148bb98678e2c342140ed938b08eed667c2fa8c78869d.png" src="../../_images/ba7dd87ba66832899ff148bb98678e2c342140ed938b08eed667c2fa8c78869d.png" />
+</div>
+</div>
+</section>
+<section id="removal-2-hours-before-merger-data-end-time">
+<h2>Removal 2 hours before merger - data end time<a class="headerlink" href="#removal-2-hours-before-merger-data-end-time" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_2hr_dataend</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_2hrremoval</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Removal 2 hours before merger&#39;</span><span class="p">,</span>
+    <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" src="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="the-focused-region-section-main-plot-variable-removal-end-times-with-labels">
+<h1>The focused region section main plot - variable removal end times, with labels<a class="headerlink" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_dataend</span><span class="p">,</span> <span class="p">(</span><span class="n">ax_focused_dataend</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_varremoval</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Search Results&#39;</span><span class="p">,</span>
+    <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">145</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.5</span>
+<span class="p">)</span>
+<span class="c1"># Add lines for when the signals are removed from the data</span>
+<span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax_focused_dataend</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span>
+<span class="p">))</span>
+<span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Signal Removal&#39;</span><span class="p">)</span>
+<span class="c1"># ax_focused_dataend.legend(loc=&#39;upper left&#39;)</span>
+<span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">signals_in_region</span><span class="p">,</span> <span class="n">removal_time_s</span><span class="p">):</span>
+    <span class="n">ax_focused_dataend</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_before</span><span class="p">)</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+    <span class="n">ax_focused_dataend</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_before</span> <span class="o">+</span> <span class="mi">1800</span><span class="p">)</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+        <span class="mi">16</span><span class="o">-</span><span class="n">signal_number</span><span class="o">*</span><span class="mf">1.5</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;$\leftarrow$ Signal </span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> 
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">boxstyle</span><span class="o">=</span><span class="s1">&#39;square,pad=0&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">leg</span> <span class="o">=</span> <span class="n">ax_focused_dataend</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="n">handles</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
+    <span class="n">framealpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">leg</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">fig_focused_dataend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/focused_results_data_end_time.pdf&#39;</span><span class="p">)</span>
+<span class="n">fig_focused_dataend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_10_focused_region_variable_removal.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">42</span>
+<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">leg</span> <span class="o">=</span> <span class="n">ax_focused_dataend</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span>     <span class="n">handles</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span>     <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">39</span>     <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="n">leg</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">42</span> <span class="n">fig_focused_dataend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/focused_results_data_end_time.pdf&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="n">fig_focused_dataend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_10_focused_region_variable_removal.png&#39;</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/figure.py:3490,</span> in <span class="ni">Figure.savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3488</span>     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3489</span>         <span class="n">_recursively_make_axes_transparent</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">3490</span> <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backend_bases.py:2186,</span> in <span class="ni">FigureCanvasBase.print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2182</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2183</span>     <span class="c1"># _get_renderer may change the figure dpi (as vector formats</span>
+<span class="g g-Whitespace">   </span><span class="mi">2184</span>     <span class="c1"># force the figure dpi to 72), so we need to set it again here.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2185</span>     <span class="k">with</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_setattr_cm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2186</span>         <span class="n">result</span> <span class="o">=</span> <span class="n">print_method</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2187</span>             <span class="n">filename</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2188</span>             <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2189</span>             <span class="n">edgecolor</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2190</span>             <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2191</span>             <span class="n">bbox_inches_restore</span><span class="o">=</span><span class="n">_bbox_inches_restore</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2192</span>             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2193</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2194</span>     <span class="k">if</span> <span class="n">bbox_inches</span> <span class="ow">and</span> <span class="n">restore_bbox</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backend_bases.py:2042,</span> in <span class="ni">FigureCanvasBase._switch_canvas_and_return_print_method.&lt;locals&gt;.&lt;lambda&gt;</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2038</span>     <span class="n">optional_kws</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># Passed by print_figure for other renderers.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2039</span>         <span class="s2">&quot;dpi&quot;</span><span class="p">,</span> <span class="s2">&quot;facecolor&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">,</span> <span class="s2">&quot;orientation&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2040</span>         <span class="s2">&quot;bbox_inches_restore&quot;</span><span class="p">}</span>
+<span class="g g-Whitespace">   </span><span class="mi">2041</span>     <span class="n">skip</span> <span class="o">=</span> <span class="n">optional_kws</span> <span class="o">-</span> <span class="p">{</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">}</span>
+<span class="ne">-&gt; </span><span class="mi">2042</span>     <span class="n">print_method</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">meth</span><span class="p">)(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">meth</span><span class="p">(</span>
+<span class="nn">   2043         *args, **{k: v for k, v</span> in <span class="ni">kwargs.items</span><span class="nt">() if k not in skip}))</span>
+<span class="g g-Whitespace">   </span><span class="mi">2044</span> <span class="k">else</span><span class="p">:</span>  <span class="c1"># Let third-parties do as they see fit.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2045</span>     <span class="n">print_method</span> <span class="o">=</span> <span class="n">meth</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backends/backend_pdf.py:2779,</span> in <span class="ni">FigureCanvasPdf.print_pdf</span><span class="nt">(self, filename, bbox_inches_restore, metadata)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2777</span>     <span class="n">file</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">_ensure_file</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2778</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2779</span>     <span class="n">file</span> <span class="o">=</span> <span class="n">PdfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2780</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2781</span>     <span class="n">file</span><span class="o">.</span><span class="n">newPage</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backends/backend_pdf.py:687,</span> in <span class="ni">PdfFile.__init__</span><span class="nt">(self, filename, metadata)</span>
+<span class="g g-Whitespace">    </span><span class="mi">685</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_file_like</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">686</span> <span class="bp">self</span><span class="o">.</span><span class="n">tell_base</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="ne">--&gt; </span><span class="mi">687</span> <span class="n">fh</span><span class="p">,</span> <span class="n">opened</span> <span class="o">=</span> <span class="n">cbook</span><span class="o">.</span><span class="n">to_filehandle</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">return_opened</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">688</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">opened</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">689</span>     <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/cbook.py:546,</span> in <span class="ni">to_filehandle</span><span class="nt">(fname, flag, return_opened, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">544</span>         <span class="n">fh</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">545</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">546</span>         <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span>     <span class="n">opened</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">548</span> <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;seek&#39;</span><span class="p">):</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;plots/focused_results_data_end_time.pdf&#39;
+</pre></div>
+</div>
+<img alt="../../_images/c82df6ac33992ab4c86b15cd346b1ce91fe1d038179bd192a179e78f348967e2.png" src="../../_images/c82df6ac33992ab4c86b15cd346b1ce91fe1d038179bd192a179e78f348967e2.png" />
+</div>
+</div>
+<section id="make-a-table-of-removed-times-days-to-be-added-to-the-paper">
+<h2>Make a table of removed times (days) to be added to the paper<a class="headerlink" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\\</span><span class="s2">begin</span><span class="si">{tabular}</span><span class="s2">{|cc|cc|}</span>
+<span class="se">\\</span><span class="s2">hline</span>
+<span class="se">\\</span><span class="s2">multicolumn</span><span class="si">{2}</span><span class="s2">{|c|}</span><span class="si">{Signal}</span><span class="s2"> &amp; </span><span class="se">\\</span><span class="s2">multicolumn</span><span class="si">{2}</span><span class="s2">{c|}{Removal Time} </span><span class="se">\\\\</span>
+<span class="se">\\</span><span class="s2">hline</span>
+<span class="s2">Number &amp; Time (days) &amp; Offset &amp; Time (days) </span><span class="se">\\\\</span>
+<span class="se">\\</span><span class="s2">hline</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">signals_in_region</span><span class="p">,</span> <span class="n">removal_time_s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">time_before</span> <span class="o">&gt;</span> <span class="mi">86400</span><span class="p">:</span>
+        <span class="n">removal_time_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_before</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">86400</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> days&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">removal_time_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_before</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3600</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> hours&quot;</span>
+    <span class="n">truth_time_days</span> <span class="o">=</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span> <span class="o">/</span> <span class="mi">86400</span>
+    <span class="n">table_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s2"> &amp; </span><span class="si">{</span><span class="n">truth_time_days</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> &amp; </span><span class="si">{</span><span class="n">removal_time_str</span><span class="si">}</span><span class="s2"> &amp; </span><span class="si">{</span><span class="n">truth_time_days</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_before</span><span class="o">/</span><span class="mi">86400</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="se">\\\\\n</span><span class="s2">&quot;</span>
+<span class="n">table_str</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\\</span><span class="s2">hline</span>
+<span class="se">\\</span><span class="s2">end</span><span class="si">{tabular}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">table_str</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../../paper/tables/table_4_focused_removal_times.tex&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">frt_table</span><span class="p">:</span>
+    <span class="n">frt_table</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">table_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{|cc|cc|}
+\hline
+\multicolumn{2}{|c|}{Signal} &amp; \multicolumn{2}{c|}{Removal Time} \\
+\hline
+Number &amp; Time (days) &amp; Offset &amp; Time (days) \\
+\hline
+2 &amp; 129.3 &amp; 2 hours &amp; 129.2 \\
+3 &amp; 130.3 &amp; 11 days &amp; 119.3 \\
+4 &amp; 133.4 &amp; 14 days &amp; 119.4 \\
+5 &amp; 138.6 &amp; 2 hours &amp; 138.5 \\
+\hline
+\end{tabular}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now make some statements about the relative times when a signal is removed, e.g. signal N is removed x days before/after signal M merges</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">signal_number_1</span><span class="p">,</span> <span class="n">time_before_1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">signals_in_region</span><span class="p">,</span> <span class="n">removal_time_s</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">signal_number_2</span><span class="p">,</span> <span class="n">time_before_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">signals_in_region</span><span class="p">,</span> <span class="n">removal_time_s</span><span class="p">):</span>
+        <span class="n">offset_merger</span> <span class="o">=</span> <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number_2</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number_1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_before_1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">offset_merger</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">offset_merger_removed_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="o">-</span><span class="n">offset_merger</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">86400</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> days after&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">offset_merger_removed_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">offset_merger</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">86400</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> days before&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signal </span><span class="si">{</span><span class="n">signal_number_1</span><span class="si">}</span><span class="s2"> is removed </span><span class="si">{</span><span class="n">offset_merger_removed_str</span><span class="si">}</span><span class="s2"> signal </span><span class="si">{</span><span class="n">signal_number_2</span><span class="si">}</span><span class="s2"> merges&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">signal_number_1</span> <span class="o">&gt;=</span> <span class="n">signal_number_2</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number_2</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_before_2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number_1</span><span class="p">]</span> <span class="o">-</span> <span class="n">time_before_1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">offset_removed_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="o">-</span><span class="n">offset</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">86400</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> days after&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">offset_removed_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">offset</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">86400</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> days before&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signal </span><span class="si">{</span><span class="n">signal_number_1</span><span class="si">}</span><span class="s2"> is removed </span><span class="si">{</span><span class="n">offset_removed_str</span><span class="si">}</span><span class="s2"> signal </span><span class="si">{</span><span class="n">signal_number_2</span><span class="si">}</span><span class="s2"> is removed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Signal 2 is removed 0.08 days before signal 2 merges
+Signal 2 is removed 1.13 days before signal 3 merges
+Signal 2 is removed 9.87 days after signal 3 is removed
+Signal 2 is removed 4.24 days before signal 4 merges
+Signal 2 is removed 9.76 days after signal 4 is removed
+Signal 2 is removed 9.38 days before signal 5 merges
+Signal 2 is removed 9.30 days before signal 5 is removed
+Signal 3 is removed 9.95 days before signal 2 merges
+Signal 3 is removed 11.00 days before signal 3 merges
+Signal 3 is removed 14.11 days before signal 4 merges
+Signal 3 is removed 0.11 days before signal 4 is removed
+Signal 3 is removed 19.25 days before signal 5 merges
+Signal 3 is removed 19.16 days before signal 5 is removed
+Signal 4 is removed 9.84 days before signal 2 merges
+Signal 4 is removed 10.89 days before signal 3 merges
+Signal 4 is removed 14.00 days before signal 4 merges
+Signal 4 is removed 19.14 days before signal 5 merges
+Signal 4 is removed 19.06 days before signal 5 is removed
+Signal 5 is removed 9.21 days after signal 2 merges
+Signal 5 is removed 8.16 days after signal 3 merges
+Signal 5 is removed 5.06 days after signal 4 merges
+Signal 5 is removed 0.08 days before signal 5 merges
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="gaps">
+<h1>Gaps<a class="headerlink" href="#gaps" title="Link to this heading">#</a></h1>
+<p>Now we think about gaps - lets imagine that there are gaps before signal zero. Inpainting rides them out, the zero latency filter doesn’t.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="c1"># For signal zero - plot the results filtered for the closest to the predicted merger time</span>
+<span class="n">example_signal</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Get the zero-latency results for this signal</span>
+<span class="n">results_zero_latency</span> <span class="o">=</span> <span class="n">get_results_zero_latency</span><span class="p">(</span>
+    <span class="s2">&quot;../zero_latency/results/psd_estimate/data_runs_raw_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
+    <span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="c1"># Filter the zero latency results to only use the closest point for each</span>
+
+<span class="n">zl_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">zl_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
+    <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
+    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">zl_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+    <span class="n">zl_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+
+<span class="n">zl_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_results_data_end_time</span><span class="p">)</span>
+<span class="n">zl_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_results_snr</span><span class="p">)</span>
+
+
+<span class="c1"># We need to get the inpainting results again which have not been filtered for particular times-before-merger</span>
+<span class="n">results_estimate_all</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;results/data_runs_psd_estimate.hdf&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ip_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
+<span class="n">ip_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ip_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
+    <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
+    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">ip_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+    <span class="n">ip_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+
+<span class="n">ip_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_results_data_end_time</span><span class="p">)</span>
+<span class="n">ip_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_results_snr</span><span class="p">)</span>
+
+<span class="c1"># A special run around signal 0 which has gaps inserted</span>
+<span class="n">inpainting_gaps_results</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="s2">&quot;results/data_runs_signal_0_gaps.hdf&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ipg_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
+<span class="n">ipg_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ipg_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
+    <span class="n">this_t</span> <span class="o">=</span> <span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
+    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="n">ipg_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+    <span class="n">ipg_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+
+<span class="n">ipg_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ipg_results_data_end_time</span><span class="p">)</span>
+<span class="n">ipg_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ipg_results_snr</span><span class="p">)</span>
+
+<span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">ip_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="n">ip_results_snr</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting Results&#39;</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">ipg_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="n">ipg_results_snr</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting with Gaps&#39;</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">8</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">zl_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="n">zl_results_snr</span><span class="p">,</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero Latency Results&#39;</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span>
+
+<span class="p">)</span>
+
+<span class="n">sm</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_sm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">times_before</span><span class="p">),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">times_before</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+        <span class="o">-</span><span class="n">time_before</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">time_before</span><span class="p">),</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">gap</span> <span class="ow">in</span> <span class="p">[(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="o">-</span><span class="n">gap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">gap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data gaps&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/signal_</span><span class="si">{</span><span class="n">example_signal</span><span class="si">}</span><span class="s1">_end_timeline_with_gaps.pdf&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_8_signal_</span><span class="si">{</span><span class="n">example_signal</span><span class="si">}</span><span class="s1">_timeline.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/9838da06b9bb37fe6b056d20db8d361a7c65acf8692b7e0b744dc39b6b08134e.png" src="../../_images/9838da06b9bb37fe6b056d20db8d361a7c65acf8692b7e0b744dc39b6b08134e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the paper we discuss where the signal 0 lines cross SNR of 40, let&#39;s find where this happens:</span>
+<span class="c1"># Note that this is the hourly results, so results may vary by up to an hour (~0.04 days)</span>
+
+<span class="n">crossing_snr</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">crossing_ip_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ip_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crossing_ip_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">ip_results_data_end_time</span><span class="p">[</span><span class="n">crossing_ip_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First inpainting result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_ip_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
+
+<span class="n">crossing_ipg_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ipg_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crossing_ipg_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">ipg_results_data_end_time</span><span class="p">[</span><span class="n">crossing_ipg_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First inpainting + gaps result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_ipg_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
+<span class="n">crossing_ipg_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ipg_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">crossing_zl_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">zl_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crossing_zl_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">zl_results_data_end_time</span><span class="p">[</span><span class="n">crossing_zl_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First zero latency result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_zl_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First inpainting result with SNR &gt; 40 at 1.222 days
+First inpainting + gaps result with SNR &gt; 40 at 0.806 days
+First zero latency result with SNR &gt; 40 at 0.972 days
+</pre></div>
+</div>
+</div>
+</div>
+<section id="timeline-plots-for-all-signals">
+<h2>Timeline plots for all signals<a class="headerlink" href="#timeline-plots-for-all-signals" title="Link to this heading">#</a></h2>
+<p>Make some timeline plots for all signals - we don’t have gaps in the Sangria dataset, so these dont show up here, but we can show the SNR buildup over time for everything.</p>
+<p>These plots use the removal 2 hours before merger results, so for signals 2-5 this may not be the best accuracy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">signal_number</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
+
+    <span class="c1"># Filter the zero latency results to only use the closest point for each time before merger</span>
+    <span class="n">zl_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">zl_snr</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
+        <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
+        <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">zl_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+        <span class="n">zl_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+
+    <span class="n">zl_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_data_end_time</span><span class="p">)</span>
+    <span class="n">zl_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_snr</span><span class="p">)</span>
+
+
+    <span class="n">ip_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
+    <span class="n">ip_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ip_snr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
+        <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
+        <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">ip_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+        <span class="n">ip_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
+
+    <span class="n">ip_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_data_end_time</span><span class="p">)</span>
+    <span class="n">ip_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_snr</span><span class="p">)</span>
+
+    <span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.25</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">ip_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+        <span class="n">ip_snr</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting Results&#39;</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
+    <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">zl_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
+        <span class="n">zl_snr</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+        <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero Latency Results&#39;</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span>
+
+    <span class="p">)</span>
+
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_sm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">times_before</span><span class="p">),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">times_before</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">time_before</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">time_before</span><span class="p">),</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+            <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span>
+        <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Signal </span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/signal_</span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">_end_timeline.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" src="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" />
+<img alt="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" src="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" />
+<img alt="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" src="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" />
+<img alt="../../_images/34cfc89fc4c759987648b0e634396e75daf1e91798ce1187ada54c83347e8928.png" src="../../_images/34cfc89fc4c759987648b0e634396e75daf1e91798ce1187ada54c83347e8928.png" />
+<img alt="../../_images/6ab27b8421b1d3c1764742e1ecd1695dc92f79129a1cb9a27b29342baee78483.png" src="../../_images/6ab27b8421b1d3c1764742e1ecd1695dc92f79129a1cb9a27b29342baee78483.png" />
+<img alt="../../_images/a3e3c9a1c358fc19c1ca8c963417467f3196a9e3f29d6707461bd5fc3aa3d630.png" src="../../_images/a3e3c9a1c358fc19c1ca8c963417467f3196a9e3f29d6707461bd5fc3aa3d630.png" />
+<img alt="../../_images/36313283ca557f8e8ec51bfc53527cba26439c2f341cd85a026b7cd68d5db151.png" src="../../_images/36313283ca557f8e8ec51bfc53527cba26439c2f341cd85a026b7cd68d5db151.png" />
+<img alt="../../_images/b24d6c266b3fc4b047936e3c1c0ce563d2e082008c6d1f68d093e6c051c1e346.png" src="../../_images/b24d6c266b3fc4b047936e3c1c0ce563d2e082008c6d1f68d093e6c051c1e346.png" />
+<img alt="../../_images/d7c3c0ebcdad39de83ae6af940dd9745c8e29419c04f6065822bdbfe17bd4b07.png" src="../../_images/d7c3c0ebcdad39de83ae6af940dd9745c8e29419c04f6065822bdbfe17bd4b07.png" />
+<img alt="../../_images/3b96118ba36559f5429b753b25cf8785630a089d25c366e44a3d129045c64be5.png" src="../../_images/3b96118ba36559f5429b753b25cf8785630a089d25c366e44a3d129045c64be5.png" />
+<img alt="../../_images/e6a1eadb6774d7066919bd583b7529f40d386e341bd90f733c9a1bc72af462be.png" src="../../_images/e6a1eadb6774d7066919bd583b7529f40d386e341bd90f733c9a1bc72af462be.png" />
+<img alt="../../_images/1fde14f49b200d275dd914dd239ac5e0e6d8120b23a40798be591966e24dc39d.png" src="../../_images/1fde14f49b200d275dd914dd239ac5e0e6d8120b23a40798be591966e24dc39d.png" />
+<img alt="../../_images/6f702f3168284ecef6a33e4fb422ed6fd54ed3b399265d4b599de8e0ff8dd122.png" src="../../_images/6f702f3168284ecef6a33e4fb422ed6fd54ed3b399265d4b599de8e0ff8dd122.png" />
+<img alt="../../_images/4a1c58ed3374e7b72684d17b794553433f8d6e88a2516c4d86762222e00d1ab8.png" src="../../_images/4a1c58ed3374e7b72684d17b794553433f8d6e88a2516c4d86762222e00d1ab8.png" />
+<img alt="../../_images/3eb101854e6b8c87debafad5503af8fb481d5376fc73714c0a2840bad6c14104.png" src="../../_images/3eb101854e6b8c87debafad5503af8fb481d5376fc73714c0a2840bad6c14104.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./search/inpainting_runs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="plot_data_results.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Plot results from searching in data using the inpainting search</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Results plots for Focused region with densely-packed signals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-and-no-removal-same-plot">Variable removal and no removal - same plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps">Gaps</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-plots-for-all-signals">Timeline plots for all signals</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
