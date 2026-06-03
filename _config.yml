@@ -25,6 +25,7 @@ repository:
 html:
   use_issues_button: false
   use_repository_button: true
+  logo: https://course-module-catalog.port.ac.uk/assets/img/UoP_Master_Logo_Stacked_CMYK.png
 
 sphinx:
   config:
