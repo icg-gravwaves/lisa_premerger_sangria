@@ -3,3 +3,4 @@ plotting/inpainting_movie/snr*png
 __pycache__
 .vscode
 .DS_Store
+_build

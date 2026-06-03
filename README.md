@@ -1,8 +1,8 @@
-# Premerger observation of SuperMassive Black Holes in the Sangria dataset
+# Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets
 
-# Overview of the Data Release
+This is the repo used to control analysis and data release for the paper [Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets](https://arxiv.org/abs/2605.13738)
 
-To navigate the data release, see the table of contents on the left hand side of all pages.
+## Data Release
 
-## Estimating PSDs
+Visit [the data release page](https://icg-gravwaves.github.io/lisa_premerger_sangria) for more detail on how the paper was made, and wht has been made available.
 
