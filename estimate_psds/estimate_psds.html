@@ -171,6 +171,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../search/zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../search/template_bank/README.html">Template Banks</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -448,11 +452,11 @@ No CuPy or GPU interpolation available.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save to files for use in later analysis</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save to files for use in later analysis (commented out for now, as it takes a long time)</span>
 
-<span class="n">A_psd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="n">E_psd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">))</span>
-<span class="n">T_psd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">))</span>
+<span class="c1"># A_psd.save(output_format.format(channel=&#39;A&#39;))</span>
+<span class="c1"># E_psd.save(output_format.format(channel=&#39;E&#39;))</span>
+<span class="c1"># T_psd.save(output_format.format(channel=&#39;T&#39;))</span>
 </pre></div>
 </div>
 </div>
@@ -705,7 +709,7 @@ No CuPy or GPU interpolation available.
 </div>
 </div>
 </div>
-<p>Save the PSDs for later use</p>
+<p>Save the PSDs for later use - commented out so that the data release builds in a reasonable time</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove nans:</span>
@@ -715,41 +719,41 @@ No CuPy or GPU interpolation available.
 <span class="n">sangria_model_ae_withgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">sangria_model_t_withgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
-    <span class="s1">&#39;A_sangria_hm_SMOOTHED_PSD.txt&#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="n">sangria_model_freqs</span><span class="p">,</span>
-        <span class="n">A_psd_smoothed</span>
-    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
-    <span class="s1">&#39;E_sangria_hm_SMOOTHED_PSD.txt&#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="n">sangria_model_freqs</span><span class="p">,</span>
-        <span class="n">E_psd_smoothed</span>
-    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
-    <span class="s1">&#39;model_AE_SMOOTHED_PSD.txt&#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="n">sangria_model_freqs</span><span class="p">,</span>
-        <span class="n">modelled_psd_smoothed</span>
-    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
-    <span class="s1">&#39;model_AE_PSD.txt&#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="n">sangria_model_freqs</span><span class="p">,</span>
-        <span class="n">sangria_model_ae_withgb</span>
-    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
-    <span class="s1">&#39;model_T_PSD.txt&#39;</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="n">sangria_model_freqs</span><span class="p">,</span>
-        <span class="n">sangria_model_t_withgb</span>
-    <span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="p">)</span>
+<span class="c1"># np.savetxt(</span>
+<span class="c1">#     &#39;A_sangria_hm_SMOOTHED_PSD.txt&#39;,</span>
+<span class="c1">#     np.array([</span>
+<span class="c1">#         sangria_model_freqs,</span>
+<span class="c1">#         A_psd_smoothed</span>
+<span class="c1">#     ]).T</span>
+<span class="c1"># )</span>
+<span class="c1"># np.savetxt(</span>
+<span class="c1">#     &#39;E_sangria_hm_SMOOTHED_PSD.txt&#39;,</span>
+<span class="c1">#     np.array([</span>
+<span class="c1">#         sangria_model_freqs,</span>
+<span class="c1">#         E_psd_smoothed</span>
+<span class="c1">#     ]).T</span>
+<span class="c1"># )</span>
+<span class="c1"># np.savetxt(</span>
+<span class="c1">#     &#39;model_AE_SMOOTHED_PSD.txt&#39;,</span>
+<span class="c1">#     np.array([</span>
+<span class="c1">#         sangria_model_freqs,</span>
+<span class="c1">#         modelled_psd_smoothed</span>
+<span class="c1">#     ]).T</span>
+<span class="c1"># )</span>
+<span class="c1"># np.savetxt(</span>
+<span class="c1">#     &#39;model_AE_PSD.txt&#39;,</span>
+<span class="c1">#     np.array([</span>
+<span class="c1">#         sangria_model_freqs,</span>
+<span class="c1">#         sangria_model_ae_withgb</span>
+<span class="c1">#     ]).T</span>
+<span class="c1"># )</span>
+<span class="c1"># np.savetxt(</span>
+<span class="c1">#     &#39;model_T_PSD.txt&#39;,</span>
+<span class="c1">#     np.array([</span>
+<span class="c1">#         sangria_model_freqs,</span>
+<span class="c1">#         sangria_model_t_withgb</span>
+<span class="c1">#     ]).T</span>
+<span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
