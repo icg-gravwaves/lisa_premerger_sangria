@@ -4,6 +4,9 @@ title: "Inpainting over the cracks: challenges of applying pre-merger searches f
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  exclude_patterns:
+    - estimate_psds/characteristic_strain.ipynb
+    - estimate_psds/plot_psds.ipynb
 
 # This means only stuff in the table of contents
 # note that if we have run the 'environment building' instructions, there will be
