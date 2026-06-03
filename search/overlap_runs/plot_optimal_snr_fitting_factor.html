@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Collect the Fitting Factor Results &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+    <title>Calculating overlap - plots &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
   
   
   
@@ -178,7 +178,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html">Computing overlap between full signal and premerger signals</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Collect the Fitting Factor Results</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Calculating overlap - plots</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
 </ul>
@@ -328,7 +329,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -339,11 +342,21 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Collect the Fitting Factor Results</h1>
+    <h1>Calculating overlap - plots</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Calculating overlap - plots</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-the-fitting-factor-results">Collect the Fitting Factor Results</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -353,7 +366,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="calculating-overlap-plots">
+<h1>Calculating overlap - plots<a class="headerlink" href="#calculating-overlap-plots" title="Link to this heading">#</a></h1>
+<p>Here we plot the two things - the optimal SNR build up for a pre-merger-truncated signal, and the overlap between and the SNR of a premerger-truncated signal with the full signal.</p>
+<p>This is used for Figure 4 in the paper.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="c1"># Use the style file defined in the repository route</span>
@@ -393,6 +410,7 @@
 </div>
 </div>
 </div>
+</section>
 <section class="tex2jax_ignore mathjax_ignore" id="collect-the-fitting-factor-results">
 <h1>Collect the Fitting Factor Results<a class="headerlink" href="#collect-the-fitting-factor-results" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
@@ -587,6 +605,25 @@ Outputting to ../../paper/images/zero_latency_results/figure_X_opt_snr_match_sig
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Calculating overlap - plots</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#collect-the-fitting-factor-results">Collect the Fitting Factor Results</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
