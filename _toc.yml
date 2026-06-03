@@ -2,4 +2,22 @@ format: jb-book
 root: README.md
 chapters:
 - file: estimate_psds/README.md
-  sections: estimate_psds/estimate_psds.ipynb
+  sections:
+    - file: estimate_psds/estimate_psds.ipynb
+- file: inpainting/README.md
+  sections:
+    - file: inpainting/Inpainting_plot.ipynb
+- file: search/zero_latency/README.md
+  sections:
+    - file: search/template_bank/README.md
+    - file: search/template_bank/template_banks.ipynb
+    - file: search/overlap_runs/README.md
+    - file: search/overlap_runs/overlap_runs.ipynb
+    - file: search/zero_latency/signal_removal.ipynb
+    - file: search/zero_latency/estimate_psds.ipynb
+    - file: search/zero_latency/plot_data_results.ipynb
+- file: search/inpainting_runs/README.md
+  sections:
+    - file: search/inpainting_runs/example_using_this_code.ipynb
+    - file: search/inpainting_runs/plot_data_results.ipynb
+    - file: search/inpainting_runs/plot_focused_data_results.ipynb
