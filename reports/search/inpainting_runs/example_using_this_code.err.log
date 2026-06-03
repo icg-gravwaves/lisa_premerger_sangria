@@ -1,0 +1,84 @@
+Traceback (most recent call last):
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/nbclient/client.py", line 1323, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Now we can matched-filter
+snrs = {}
+for channel in waveforms:
+    snrs[channel] = pycbc.filter.matched_filter(
+            waveforms[channel],
+            data_ow_fd[channel],
+            sigmasq=1,
+    ) / (hh_function[channel]**0.5 * 2**0.5) # Not really sure where the factor of 2 comes from, but it is needed
+
+# Use the get_snr_series function so that we know
+# that the function is the same as the implementation here
+print(filter_waveform)
+snrs_function = get_snr_series(
+    filter_waveform,
+    data_ow_fd,
+    psds_for_whitening={'LISA_A': psd, 'LISA_E': psd},
+    delta_t=delta_t,
+    hh=hh_function,
+)
+
+fig, ax = plt.subplots(figsize=(4,4))
+ax.plot(snrs_function['LISA_A'], label='LISA A SNR function')
+ax.plot(snrs['LISA_A'], linestyle=':', label='LISA A SNR')
+ax.plot(snrs_function['LISA_E'], label='LISA E SNR function')
+ax.plot(snrs['LISA_E'], linestyle=':', label='LISA E SNR')
+ax.legend(loc='upper right')
+
+for channel in ['LISA_A', 'LISA_E']:
+    print(snrs_function[channel] == snrs[channel])
+------------------
+
+----- stdout -----
+{'mass1': 1000000.0, 'mass2': 1000000.0, 'spin1z': 0, 'spin2z': 0, 'additional_end_data': 1050, 'distance': 27658.011507544677, 'eclipticlongitude': 3.448296944257913, 'eclipticlatitude': 0.44491231446252155, 'inclination': 0.9238365050097769, 'polarization': 3.4236020095353483, 'coa_phase': 2.661901610522322, 'tc': 1931852406.9997194, 'fullband_snr': 1975.4707206749447, 't_obs_start': 5242880, 'f_lower': 1e-06, 'low-frequency-cutoff': 1e-06, 'f_final': 0.10000009536743165, 'delta_f': 1.9073486328125e-07, 'tdi': '1.5', 't_offset': 7365189.431698299, 'cutoff_deltat': 0, 'approximant': 'BBHX_PhenomD', 'mode_array': [(2, 2)]}
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[7][39m[32m, line 13[39m
+[32m     10[39m [38;5;66;03m# Use the get_snr_series function so that we know[39;00m
+[32m     11[39m [38;5;66;03m# that the function is the same as the implementation here[39;00m
+[32m     12[39m [38;5;28mprint[39m(filter_waveform)
+[32m---> [39m[32m13[39m snrs_function = [43mget_snr_series[49m[43m([49m
+[32m     14[39m [43m    [49m[43mfilter_waveform[49m[43m,[49m
+[32m     15[39m [43m    [49m[43mdata_ow_fd[49m[43m,[49m
+[32m     16[39m [43m    [49m[43mpsds_for_whitening[49m[43m=[49m[43m{[49m[33;43m'[39;49m[33;43mLISA_A[39;49m[33;43m'[39;49m[43m:[49m[43m [49m[43mpsd[49m[43m,[49m[43m [49m[33;43m'[39;49m[33;43mLISA_E[39;49m[33;43m'[39;49m[43m:[49m[43m [49m[43mpsd[49m[43m}[49m[43m,[49m
+[32m     17[39m [43m    [49m[43mdelta_t[49m[43m=[49m[43mdelta_t[49m[43m,[49m
+[32m     18[39m [43m    [49m[43mhh[49m[43m=[49m[43mhh_function[49m[43m,[49m
+[32m     19[39m [43m)[49m
+[32m     21[39m fig, ax = plt.subplots(figsize=([32m4[39m,[32m4[39m))
+[32m     22[39m ax.plot(snrs_function[[33m'[39m[33mLISA_A[39m[33m'[39m], label=[33m'[39m[33mLISA A SNR function[39m[33m'[39m)
+
+[36mFile [39m[32m~/lisa/lisa_premerger_sangria/search/inpainting_runs/utils.py:46[39m, in [36mget_snr_series[39m[34m(params, data_ow_f, psds_for_whitening, delta_t, hh, original_length, waveforms)[39m
+[32m     44[39m snr = {}
+[32m     45[39m [38;5;28;01mfor[39;00m channel [38;5;129;01min[39;00m waveforms.keys():
+[32m---> [39m[32m46[39m     snr[channel] = [43mpycbc[49m.filter.matched_filter(
+[32m     47[39m         waveforms[channel],
+[32m     48[39m         data_ow_f[channel],
+[32m     49[39m         sigmasq=[32m1[39m
+[32m     50[39m     )
+[32m     52[39m [38;5;28;01mif[39;00m hh [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m     53[39m     [38;5;28;01mfor[39;00m channel, hh_array [38;5;129;01min[39;00m hh.items():
+
+[31mNameError[39m: name 'pycbc' is not defined
+
