@@ -1,9 +1,10 @@
 format: jb-book
-root: README.md
+root: data_release.md
 chapters:
 - file: estimate_psds/README.md
   sections:
     - file: estimate_psds/estimate_psds.ipynb
+    - file: estimate_psds/characteristic_strain.md
     - file: estimate_psds/characteristic_strain.ipynb
     - file: estimate_psds/plot_psds.ipynb
 - file: inpainting/README.md
