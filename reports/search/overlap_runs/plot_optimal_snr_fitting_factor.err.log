@@ -44,7 +44,7 @@ with h5py.File('results/optimal_snr_over_time.hdf', 'r') as osot_f:
 
 
 [31m---------------------------------------------------------------------------[39m
-[31mFileNotFoundError[39m                         Traceback (most recent call last)
+[31mOSError[39m                                   Traceback (most recent call last)
 [36mCell[39m[36m [39m[32mIn[4][39m[32m, line 8[39m
 [32m      1[39m ff_results = {
 [32m      2[39m     [33m'[39m[33moptimal_snr[39m[33m'[39m: {},
@@ -86,5 +86,5 @@ with h5py.File('results/optimal_snr_over_time.hdf', 'r') as osot_f:
 
 [36mFile [39m[32mh5py/h5f.pyx:104[39m, in [36mh5py.h5f.open[39m[34m()[39m
 
-[31mFileNotFoundError[39m: [Errno 2] Unable to synchronously open file (unable to open file: name = 'results/optimal_snr_over_time.hdf', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+[31mOSError[39m: Unable to synchronously open file (file signature not found)
 

@@ -372,19 +372,22 @@
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">bank_filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">bank_f</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">bank_f</span><span class="p">[</span><span class="s1">&#39;mass1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_bank_format</span> <span class="o">=</span> <span class="s2">&quot;../template_bank/output/lisa_ew_</span><span class="si">{days_before_merger}</span><span class="s2">_day.hdf&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimated_bank_format</span> <span class="o">=</span> <span class="s2">&quot;output/lisa_ew_</span><span class="si">{days_before_merger}</span><span class="s2">_day.hdf&quot;</span>
 <span class="n">days_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
 
-<span class="n">bank_size_estimated</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">bank_size_estimated</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.5</span><span class="p">:</span> <span class="mi">27593</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">28270</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">26242</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">14051</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">6861</span><span class="p">}</span>
+<span class="c1"># The above is previous results - we will use them if the bank can&#39;t be found (this is for consistency in the data release, so we don&#39;t have to have all the bank files in the repo)</span>
 <span class="k">for</span> <span class="n">day_before</span> <span class="ow">in</span> <span class="n">days_before</span><span class="p">:</span>
-    <span class="n">bank_size_estimated</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">estimated_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="n">bank_size_est</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">estimated_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">bank_size_est</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bank_size_estimated</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">bank_size_est</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">bank_size_estimated</span><span class="p">)</span>
 </pre></div>
@@ -398,19 +401,22 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">withgb_bank_format</span> <span class="o">=</span> <span class="s2">&quot;../template_bank/output/lisa_ew_model_</span><span class="si">{days_before_merger}</span><span class="s2">_day.hdf&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">withgb_bank_format</span> <span class="o">=</span> <span class="s2">&quot;output/lisa_ew_model_</span><span class="si">{days_before_merger}</span><span class="s2">_day.hdf&quot;</span>
 <span class="n">days_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
 
-<span class="n">bank_size_withgb</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">bank_size_withgb</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.5</span><span class="p">:</span> <span class="mi">14274</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">24912</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">17713</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">14237</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">6828</span><span class="p">}</span>
+<span class="c1"># The above is previous results - we will use them if the bank can&#39;t be found (this is for consistency in the data release, so we don&#39;t have to have all the bank files in the repo)</span>
 <span class="k">for</span> <span class="n">day_before</span> <span class="ow">in</span> <span class="n">days_before</span><span class="p">:</span>
-    <span class="n">bank_size_withgb</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">withgb_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="n">withgb_size</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">withgb_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">withgb_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bank_size_withgb</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">withgb_size</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">bank_size_withgb</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0.5: nan, 1: nan, 4: nan, 7: nan, 14: nan}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0.5: 14274, 1: 24912, 4: 17713, 7: 14237, 14: 6828}
 </pre></div>
 </div>
 </div>
@@ -418,16 +424,19 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">previous_bank_format</span> <span class="o">=</span> <span class="s2">&quot;../../datasets/lisa_ew_</span><span class="si">{days_before_merger}</span><span class="s2">_day_optimistic.hdf&quot;</span>
-<span class="n">bank_size_previous</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">bank_size_previous</span> <span class="o">=</span><span class="p">{</span><span class="mf">0.5</span><span class="p">:</span> <span class="mi">6416</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">7997</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">7923</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">5580</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mi">3262</span><span class="p">}</span>
+<span class="c1"># The above is previous results - we will use them if the bank can&#39;t be found (this is for consistency in the data release, so we don&#39;t have to have all the bank files in the repo)</span>
 <span class="k">for</span> <span class="n">day_before</span> <span class="ow">in</span> <span class="n">days_before</span><span class="p">:</span>
-    <span class="n">bank_size_previous</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">previous_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="n">previous_size</span> <span class="o">=</span> <span class="n">get_bank_size</span><span class="p">(</span><span class="n">previous_bank_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">days_before_merger</span><span class="o">=</span><span class="n">day_before</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">previous_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bank_size_previous</span><span class="p">[</span><span class="n">day_before</span><span class="p">]</span> <span class="o">=</span> <span class="n">previous_size</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">bank_size_previous</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0.5: nan, 1: 7997, 4: nan, 7: nan, 14: nan}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{0.5: 6416, 1: 7997, 4: 7923, 7: 5580, 14: 3262}
 </pre></div>
 </div>
 </div>
@@ -508,16 +517,16 @@ Time before Merger &amp; \multicolumn{3}{c|}{Number of Templates} \\
 \cline{2-4}
 (days) &amp; Model, no GBs &amp; Model with GBs &amp; Estimated \\
 \hline
-0.5 &amp; -- &amp; -- &amp; 27,593  \\
-1 &amp; 7,997 &amp; -- &amp; 28,270  \\
-4 &amp; -- &amp; -- &amp; 26,242  \\
-7 &amp; -- &amp; -- &amp; 14,051  \\
-14 &amp; -- &amp; -- &amp; 6,861  \\
+0.5 &amp; 6,416 &amp; 14,274 &amp; 27,593  \\
+1 &amp; 7,997 &amp; 24,912 &amp; 28,270  \\
+4 &amp; 7,923 &amp; 17,713 &amp; 26,242  \\
+7 &amp; 5,580 &amp; 14,237 &amp; 14,051  \\
+14 &amp; 3,262 &amp; 6,828 &amp; 6,861  \\
 \hline
 \end{tabular}
 
 \caption{Template Bank sizes assuming different \acp{PSD}.
-The inclusion of \acp{GB} in the PSD increases the bank size by a factor of between 3.5 and 3.5
+The inclusion of \acp{GB} in the PSD increases the bank size by a factor of between 2.1 and 4.3
 \label{tab:bank_size}
 }
 \end{centering}
@@ -569,7 +578,7 @@ The inclusion of \acp{GB} in the PSD increases the bank size by a factor of betw
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e37b487015fa10b3c07e02b24d7639e640a16e2fc082850a616e703561a5acfb.png" src="../../_images/e37b487015fa10b3c07e02b24d7639e640a16e2fc082850a616e703561a5acfb.png" />
+<img alt="../../_images/393c6b70e175d5d7b77c5f40160638f8c533bee9ccd13372f92995d4a5f8926c.png" src="../../_images/393c6b70e175d5d7b77c5f40160638f8c533bee9ccd13372f92995d4a5f8926c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -596,8 +605,8 @@ The inclusion of \acp{GB} in the PSD increases the bank size by a factor of betw
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Inclusion of unresolvable GBs in the model increases bank size by a factor between inf and 0.0
-Using the estimated rather than modelled PSD increases bank size by a factor between inf and 0.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Inclusion of unresolvable GBs in the model increases bank size by a factor between 2.1 and 3.1
+Using the estimated rather than modelled PSD increases bank size by a factor between 1.0 and 1.9
 </pre></div>
 </div>
 </div>
