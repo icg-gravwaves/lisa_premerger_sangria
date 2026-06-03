@@ -4,6 +4,8 @@ chapters:
 - file: estimate_psds/README.md
   sections:
     - file: estimate_psds/estimate_psds.ipynb
+    - file: estimate_psds/characteristic_strain.ipynb
+    - file: estimate_psds/plot_psds.ipynb
 - file: inpainting/README.md
   sections:
     - file: inpainting/Inpainting_plot.ipynb
