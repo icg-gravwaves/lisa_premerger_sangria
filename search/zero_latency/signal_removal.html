@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+    <title>Removal of Signal Mergers from data &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'search/zero_latency/signal_removal';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="plot_data_results.html" />
+    <link rel="next" title="Plot results from searching in data using the zero-latency search" href="plot_data_results.html" />
     <link rel="prev" title="Computing overlap between full signal and premerger signals" href="../overlap_runs/README.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -162,24 +162,28 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Zero Latency Searches</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Removal of Signal Mergers from data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/README.html">Inpainting Search Results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/example_using_this_code.html">Top level settings</a></li>
 
+<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_focused_data_results.html">Variable removal and no removal - same plot</a></li>
 
 
@@ -329,9 +333,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -342,19 +344,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Removal of Signal Mergers from data</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -364,7 +358,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="removal-of-signal-mergers-from-data">
+<h1>Removal of Signal Mergers from data<a class="headerlink" href="#removal-of-signal-mergers-from-data" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
 
@@ -714,6 +710,7 @@ Subtracting from MBHB-only dataset
 <img alt="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" src="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" />
 </div>
 </div>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -759,7 +756,7 @@ Subtracting from MBHB-only dataset
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">&lt;no title&gt;</p>
+        <p class="prev-next-title">Plot results from searching in data using the zero-latency search</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -769,23 +766,6 @@ Subtracting from MBHB-only dataset
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>
