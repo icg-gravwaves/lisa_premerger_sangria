@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Variable removal and no removal - same plot &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+    <title>Results plots for Focused region with densely-packed signals &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
   
   
   
@@ -164,6 +164,7 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
 </ul>
 </details></li>
@@ -183,14 +184,7 @@
 <li class="toctree-l2"><a class="reference internal" href="example_using_this_code.html">Top level settings</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Variable removal and no removal - same plot</a></li>
-
-
-
-
-
-
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Results plots for Focused region with densely-packed signals</a></li>
 
 
 </ul>
@@ -345,7 +339,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Variable removal and no removal - same plot</h1>
+    <h1>Results plots for Focused region with densely-packed signals</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -355,14 +349,17 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Variable removal and no removal - same plot</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Results plots for Focused region with densely-packed signals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-and-no-removal-same-plot">Variable removal and no removal - same plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
 </ul>
@@ -383,7 +380,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="results-plots-for-focused-region-with-densely-packed-signals">
+<h1>Results plots for Focused region with densely-packed signals<a class="headerlink" href="#results-plots-for-focused-region-with-densely-packed-signals" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
 
@@ -489,7 +488,7 @@ import lal
 </div>
 </div>
 <section id="variable-removal-and-no-removal-same-plot">
-<h1>Variable removal and no removal - same plot<a class="headerlink" href="#variable-removal-and-no-removal-same-plot" title="Link to this heading">#</a></h1>
+<h2>Variable removal and no removal - same plot<a class="headerlink" href="#variable-removal-and-no-removal-same-plot" title="Link to this heading">#</a></h2>
 <p>This is quite hard to see on the same plot, so we show the same things separately in the next cells</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -536,7 +535,7 @@ import lal
 </div>
 </section>
 <section id="no-removal-predicted-time-with-upper-limit-to-plot">
-<h1>No Removal - predicted time, with upper limit to plot:<a class="headerlink" href="#no-removal-predicted-time-with-upper-limit-to-plot" title="Link to this heading">#</a></h1>
+<h2>No Removal - predicted time, with upper limit to plot:<a class="headerlink" href="#no-removal-predicted-time-with-upper-limit-to-plot" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_predict</span><span class="p">,</span> <span class="n">ax_focused_predict</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -557,7 +556,7 @@ import lal
 </div>
 </section>
 <section id="variable-removal-predicted-time">
-<h1>Variable removal - predicted time<a class="headerlink" href="#variable-removal-predicted-time" title="Link to this heading">#</a></h1>
+<h2>Variable removal - predicted time<a class="headerlink" href="#variable-removal-predicted-time" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_var_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -578,7 +577,7 @@ import lal
 </div>
 </section>
 <section id="variable-removal-end-time">
-<h1>Variable removal - end time<a class="headerlink" href="#variable-removal-end-time" title="Link to this heading">#</a></h1>
+<h2>Variable removal - end time<a class="headerlink" href="#variable-removal-end-time" title="Link to this heading">#</a></h2>
 <p>A better, labelled, version of this is made later to appear in the paper - that one uses filtered times-before-merger so is a bit clearer</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,7 +600,7 @@ import lal
 </div>
 </section>
 <section id="no-removal-predicted-time">
-<h1>No removal - predicted time<a class="headerlink" href="#no-removal-predicted-time" title="Link to this heading">#</a></h1>
+<h2>No removal - predicted time<a class="headerlink" href="#no-removal-predicted-time" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_no_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -623,7 +622,7 @@ import lal
 </div>
 </section>
 <section id="no-removal-data-end-time">
-<h1>No removal - data end time<a class="headerlink" href="#no-removal-data-end-time" title="Link to this heading">#</a></h1>
+<h2>No removal - data end time<a class="headerlink" href="#no-removal-data-end-time" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_no_dataend</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -646,7 +645,7 @@ import lal
 </div>
 </section>
 <section id="removal-2-hours-before-merger-predicted-time">
-<h1>Removal 2 hours before merger - predicted time<a class="headerlink" href="#removal-2-hours-before-merger-predicted-time" title="Link to this heading">#</a></h1>
+<h2>Removal 2 hours before merger - predicted time<a class="headerlink" href="#removal-2-hours-before-merger-predicted-time" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_2hr_predicted</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -713,7 +712,7 @@ import lal
 </div>
 </section>
 <section id="removal-2-hours-before-merger-data-end-time">
-<h1>Removal 2 hours before merger - data end time<a class="headerlink" href="#removal-2-hours-before-merger-data-end-time" title="Link to this heading">#</a></h1>
+<h2>Removal 2 hours before merger - data end time<a class="headerlink" href="#removal-2-hours-before-merger-data-end-time" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_focused_2hr_dataend</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -734,6 +733,7 @@ import lal
 <img alt="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" src="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" />
 </div>
 </div>
+</section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="the-focused-region-section-main-plot-variable-removal-end-times-with-labels">
 <h1>The focused region section main plot - variable removal end times, with labels<a class="headerlink" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels" title="Link to this heading">#</a></h1>
@@ -1279,14 +1279,17 @@ First zero latency result with SNR &gt; 40 at 0.972 days
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Variable removal and no removal - same plot</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Results plots for Focused region with densely-packed signals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-and-no-removal-same-plot">Variable removal and no removal - same plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time-with-upper-limit-to-plot">No Removal - predicted time, with upper limit to plot:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-predicted-time">Variable removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-end-time">Variable removal - end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-predicted-time">No removal - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-removal-data-end-time">No removal - data end time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-predicted-time">Removal 2 hours before merger - predicted time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removal-2-hours-before-merger-data-end-time">Removal 2 hours before merger - data end time</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
 </ul>
