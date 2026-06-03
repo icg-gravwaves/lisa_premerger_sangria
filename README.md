@@ -1,4 +1,4 @@
-# Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets
+# Data Release
 
 This is the data release for the paper [*Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets*](https://arxiv.org/abs/2605.13738).
 We release the data behind each figure and the code and configuration used to produce each of them. We also release steps needed and codes to reproduce the search using our code.
