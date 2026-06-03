@@ -7,6 +7,9 @@ import sys
 
 from matplotlib import pyplot as plt
 
+import pycbc.filter
+import pycbc.pnutils
+import pycbc.waveform
 
 from inpainting_utils import (
     generate_data_lisa_pre_merger_inpaint,
@@ -14,6 +17,7 @@ from inpainting_utils import (
     pre_process_data_lisa_pre_merger_inpaint,
     compute_hh_inner_product,
 )
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from common_utils import (
