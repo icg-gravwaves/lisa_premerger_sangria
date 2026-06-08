@@ -7,6 +7,8 @@ import copy  # Library for creating copies of objects
 import argparse  # Library for parsing command-line arguments
 import logging  # Library for logging messages
 import numpy as np
+import h5py
+import ldc.io.hdf5 as hdfio
 from matplotlib import pyplot as plt
 # Use the style file defined in the repository route
 plt.style.use('../../paper.mplstyle')
@@ -15,6 +17,9 @@ plt.style.use('../../paper.mplstyle')
 
 # Import specific modules from the PyCBC library
 from pycbc.types import MultiDetOptionAction  # Custom action for argparse
+import pycbc.psd
+import pycbc.filter
+from pycbc import add_common_pycbc_options, init_logging
 
 import sys, os
 
@@ -34,7 +39,7 @@ rtsumsq = lambda x: np.sqrt(sum(xi ** 2 for xi in x))
 
 # Set up argument parser for command-line arguments
 parser = argparse.ArgumentParser()
-pycbc.add_common_pycbc_options(parser)
+add_common_pycbc_options(parser)
 parser.add_argument(
     '--psd-files',
     required=True,
@@ -83,7 +88,7 @@ insert_bank_options(parser, bank_required=False)
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
-pycbc.init_logging(args.verbose)
+init_logging(args.verbose)
 
 window_length = 17280
 
