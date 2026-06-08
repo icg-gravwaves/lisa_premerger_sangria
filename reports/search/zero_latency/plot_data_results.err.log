@@ -36,7 +36,7 @@ for i, truth_time_s in enumerate(truth_times_s):
 ------------------
 
 ----- stderr -----
-/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_30892/3308341902.py:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_70460/3308341902.py:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
   fig_model.show()
 ------------------
 
