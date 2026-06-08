@@ -1,3 +1,0 @@
-# Computing overlap between full signal and premerger signals
-
-Lorem Ipsum ...
