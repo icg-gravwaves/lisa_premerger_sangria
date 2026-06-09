@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Estimating PSDs &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+    <title>Dataset Download Scripts &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
   
   
   
@@ -60,11 +60,11 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'estimate_psds/README';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'datasets/README';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Estimating PSDs" href="estimate_psds.html" />
-    <link rel="prev" title="Dataset Download Scripts" href="../datasets/README.html" />
+    <link rel="next" title="Estimating PSDs" href="../estimate_psds/README.html" />
+    <link rel="prev" title="Data Release" href="../data_release.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -163,13 +163,13 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../datasets/README.html">Dataset Download Scripts</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Dataset Download Scripts</a></li>
 
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Estimating PSDs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="estimate_psds.html">Estimating PSDs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="characteristic_strain_intro.html">Characteristic Strain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="characteristic_strain.html">Characterisic Strain - plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_psds.html">Plotting PSDs</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../search/zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -271,7 +271,7 @@
       
       
       
-      <li><a href="../_sources/estimate_psds/README.md" target="_blank"
+      <li><a href="../_sources/datasets/README.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -334,7 +334,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -345,11 +347,26 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Estimating PSDs</h1>
+    <h1>Dataset Download Scripts</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Dataset Download Scripts</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#available-scripts">Available Scripts</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-premerger-paper-data-sh">get_premerger_paper_data.sh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-sangria-hm-sh">get_sangria_hm.sh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -359,15 +376,48 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="estimating-psds">
-<h1>Estimating PSDs<a class="headerlink" href="#estimating-psds" title="Link to this heading">#</a></h1>
-<p>Here we estimate the PSDs for use in performing the search.</p>
-<p>We use the sangria dataset, and the welch method of PSD estimation.</p>
-<p>The ‘dip’ at 0.06Hz is removed.</p>
-<p>We then calculate the FIR filters</p>
-<p>This is plotted in the notebook.</p>
-<div class="toctree-wrapper compound">
+  <section class="tex2jax_ignore mathjax_ignore" id="dataset-download-scripts">
+<h1>Dataset Download Scripts<a class="headerlink" href="#dataset-download-scripts" title="Link to this heading">#</a></h1>
+<p>This <a class="reference internal" href="#."><span class="xref myst">directory in the repository</span></a> contains bash scripts to fetch the necessary datasets for the notebooks and analyses in this repository.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="available-scripts">
+<h1>Available Scripts<a class="headerlink" href="#available-scripts" title="Link to this heading">#</a></h1>
+<section id="get-premerger-paper-data-sh">
+<h2>get_premerger_paper_data.sh<a class="headerlink" href="#get-premerger-paper-data-sh" title="Link to this heading">#</a></h2>
+<p>Downloads data files from the <a class="reference external" href="https://github.com/icg-gravwaves/lisa_premerger_paper">lisa_premerger_paper</a> repository, including:</p>
+<ul class="simple">
+<li><p>PSD files (model_AE_TDI1_SMOOTH_optimistic.txt.gz, model_AE_TDI1_optimistic.txt.gz)</p></li>
+<li><p>Injection parameters (injections.json)</p></li>
+<li><p>Signal data files (signal_0.hdf, signal_zero_noise_0.hdf)</p></li>
+</ul>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>datasets
+bash<span class="w"> </span>get_premerger_paper_data.sh
+</pre></div>
 </div>
+</section>
+<section id="get-sangria-hm-sh">
+<h2>get_sangria_hm.sh<a class="headerlink" href="#get-sangria-hm-sh" title="Link to this heading">#</a></h2>
+<p>Downloads the Sangria dataset with higher modes.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>datasets
+bash<span class="w"> </span>get_sangria_hm.sh
+</pre></div>
+</div>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>All downloaded files are ignored by git (see <a class="reference download internal" download="" href="../_downloads/8022d601f77dd4eb30166d55ec03b814/.gitignore"><span class="xref download myst">.gitignore</span></a>)</p></li>
+<li><p>Scripts check if files already exist before downloading to avoid unnecessary downloads</p>
+<ul>
+<li><p>This means that a failed / partial download must be deleted before it can be reattempted</p></li>
+</ul>
+</li>
+<li><p>Notebooks and analysis scripts reference these files using relative paths to this directory</p></li>
+<li><p>Datasets and download links could change in the future. These will be kept up-to-date on a best effort basis, but if links change outside of our control, these may become obsolete.</p></li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -383,7 +433,7 @@
         },
         kernelOptions: {
             name: "python3",
-            path: "./estimate_psds"
+            path: "./datasets"
         },
         predefinedOutput: true
     }
@@ -401,16 +451,16 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../datasets/README.html"
+       href="../data_release.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Dataset Download Scripts</p>
+        <p class="prev-next-title">Data Release</p>
       </div>
     </a>
     <a class="right-next"
-       href="estimate_psds.html"
+       href="../estimate_psds/README.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -424,6 +474,30 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Dataset Download Scripts</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#available-scripts">Available Scripts</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-premerger-paper-data-sh">get_premerger_paper_data.sh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-sangria-hm-sh">get_sangria_hm.sh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
