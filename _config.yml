@@ -7,6 +7,8 @@ execute:
   exclude_patterns:
     - estimate_psds/characteristic_strain.ipynb
     - estimate_psds/plot_psds.ipynb
+    - search/overlap_runs/plot_optimal_snr_fitting_factor.ipynb
+
 
 # This means only stuff in the table of contents
 # note that if we have run the 'environment building' instructions, there will be

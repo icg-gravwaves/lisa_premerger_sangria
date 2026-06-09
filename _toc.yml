@@ -1,15 +1,13 @@
 format: jb-book
 root: data_release.md
 chapters:
+- file: datasets/README.md
 - file: estimate_psds/README.md
   sections:
     - file: estimate_psds/estimate_psds.ipynb
     - file: estimate_psds/characteristic_strain_intro.md
     - file: estimate_psds/characteristic_strain.ipynb
     - file: estimate_psds/plot_psds.ipynb
-- file: inpainting/README.md
-  sections:
-    - file: inpainting/Inpainting_plot.ipynb
 - file: search/zero_latency/README.md
   sections:
     - file: search/template_bank/README.md
@@ -19,8 +17,13 @@ chapters:
     - file: search/zero_latency/signal_removal.ipynb
     - file: search/zero_latency/estimate_psds.ipynb
     - file: search/zero_latency/plot_data_results.ipynb
+- file: inpainting/README.md
+  sections:
+    - file: inpainting/Inpainting_plot.ipynb
 - file: search/inpainting_runs/README.md
   sections:
     - file: search/inpainting_runs/example_using_this_code.ipynb
     - file: search/inpainting_runs/plot_data_results.ipynb
+- file: search/inpainting_runs/focused.md
+  sections:
     - file: search/inpainting_runs/plot_focused_data_results.ipynb
