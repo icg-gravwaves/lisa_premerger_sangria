@@ -12,10 +12,10 @@ chapters:
   sections:
     - file: search/template_bank/README.md
     - file: search/template_bank/template_banks.ipynb
+    - file: search/zero_latency/zero_latency_search.md
     - file: search/overlap_runs/README.md
     - file: search/overlap_runs/plot_optimal_snr_fitting_factor.ipynb
     - file: search/zero_latency/signal_removal.ipynb
-    - file: search/zero_latency/estimate_psds.ipynb
     - file: search/zero_latency/plot_data_results.ipynb
 - file: inpainting/README.md
   sections:

@@ -60,31 +60,12 @@ psi, incl = ldc_tools.aziPolAngleL2PsiIncl(
     mbhb['InitialPolarAngleL'],
     mbhb['InitialAzimuthalAngleL']
 )
-# Generate the waveform with BBHx
-wf = {
-    # 't_obs_start': data_length, # This is setting the data length.
-    # 'f_lower': 1e-6,
-    # 'low-frequency-cutoff': 1e-6, 
-    # 'f_final': 0.1,
-    # 'delta_f': 1 / data_length,
-    # 'tdi': '1.5',
-    # 't_offset': 0,
-    # 'cutoff_deltat': 0,
-    # 'approximant': 'BBHX_PhenomD',
-    # 'mode_array': [(2,2)],
-}
-# Update waveform params to use the ones from the bank file
-# wf['tc'] = data_length
+# Generate the waveform
+wf = {}
 wf['mass1'] = mbhb['Mass1']
 wf['mass2'] = mbhb['Mass2']
 wf['spin1z'] = spin_conv(mbhb['Spin1'],mbhb['PolarAngleOfSpin1'])
 wf['spin2z'] = spin_conv(mbhb['Spin2'],mbhb['PolarAngleOfSpin2'])
-# wf['inclination'] = incl
-# wf['polarization'] = psi % (2 * np.pi)
-# wf['eclipticlatitude'] = mbhb['EclipticLatitude']
-# wf['eclipticlongitude'] = mbhb['EclipticLongitude']
-# wf['coa_phase'] = mbhb['PhaseAtCoalescence']
-# wf['distance'] = mbhb['Distance']      
 
 sig_ts = generate_waveform_for_data(
     mbhb,
@@ -95,23 +76,7 @@ sig_ts = generate_waveform_for_data(
 A_sig_psd = {}
 for channel, sig_psd in sig_ts.items():
     A_sig_psd[channel] = sig_psd.to_frequencyseries()
-    # print(sig_fs[channel].delta_f)
 
-# print(sig_fs)
-
-# Generate Waveform
-# A_sig_psd = get_fd_det_waveform(
-#     ifos=['LISA_A', 'LISA_E'],
-#     **wf,
-# )
-
-# print(A_sig_psd['LISA_A'].delta_f)
-
-# from matplotlib import pyplot as plt
-# plt.loglog(A_sig_psd['LISA_A'].sample_frequencies, abs(A_sig_psd['LISA_A']))
-# plt.loglog(sig_fs['LISA_A'].sample_frequencies, abs(sig_fs['LISA_A']))
-# plt.savefig('test_wf_gen_same.png')
-# exit(1)
 
 # compute characteristic strain from waveform
 freqs = A_sig_psd['LISA_A'].sample_frequencies.numpy()
