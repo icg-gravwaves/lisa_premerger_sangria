@@ -170,11 +170,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Zero Latency Searches</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zero_latency_search.html">Zero Latency Searches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
@@ -361,7 +363,12 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="zero-latency-searches">
 <h1>Zero Latency Searches<a class="headerlink" href="#zero-latency-searches" title="Link to this heading">#</a></h1>
-<p>Lorem ipsum …</p>
+<p>Now that we have the PSDs and we are confident that we can do the pre-merger search even with the galactic binary foreground, we look at the search itself.</p>
+<p>We want to implement the zero-latency filter search used in <a class="reference external" href="https://arxiv.org/abs/2411.07020">our previous paper</a>, so we look at the modifications we need to make:</p>
+<p>The <a class="reference internal" href="../template_bank/README.html"><span class="std std-doc">template bank</span></a> will need updating - the PSD is similar, but different enough that we do need to consider the bank.</p>
+<p>Sangria-HM contains the full two years of data for LISA. We <a class="reference internal" href="zero_latency_search.html"><span class="std std-doc">explain</span></a> how the search is performed (with examples), by slicing it so that we effectively see an end to the data, and step that slice through hour-by-hour.</p>
+<p>Applying this directly, we then saw an issue: the signal merger has such high SNR that the pre-merger templates were producing false alarms even though the overlap was not significant. We <a class="reference internal" href="../overlap_runs/README.html"><span class="std std-doc">explain the issue</span></a>, then <a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html"><span class="std std-doc">plot overlaps</span></a> and show <a class="reference internal" href="signal_removal.html"><span class="std std-doc">the methods used to remove signals from the data</span></a>.</p>
+<p>We then aoply this to the zero-latency filter search and <a class="reference internal" href="plot_data_results.html"><span class="std std-doc">plot its results</span></a>.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>

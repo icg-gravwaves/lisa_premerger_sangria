@@ -170,11 +170,13 @@
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Plotting PSDs</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../search/zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../search/template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search/zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
@@ -334,7 +336,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -350,6 +354,19 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-pre-merger-mbhb-characteristic-strain">Adding pre-merger MBHB characteristic strain</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot">PSDs money plot</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -443,10 +460,10 @@ import lal
 </div>
 </div>
 </div>
+<p>Now lets <em>also</em> get the PSD model which doesnt include GBs - this matches the one used in the zero latency filter paper. We don’t use this beyond this plot, so dont need to save it</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now lets _also_ get the PSD model which doesnt include GBs - this matches the one used in the zero latency filter paper</span>
-<span class="n">sangria_model_freqs</span> <span class="o">=</span> <span class="n">A_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sangria_model_freqs</span> <span class="o">=</span> <span class="n">A_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span>
 <span class="n">nm_nogb</span> <span class="o">=</span> <span class="n">ldc_noise</span><span class="o">.</span><span class="n">get_noise_model</span><span class="p">(</span><span class="s2">&quot;sangria&quot;</span><span class="p">,</span> <span class="n">sangria_model_freqs</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ae_nogb</span> <span class="o">=</span> <span class="n">nm_nogb</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 <span class="n">t_nogb</span> <span class="o">=</span> <span class="n">nm_nogb</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
@@ -464,6 +481,7 @@ import lal
 </div>
 </div>
 </div>
+<p>Now make the PSD plot</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cycle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
@@ -523,7 +541,10 @@ import lal
 <img alt="../_images/07c0a6f826865344bcc03ab8fe28861d9dd29080c582fdd6a17cf6ca4a9b26bc.png" src="../_images/07c0a6f826865344bcc03ab8fe28861d9dd29080c582fdd6a17cf6ca4a9b26bc.png" />
 </div>
 </div>
-<p>Now lets have a look at where the massive black hole binaries sit on this PSD plot</p>
+<section id="adding-pre-merger-mbhb-characteristic-strain">
+<h2>Adding pre-merger MBHB characteristic strain<a class="headerlink" href="#adding-pre-merger-mbhb-characteristic-strain" title="Link to this heading">#</a></h2>
+<p>But we want to get a bit more information out: do Massive black hole binaries clash with the galactic binary background when analysing them pre-merger?</p>
+<p>So lets have a look at the charcteristic strain. First we load it in:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
@@ -550,6 +571,7 @@ import lal
 </div>
 </div>
 </div>
+<p>Now plot on its own to check that it looks sensible. Note that we are transforming compared to the previous notebook so that it can sit on the same plot as the PSDs. Add in the plots with the pre-merger cutoffs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span>
@@ -588,6 +610,11 @@ import lal
 <img alt="../_images/49cfeec7d36088c0e1f41677e841712fc9f5cc96c0f1f62bd3d34313ddc608b2.png" src="../_images/49cfeec7d36088c0e1f41677e841712fc9f5cc96c0f1f62bd3d34313ddc608b2.png" />
 </div>
 </div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="psds-money-plot">
+<h1>PSDs money plot<a class="headerlink" href="#psds-money-plot" title="Link to this heading">#</a></h1>
+<p>Now lets have a look at the PSDS plotted together with the characteristic strains</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
@@ -724,6 +751,8 @@ import lal
 <img alt="../_images/89ee94ea69903c8634f00500a99e0dadf07560ffb20d28304bc1cf2440cc6328.png" src="../_images/89ee94ea69903c8634f00500a99e0dadf07560ffb20d28304bc1cf2440cc6328.png" />
 </div>
 </div>
+<p>Well thats nice, until around 3-4 days before merger, (for this signal) the MBHB strain is completely separate from the galactic binary foreground. Even at 0-5 &amp; 1 day before merger, it is well below the MBHB signal.</p>
+<p>This is important to show that this isnt a ‘global fit’ problem, and we can do this search without significantly worrying about removing the galactic white dwarf binary foregound from the data 🥳🎉🎊</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -780,6 +809,28 @@ import lal
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-pre-merger-mbhb-characteristic-strain">Adding pre-merger MBHB characteristic strain</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot">PSDs money plot</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>

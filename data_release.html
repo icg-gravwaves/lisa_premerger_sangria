@@ -60,6 +60,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'data_release';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -171,11 +173,13 @@
 <li class="toctree-l2"><a class="reference internal" href="estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="search/zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="search/template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="search/template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search/zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="search/overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="search/overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
@@ -359,19 +363,14 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Release</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-our-analysis">Reproducing our analysis</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-the-analysis-environment">Reproducing the analysis environment</a></li>
-</ul>
-</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-the-analysis-environment">Reproducing the analysis environment</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-data-release">Overview of the Data Release</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#psd-estimation">PSD Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-zero-latency-premerger-search">Applying the zero-latency premerger search</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inpainting">Inpainting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-premerger-searches">Applying the premerger searches</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-latency-search">Zero-latency search</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Inpainting</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-inpainting-search">Applying the inpainting search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapping-signals">Overlapping Signals</a></li>
 </ul>
 </li>
 </ul>
@@ -388,15 +387,13 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-release">
 <h1>Data Release<a class="headerlink" href="#data-release" title="Link to this heading">#</a></h1>
-<p>This is the data release for the paper <a class="reference external" href="https://arxiv.org/abs/2605.13738"><em>Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</em></a>.
+<p>This is the data release for the paper <a class="reference external" href="https://arxiv.org/abs/2605.13738"><em>Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</em></a>.</p>
+<p>Here, we give a more technical overview of various parts of the analysis and how they were performed.
 We release the data behind each figure and the code and configuration used to produce each of them. We also release steps needed and codes to reproduce the search using our code.</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="reproducing-our-analysis">
-<h1>Reproducing our analysis<a class="headerlink" href="#reproducing-our-analysis" title="Link to this heading">#</a></h1>
-<p>In the data release, we discuss different parts of the analysis and how they were performed</p>
 <p>We provide an outline of the commands used to submit jobs. Exact commands will depend on your computing setup, but the ones we used are included so that they can be adapted as needed.</p>
-<section id="reproducing-the-analysis-environment">
-<h2>Reproducing the analysis environment<a class="headerlink" href="#reproducing-the-analysis-environment" title="Link to this heading">#</a></h2>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="reproducing-the-analysis-environment">
+<h1>Reproducing the analysis environment<a class="headerlink" href="#reproducing-the-analysis-environment" title="Link to this heading">#</a></h1>
 <p>As always with python, software dependencies will change in the coming years, and this code may be incompatible with future releases of any dependency.</p>
 <p>This paper was generated using a fork of PyCBC at <a class="github reference external" href="https://github.com/icg-gravwaves/pycbc/tree/lisa-pre-merger">icg-gravwaves/pycbc</a>. This was forked from PyCBC at cd0e16a.</p>
 <p>We also provide an environment file here so that if the user wants to use our work as a basis for development, that is possible. The conda environment is defined yaml files for <a class="reference download internal" download="" href="_downloads/0c8bb5434adec406dddd9f57433097e5/install_reqs_linux.yml"><span class="xref download myst">linux</span></a> and or <a class="reference download internal" download="" href="_downloads/d7d38f6bc7f5c042460975ce071065f0/install_reqs_mac.yml"><span class="xref download myst">mac</span></a>, which can be used for the analysis, dependoing on your OS:</p>
@@ -406,33 +403,36 @@ or for mac
 <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span> <span class="pre">-f</span> <span class="pre">install_reqs_mac.yml</span></code></p>
 <p>Make sure you have activated the environment using <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">env_lisa_premerger_sangria</span></code></p>
 </section>
-</section>
 <section class="tex2jax_ignore mathjax_ignore" id="overview-of-the-data-release">
 <h1>Overview of the Data Release<a class="headerlink" href="#overview-of-the-data-release" title="Link to this heading">#</a></h1>
 <p>To navigate the data release, see the table of contents on the left hand side of all pages.</p>
 <section id="datasets">
 <h2>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">#</a></h2>
+<p>Here we discuss the various datasets used in the paper, with download instructions given in the repository</p>
 </section>
 <section id="psd-estimation">
 <h2>PSD Estimation<a class="headerlink" href="#psd-estimation" title="Link to this heading">#</a></h2>
-<p><a class="reference internal" href="estimate_psds/README.html"><span class="std std-doc">The first section</span></a>, shows our investigation into the noise properties of the Sangria-HM dataset and its applicability to pre-merger massive black hole binary searches.</p>
+<p><a class="reference internal" href="estimate_psds/README.html"><span class="std std-doc">The first section</span></a>, shows our investigation into the noise properties of the Sangria-HM dataset, the estimated SNRs of the signals, and the applicability of our methodology to pre-merger massive black hole binary searches.</p>
 <p>This corresponds to Section II of the paper, and shows generation of Figures 1 &amp; 2, and Table 1 of the paper.</p>
+</section>
+<section id="applying-the-zero-latency-premerger-search">
+<h2>Applying the zero-latency premerger search<a class="headerlink" href="#applying-the-zero-latency-premerger-search" title="Link to this heading">#</a></h2>
+<p>The next sections show how the zero-latency search from <a class="reference external" href="https://arxiv.org/abs/2411.07020">our previous work</a> was applied to the Sangria-HM dataset, and the issues faced with that.</p>
+<p>This corresponds to Section III of the paper, and shows generation of Figures 3-6.</p>
 </section>
 <section id="inpainting">
 <h2>Inpainting<a class="headerlink" href="#inpainting" title="Link to this heading">#</a></h2>
-<p>This section shows some investigations we performed which were not included in the paper, but help to illustrate Section IV of the paper.</p>
+<p>After this, <a class="reference internal" href="inpainting/README.html"><span class="std std-doc">we show</span></a> some investigations we performed which were not included in the paper, but help to illustrate Section IV of the paper.</p>
 </section>
-<section id="applying-the-premerger-searches">
-<h2>Applying the premerger searches<a class="headerlink" href="#applying-the-premerger-searches" title="Link to this heading">#</a></h2>
-<p>The next sections show how our searches were applied to the Sangria-HM dataset.</p>
-<section id="zero-latency-search">
-<h3>Zero-latency search<a class="headerlink" href="#zero-latency-search" title="Link to this heading">#</a></h3>
-<p>This section corresponds to Section III of the paper, and shows generation of Figures 3-6.</p>
+<section id="applying-the-inpainting-search">
+<h2>Applying the inpainting search<a class="headerlink" href="#applying-the-inpainting-search" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="search/inpainting_runs/README.html"><span class="std std-doc">Here</span></a> we show the analysis used in Section V, applying inpainting as a premerger search to the Sangria-HM dataset.</p>
+<p>This section has the generation of Figures 7, and Table 3.</p>
 </section>
-<section id="id1">
-<h3>Inpainting<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>Here we show the analyses used in Section V, and generation of Figures 7-10, and Tables 3 &amp; 4.</p>
-</section>
+<section id="overlapping-signals">
+<h2>Overlapping Signals<a class="headerlink" href="#overlapping-signals" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="search/inpainting_runs/focused.html"><span class="std std-doc">This section</span></a> discusses Section VI, and shows the analysis during a period of Sangria-HM data particularly densely-packed with signals.</p>
+<p>We show generation of Figures 8-10, and Table 4.</p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -496,19 +496,14 @@ or for mac
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Release</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-our-analysis">Reproducing our analysis</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-the-analysis-environment">Reproducing the analysis environment</a></li>
-</ul>
-</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducing-the-analysis-environment">Reproducing the analysis environment</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-data-release">Overview of the Data Release</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#psd-estimation">PSD Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-zero-latency-premerger-search">Applying the zero-latency premerger search</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inpainting">Inpainting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-premerger-searches">Applying the premerger searches</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-latency-search">Zero-latency search</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Inpainting</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-inpainting-search">Applying the inpainting search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapping-signals">Overlapping Signals</a></li>
 </ul>
 </li>
 </ul>

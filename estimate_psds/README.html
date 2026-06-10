@@ -60,6 +60,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'estimate_psds/README';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -170,11 +172,13 @@
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_psds.html">Plotting PSDs</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../search/zero_latency/README.html">Zero Latency Searches</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../search/template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../search/zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../search/overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
@@ -362,10 +366,10 @@
   <section id="estimating-psds">
 <h1>Estimating PSDs<a class="headerlink" href="#estimating-psds" title="Link to this heading">#</a></h1>
 <p>Here we estimate the PSDs for use in performing the search.</p>
-<p>We use the sangria dataset, and the welch method of PSD estimation.</p>
-<p>The ‘dip’ at 0.06Hz is removed.</p>
-<p>We then calculate the FIR filters</p>
-<p>This is plotted in the notebook.</p>
+<p>We estimate PSDs for each channel from the Sangria-HM dataset, using the welch method of PSD estimation.</p>
+<p>The model PSD shown and used throughout the paper is from the LDC get_noise_model function, which is what was used to generate the Sangria-HM dataset.</p>
+<p>The ‘dip’ at 0.06Hz is removed from both the model and the estimated PSD by bridging the gap between the peaks either side with a smooth transition between the data and the bridge.</p>
+<p>Plots of the PSDs and the dip removal method are given in the notebook.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
