@@ -1,6 +1,6 @@
 # Dataset Download Scripts
 
-This [directory in the repository](.) contains bash scripts to fetch the necessary datasets for the notebooks and analyses in this repository.
+This [directory in the repository](https://github.com/icg-gravwaves/lisa_premerger_sangria/tree/main/datasets) contains bash scripts to fetch the necessary datasets for the notebooks and analyses in this repository.
 
 # Available Scripts
 
