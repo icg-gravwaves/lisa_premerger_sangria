@@ -15,9 +15,9 @@ We use the same modified version of `pycbc_brute_bank`, this is included oin our
 This was then run using the folllowing:
 
 ```bash
-repo_dir=<replace with your own repository directory>
+repo_dir= #replace with your own repository directory
 banks_dir=$repo_dir/search/template_bank
-python_exe=<use `which python` with your conda environment activated
+python_exe= #use `which python` with your conda environment activated to fine the python executable location
 
 output_dir=$banks_dir/output
 mkdir -p $output_dir
@@ -68,6 +68,8 @@ for time_before in 0.5 1 4 7 14 ; do
 done
 ```
 
-This generated and submitted condor jobs for the bank generation scripts.
+This generated and submitted condor jobs for bank generation for each day before merger.
+
+Your local computing setup may require additional information; accounting groups, memory / disk / cpu number request etc., which you will need to add yourself.
 
 The `--psd-file` option was replaced as appropriate for the PSD model file.
