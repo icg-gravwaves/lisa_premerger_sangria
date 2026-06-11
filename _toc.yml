@@ -27,3 +27,6 @@ chapters:
 - file: search/inpainting_runs/focused.md
   sections:
     - file: search/inpainting_runs/plot_focused_data_results.ipynb
+- file: search/inpainting_runs/gaps.md
+  sections:
+    - file: search/inpainting_runs/plot_gaps_data_results.ipynb

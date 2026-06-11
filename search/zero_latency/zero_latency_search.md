@@ -47,8 +47,8 @@ For testing, we have the options `--testing-plots` and `--reduce-bank-factor`. T
 ## Submitting jobs
 The scripts were run using a condor dag file, generated through `data_runs_generate.sh`, and which used a template job submit file in `job.sub`. These contain specific instructions for the cluster we ran on, so these will probably need edited for your own version.
 
-## Data collection
-Each analysis then covers an hour and results are saved in a text file. These text files are then scraped using `collect_data_results.py` and added to a single file. This is included in the repository under `searchg/zero_latency/results/psd_{estimate,model}/data_runs_raw_{0.5,1,4,7,14}.hdf`, where the values in curly brackets are the valkues indicating the choice of PSD model and `--days-before-merger` respectively.
+## Result collection
+Each analysis then covers an hour and results are saved in a text file. These text files are then scraped using `collect_data_results.py` and added to a single file. This is included in the repository under `search/zero_latency/results/psd_{estimate,model}/data_runs_raw_{0.5,1,4,7,14}.hdf`, where the values in curly brackets indicate the choice of PSD model and `--days-before-merger` respectively.
 
 
 We then saw an issue: there were peaks being produced at the time of the merger, predicting a signal days-before-merger later.
