@@ -143,17 +143,24 @@ if args.remove_all_mbhbs:
 if args.remove_all_gbs:
     remove_noiseless_groups += [f"sky/{i}gb/tdi" for i in ['v','d','i']]
 
+# Load the data from the file
+
 data = load_ldc_timeseries(
     args.data_file,
     remove_noiseless_groups=remove_noiseless_groups,
     delta_t=1./args.sample_rate
 )
 
+# This may actually be superfluous now, but I dont want to mess with the code just for
+# making it look nice
+
 mbhb_data = load_ldc_timeseries(
     args.data_file,
     data_group='sky/mbhb/tdi',
     delta_t=1./args.sample_rate,
 )
+
+# Cut the data down to the period of interest
 
 end_idx = int(args.end_time * args.sample_rate) # seconds * hertz = unitless
 data_length_idx = int(args.data_length * args.sample_rate) # seconds * hertz = unitless
@@ -187,6 +194,7 @@ for channel in data.keys():
     mean_val = np.mean(data[channel])
     data[channel] = data[channel] - mean_val
 
+# Generate the PSD objects - these have the zero latency filter included
 psds_for_whitening = {
     f'LISA_{channel}':  interpolate(
         generate_pre_merger_psds(
