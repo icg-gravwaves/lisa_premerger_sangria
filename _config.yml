@@ -1,4 +1,5 @@
 title: "Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets"
+logo: https://course-module-catalog.port.ac.uk/assets/img/UoP_Master_Logo_Stacked_CMYK.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -9,6 +10,13 @@ execute:
     - estimate_psds/plot_psds.ipynb
     - search/overlap_runs/plot_optimal_snr_fitting_factor.ipynb
 
+exclude_patterns:
+  - ".venv"
+  - ".github"
+  - "_build"
+  - "Thumbs.db"
+  - ".DS_Store"
+  - "**.ipynb_checkpoints"
 
 # This means only stuff in the table of contents
 # note that if we have run the 'environment building' instructions, there will be
@@ -30,7 +38,6 @@ repository:
 html:
   use_issues_button: false
   use_repository_button: true
-  logo: https://course-module-catalog.port.ac.uk/assets/img/UoP_Master_Logo_Stacked_CMYK.png
 
 sphinx:
   config:
