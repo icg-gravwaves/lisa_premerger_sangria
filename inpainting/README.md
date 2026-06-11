@@ -7,7 +7,7 @@ Here we include plots etc which show how inpainting is implemented / used. This 
 Below we show a video of the SNR timeseries as the data end (shown in orange) moves closer to merger (time zero), with gaps added to the data at 20 and 10 days before merger.
 
 <video width="100%" controls>
-    <source src="https://raw.githubusercontent.com/icg-gravwaves/lisa_premerger_sangria/main/inpainting/inpainting_movie.mp4" type="video/mp4">
+    <source src="../_static/inpainting_movie.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
