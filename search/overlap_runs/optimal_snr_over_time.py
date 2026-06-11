@@ -25,8 +25,6 @@ if parent_dir not in sys.path:
 
 from common_utils import(
     generate_waveform_for_data,
-    insert_bank_options,
-    load_bank
 )
 from plotting_utils import get_colors, plot_optimal_snr_match
 
@@ -76,10 +74,6 @@ parser.add_argument('--signal-number', type=int, choices=np.arange(15),
                     help="If given, restrict the signal number loop "
                          "to only this signal")
 
-parser.add_argument('--calculate-fitting-factor', action='store_true')
-parser.add_argument('--kernel-length', type=int, default=17280)
-
-insert_bank_options(parser, bank_required=False)
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
@@ -150,12 +144,6 @@ with h5py.File(args.output_file,'w') as ofile:
         data=-cutoff_days,
     )
 
-if args.calculate_fitting_factor:
-    bank_array = load_bank(args)
-
-premerger_colours = get_colors(values=args.premerger_days, vmin=0.5, vmax=14)
-width = plt.rcParams["figure.figsize"][0]
-height = plt.rcParams["figure.figsize"][1] * 1.25
 
 for signal_number, mbhb in enumerate(mbhbs):
     if args.signal_number is not None and not signal_number == args.signal_number:

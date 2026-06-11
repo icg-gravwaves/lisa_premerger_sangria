@@ -2,7 +2,7 @@
 
 For the template banks, as in [our previous work](https://arxiv.org/abs/2411.07020), we use a stochastic placement algorithm.
 
-We use the same modified version of `pycbc_brute_bank`, this is included oin our repo for ease of use, but:
+We use the same modified version of `pycbc_brute_bank`, this is included in our repo for ease of use, but is exactly the same as the original:
 
 ```bash
  $ wget https://github.com/icg-gravwaves/lisa_premerger_paper/raw/refs/heads/main/Search/Template_Banks/pycbc_brute_bank 
@@ -56,10 +56,6 @@ for time_before in 0.5 1 4 7 14 ; do
     output = $logs_dir/lisa_ew_${time_before}_day.out
     error = $logs_dir/lisa_ew_${time_before}_day.err
     log = $logs_dir/lisa_ew_${time_before}_day.log
-
-    request_memory = 128GB
-    request_cpus = 1
-    request_disk = 1GB
 
     queue
     """ > $logs_dir/lisa_ew_${time_before}_day.sub

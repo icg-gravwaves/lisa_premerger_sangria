@@ -10,4 +10,4 @@ Sangria-HM contains the full two years of data for LISA. We [explain](./zero_lat
 
 Applying this directly, we then saw an issue: the signal merger has such high SNR that the pre-merger templates were producing false alarms even though the overlap was not significant. We [explain the issue](../overlap_runs/README.md), then [plot overlaps](../overlap_runs/plot_optimal_snr_fitting_factor.ipynb) and show [the methods used to remove signals from the data](./signal_removal.ipynb).
 
-We then aoply this to the zero-latency filter search and [plot its results](./plot_data_results.ipynb).
+We then apply this to the zero-latency filter search and [plot its results](./plot_data_results.ipynb).

@@ -1,4 +1,4 @@
-## Estimating PSDs
+# Estimating PSDs
 
 Here we estimate the PSDs for use in performing the search.
 
