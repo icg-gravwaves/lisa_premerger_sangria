@@ -177,11 +177,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -336,7 +340,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -352,6 +358,16 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-signals">Generate the signals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-remaining-snr">Calculate remaining SNR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-residual-plots">Generate residual plots</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -363,6 +379,9 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="removal-of-signal-mergers-from-data">
 <h1>Removal of Signal Mergers from data<a class="headerlink" href="#removal-of-signal-mergers-from-data" title="Link to this heading">#</a></h1>
+<p>We want to remove the signal peak from the data, but we dont have acess to the full simulation suite that was used to produce Sangria-HM.
+We therefore use the FastTDI waveform generator to make the signals and subtract (this is what was used for Sangria-HM), and any differences should be minimised.</p>
+<p>Realistically, we will have run parameter estimation and got a similar-but-not-exactly-true template, so there will be higher residuals than those shown. The main thing is to remove most of the power, so actually the best-fitting template from the search could be used, but due to gaps in the bank production, this will be missing up to 3% of the SNR. For the loudest signals, this could be an SNR of ~100 being retained as residuals in the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
@@ -441,7 +460,8 @@ import lal
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mbhb_sky</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hdfio</span><span class="o">.</span><span class="n">load_array</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sky/mbhb/cat&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the truth times</span>
+<span class="n">mbhb_sky</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hdfio</span><span class="o">.</span><span class="n">load_array</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sky/mbhb/cat&quot;</span><span class="p">)</span>
 
 <span class="n">truth_times_s</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span>
 </pre></div>
@@ -450,7 +470,9 @@ import lal
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mbhb_data</span> <span class="o">=</span> <span class="n">common_utils</span><span class="o">.</span><span class="n">load_ldc_timeseries</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the signal-only data that we will use in the plots below</span>
+
+<span class="n">mbhb_data</span> <span class="o">=</span> <span class="n">common_utils</span><span class="o">.</span><span class="n">load_ldc_timeseries</span><span class="p">(</span>
     <span class="n">data_file</span><span class="p">,</span>
     <span class="n">data_group</span><span class="o">=</span><span class="s1">&#39;sky/mbhb/tdi&#39;</span><span class="p">,</span>
     <span class="n">delta_t</span><span class="o">=</span><span class="n">delta_t</span><span class="p">,</span>
@@ -462,7 +484,8 @@ import lal
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">common_utils</span><span class="o">.</span><span class="n">load_ldc_timeseries</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Actual data including noise</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">common_utils</span><span class="o">.</span><span class="n">load_ldc_timeseries</span><span class="p">(</span>
     <span class="n">data_file</span><span class="p">,</span>
     <span class="n">delta_t</span><span class="o">=</span><span class="n">delta_t</span>
 <span class="p">)</span>
@@ -471,9 +494,13 @@ import lal
 </div>
 </div>
 </div>
+<section id="generate-the-signals">
+<h2>Generate the signals<a class="headerlink" href="#generate-the-signals" title="Link to this heading">#</a></h2>
+<p>Add the generated signals to a zeroth order dataset, this will help deal with signals close to each other in time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">generated</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># some zero timeseries:</span>
+<span class="n">generated</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">generated</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
     <span class="n">ts</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
@@ -496,6 +523,7 @@ import lal
     <span class="n">channel</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">-</span> <span class="n">generated</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="p">}</span>
+<span class="c1"># We want to compare to the raw signal-only timeseries, so subtract from that as well</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Subtracting from MBHB-only dataset&#39;</span><span class="p">)</span>
 <span class="n">mbhb_residual</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">channel</span><span class="p">:</span> <span class="n">mbhb_data</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">-</span> <span class="n">generated</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
@@ -578,6 +606,10 @@ Subtracting from MBHB-only dataset
 </div>
 </div>
 </div>
+</section>
+<section id="calculate-remaining-snr">
+<h2>Calculate remaining SNR<a class="headerlink" href="#calculate-remaining-snr" title="Link to this heading">#</a></h2>
+<p>Lets calculate the SNR of matching the true waveform to the residual timeseries. A bank search will probably match better than this, but this is for illustration</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pycbc.filter</span><span class="w"> </span><span class="kn">import</span> <span class="n">matched_filter</span>
@@ -655,6 +687,11 @@ Subtracting from MBHB-only dataset
 </div>
 </div>
 </div>
+</section>
+<section id="generate-residual-plots">
+<h2>Generate residual plots<a class="headerlink" href="#generate-residual-plots" title="Link to this heading">#</a></h2>
+<p>Lets have a look at the plots.</p>
+<p>In particular Signal 3 - this is one of the loud ones anyway (full SNR ~2000), but we can actually see the residuals still, on a scale comparable to the noise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importlib.reload(plotting_utils)</span>
@@ -679,6 +716,7 @@ Subtracting from MBHB-only dataset
 <img alt="../../_images/92394068320d31417cf74a7638efa2b4b617a466e390d47d6e424d104de9b59d.png" src="../../_images/92394068320d31417cf74a7638efa2b4b617a466e390d47d6e424d104de9b59d.png" />
 </div>
 </div>
+<p>For completeness, lets generate the plots for all the signals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">mbhb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">):</span>
@@ -713,6 +751,7 @@ Subtracting from MBHB-only dataset
 <img alt="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" src="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" />
 </div>
 </div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -769,6 +808,25 @@ Subtracting from MBHB-only dataset
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-signals">Generate the signals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-remaining-snr">Calculate remaining SNR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-residual-plots">Generate residual plots</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

@@ -177,11 +177,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -336,7 +340,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -352,6 +358,26 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plot results from searching in data using the zero-latency search</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#full-run-plots">Full run plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-6">Figure 6</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-plots">Individual Signal Plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5">Figure 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-end-time-plots">Data end time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimated-psd-forecast-time">Estimated PSD - forecast time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-estimated-to-model-psd">Comparing estimated to model PSD</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -363,6 +389,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="plot-results-from-searching-in-data-using-the-zero-latency-search">
 <h1>Plot results from searching in data using the zero-latency search<a class="headerlink" href="#plot-results-from-searching-in-data-using-the-zero-latency-search" title="Link to this heading">#</a></h1>
+<p>So now we get to the results plotting - this are a bit out-of-order from the paper here as this notebook contains plots from all the runs, both with and without signal removal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
@@ -423,6 +450,7 @@ import lal
 </div>
 </div>
 </div>
+<p>Load in the results - both PSD models, and both with and without signal removal</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
@@ -464,6 +492,10 @@ import lal
 </div>
 </div>
 </div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="full-run-plots">
+<h1>Full run plots<a class="headerlink" href="#full-run-plots" title="Link to this heading">#</a></h1>
+<p>This is the plot of the analysis without signal removal. even in the full-run plot we can see the secondary peaks, particularly for signals 0, 6 and 10.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -474,7 +506,6 @@ import lal
     <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Search results&#39;</span><span class="p">,</span>
     <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
 <span class="p">)</span>
-<span class="c1"># fig_model_all.savefig(f&#39;plots/psd_model_all_raw.pdf&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -482,6 +513,9 @@ import lal
 <img alt="../../_images/38f776663db210c885575cc2bba73d1afd89882373a0007b79f3d77b5f388240.png" src="../../_images/38f776663db210c885575cc2bba73d1afd89882373a0007b79f3d77b5f388240.png" />
 </div>
 </div>
+<section id="figure-6">
+<h2>Figure 6<a class="headerlink" href="#figure-6" title="Link to this heading">#</a></h2>
+<p>This is the same, but with the mergers removed from the data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -494,7 +528,6 @@ import lal
     <span class="n">height_factor</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
     <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
 <span class="p">)</span>
-<span class="c1"># fig_model_all.savefig(f&#39;plots/psd_model_remove.pdf&#39;)</span>
 <span class="n">fig_model_all</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_6_zerolatency_result.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -503,6 +536,7 @@ import lal
 <img alt="../../_images/b5927fed89e52a9c26437bb2e1e8d9795a3a9c719532ba35ec1523764174c733.png" src="../../_images/b5927fed89e52a9c26437bb2e1e8d9795a3a9c719532ba35ec1523764174c733.png" />
 </div>
 </div>
+<p>Now lets plot them both on the same axis just to compare.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_estimate_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -513,7 +547,6 @@ import lal
     <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
     <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
 <span class="p">)</span>
-<span class="c1"># fig_estimate_all.savefig(f&#39;plots/psd_estimate_all.pdf&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -521,6 +554,11 @@ import lal
 <img alt="../../_images/4e602e78355ab24ff8036136b2b07e5faf95562841cfcc726500dedcf6b81e1d.png" src="../../_images/4e602e78355ab24ff8036136b2b07e5faf95562841cfcc726500dedcf6b81e1d.png" />
 </div>
 </div>
+<p>This is the example signal shown in figures 4&amp;5, but the raw-only version to start with</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="individual-signal-plots">
+<h1>Individual Signal Plots<a class="headerlink" href="#individual-signal-plots" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_signal_number</span> <span class="o">=</span> <span class="mi">10</span>
@@ -542,13 +580,16 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_71983/4251546722.py:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/4251546722.py:15: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
   fig_model.show()
 </pre></div>
 </div>
 <img alt="../../_images/cbe9da3d08f20319f2f9f6cb6f7c29bbad61636688fed55325f7c1af3fb994a5.png" src="../../_images/cbe9da3d08f20319f2f9f6cb6f7c29bbad61636688fed55325f7c1af3fb994a5.png" />
 </div>
 </div>
+<section id="figure-5">
+<h2>Figure 5<a class="headerlink" href="#figure-5" title="Link to this heading">#</a></h2>
+<p>One of the plots from the paper -  a zoom in on Signal 10 so that we see the secondary peaks clearly in the raw results, and that they have been removed in the peak removal instance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -570,13 +611,14 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_71983/1620646273.py:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1620646273.py:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
   fig_model.show()
 </pre></div>
 </div>
 <img alt="../../_images/c1ba6581bb7642cfd5d33e455bf4f059b126d6981c6a9a1910bfad51a8a08b27.png" src="../../_images/c1ba6581bb7642cfd5d33e455bf4f059b126d6981c6a9a1910bfad51a8a08b27.png" />
 </div>
 </div>
+<p>For completeness - make the plot for all the signals</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -592,84 +634,31 @@ import lal
         <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;upper left&#39;</span><span class="p">,</span>
         <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.4</span>
     <span class="p">)</span>
-    <span class="n">fig_model</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="n">fig_model</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/psd_model_signal_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">_forecast.pdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_71983/3308341902.py:14: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
-  fig_model.show()
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">line</span> <span class="mi">15</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">results_two</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">12</span>     <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.4</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">fig_model</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">fig_model</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;plots/psd_model_signal_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">_forecast.pdf&#39;</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/figure.py:3490,</span> in <span class="ni">Figure.savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3488</span>     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">3489</span>         <span class="n">_recursively_make_axes_transparent</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">3490</span> <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backend_bases.py:2186,</span> in <span class="ni">FigureCanvasBase.print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2182</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2183</span>     <span class="c1"># _get_renderer may change the figure dpi (as vector formats</span>
-<span class="g g-Whitespace">   </span><span class="mi">2184</span>     <span class="c1"># force the figure dpi to 72), so we need to set it again here.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2185</span>     <span class="k">with</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_setattr_cm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">2186</span>         <span class="n">result</span> <span class="o">=</span> <span class="n">print_method</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2187</span>             <span class="n">filename</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2188</span>             <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2189</span>             <span class="n">edgecolor</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2190</span>             <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2191</span>             <span class="n">bbox_inches_restore</span><span class="o">=</span><span class="n">_bbox_inches_restore</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2192</span>             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2193</span> <span class="k">finally</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2194</span>     <span class="k">if</span> <span class="n">bbox_inches</span> <span class="ow">and</span> <span class="n">restore_bbox</span><span class="p">:</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backend_bases.py:2042,</span> in <span class="ni">FigureCanvasBase._switch_canvas_and_return_print_method.&lt;locals&gt;.&lt;lambda&gt;</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2038</span>     <span class="n">optional_kws</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># Passed by print_figure for other renderers.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2039</span>         <span class="s2">&quot;dpi&quot;</span><span class="p">,</span> <span class="s2">&quot;facecolor&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">,</span> <span class="s2">&quot;orientation&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2040</span>         <span class="s2">&quot;bbox_inches_restore&quot;</span><span class="p">}</span>
-<span class="g g-Whitespace">   </span><span class="mi">2041</span>     <span class="n">skip</span> <span class="o">=</span> <span class="n">optional_kws</span> <span class="o">-</span> <span class="p">{</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">}</span>
-<span class="ne">-&gt; </span><span class="mi">2042</span>     <span class="n">print_method</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">meth</span><span class="p">)(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">meth</span><span class="p">(</span>
-<span class="nn">   2043         *args, **{k: v for k, v</span> in <span class="ni">kwargs.items</span><span class="nt">() if k not in skip}))</span>
-<span class="g g-Whitespace">   </span><span class="mi">2044</span> <span class="k">else</span><span class="p">:</span>  <span class="c1"># Let third-parties do as they see fit.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2045</span>     <span class="n">print_method</span> <span class="o">=</span> <span class="n">meth</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backends/backend_pdf.py:2779,</span> in <span class="ni">FigureCanvasPdf.print_pdf</span><span class="nt">(self, filename, bbox_inches_restore, metadata)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2777</span>     <span class="n">file</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">_ensure_file</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">2778</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2779</span>     <span class="n">file</span> <span class="o">=</span> <span class="n">PdfFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2780</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2781</span>     <span class="n">file</span><span class="o">.</span><span class="n">newPage</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/backends/backend_pdf.py:687,</span> in <span class="ni">PdfFile.__init__</span><span class="nt">(self, filename, metadata)</span>
-<span class="g g-Whitespace">    </span><span class="mi">685</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_file_like</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">686</span> <span class="bp">self</span><span class="o">.</span><span class="n">tell_base</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="ne">--&gt; </span><span class="mi">687</span> <span class="n">fh</span><span class="p">,</span> <span class="n">opened</span> <span class="o">=</span> <span class="n">cbook</span><span class="o">.</span><span class="n">to_filehandle</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">return_opened</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">688</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">opened</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">689</span>     <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File ~/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/matplotlib/cbook.py:546,</span> in <span class="ni">to_filehandle</span><span class="nt">(fname, flag, return_opened, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">544</span>         <span class="n">fh</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">545</span>     <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">546</span>         <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">547</span>     <span class="n">opened</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">548</span> <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;seek&#39;</span><span class="p">):</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;plots/psd_model_signal_0_forecast.pdf&#39;
-</pre></div>
-</div>
 <img alt="../../_images/e3ad0ad3f9f6559268327e5afd929de4a007d9f191a9d7035a70b4f98e15a3a1.png" src="../../_images/e3ad0ad3f9f6559268327e5afd929de4a007d9f191a9d7035a70b4f98e15a3a1.png" />
+<img alt="../../_images/c7d6e69f27172b99226129148fbc3ccecde502eb14598f53761ebdc8dbf6b492.png" src="../../_images/c7d6e69f27172b99226129148fbc3ccecde502eb14598f53761ebdc8dbf6b492.png" />
+<img alt="../../_images/21233fd6526b2bd8ef7b4746563efb95e98b0fba3331befcc3f4b94457acd5bb.png" src="../../_images/21233fd6526b2bd8ef7b4746563efb95e98b0fba3331befcc3f4b94457acd5bb.png" />
+<img alt="../../_images/3ffc3dff69b9a598c06ae2b775aaf61551adb15d6506cf7008df8a4c6a217522.png" src="../../_images/3ffc3dff69b9a598c06ae2b775aaf61551adb15d6506cf7008df8a4c6a217522.png" />
+<img alt="../../_images/bc9171cf075271c0069609e32a95efbe65871a20122c5d03e62c11a83dacbfb4.png" src="../../_images/bc9171cf075271c0069609e32a95efbe65871a20122c5d03e62c11a83dacbfb4.png" />
+<img alt="../../_images/a2ea9d491b4dc469e75bfd7b34de0c389f8ad10f298632975781f839814c92f9.png" src="../../_images/a2ea9d491b4dc469e75bfd7b34de0c389f8ad10f298632975781f839814c92f9.png" />
+<img alt="../../_images/6a53f7aa2cc44cb589ec1fb36cb131498d84cdf3f86afa75df3d55032524136e.png" src="../../_images/6a53f7aa2cc44cb589ec1fb36cb131498d84cdf3f86afa75df3d55032524136e.png" />
+<img alt="../../_images/b20bd6cbe61106bdbcd54fbc725b8299f8ddc32c7aa8513604b1206ed9315bb1.png" src="../../_images/b20bd6cbe61106bdbcd54fbc725b8299f8ddc32c7aa8513604b1206ed9315bb1.png" />
+<img alt="../../_images/2c33dcc0879ee216e7eb281656834754f18b9ce0cbb531a601ac6415c9609582.png" src="../../_images/2c33dcc0879ee216e7eb281656834754f18b9ce0cbb531a601ac6415c9609582.png" />
+<img alt="../../_images/742c60b086242df2bbef576c9759578933845949017d1cf2acb9248af686ca1b.png" src="../../_images/742c60b086242df2bbef576c9759578933845949017d1cf2acb9248af686ca1b.png" />
+<img alt="../../_images/f5cb3846878f1122da68fe1a79f734047d6ecfac8354f487172b0f025b50d471.png" src="../../_images/f5cb3846878f1122da68fe1a79f734047d6ecfac8354f487172b0f025b50d471.png" />
+<img alt="../../_images/91e4ab544f233df702bc15c00c83646ea1b719574d43e499f978d733e37e34ff.png" src="../../_images/91e4ab544f233df702bc15c00c83646ea1b719574d43e499f978d733e37e34ff.png" />
+<img alt="../../_images/2c04828a5118c5a1a93318f4597f0922166e74604e33322af428ab3fbf43c266.png" src="../../_images/2c04828a5118c5a1a93318f4597f0922166e74604e33322af428ab3fbf43c266.png" />
+<img alt="../../_images/94b5dd28cf8dd4f2fa6eed47d6ae4f1fabc2cb432377ee13e25e3d35f84c24bf.png" src="../../_images/94b5dd28cf8dd4f2fa6eed47d6ae4f1fabc2cb432377ee13e25e3d35f84c24bf.png" />
+<img alt="../../_images/1d259194130aa004759f65b8e2ac24a78f9754130134203dc7ba8b09074ad2bb.png" src="../../_images/1d259194130aa004759f65b8e2ac24a78f9754130134203dc7ba8b09074ad2bb.png" />
 </div>
 </div>
+</section>
+<section id="data-end-time-plots">
+<h2>Data end time plots<a class="headerlink" href="#data-end-time-plots" title="Link to this heading">#</a></h2>
+<p>Now make the plots, but this time, use the data end time on the x-axis rather than the forecast merger time. This allows us to see some other features.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -685,29 +674,31 @@ import lal
         <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;upper left&#39;</span>
     <span class="p">)</span>
-    <span class="n">fig_model</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="c1"># fig_model.savefig(f&#39;plots/psd_model_signal_{i}_end_time.pdf&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0fdd9d0b19be4a4613b563a43ba9d961c08cdbcaef44899aea657b4011c003cd.png" src="../../_images/0fdd9d0b19be4a4613b563a43ba9d961c08cdbcaef44899aea657b4011c003cd.png" />
-<img alt="../../_images/619245a649c6d7779d3723c1aea0409fef9451a640dba25458cd397b663edbd6.png" src="../../_images/619245a649c6d7779d3723c1aea0409fef9451a640dba25458cd397b663edbd6.png" />
-<img alt="../../_images/0fc99ae1edf9818f9882e5425729c8fa537d011131255563eb7e4d364ea5431a.png" src="../../_images/0fc99ae1edf9818f9882e5425729c8fa537d011131255563eb7e4d364ea5431a.png" />
-<img alt="../../_images/1c3d126408987116b65bb22c90900842c56a5b4a79e7249181d5459a43b0eecf.png" src="../../_images/1c3d126408987116b65bb22c90900842c56a5b4a79e7249181d5459a43b0eecf.png" />
-<img alt="../../_images/990a355929a0bcb70d983768045dcfb8c8945260332c78592cce771e7247ce13.png" src="../../_images/990a355929a0bcb70d983768045dcfb8c8945260332c78592cce771e7247ce13.png" />
-<img alt="../../_images/c15d29749678630d05b9e1776606c5ff9ed4820c494e87cc534037eb754f3da0.png" src="../../_images/c15d29749678630d05b9e1776606c5ff9ed4820c494e87cc534037eb754f3da0.png" />
-<img alt="../../_images/2eb7c2d9dcd90ac74dc90e51122f9e667b165b72e3e8562fd6669a8d48972645.png" src="../../_images/2eb7c2d9dcd90ac74dc90e51122f9e667b165b72e3e8562fd6669a8d48972645.png" />
-<img alt="../../_images/fb061afa711d7a8edfefbcbdc036991c6b36a3aafd6a48f2fab55598096fe133.png" src="../../_images/fb061afa711d7a8edfefbcbdc036991c6b36a3aafd6a48f2fab55598096fe133.png" />
-<img alt="../../_images/15963a31a33558c530c67ab2d6fd917d512d3e31e44f533613fbf245917a84cd.png" src="../../_images/15963a31a33558c530c67ab2d6fd917d512d3e31e44f533613fbf245917a84cd.png" />
-<img alt="../../_images/1202ace400d33793cf3f6c37905a2faaeb3b8e06e2b9ed0d3510099fcf52a248.png" src="../../_images/1202ace400d33793cf3f6c37905a2faaeb3b8e06e2b9ed0d3510099fcf52a248.png" />
-<img alt="../../_images/586a8fa5a032d568ef8bf813cd6930026449820f68bd62f28857ca3acb3ceda0.png" src="../../_images/586a8fa5a032d568ef8bf813cd6930026449820f68bd62f28857ca3acb3ceda0.png" />
-<img alt="../../_images/a26739f2ba7339106caddaaa4cef12c2c3845809bcf71509bb84631a8139adc6.png" src="../../_images/a26739f2ba7339106caddaaa4cef12c2c3845809bcf71509bb84631a8139adc6.png" />
-<img alt="../../_images/a05e7822eb83a80b40c82a5b4e056d9a4274b96cca8fee3452a3e25bf431449e.png" src="../../_images/a05e7822eb83a80b40c82a5b4e056d9a4274b96cca8fee3452a3e25bf431449e.png" />
-<img alt="../../_images/415650a282125db55e5c5a4d8711039c5e730d00e18841e20bd18466761c9dfd.png" src="../../_images/415650a282125db55e5c5a4d8711039c5e730d00e18841e20bd18466761c9dfd.png" />
-<img alt="../../_images/a9aa8fe5b0f743a30ba7f26f4c368fe7078c66d600dbdfb8c4d405862cc5daf9.png" src="../../_images/a9aa8fe5b0f743a30ba7f26f4c368fe7078c66d600dbdfb8c4d405862cc5daf9.png" />
+<img alt="../../_images/b429c775bb8db04a6d66f64c06641837cafb8127fbdb7c30e3e1fd2cd742dd46.png" src="../../_images/b429c775bb8db04a6d66f64c06641837cafb8127fbdb7c30e3e1fd2cd742dd46.png" />
+<img alt="../../_images/0f6fdf0024b27897249db2dd9b95ce63ee5110d51b5f98c9dc828742c1a53fa0.png" src="../../_images/0f6fdf0024b27897249db2dd9b95ce63ee5110d51b5f98c9dc828742c1a53fa0.png" />
+<img alt="../../_images/102f3755947f44c7c044f3a0c37a0bd54245814a91c654b55524d1a2f994bba2.png" src="../../_images/102f3755947f44c7c044f3a0c37a0bd54245814a91c654b55524d1a2f994bba2.png" />
+<img alt="../../_images/1f0b50131de9ae7f2c79c1e61b7745f47588f6c4bcc3e7cdc41e1cd6c0738ca6.png" src="../../_images/1f0b50131de9ae7f2c79c1e61b7745f47588f6c4bcc3e7cdc41e1cd6c0738ca6.png" />
+<img alt="../../_images/d92363bc6ea34b7ba14cb51a9a2dd9129a60394e631926619c4f8d2982d6979a.png" src="../../_images/d92363bc6ea34b7ba14cb51a9a2dd9129a60394e631926619c4f8d2982d6979a.png" />
+<img alt="../../_images/9d0bc7fbc48df1c25b8bcc9ebbcb23cad3d0ea6897ca8faa074f134ac30466d5.png" src="../../_images/9d0bc7fbc48df1c25b8bcc9ebbcb23cad3d0ea6897ca8faa074f134ac30466d5.png" />
+<img alt="../../_images/4daf16bb7684f8616c7ce7837ff50234812fcaaefb9dfee86acdc9b93ba3bbb8.png" src="../../_images/4daf16bb7684f8616c7ce7837ff50234812fcaaefb9dfee86acdc9b93ba3bbb8.png" />
+<img alt="../../_images/6bb49c28ed0fd81048da5b85ed866d5f2b2f34b517573dcee15d1203bf8ce4a5.png" src="../../_images/6bb49c28ed0fd81048da5b85ed866d5f2b2f34b517573dcee15d1203bf8ce4a5.png" />
+<img alt="../../_images/67dfd63ac2ef09920494f1dc94646b154f4b5e49f21e4b36fb446e3ea38ef984.png" src="../../_images/67dfd63ac2ef09920494f1dc94646b154f4b5e49f21e4b36fb446e3ea38ef984.png" />
+<img alt="../../_images/a4a64b7d16306ab84ad8dc4421b3823089414d9c8f0097f48c1c71ba45556feb.png" src="../../_images/a4a64b7d16306ab84ad8dc4421b3823089414d9c8f0097f48c1c71ba45556feb.png" />
+<img alt="../../_images/b96c72b6256f317741ebbfecdc9cf63f8f931657fb9fa36ddf2c0d6881423085.png" src="../../_images/b96c72b6256f317741ebbfecdc9cf63f8f931657fb9fa36ddf2c0d6881423085.png" />
+<img alt="../../_images/ddd79a52a9ff6b18d7117eb82a30dafd4c48084241c6923a7c14fc3517adc514.png" src="../../_images/ddd79a52a9ff6b18d7117eb82a30dafd4c48084241c6923a7c14fc3517adc514.png" />
+<img alt="../../_images/b662d8d43e094fef6574239bd38a0e5e5a17d053193234806f8c72b6f540c4e2.png" src="../../_images/b662d8d43e094fef6574239bd38a0e5e5a17d053193234806f8c72b6f540c4e2.png" />
+<img alt="../../_images/c35a3e27a5983a27c120368d4f7089120604f008a21984aaba57e4f458f8e741.png" src="../../_images/c35a3e27a5983a27c120368d4f7089120604f008a21984aaba57e4f458f8e741.png" />
+<img alt="../../_images/bea3055bb5afce43a75eba93c36f9187bccc56558112dab4fcb8ae434b8628c6.png" src="../../_images/bea3055bb5afce43a75eba93c36f9187bccc56558112dab4fcb8ae434b8628c6.png" />
 </div>
 </div>
+</section>
+<section id="estimated-psd-forecast-time">
+<h2>Estimated PSD - forecast time<a class="headerlink" href="#estimated-psd-forecast-time" title="Link to this heading">#</a></h2>
+<p>Raw/removed plots, but with the estimated PSD instead</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -722,29 +713,31 @@ import lal
         <span class="n">signal_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
         <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
     <span class="p">)</span>
-    <span class="n">fig_estimate</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="c1"># fig_estimate.savefig(f&#39;plots/psd_estimate_signal_{i}.pdf&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f09066bee59af3fe156d53bbd86b98119f196b2818b35b22886afa67e61347b7.png" src="../../_images/f09066bee59af3fe156d53bbd86b98119f196b2818b35b22886afa67e61347b7.png" />
-<img alt="../../_images/499462151b0129efa3d73c3b9f57d80f9afcd4c92eba79788ff422b0a0cc782d.png" src="../../_images/499462151b0129efa3d73c3b9f57d80f9afcd4c92eba79788ff422b0a0cc782d.png" />
-<img alt="../../_images/8c980d05ab040791e96603ec92821d48c3b6f9363b5ce7cff748bc2ccd2f84f4.png" src="../../_images/8c980d05ab040791e96603ec92821d48c3b6f9363b5ce7cff748bc2ccd2f84f4.png" />
-<img alt="../../_images/c39d59f27f3b74a572ce851fe13fa6e0d18de53ecf4c64f43ae298cd684c2332.png" src="../../_images/c39d59f27f3b74a572ce851fe13fa6e0d18de53ecf4c64f43ae298cd684c2332.png" />
-<img alt="../../_images/1ea9b99128b192e9ca94683a1b7d0173c2cf35cea57d1d0b64f476f913e9737a.png" src="../../_images/1ea9b99128b192e9ca94683a1b7d0173c2cf35cea57d1d0b64f476f913e9737a.png" />
-<img alt="../../_images/ae73cae8b88cce9b5d9552c2e867f369cfcfd3c277e01a1bf917f446bf09e48b.png" src="../../_images/ae73cae8b88cce9b5d9552c2e867f369cfcfd3c277e01a1bf917f446bf09e48b.png" />
-<img alt="../../_images/630eae61168eeb4976e126c93b5a1582aa93d49385bba0cc2ecab1f30f8ce3d3.png" src="../../_images/630eae61168eeb4976e126c93b5a1582aa93d49385bba0cc2ecab1f30f8ce3d3.png" />
-<img alt="../../_images/9adc3770f3a9d74a37d1dcba6150a19b6edfc21f848c415ca13a53eb97ba25f7.png" src="../../_images/9adc3770f3a9d74a37d1dcba6150a19b6edfc21f848c415ca13a53eb97ba25f7.png" />
-<img alt="../../_images/bc12195d1701e21971ce35d09f5b67c84886fd21aa4efcd0019ce089b2f847dd.png" src="../../_images/bc12195d1701e21971ce35d09f5b67c84886fd21aa4efcd0019ce089b2f847dd.png" />
-<img alt="../../_images/c8bf6aa8ba7736f21f23f12584ff9768587a219ceba20d04c5a663bf2c2d6b07.png" src="../../_images/c8bf6aa8ba7736f21f23f12584ff9768587a219ceba20d04c5a663bf2c2d6b07.png" />
-<img alt="../../_images/76db36f97893a08656d94b4e28cab875b4369ee5ba8a025617d367871f40ba2b.png" src="../../_images/76db36f97893a08656d94b4e28cab875b4369ee5ba8a025617d367871f40ba2b.png" />
-<img alt="../../_images/d3fbde34999d845a2e4ac8f7311686f944d9db83967a707f3ba7951343525bc2.png" src="../../_images/d3fbde34999d845a2e4ac8f7311686f944d9db83967a707f3ba7951343525bc2.png" />
-<img alt="../../_images/17290179e5caadc02703b503d879f1182dfd6e5d27c0ed8c74018850c5cd1464.png" src="../../_images/17290179e5caadc02703b503d879f1182dfd6e5d27c0ed8c74018850c5cd1464.png" />
-<img alt="../../_images/d9e39676d04a36feb9c9ecc8030dcf568c76e087bb7581eb7a3dd65c2fe46829.png" src="../../_images/d9e39676d04a36feb9c9ecc8030dcf568c76e087bb7581eb7a3dd65c2fe46829.png" />
-<img alt="../../_images/926a38682a56e214c24d2cd4de8669edee7dd8c5a30db50ddcee3d955ceb7679.png" src="../../_images/926a38682a56e214c24d2cd4de8669edee7dd8c5a30db50ddcee3d955ceb7679.png" />
+<img alt="../../_images/7f6c3db5ba34c653af05bf41cc3fb3ea0031e6a21d7f6090889f290081823623.png" src="../../_images/7f6c3db5ba34c653af05bf41cc3fb3ea0031e6a21d7f6090889f290081823623.png" />
+<img alt="../../_images/264bdb82f75ca9bffcdd32a113917509c6670d5aabbb5d4f3fe1303b8fcf0ad5.png" src="../../_images/264bdb82f75ca9bffcdd32a113917509c6670d5aabbb5d4f3fe1303b8fcf0ad5.png" />
+<img alt="../../_images/8891b3dc51051f379f6e77c3e3a2b4adf37b92ee23eec45be67fb523365736b3.png" src="../../_images/8891b3dc51051f379f6e77c3e3a2b4adf37b92ee23eec45be67fb523365736b3.png" />
+<img alt="../../_images/6edd68d16fd0a369960030ec14ec308d6b398f39ebb5d22e105d23bae7d14d91.png" src="../../_images/6edd68d16fd0a369960030ec14ec308d6b398f39ebb5d22e105d23bae7d14d91.png" />
+<img alt="../../_images/6182cfb79356ede0e2a54911c259bb4c38b03050adaf694b7e7fe80eabfebdfd.png" src="../../_images/6182cfb79356ede0e2a54911c259bb4c38b03050adaf694b7e7fe80eabfebdfd.png" />
+<img alt="../../_images/36f2e545392f79b4a254d083bacd6215211ba303e24c2f130377599f7a3c31b7.png" src="../../_images/36f2e545392f79b4a254d083bacd6215211ba303e24c2f130377599f7a3c31b7.png" />
+<img alt="../../_images/27593f0ae5f131c25446fa8fd67be24475d0fa54aaad8e4d1758d781d79afcdf.png" src="../../_images/27593f0ae5f131c25446fa8fd67be24475d0fa54aaad8e4d1758d781d79afcdf.png" />
+<img alt="../../_images/b17b79f0869b1ab2c1d0a5bf7e56375b5a8d6fffc52b85337dcf7055b72b18ed.png" src="../../_images/b17b79f0869b1ab2c1d0a5bf7e56375b5a8d6fffc52b85337dcf7055b72b18ed.png" />
+<img alt="../../_images/6e9005a29ccb4d866c831caed5f22f947ac0a5c09ced078e0bbf40e2534d8a59.png" src="../../_images/6e9005a29ccb4d866c831caed5f22f947ac0a5c09ced078e0bbf40e2534d8a59.png" />
+<img alt="../../_images/75823a153d86b04bc34a54bcfb29661079fb41c2fc162870d8ff21b4e8222382.png" src="../../_images/75823a153d86b04bc34a54bcfb29661079fb41c2fc162870d8ff21b4e8222382.png" />
+<img alt="../../_images/f823291b23a1e2519b4033933818f8b4e80038826dd424538eca3b276f7f1bf6.png" src="../../_images/f823291b23a1e2519b4033933818f8b4e80038826dd424538eca3b276f7f1bf6.png" />
+<img alt="../../_images/f38cb819a2eefa873849a87d9d978793c77f942746e5216e800213dc6e69d975.png" src="../../_images/f38cb819a2eefa873849a87d9d978793c77f942746e5216e800213dc6e69d975.png" />
+<img alt="../../_images/af8904e3ca9fb0aa7f0c53ed5f0a29650ea1d1dbd2a232e34037c6e9571d78be.png" src="../../_images/af8904e3ca9fb0aa7f0c53ed5f0a29650ea1d1dbd2a232e34037c6e9571d78be.png" />
+<img alt="../../_images/962aac54ed5f7756d1e156c6d298c1ca9ea91daf07e685e196836051bf508180.png" src="../../_images/962aac54ed5f7756d1e156c6d298c1ca9ea91daf07e685e196836051bf508180.png" />
+<img alt="../../_images/14634976b61d02b8eae62e7f3cbf551da063a02d0a738246072bcc2d53b646a1.png" src="../../_images/14634976b61d02b8eae62e7f3cbf551da063a02d0a738246072bcc2d53b646a1.png" />
 </div>
 </div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="comparing-estimated-to-model-psd">
+<h1>Comparing estimated to model PSD<a class="headerlink" href="#comparing-estimated-to-model-psd" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -766,26 +759,59 @@ import lal
         <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[]</span> <span class="k">else</span> <span class="s1">&#39;upper right&#39;</span>
     <span class="p">)</span>
     <span class="n">fig_psd_comparison</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="c1"># fig_psd_comparison.savefig(f&#39;plots/psd_comparison_signal_{i}.pdf&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/abc7549c51c8cf9810a2e33eb378f842bcd01be97661c9e99a85609b252b9b5b.png" src="../../_images/abc7549c51c8cf9810a2e33eb378f842bcd01be97661c9e99a85609b252b9b5b.png" />
-<img alt="../../_images/f5ce9c0c3d3d85211da5706819f039c327abea1d9fc84b57cd0bcded6fcfb24b.png" src="../../_images/f5ce9c0c3d3d85211da5706819f039c327abea1d9fc84b57cd0bcded6fcfb24b.png" />
-<img alt="../../_images/ddede1fd3d39af1adbbb88cc4675756874b5cb96099515fe853e7df23254947f.png" src="../../_images/ddede1fd3d39af1adbbb88cc4675756874b5cb96099515fe853e7df23254947f.png" />
-<img alt="../../_images/f139bd4af7ec818645aefb1e725a5dcdb34bd29a85eeec267f4095a7c5ba60c3.png" src="../../_images/f139bd4af7ec818645aefb1e725a5dcdb34bd29a85eeec267f4095a7c5ba60c3.png" />
-<img alt="../../_images/00ac3e77b6961ec40580bfd5a1cc54895fe1291219d224c917b4437868e49a77.png" src="../../_images/00ac3e77b6961ec40580bfd5a1cc54895fe1291219d224c917b4437868e49a77.png" />
-<img alt="../../_images/d8b185c2535bd8dc929d0c0c537eb4da300a31f528096d86f13883eb46deec76.png" src="../../_images/d8b185c2535bd8dc929d0c0c537eb4da300a31f528096d86f13883eb46deec76.png" />
-<img alt="../../_images/6ba761e3c4e4ed3980a6695a0e6609b8f1be2b44694d0559d3133cc424cbcd1f.png" src="../../_images/6ba761e3c4e4ed3980a6695a0e6609b8f1be2b44694d0559d3133cc424cbcd1f.png" />
-<img alt="../../_images/8fcd9a9b3002ad90aad5145c9dc9737a23e43dfadd1eef65d65e0b4ca4f06e64.png" src="../../_images/8fcd9a9b3002ad90aad5145c9dc9737a23e43dfadd1eef65d65e0b4ca4f06e64.png" />
-<img alt="../../_images/ab4f93f414cfe357defa399c65ea0bde05b9fe2e1aab98fb5019a88f68a2ec7a.png" src="../../_images/ab4f93f414cfe357defa399c65ea0bde05b9fe2e1aab98fb5019a88f68a2ec7a.png" />
-<img alt="../../_images/74868be2b4d3d6091bc24ae9e4a02b6e72327f18e8960a3f4a76368cba8cb518.png" src="../../_images/74868be2b4d3d6091bc24ae9e4a02b6e72327f18e8960a3f4a76368cba8cb518.png" />
-<img alt="../../_images/470ba7fb9fc50d9e9b58df5fc021a366a4646ecb8f32c6c9104b6fa9d4930051.png" src="../../_images/470ba7fb9fc50d9e9b58df5fc021a366a4646ecb8f32c6c9104b6fa9d4930051.png" />
-<img alt="../../_images/fa40e2c142e27fb0158f1c21cd15252b972528182b1c41849537a9104ce5b9ae.png" src="../../_images/fa40e2c142e27fb0158f1c21cd15252b972528182b1c41849537a9104ce5b9ae.png" />
-<img alt="../../_images/91e916815fe4865c5ae7827990f39f65a5a73fa67115cb4874f3fd04fb129ec3.png" src="../../_images/91e916815fe4865c5ae7827990f39f65a5a73fa67115cb4874f3fd04fb129ec3.png" />
-<img alt="../../_images/12d7a70f7c69b9fc79e4cfba8bf8f0cebcd988e6ad7b0180578413b0fbf27333.png" src="../../_images/12d7a70f7c69b9fc79e4cfba8bf8f0cebcd988e6ad7b0180578413b0fbf27333.png" />
-<img alt="../../_images/59a7cd69bc0f2a5d50d6813cc535957cbaa19242598cb61015b5e0f5b5d374a2.png" src="../../_images/59a7cd69bc0f2a5d50d6813cc535957cbaa19242598cb61015b5e0f5b5d374a2.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_23066/1891185015.py:19: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  fig_psd_comparison.show()
+</pre></div>
+</div>
+<img alt="../../_images/ef218f33c40404de115fe586bb2c11198b9b0fae4bfe4ae6386e07ebbba3c13c.png" src="../../_images/ef218f33c40404de115fe586bb2c11198b9b0fae4bfe4ae6386e07ebbba3c13c.png" />
+<img alt="../../_images/b0ee41b0239e6dfda0f55dfbf044c80e460d55030030ec91efe436e05ce0af4c.png" src="../../_images/b0ee41b0239e6dfda0f55dfbf044c80e460d55030030ec91efe436e05ce0af4c.png" />
+<img alt="../../_images/b1883c6b8eeabf36166ccccfc26153657421d14c9410efa4f313bd8542dd5e53.png" src="../../_images/b1883c6b8eeabf36166ccccfc26153657421d14c9410efa4f313bd8542dd5e53.png" />
+<img alt="../../_images/c5303cf6cfe87a4fe1b62a8ae42affdee5342ab15824b2f24cadcebfcfb9d57a.png" src="../../_images/c5303cf6cfe87a4fe1b62a8ae42affdee5342ab15824b2f24cadcebfcfb9d57a.png" />
+<img alt="../../_images/dea26d4a00dcd0506f6938d9c22e1698e8221f41a400e1a2705b5c38c01f08ec.png" src="../../_images/dea26d4a00dcd0506f6938d9c22e1698e8221f41a400e1a2705b5c38c01f08ec.png" />
+<img alt="../../_images/57ac0029c3a1e4248db996dc8af580e7e14153909d1fcb5dfef7fc08ffd0a981.png" src="../../_images/57ac0029c3a1e4248db996dc8af580e7e14153909d1fcb5dfef7fc08ffd0a981.png" />
+<img alt="../../_images/a9deee30492667824b3f8de276079f0bc5c0824a1f54ba1e0e6e909bd5a34323.png" src="../../_images/a9deee30492667824b3f8de276079f0bc5c0824a1f54ba1e0e6e909bd5a34323.png" />
+<img alt="../../_images/44113194d603121d60e75db0ca6ecd1ab99aa315b9c38673147f553f27d30470.png" src="../../_images/44113194d603121d60e75db0ca6ecd1ab99aa315b9c38673147f553f27d30470.png" />
+<img alt="../../_images/6f994ea87c641e44e48760cb01b6988fa76353bce9d0589c662083a7796b5d2c.png" src="../../_images/6f994ea87c641e44e48760cb01b6988fa76353bce9d0589c662083a7796b5d2c.png" />
+<img alt="../../_images/ddd8d7affd81947affc618a417e5a1d33748da0e88e1a9868cb943b2c257b92f.png" src="../../_images/ddd8d7affd81947affc618a417e5a1d33748da0e88e1a9868cb943b2c257b92f.png" />
+<img alt="../../_images/abdc64453b0fde8304e5986d20a0261f8e22ff413ef08009a1d5d1b9761d8ec3.png" src="../../_images/abdc64453b0fde8304e5986d20a0261f8e22ff413ef08009a1d5d1b9761d8ec3.png" />
+<img alt="../../_images/01b058fa6af374a6938b1839d6eb6c04f932ce168979fcc3b3d03d1e9f26d9de.png" src="../../_images/01b058fa6af374a6938b1839d6eb6c04f932ce168979fcc3b3d03d1e9f26d9de.png" />
+<img alt="../../_images/94edcc1faaf5c4db863f43aa9913e95a07e545eb5cb5884f798d3e6b144d99da.png" src="../../_images/94edcc1faaf5c4db863f43aa9913e95a07e545eb5cb5884f798d3e6b144d99da.png" />
+<img alt="../../_images/6cf4824e78090c3da4835e18035f724e2b0e8a211ff7f7649461d25b46f566a7.png" src="../../_images/6cf4824e78090c3da4835e18035f724e2b0e8a211ff7f7649461d25b46f566a7.png" />
+<img alt="../../_images/61c2d0ad3f3d0d64bc410cc146693014cda70eb233edd5649e5922bbb410c762.png" src="../../_images/61c2d0ad3f3d0d64bc410cc146693014cda70eb233edd5649e5922bbb410c762.png" />
 </div>
 </div>
 </section>
@@ -844,6 +870,35 @@ import lal
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plot results from searching in data using the zero-latency search</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#full-run-plots">Full run plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-6">Figure 6</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-plots">Individual Signal Plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5">Figure 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-end-time-plots">Data end time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimated-psd-forecast-time">Estimated PSD - forecast time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-estimated-to-model-psd">Comparing estimated to model PSD</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>

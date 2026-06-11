@@ -177,11 +177,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -336,7 +340,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -352,6 +358,14 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-signal-overlap-and-fitting-factors">Calculating signal overlap and fitting factors</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -363,7 +377,30 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="computing-overlap-between-full-signal-and-premerger-signals">
 <h1>Computing overlap between full signal and premerger signals<a class="headerlink" href="#computing-overlap-between-full-signal-and-premerger-signals" title="Link to this heading">#</a></h1>
-<p>Lorem Ipsum …</p>
+<p>Peaks in the data were being produced when the data end was at the time of the merger. This was suspicious. We found that the cause was that the signals were so loud in the data, even the tiny overlap between the pre-merger truncated templates and the full-length signal could cause SNR spikes which peek out above the noise, and can be comparable to the true peak.</p>
+<section id="calculating-signal-overlap-and-fitting-factors">
+<h2>Calculating signal overlap and fitting factors<a class="headerlink" href="#calculating-signal-overlap-and-fitting-factors" title="Link to this heading">#</a></h2>
+<p>To calculate the optimal SNR and fitting factor over time, we use <code class="docutils literal notranslate"><span class="pre">optimal_snr_over_time.py</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>optimal_snr_over_time.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--psd-files<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>A:<span class="nv">$repo_dir</span>/estimate_psds/A_sangria_hm_SMOOTHED_PSD.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>E:<span class="nv">$repo_dir</span>/estimate_psds/E_sangria_hm_SMOOTHED_PSD.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--f-lower<span class="w"> </span>1e-6<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-file<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span><span class="nv">$repo_dir</span>/datasets/LDC2_sangria_hm_training.hdf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-file<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span><span class="nv">$working_dir</span>/results/optimal_snr_over_time.hdf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--n-points<span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--premerger-days<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="m">14</span>
+</pre></div>
+</div>
+<p>To perform these calculations, we loop through the signals and generate them using the FastTDI algorithm.</p>
+<p>From here, we calculate the match for each of the premerger days given. This is done by looping through and cutting the signal at the appropriate time, then matching to the pre-merger waveform.</p>
+<p>We then calculate the optimal SNR by matching the cut template to itself.</p>
+<p>This was run on the head node in a loop using optima_snr_over_time.sh - probably not best practice but easy and straightforward.</p>
+<p>We use the match to the signal template itself divided by the optimal SNR as a proxy for the fitting factor, this is to simplify calculations and avoid using matches to each template in the full template bank.</p>
+<p>The next notebook shows the plots from these calculations for each of the signals in the Sangria-HM dataset. After that, we show the signals being removed from the data.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -420,6 +457,23 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-signal-overlap-and-fitting-factors">Calculating signal overlap and fitting factors</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

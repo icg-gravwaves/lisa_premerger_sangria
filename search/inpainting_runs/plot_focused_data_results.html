@@ -176,11 +176,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -789,7 +793,6 @@ import lal
     <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">leg</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
-<span class="c1"># fig_focused_dataend.savefig(f&#39;plots/focused_results_data_end_time.pdf&#39;)</span>
 <span class="n">fig_focused_dataend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_10_focused_region_variable_removal.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1020,13 +1023,12 @@ Signal 5 is removed 0.08 days before signal 5 merges
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="c1"># fig.savefig(f&#39;plots/signal_{example_signal}_end_timeline_with_gaps.pdf&#39;)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_8_signal_</span><span class="si">{</span><span class="n">example_signal</span><span class="si">}</span><span class="s1">_timeline.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_71538/854191899.py:122: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_22871/4018733714.py:122: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
   fig.show()
 </pre></div>
 </div>
@@ -1143,16 +1145,10 @@ First zero latency result with SNR &gt; 40 at 0.972 days
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="c1"># fig.savefig(f&#39;plots/signal_{signal_number}_end_timeline.png&#39;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yx/0n1z42tx6k708b0y58fxm9qc0000gp/T/ipykernel_71538/971107771.py:75: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
-  fig.show()
-</pre></div>
-</div>
 <img alt="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" src="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" />
 <img alt="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" src="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" />
 <img alt="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" src="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" />

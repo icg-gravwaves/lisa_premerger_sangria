@@ -177,11 +177,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -375,8 +379,9 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="calculating-overlap-plots">
 <h1>Calculating overlap - plots<a class="headerlink" href="#calculating-overlap-plots" title="Link to this heading">#</a></h1>
-<p>Here we plot the two things - the optimal SNR build up for a pre-merger-truncated signal, and the overlap between and the SNR of a premerger-truncated signal with the full signal.</p>
-<p>This is used for Figure 4 in the paper.</p>
+<p>There are two ingredients which must be combined to get peaks in the SNR. The optimal SNR build up for a signal, and the overlap between and the SNR of a premerger-truncated signal with the full signal.</p>
+<p>Here we show how these have combined to produce false alarms in the time post-merger.</p>
+<p>This notebook is used for Figure 4 in the paper.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -422,7 +427,8 @@
 <h1>Collect the Fitting Factor Results<a class="headerlink" href="#collect-the-fitting-factor-results" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ff_results</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up the results dictionary:</span>
+<span class="n">ff_results</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;optimal_snr&#39;</span><span class="p">:</span> <span class="p">{},</span>
     <span class="s1">&#39;match_cut&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="n">signal_number</span><span class="p">:</span> <span class="p">{}</span>
@@ -430,6 +436,7 @@
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;results/optimal_snr_over_time.hdf&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">osot_f</span><span class="p">:</span>
+    <span class="c1"># Array for the x axis - this is shared between all results.</span>
     <span class="n">ff_results</span><span class="p">[</span><span class="s1">&#39;cutoff_days&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">osot_f</span><span class="p">[</span><span class="s1">&#39;cutoff_days&#39;</span><span class="p">][:]</span>
     <span class="n">ff_results</span><span class="p">[</span><span class="s1">&#39;optimal_snr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">signal_number</span><span class="p">:</span> <span class="n">osot_f</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;signal_</span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">][</span><span class="s1">&#39;optimal_snr&#39;</span><span class="p">][:]</span>
@@ -450,14 +457,22 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimal_snr_over_time</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">paper_signal</span> <span class="o">=</span> <span class="mi">14</span>
+
 <span class="k">for</span> <span class="n">signal_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">)):</span>
     <span class="k">if</span> <span class="n">signal_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ff_results</span><span class="p">[</span><span class="s1">&#39;optimal_snr&#39;</span><span class="p">]:</span>
+        <span class="c1"># Safety for early iterations where we didn&#39;t have all the results.</span>
         <span class="k">continue</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">signal_number</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">signal_number</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
+    <span class="c1"># If this is the plot for the paper, dont add the title.</span>
+    <span class="c1"># This is somewhat counterintuiutive, as the default (i.e. if None is passed)</span>
+    <span class="c1"># is that the title is made. We need to pass &#39;off&#39; so that the title isn&#39;t given</span>
+    <span class="k">if</span> <span class="n">signal_number</span> <span class="o">==</span> <span class="n">paper_signal</span><span class="p">:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;off&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># We use the function plot_optimal_snr_match here from plotting_utils</span>
     <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plot_optimal_snr_match</span><span class="p">(</span>
         <span class="n">ff_results</span><span class="p">[</span><span class="s1">&#39;cutoff_days&#39;</span><span class="p">],</span>
         <span class="n">ff_results</span><span class="p">[</span><span class="s1">&#39;optimal_snr&#39;</span><span class="p">][</span><span class="n">signal_number</span><span class="p">],</span>
@@ -465,7 +480,8 @@
         <span class="n">signal_number</span><span class="o">=</span><span class="n">signal_number</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="n">title</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">signal_number</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
+    <span class="c1"># For the plot in the paper, add it to the paper directory</span>
+    <span class="k">if</span> <span class="n">signal_number</span> <span class="o">==</span> <span class="n">paper_signal</span><span class="p">:</span>
         <span class="n">output_fname</span> <span class="o">=</span> <span class="s1">&#39;../../paper/images/zero_latency_results/figure_4_opt_snr_match_signal_14.pdf&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Outputting to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">output_fname</span><span class="p">)</span>
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_fname</span><span class="p">)</span>

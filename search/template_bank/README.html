@@ -177,11 +177,15 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Template Banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="template_banks.html">Plotting template banks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/zero_latency_search.html">Zero Latency Searches</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/signal_removal.html">Removal of Signal Mergers from data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../zero_latency/plot_data_results.html">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -364,7 +368,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="template-banks">
 <h1>Template Banks<a class="headerlink" href="#template-banks" title="Link to this heading">#</a></h1>
 <p>For the template banks, as in <a class="reference external" href="https://arxiv.org/abs/2411.07020">our previous work</a>, we use a stochastic placement algorithm.</p>
-<p>We use the same modified version of <code class="docutils literal notranslate"><span class="pre">pycbc_brute_bank</span></code>, this is included oin our repo for ease of use, but:</p>
+<p>We use the same modified version of <code class="docutils literal notranslate"><span class="pre">pycbc_brute_bank</span></code>, this is included in our repo for ease of use, but is exactly the same as the original:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>$<span class="w"> </span>wget<span class="w"> </span>https://github.com/icg-gravwaves/lisa_premerger_paper/raw/refs/heads/main/Search/Template_Banks/pycbc_brute_bank<span class="w"> </span>
 <span class="w"> </span><span class="c1"># (Downloads as pycbc_brute_bank.1)</span>
 
@@ -414,10 +418,6 @@ mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$logs_di
 <span class="s2">    output = </span><span class="nv">$logs_dir</span><span class="s2">/lisa_ew_</span><span class="si">${</span><span class="nv">time_before</span><span class="si">}</span><span class="s2">_day.out</span>
 <span class="s2">    error = </span><span class="nv">$logs_dir</span><span class="s2">/lisa_ew_</span><span class="si">${</span><span class="nv">time_before</span><span class="si">}</span><span class="s2">_day.err</span>
 <span class="s2">    log = </span><span class="nv">$logs_dir</span><span class="s2">/lisa_ew_</span><span class="si">${</span><span class="nv">time_before</span><span class="si">}</span><span class="s2">_day.log</span>
-
-<span class="s2">    request_memory = 128GB</span>
-<span class="s2">    request_cpus = 1</span>
-<span class="s2">    request_disk = 1GB</span>
 
 <span class="s2">    queue</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="nv">$logs_dir</span>/lisa_ew_<span class="si">${</span><span class="nv">time_before</span><span class="si">}</span>_day.sub
