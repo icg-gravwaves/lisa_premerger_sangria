@@ -119,6 +119,24 @@ parser.add_argument('--reduce-bank-factor', type=int,
                          "useful for performing the search quickly in testing"
                          "Default: don't do this")
 
+# Add argument for introducing gaps to data
+def gap_pair(s):
+    try:
+        # Splits "10,20" into (10.0, 20.0)
+        start, end = map(float, s.split(','))
+        return (start, end)
+    except ValueError:
+        raise argparse.ArgumentTypeError("Gaps must be start,end (e.g., 10,20)")
+
+parser.add_argument(
+    '--gaps', 
+    type=gap_pair, 
+    nargs='+', 
+    default=None,
+    help='List of start,end gaps in seconds (e.g., --gaps 10,20 35,50)'
+)
+
+
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
@@ -240,7 +258,8 @@ data_ow_f = pre_process_data_lisa_pre_merger_inpaint(
     sample_rate=args.sample_rate,
     psds_for_whitening=psds,
     inpaint_start=original_length,
-    inpaint_end=int(original_length + (2 * 86400 * args.sample_rate))
+    inpaint_end=int(original_length + (2 * 86400 * args.sample_rate)),
+    gaps=args.gaps
 )
 
 if args.testing_plots is not None:
@@ -269,6 +288,20 @@ time_points_data = [None] * len(args.time_points_days)
 logging.info(f"Beginning filtering with bank %s", args.bank_file)
 
 snr_vals = "Problem - no SNRs found > 0"
+# Correct gap times
+if args.gaps is not None:
+    corr_gaps = []
+    for g_start, g_end in args.gaps:
+        corr_gaps.append(
+            (
+                g_start - data['LISA_A']._epoch,
+                g_end - data['LISA_A']._epoch
+            )
+        )
+else:
+    corr_gaps = None
+
+snr_vals = "Problem - no SNRs found > 0"
 with h5py.File(args.bank_file, 'r') as bank_file:
     for idx in range(len(bank_file['mass1'])):
         if args.reduce_bank_factor is not None and idx % args.reduce_bank_factor:
@@ -294,7 +327,7 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             forward_days=args.days_to_search,
             time_points_days=args.time_points_days, # The times (in days) to report back specific SNRs
             window_seconds=args.time_point_window,
-            gaps=None,
+            gaps=corr_gaps,
             plot=(idx == 0),
             plot_dir=args.testing_plots
         )
