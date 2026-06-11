@@ -1,3 +1,0 @@
-# Focused region - overlapping signals
-
-Lorem Ipsum ...
