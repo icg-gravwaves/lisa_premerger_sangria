@@ -192,15 +192,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Inpainting Search Results</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Plot results from searching in data using the inpainting search</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Inpainting Search Results</a></li>
+
 <li class="toctree-l1 has-children"><a class="reference internal" href="focused.html">Focused region - overlapping signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_focused_data_results.html">Results plots for Focused region with densely-packed signals</a></li>
 
-
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gaps.html">Signal 0 - gaps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_gaps_data_results.html">Results plots for a premerger analysis with gaps</a></li>
 </ul>
 </details></li>
 </ul>
@@ -340,7 +340,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -356,6 +358,16 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-time-plots">All-time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-7">Figure 7</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-results">Individual signal results</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -367,6 +379,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="plot-results-from-searching-in-data-using-the-inpainting-search">
 <h1>Plot results from searching in data using the inpainting search<a class="headerlink" href="#plot-results-from-searching-in-data-using-the-inpainting-search" title="Link to this heading">#</a></h1>
+<p>Now we are confident that the inpainting is doing the right thing, lets apply the search to the data. stepping through hour-by-hour. Here we plot the results of that</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
@@ -427,6 +440,7 @@ import lal
 </div>
 </div>
 </div>
+<p>We use two versions of the outputs. One of which is used for direct comparison to the zero latency results, and has the inpainting rewults filtered only to the set days-before-merger used by the zero latency search. This is also useful if we want plots to be made in a reasonable time!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
@@ -463,6 +477,9 @@ import lal
 </div>
 </div>
 </div>
+<section id="all-time-plots">
+<h2>All-time plots<a class="headerlink" href="#all-time-plots" title="Link to this heading">#</a></h2>
+<p>First, lets have a look at the filtered version - looks pretty similar to the zero latency version to me.. We plot both the estimated and modelled PSDs here, and these are broadly similar - with some differences at the peaks.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_filtered</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -481,6 +498,7 @@ import lal
 <img alt="../../_images/a7dc2c427405b2223692b9eff4561b2410c976492260abfbc350edba231648a8.png" src="../../_images/a7dc2c427405b2223692b9eff4561b2410c976492260abfbc350edba231648a8.png" />
 </div>
 </div>
+<p>Here we have the same, but with the unfiltered results. This picture take a while to process, so lets skip it for now, but the results are broadly similar.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># BIG picture - comment out if you want this notebook to run within a sensible time</span>
@@ -497,6 +515,10 @@ import lal
 </div>
 </div>
 </div>
+</section>
+<section id="figure-7">
+<h2>Figure 7<a class="headerlink" href="#figure-7" title="Link to this heading">#</a></h2>
+<p>This is the one used in the paper, which just uses the estimated PSD for results. We are using the unfiltered results, so it can take a while to complete</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># BIG picture - comment out if you want this notebook to run fast</span>
@@ -519,6 +541,7 @@ import lal
 <img alt="../../_images/081c991791ded09c972b1752b925adcc008c90387ebdb8edd085c8c662a53761.png" src="../../_images/081c991791ded09c972b1752b925adcc008c90387ebdb8edd085c8c662a53761.png" />
 </div>
 </div>
+<p>Same, but filtered</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_estimate_filtered</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
@@ -554,6 +577,10 @@ import lal
 </div>
 </div>
 </div>
+</section>
+<section id="individual-signal-results">
+<h2>Individual signal results<a class="headerlink" href="#individual-signal-results" title="Link to this heading">#</a></h2>
+<p>Now we zoom in to the results for the individual signals. dotted lines show the post-merger times. These are where the additional peaks sat on the plots in the zero-latency case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -592,6 +619,7 @@ import lal
 <img alt="../../_images/495addebe72613fbcdebac410164172782e0f38fea0b715eb642a941976a4796.png" src="../../_images/495addebe72613fbcdebac410164172782e0f38fea0b715eb642a941976a4796.png" />
 </div>
 </div>
+<p>These are the same, but using the end time of the data as the x-axis. We see where the signals have been removed 2 hours before the merger. In general we can consider the SNR buildup for the merger to skim across the top of these ramps.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
@@ -631,6 +659,7 @@ import lal
 <img alt="../../_images/a08ed566e996672b146357bfc942445cdf1e42d7ee56ea5e76b481b2219292c0.png" src="../../_images/a08ed566e996672b146357bfc942445cdf1e42d7ee56ea5e76b481b2219292c0.png" />
 </div>
 </div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -687,6 +716,25 @@ import lal
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-time-plots">All-time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-7">Figure 7</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-results">Individual signal results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

@@ -192,15 +192,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/README.html">Inpainting Search Results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../inpainting_runs/README.html">Inpainting Search Results</a></li>
+
 <li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/focused.html">Focused region - overlapping signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_focused_data_results.html">Results plots for Focused region with densely-packed signals</a></li>
 
-
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/gaps.html">Signal 0 - gaps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_gaps_data_results.html">Results plots for a premerger analysis with gaps</a></li>
 </ul>
 </details></li>
 </ul>
@@ -371,7 +371,7 @@
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-analysis">Running the analysis</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-jobs">Submitting jobs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection">Data collection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-collection">Result collection</a></li>
 </ul>
 </li>
 </ul>
@@ -429,9 +429,9 @@ This can produce duplicates around the edges, e.g. seeing a peak at 3595s could 
 <h2>Submitting jobs<a class="headerlink" href="#submitting-jobs" title="Link to this heading">#</a></h2>
 <p>The scripts were run using a condor dag file, generated through <code class="docutils literal notranslate"><span class="pre">data_runs_generate.sh</span></code>, and which used a template job submit file in <code class="docutils literal notranslate"><span class="pre">job.sub</span></code>. These contain specific instructions for the cluster we ran on, so these will probably need edited for your own version.</p>
 </section>
-<section id="data-collection">
-<h2>Data collection<a class="headerlink" href="#data-collection" title="Link to this heading">#</a></h2>
-<p>Each analysis then covers an hour and results are saved in a text file. These text files are then scraped using <code class="docutils literal notranslate"><span class="pre">collect_data_results.py</span></code> and added to a single file. This is included in the repository under <code class="docutils literal notranslate"><span class="pre">searchg/zero_latency/results/psd_{estimate,model}/data_runs_raw_{0.5,1,4,7,14}.hdf</span></code>, where the values in curly brackets are the valkues indicating the choice of PSD model and <code class="docutils literal notranslate"><span class="pre">--days-before-merger</span></code> respectively.</p>
+<section id="result-collection">
+<h2>Result collection<a class="headerlink" href="#result-collection" title="Link to this heading">#</a></h2>
+<p>Each analysis then covers an hour and results are saved in a text file. These text files are then scraped using <code class="docutils literal notranslate"><span class="pre">collect_data_results.py</span></code> and added to a single file. This is included in the repository under <code class="docutils literal notranslate"><span class="pre">search/zero_latency/results/psd_{estimate,model}/data_runs_raw_{0.5,1,4,7,14}.hdf</span></code>, where the values in curly brackets indicate the choice of PSD model and <code class="docutils literal notranslate"><span class="pre">--days-before-merger</span></code> respectively.</p>
 <p>We then saw an issue: there were peaks being produced at the time of the merger, predicting a signal days-before-merger later.</p>
 </section>
 </section>
@@ -510,7 +510,7 @@ This can produce duplicates around the edges, e.g. seeing a peak at 3595s could 
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-analysis">Running the analysis</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-jobs">Submitting jobs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-collection">Data collection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result-collection">Result collection</a></li>
 </ul>
 </li>
 </ul>

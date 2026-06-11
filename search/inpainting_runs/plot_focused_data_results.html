@@ -63,6 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'search/inpainting_runs/plot_focused_data_results';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Signal 0 - gaps" href="gaps.html" />
     <link rel="prev" title="Focused region - overlapping signals" href="focused.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -191,15 +192,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="README.html">Inpainting Search Results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Inpainting Search Results</a></li>
+
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="focused.html">Focused region - overlapping signals</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Results plots for Focused region with densely-packed signals</a></li>
 
-
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gaps.html">Signal 0 - gaps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_gaps_data_results.html">Results plots for a premerger analysis with gaps</a></li>
 </ul>
 </details></li>
 </ul>
@@ -375,10 +376,6 @@
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps">Gaps</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-plots-for-all-signals">Timeline plots for all signals</a></li>
 </ul>
 </li>
 </ul>
@@ -896,273 +893,6 @@ Signal 5 is removed 0.08 days before signal 5 merges
 </div>
 </section>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="gaps">
-<h1>Gaps<a class="headerlink" href="#gaps" title="Link to this heading">#</a></h1>
-<p>Now we think about gaps - lets imagine that there are gaps before signal zero. Inpainting rides them out, the zero latency filter doesn’t.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-
-<span class="c1"># For signal zero - plot the results filtered for the closest to the predicted merger time</span>
-<span class="n">example_signal</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="c1"># Get the zero-latency results for this signal</span>
-<span class="n">results_zero_latency</span> <span class="o">=</span> <span class="n">get_results_zero_latency</span><span class="p">(</span>
-    <span class="s2">&quot;../zero_latency/results/psd_estimate/data_runs_raw_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
-    <span class="n">times_before</span>
-<span class="p">)</span>
-
-<span class="c1"># Filter the zero latency results to only use the closest point for each</span>
-
-<span class="n">zl_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">zl_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
-    <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
-    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
-        <span class="nb">abs</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
-    <span class="p">)</span>
-    <span class="n">zl_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-    <span class="n">zl_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-
-<span class="n">zl_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_results_data_end_time</span><span class="p">)</span>
-<span class="n">zl_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_results_snr</span><span class="p">)</span>
-
-
-<span class="c1"># We need to get the inpainting results again which have not been filtered for particular times-before-merger</span>
-<span class="n">results_estimate_all</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;results/data_runs_psd_estimate.hdf&quot;</span>
-<span class="p">)</span>
-
-<span class="n">ip_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
-<span class="n">ip_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">ip_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
-    <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
-    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
-        <span class="nb">abs</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
-    <span class="p">)</span>
-    <span class="n">ip_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-    <span class="n">ip_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-
-<span class="n">ip_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_results_data_end_time</span><span class="p">)</span>
-<span class="n">ip_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_results_snr</span><span class="p">)</span>
-
-<span class="c1"># A special run around signal 0 which has gaps inserted</span>
-<span class="n">inpainting_gaps_results</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
-    <span class="s2">&quot;results/data_runs_signal_0_gaps.hdf&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">ipg_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
-<span class="n">ipg_results_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">ipg_results_snr</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
-    <span class="n">this_t</span> <span class="o">=</span> <span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
-    <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
-        <span class="nb">abs</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span>
-    <span class="p">)</span>
-    <span class="n">ipg_results_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-    <span class="n">ipg_results_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inpainting_gaps_results</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-
-<span class="n">ipg_results_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ipg_results_data_end_time</span><span class="p">)</span>
-<span class="n">ipg_results_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ipg_results_snr</span><span class="p">)</span>
-
-<span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">ip_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
-    <span class="n">ip_results_snr</span><span class="p">,</span>
-    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting Results&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">ipg_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
-    <span class="n">ipg_results_snr</span><span class="p">,</span>
-    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting with Gaps&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">8</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">zl_results_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
-    <span class="n">zl_results_snr</span><span class="p">,</span>
-    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-    <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero Latency Results&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span>
-
-<span class="p">)</span>
-
-<span class="n">sm</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_sm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">times_before</span><span class="p">),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">times_before</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
-        <span class="o">-</span><span class="n">time_before</span><span class="p">,</span>
-        <span class="n">c</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">time_before</span><span class="p">),</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span>
-    <span class="p">)</span>
-
-<span class="k">for</span> <span class="n">gap</span> <span class="ow">in</span> <span class="p">[(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">)]:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="o">-</span><span class="n">gap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">gap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data gaps&#39;</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_8_signal_</span><span class="si">{</span><span class="n">example_signal</span><span class="si">}</span><span class="s1">_timeline.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/9838da06b9bb37fe6b056d20db8d361a7c65acf8692b7e0b744dc39b6b08134e.png" src="../../_images/9838da06b9bb37fe6b056d20db8d361a7c65acf8692b7e0b744dc39b6b08134e.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In the paper we discuss where the signal 0 lines cross SNR of 40, let&#39;s find where this happens:</span>
-<span class="c1"># Note that this is the hourly results, so results may vary by up to an hour (~0.04 days)</span>
-
-<span class="n">crossing_snr</span> <span class="o">=</span> <span class="mi">40</span>
-
-<span class="n">crossing_ip_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ip_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">crossing_ip_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">ip_results_data_end_time</span><span class="p">[</span><span class="n">crossing_ip_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First inpainting result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_ip_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
-
-<span class="n">crossing_ipg_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ipg_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">crossing_ipg_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">ipg_results_data_end_time</span><span class="p">[</span><span class="n">crossing_ipg_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First inpainting + gaps result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_ipg_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
-<span class="n">crossing_ipg_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ipg_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="n">crossing_zl_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">zl_results_snr</span> <span class="o">&gt;</span> <span class="n">crossing_snr</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">crossing_zl_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">zl_results_data_end_time</span><span class="p">[</span><span class="n">crossing_zl_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;First zero latency result with SNR &gt; </span><span class="si">{</span><span class="n">crossing_snr</span><span class="si">}</span><span class="s1"> at </span><span class="si">{</span><span class="o">-</span><span class="n">crossing_zl_time</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First inpainting result with SNR &gt; 40 at 1.222 days
-First inpainting + gaps result with SNR &gt; 40 at 0.806 days
-First zero latency result with SNR &gt; 40 at 0.972 days
-</pre></div>
-</div>
-</div>
-</div>
-<section id="timeline-plots-for-all-signals">
-<h2>Timeline plots for all signals<a class="headerlink" href="#timeline-plots-for-all-signals" title="Link to this heading">#</a></h2>
-<p>Make some timeline plots for all signals - we don’t have gaps in the Sangria dataset, so these dont show up here, but we can show the SNR buildup over time for everything.</p>
-<p>These plots use the removal 2 hours before merger results, so for signals 2-5 this may not be the best accuracy</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">signal_number</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
-
-    <span class="c1"># Filter the zero latency results to only use the closest point for each time before merger</span>
-    <span class="n">zl_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">zl_snr</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
-        <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
-        <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
-            <span class="nb">abs</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span>
-        <span class="p">)</span>
-        <span class="n">zl_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-        <span class="n">zl_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_zero_latency</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-
-    <span class="n">zl_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_data_end_time</span><span class="p">)</span>
-    <span class="n">zl_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zl_snr</span><span class="p">)</span>
-
-
-    <span class="n">ip_times_before</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">])</span>
-    <span class="n">ip_data_end_time</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">ip_snr</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">t_before</span> <span class="ow">in</span> <span class="n">ip_times_before</span><span class="p">:</span>
-        <span class="n">this_t</span> <span class="o">=</span> <span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time_before&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t_before</span>
-        <span class="n">closest_match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
-            <span class="nb">abs</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span>
-        <span class="p">)</span>
-        <span class="n">ip_data_end_time</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;data_end_time&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-        <span class="n">ip_snr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results_estimate_all</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">][</span><span class="n">this_t</span><span class="p">][</span><span class="n">closest_match</span><span class="p">])</span>
-
-    <span class="n">ip_data_end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_data_end_time</span><span class="p">)</span>
-    <span class="n">ip_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ip_snr</span><span class="p">)</span>
-
-    <span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.25</span>
-    <span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">ip_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
-        <span class="n">ip_snr</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inpainting Results&#39;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
-    <span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">zl_data_end_time</span> <span class="o">-</span> <span class="n">truth_times_s</span><span class="p">[</span><span class="n">signal_number</span><span class="p">])</span> <span class="o">/</span> <span class="mi">86400</span><span class="p">,</span>
-        <span class="n">zl_snr</span><span class="p">,</span>
-        <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-        <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-        <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero Latency Results&#39;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">20</span>
-
-    <span class="p">)</span>
-
-    <span class="n">sm</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_sm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">times_before</span><span class="p">),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">times_before</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">time_before</span> <span class="ow">in</span> <span class="n">times_before</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span>
-            <span class="o">-</span><span class="n">time_before</span><span class="p">,</span>
-            <span class="n">c</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">to_rgba</span><span class="p">(</span><span class="n">time_before</span><span class="p">),</span>
-            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-            <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span>
-        <span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">14.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Signal </span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;SNR&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Data End Time offset (days)&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" src="../../_images/fdc36b646d5886187c733ab17519aef5e388ef8d52ec303f0fe891d82ea5139d.png" />
-<img alt="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" src="../../_images/04564e507cc378438ab1594ea0304d6ba72ae1bfd7c43172af5132b814d07cad.png" />
-<img alt="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" src="../../_images/846ecdaf026d9a0739ec063c2a3c7d66deee5665322c0632cbcf13c919880005.png" />
-<img alt="../../_images/34cfc89fc4c759987648b0e634396e75daf1e91798ce1187ada54c83347e8928.png" src="../../_images/34cfc89fc4c759987648b0e634396e75daf1e91798ce1187ada54c83347e8928.png" />
-<img alt="../../_images/6ab27b8421b1d3c1764742e1ecd1695dc92f79129a1cb9a27b29342baee78483.png" src="../../_images/6ab27b8421b1d3c1764742e1ecd1695dc92f79129a1cb9a27b29342baee78483.png" />
-<img alt="../../_images/a3e3c9a1c358fc19c1ca8c963417467f3196a9e3f29d6707461bd5fc3aa3d630.png" src="../../_images/a3e3c9a1c358fc19c1ca8c963417467f3196a9e3f29d6707461bd5fc3aa3d630.png" />
-<img alt="../../_images/36313283ca557f8e8ec51bfc53527cba26439c2f341cd85a026b7cd68d5db151.png" src="../../_images/36313283ca557f8e8ec51bfc53527cba26439c2f341cd85a026b7cd68d5db151.png" />
-<img alt="../../_images/b24d6c266b3fc4b047936e3c1c0ce563d2e082008c6d1f68d093e6c051c1e346.png" src="../../_images/b24d6c266b3fc4b047936e3c1c0ce563d2e082008c6d1f68d093e6c051c1e346.png" />
-<img alt="../../_images/d7c3c0ebcdad39de83ae6af940dd9745c8e29419c04f6065822bdbfe17bd4b07.png" src="../../_images/d7c3c0ebcdad39de83ae6af940dd9745c8e29419c04f6065822bdbfe17bd4b07.png" />
-<img alt="../../_images/3b96118ba36559f5429b753b25cf8785630a089d25c366e44a3d129045c64be5.png" src="../../_images/3b96118ba36559f5429b753b25cf8785630a089d25c366e44a3d129045c64be5.png" />
-<img alt="../../_images/e6a1eadb6774d7066919bd583b7529f40d386e341bd90f733c9a1bc72af462be.png" src="../../_images/e6a1eadb6774d7066919bd583b7529f40d386e341bd90f733c9a1bc72af462be.png" />
-<img alt="../../_images/1fde14f49b200d275dd914dd239ac5e0e6d8120b23a40798be591966e24dc39d.png" src="../../_images/1fde14f49b200d275dd914dd239ac5e0e6d8120b23a40798be591966e24dc39d.png" />
-<img alt="../../_images/6f702f3168284ecef6a33e4fb422ed6fd54ed3b399265d4b599de8e0ff8dd122.png" src="../../_images/6f702f3168284ecef6a33e4fb422ed6fd54ed3b399265d4b599de8e0ff8dd122.png" />
-<img alt="../../_images/4a1c58ed3374e7b72684d17b794553433f8d6e88a2516c4d86762222e00d1ab8.png" src="../../_images/4a1c58ed3374e7b72684d17b794553433f8d6e88a2516c4d86762222e00d1ab8.png" />
-<img alt="../../_images/3eb101854e6b8c87debafad5503af8fb481d5376fc73714c0a2840bad6c14104.png" src="../../_images/3eb101854e6b8c87debafad5503af8fb481d5376fc73714c0a2840bad6c14104.png" />
-</div>
-</div>
-</section>
-</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1203,6 +933,15 @@ First zero latency result with SNR &gt; 40 at 0.972 days
         <p class="prev-next-title">Focused region - overlapping signals</p>
       </div>
     </a>
+    <a class="right-next"
+       href="gaps.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Signal 0 - gaps</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1234,10 +973,6 @@ First zero latency result with SNR &gt; 40 at 0.972 days
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-focused-region-section-main-plot-variable-removal-end-times-with-labels">The focused region section main plot - variable removal end times, with labels</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-table-of-removed-times-days-to-be-added-to-the-paper">Make a table of removed times (days) to be added to the paper</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#gaps">Gaps</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-plots-for-all-signals">Timeline plots for all signals</a></li>
 </ul>
 </li>
 </ul>

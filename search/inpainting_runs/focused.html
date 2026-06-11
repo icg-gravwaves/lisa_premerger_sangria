@@ -192,15 +192,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="README.html">Inpainting Search Results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Inpainting Search Results</a></li>
+
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Focused region - overlapping signals</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_focused_data_results.html">Results plots for Focused region with densely-packed signals</a></li>
 
-
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gaps.html">Signal 0 - gaps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_gaps_data_results.html">Results plots for a premerger analysis with gaps</a></li>
 </ul>
 </details></li>
 </ul>
@@ -340,7 +340,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -356,6 +358,14 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-analysis">Running the analysis</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -367,7 +377,23 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="focused-region-overlapping-signals">
 <h1>Focused region - overlapping signals<a class="headerlink" href="#focused-region-overlapping-signals" title="Link to this heading">#</a></h1>
-<p>Lorem Ipsum …</p>
+<p>Looking at the results in the previous notebook, we see that signals 2-5 overlap dramatically throughout the analysis.</p>
+<p>This won’t really be a problem. This comes from using a uniform pre-merger signal removal time of 2 hours. Lets apply some more realistic signal removal choices, and remove signals as the get to the SNR ~10 threshold.</p>
+<section id="running-the-analysis">
+<h2>Running the analysis<a class="headerlink" href="#running-the-analysis" title="Link to this heading">#</a></h2>
+<p>We re-ran <code class="docutils literal notranslate"><span class="pre">data-runs.py</span></code>, but with either no removal, or variable times-before-merger for the cutoff, particularly using 11 days premerger for Signal 3 and 14 days premerger for signal 4. We probably could have done more than 14 days premerger for Signal 4, but thats only what we did the analysis up to.</p>
+<p>This was run using <code class="docutils literal notranslate"><span class="pre">data_runs_focused_dag_generate.sh</span></code> to generate a dag file, using <code class="docutils literal notranslate"><span class="pre">job.sub</span></code> as the template once again. Data results were collected using</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>removal<span class="w"> </span><span class="k">in</span><span class="w"> </span>noremoval<span class="w"> </span>varied_removal<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;focused </span><span class="nv">$removal</span><span class="s2">&quot;</span>
+<span class="w">  </span>python<span class="w"> </span>collect_data_results.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--verbose<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--n-times<span class="w"> </span><span class="m">324</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--result-dir<span class="w"> </span>./results/focused_results_<span class="si">${</span><span class="nv">removal</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-file<span class="w"> </span>results/data_runs_focused_<span class="si">${</span><span class="nv">removal</span><span class="si">}</span>.hdf
+<span class="k">done</span>
+</pre></div>
+</div>
+</section>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -426,6 +452,23 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-analysis">Running the analysis</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

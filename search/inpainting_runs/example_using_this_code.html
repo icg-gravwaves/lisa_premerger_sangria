@@ -60,6 +60,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'search/inpainting_runs/example_using_this_code';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -192,15 +194,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Inpainting Search Results</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Comparing zero-latency and inpainting SNR calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Inpainting Search Results</a></li>
+
 <li class="toctree-l1 has-children"><a class="reference internal" href="focused.html">Focused region - overlapping signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_focused_data_results.html">Results plots for Focused region with densely-packed signals</a></li>
 
-
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gaps.html">Signal 0 - gaps</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_gaps_data_results.html">Results plots for a premerger analysis with gaps</a></li>
 </ul>
 </details></li>
 </ul>
@@ -363,12 +365,18 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Comparing zero-latency and inpainting SNR calculation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-level-settings">Top level settings</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-latency-filter">Zero-latency filter</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inpainting">Inpainting</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-output-from-development-code-to-functions">Comparing output from development code to functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-snr-timeseries-from-inpainting-and-zero-latency">Comparison of SNR timeseries from inpainting and zero latency</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -381,6 +389,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="comparing-zero-latency-and-inpainting-snr-calculation">
 <h1>Comparing zero-latency and inpainting SNR calculation<a class="headerlink" href="#comparing-zero-latency-and-inpainting-snr-calculation" title="Link to this heading">#</a></h1>
+<p>Here we compare the SNR calculations, and make sure that the function written to do the calcualtion matches what we have writen (the function is a bit of a rabbit warren going through the module, so its best to check here)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pycbc</span>
@@ -614,6 +623,12 @@ No CuPy or GPU interpolation available.
 <img alt="../../_images/e5eedb236a104b6b8fffd0d2be6c9836c5b14ee6feecd57928e6e1a2df536c96.png" src="../../_images/e5eedb236a104b6b8fffd0d2be6c9836c5b14ee6feecd57928e6e1a2df536c96.png" />
 </div>
 </div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="comparing-output-from-development-code-to-functions">
+<h1>Comparing output from development code to functions<a class="headerlink" href="#comparing-output-from-development-code-to-functions" title="Link to this heading">#</a></h1>
+<p>Here we copy/paste the development code, and then produces the same outputs by calling the function defined in inpainting_utils.</p>
+<p>First the <span class="math notranslate nohighlight">\((h|h)\)</span> inner product</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Changing waveform length now in this bit to match longer length</span>
@@ -679,12 +694,19 @@ No CuPy or GPU interpolation available.
 True
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x31c20ca90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x17ca80b50&gt;
 </pre></div>
 </div>
 <img alt="../../_images/ec721f35cdd9de64b922404e95dd6058eb7947158fc8dd76d6a485f3c7365803.png" src="../../_images/ec721f35cdd9de64b922404e95dd6058eb7947158fc8dd76d6a485f3c7365803.png" />
 </div>
 </div>
+<p>That is good! - we have made sure that the above output has</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">True</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<p>to indicate exact equality between development code and the function</p>
+<p>Now we do the same but with the matched filter outputs:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we can matched-filter</span>
@@ -736,9 +758,21 @@ True
 <img alt="../../_images/9165989de8df3e7a709015c4ebb1a5245b18f0625d3c72f9067c0b4d31cbeae2.png" src="../../_images/9165989de8df3e7a709015c4ebb1a5245b18f0625d3c72f9067c0b4d31cbeae2.png" />
 </div>
 </div>
+<p>Again, we have</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">True</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<p>and the plot looks identical, so we are happy!</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="comparison-of-snr-timeseries-from-inpainting-and-zero-latency">
+<h1>Comparison of SNR timeseries from inpainting and zero latency<a class="headerlink" href="#comparison-of-snr-timeseries-from-inpainting-and-zero-latency" title="Link to this heading">#</a></h1>
+<p>Here we compare SNR timeseries. We need to think about what we woudl expect here though. Outwith the time-before-merger that is valid, the SNR series should <em>not</em> match, only at the point under consideration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">waveforms</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -747,10 +781,10 @@ True
         <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Inpainting </span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">snrA</span><span class="o">.</span><span class="n">sample_times</span><span class="p">,</span> <span class="n">snrA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero latency LISA_A&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">snrE</span><span class="o">.</span><span class="n">sample_times</span><span class="p">,</span> <span class="n">snrE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Zero latency LISA_E&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">waveform_params</span><span class="p">[</span><span class="s1">&#39;tc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">data_length</span> <span class="o">-</span> <span class="n">cutoff_time</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">snrA</span><span class="o">.</span><span class="n">_epoch</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">snrA</span><span class="o">.</span><span class="n">sample_times</span><span class="p">,</span> <span class="n">snrA</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Zero latency LISA\_A&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">snrE</span><span class="o">.</span><span class="n">sample_times</span><span class="p">,</span> <span class="n">snrE</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Zero latency LISA\_E&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">waveform_params</span><span class="p">[</span><span class="s1">&#39;tc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">30</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Merger&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">data_length</span> <span class="o">-</span> <span class="n">cutoff_time</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">snrA</span><span class="o">.</span><span class="n">_epoch</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data End&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 
@@ -760,10 +794,10 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x31c2db310&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x17d2990d0&gt;
 </pre></div>
 </div>
-<img alt="../../_images/8ec23ac5ff904597a73da9e64d3b8ccfb095c16ef300b92c767caf9c00741dfe.png" src="../../_images/8ec23ac5ff904597a73da9e64d3b8ccfb095c16ef300b92c767caf9c00741dfe.png" />
+<img alt="../../_images/d54f2a870e5f72746cf6bb3031e975a380bf3f7bf60d8a37c90d401c3fef8cc7.png" src="../../_images/d54f2a870e5f72746cf6bb3031e975a380bf3f7bf60d8a37c90d401c3fef8cc7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -813,6 +847,7 @@ zerolag N/A
 </div>
 </div>
 </div>
+<p>Now lets compare actually at the merger - where the results should match.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
@@ -854,7 +889,6 @@ zerolag N/A
 <img alt="../../_images/a424c6506a84f2a4ca4f5e7ef14329008985f96798bfd9b283731d352de10514.png" src="../../_images/a424c6506a84f2a4ca4f5e7ef14329008985f96798bfd9b283731d352de10514.png" />
 </div>
 </div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -923,12 +957,18 @@ zerolag N/A
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Comparing zero-latency and inpainting SNR calculation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#top-level-settings">Top level settings</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-latency-filter">Zero-latency filter</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inpainting">Inpainting</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-output-from-development-code-to-functions">Comparing output from development code to functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-snr-timeseries-from-inpainting-and-zero-latency">Comparison of SNR timeseries from inpainting and zero latency</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
