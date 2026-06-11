@@ -1,5 +1,6 @@
-title: "Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets"
-logo: https://course-module-catalog.port.ac.uk/assets/img/UoP_Master_Logo_Stacked_CMYK.png
+title: "Inpainting over the cracks"
+logo: _static/logo.png
+author: Gareth Cabourn Davies and Ian Harry
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -42,6 +43,6 @@ html:
 sphinx:
   config:
     nb_execution_timeout: 5000
-    # Ensure movie assets are copied to _build/html for gh-pages deployment
-    html_extra_path:
-      - inpainting/inpainting_movie
+    html_theme_options:
+      logo:
+        text: "Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets"

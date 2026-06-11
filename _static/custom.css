@@ -1,0 +1,5 @@
+/* Force the logo and title to align nicely next to each other */
+.sidebar-logo-container, .navbar-brand {
+    display: flex;
+    align-items: center;
+}
