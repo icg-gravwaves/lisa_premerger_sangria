@@ -7,7 +7,7 @@ Here we include plots etc which show how inpainting is implemented / used. This 
 Below we show a video of the SNR timeseries as the data end (shown in orange) moves closer to merger (time zero), with gaps added to the data at 20 and 10 days before merger.
 
 <video width="100%" controls>
-    <source src="inpainting_movie/output.mp4" type="video/mp4">
+    <source src="https://raw.githubusercontent.com/icg-gravwaves/lisa_premerger_sangria/main/inpainting/inpainting_movie.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -27,10 +27,10 @@ The rest of the script is just making the plots in such a way that it is a seaml
 
 We then use ffmpeg to generate the movie from these stills:
 ```bash
-ffmpeg -framerate 10 -i snr_inpaintendandgaps_%d.png \
+ffmpeg -framerate 10 -i output/snr_inpaintendandgaps_%d.png \
 -c:v libx264 -pix_fmt yuv420p \
 -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
 -crf 18 -preset slow \
 -movflags +faststart \
-output.mp4
+inpainting_movie.mp4
 ```

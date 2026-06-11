@@ -388,7 +388,7 @@
 <h2>SNR buildup animation<a class="headerlink" href="#snr-buildup-animation" title="Link to this heading">#</a></h2>
 <p>Below we show a video of the SNR timeseries as the data end (shown in orange) moves closer to merger (time zero), with gaps added to the data at 20 and 10 days before merger.</p>
 <video width="100%" controls>
-    <source src="inpainting_movie/output.mp4" type="video/mp4">
+    <source src="https://raw.githubusercontent.com/icg-gravwaves/lisa_premerger_sangria/main/inpainting/inpainting_movie.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 <p>We see that the SNR at the time of merger gradually increases as time moves forward, with pauses during the gaps. The peak starts to become significant compared to the background at around 12 days before merger.</p>
@@ -402,12 +402,12 @@
 <section id="making-the-movie">
 <h3>Making the movie<a class="headerlink" href="#making-the-movie" title="Link to this heading">#</a></h3>
 <p>We then use ffmpeg to generate the movie from these stills:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-framerate<span class="w"> </span><span class="m">10</span><span class="w"> </span>-i<span class="w"> </span>snr_inpaintendandgaps_%d.png<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-framerate<span class="w"> </span><span class="m">10</span><span class="w"> </span>-i<span class="w"> </span>output/snr_inpaintendandgaps_%d.png<span class="w"> </span><span class="se">\</span>
 -c:v<span class="w"> </span>libx264<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv420p<span class="w"> </span><span class="se">\</span>
 -vf<span class="w"> </span><span class="s2">&quot;scale=trunc(iw/2)*2:trunc(ih/2)*2&quot;</span><span class="w"> </span><span class="se">\</span>
 -crf<span class="w"> </span><span class="m">18</span><span class="w"> </span>-preset<span class="w"> </span>slow<span class="w"> </span><span class="se">\</span>
 -movflags<span class="w"> </span>+faststart<span class="w"> </span><span class="se">\</span>
-output.mp4
+inpainting_movie.mp4
 </pre></div>
 </div>
 </section>
