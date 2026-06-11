@@ -19,7 +19,3 @@ for removal in noremoval varied_removal ; do
     --output-file results/data_runs_focused_${removal}.hdf
 done
 ```
-
-# Analysis with Gaps
-
-We also ran the 
