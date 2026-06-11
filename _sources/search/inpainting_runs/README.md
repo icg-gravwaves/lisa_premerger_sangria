@@ -2,7 +2,8 @@
 
 Now that we have explained how inpainting can be used as part of a pre-merger search, lets try it out.
 
-Similar to the zero-latency filter search, we step through the data an hour at a time, we  have a similar code (also called `data_runs.py`), but with some vital changes.
+Similar to the zero-latency filter search, we step through the data an hour at a time, we have a similar code (also called `data_runs.py`), but with some vital changes.
+
 
 ## Shared code / preprocessing
 
