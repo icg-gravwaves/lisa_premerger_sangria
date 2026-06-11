@@ -22,7 +22,7 @@ delta_f = 1 / (2**20 * 5)
 delta_t = 1 / sample_rate
 
 data = pycbc.types.timeseries.load_timeseries(
-        '../../datasets/signal_0.hdf',
+        f'../../datasets/signal_{signumber}.hdf',
         group=f"/LISA_A",
 )
 data._delta_t = 5  # Apparently it is not exactly this in the file, causing issues.
@@ -30,7 +30,7 @@ data_orig = data.copy()
 data.resize(zeroed_length)
 
 data_nonoise = pycbc.types.timeseries.load_timeseries(
-        '../../datasets/signal_zero_noise_0.hdf',
+        f'../../datasets/signal_zero_noise_{signumber}.hdf',
         group=f"/LISA_A",
 )
 data_nonoise._delta_t = 5
@@ -51,10 +51,15 @@ def inpaint_data(data, invpsd, start_idx, end_idx, copy=True):
     return gate_and_paint(data, start_idx, end_idx, invpsd, copy=False)
 
 
+with open('../../datasets/injections.json') as inj_f:
+    inj_json = json.load(inj_f)
+    merger_time = inj_json[signumber]['tc']
+
+
+
 samplerate=10
 for idx, i in enumerate([x / samplerate for x in range(25*samplerate, 0, -1)]):
     print("Running for", i, "days before merger")
-    merger_time = 1931852406.9997194  # This is dependent on signum, should automate getting this value!
     gate1_centre = merger_time - 86400 * 10
     gate2_centre = merger_time - 86400 * 20
 
