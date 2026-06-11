@@ -19,7 +19,8 @@ from pycbc.waveform.pre_merger_waveform import (
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from common_utils import (
     load_ldc_timeseries,
-    remove_signals
+    remove_signals,
+    waveform_from_bank
 )
 
 ####################################################

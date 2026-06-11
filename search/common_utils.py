@@ -9,6 +9,7 @@ from ldc.lisa import orbits
 from astropy import units as un
 import logging
 import h5py
+import copy
 
 from matplotlib import pyplot as plt
 
@@ -458,3 +459,19 @@ def load_bank(args):
 
     # Reduce the bank by the given factor
     return bank_array[::args.reduce_bank_factor]
+
+def waveform_from_bank(bank_file, idx, waveform_params_shared, data_length):
+        bank_wf = copy.deepcopy(waveform_params_shared)
+        # Update waveform params to use the ones from the bank file
+        bank_wf['tc'] = data_length
+        bank_wf['mass1'] = bank_file['mass1'][idx]
+        bank_wf['mass2'] = bank_file['mass2'][idx]
+        bank_wf['inclination'] = bank_file['inclination'][idx]
+        bank_wf['polarization'] = bank_file['polarization'][idx]
+        bank_wf['spin1z'] = bank_file['spin1z'][idx]
+        bank_wf['spin2z'] = bank_file['spin2z'][idx]
+        #bank_wf['coa_phase'] = hfile['coa_phase'][idx]
+        bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
+        bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
+
+        return bank_wf

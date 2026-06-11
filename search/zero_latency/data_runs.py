@@ -26,6 +26,7 @@ from utils import (
     plot_best_waveform,  # Function to plot the best waveform
     load_ldc_timeseries, # function to load timeseries
     remove_signals,
+    waveform_from_bank
 )
 
 # Set up argument parser for command-line arguments
@@ -106,9 +107,6 @@ parser.add_argument('--reduce-bank-factor', type=int,
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
-#############################
-# Generate the necessary PSDs
-#############################
 
 # Initialize logging for the PyCBC library
 if args.verbose is None:
@@ -174,7 +172,10 @@ for channel in data.keys():
     data[channel] = data[channel][start_idx:end_idx]
     mbhb_data[channel] = mbhb_data[channel][start_idx:end_idx]
     
-mbhbs, _ = hdfio.load_array(args.data_file, name="sky/mbhb/cat")
+mbhbs, _ = hdfio.load_array(
+    args.data_file,
+    name="sky/mbhb/cat"
+)
 
 if args.remove_signals_after_coalescence is not None and not args.remove_all_mbhbs:
     remove_signals(
@@ -217,6 +218,7 @@ if args.testing_plots is not None:
     fig.savefig(f'{args.testing_plots}/data_zerolatency.png')
     plt.close(fig)
 
+logging.info('Pre-processing data')
 data_pp = pre_process_data_lisa_pre_merger(
     data,
     sample_rate=args.sample_rate,
@@ -258,18 +260,12 @@ with h5py.File(args.bank_file, 'r') as bank_file:
             # For testing: reduce the bank size by this factor to make the search quicker
             continue
         logging.debug(idx)
-        bank_wf = copy.deepcopy(waveform_params_shared)
-        # Update waveform params to use the ones from the bank file
-        bank_wf['tc'] = args.data_length
-        bank_wf['mass1'] = bank_file['mass1'][idx]
-        bank_wf['mass2'] = bank_file['mass2'][idx]
-        bank_wf['inclination'] = bank_file['inclination'][idx]
-        bank_wf['polarization'] = bank_file['polarization'][idx]
-        bank_wf['spin1z'] = bank_file['spin1z'][idx]
-        bank_wf['spin2z'] = bank_file['spin2z'][idx]
-        #bank_wf['coa_phase'] = hfile['coa_phase'][idx]
-        bank_wf['eclipticlatitude'] = bank_file['eclipticlatitude'][idx]
-        bank_wf['eclipticlongitude'] = bank_file['eclipticlongitude'][idx]
+        bank_wf = waveform_from_bank(
+            bank_file,
+            idx,
+            waveform_params_shared,
+            args.data_length
+        )
     
         logging.debug('Generating waveform')
         snr, _, times, series = get_snr_from_series(

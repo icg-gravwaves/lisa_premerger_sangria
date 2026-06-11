@@ -140,9 +140,6 @@ parser.add_argument(
 # Parse the command-line arguments provided by the user
 args = parser.parse_args()
 
-#############################
-# Generate the necessary PSDs
-#############################
 
 # Initialize logging for the PyCBC library
 if args.verbose is None:
@@ -179,6 +176,8 @@ if args.remove_all_mbhbs:
 if args.remove_all_gbs:
     remove_noiseless_groups += [f"sky/{i}gb/tdi" for i in ['v','d','i']]
 
+# Load the data from the file
+
 data = load_ldc_timeseries(
     args.data_file,
     remove_noiseless_groups=remove_noiseless_groups,
@@ -186,14 +185,20 @@ data = load_ldc_timeseries(
 )
 del data['LISA_T']
 
+# This may actually be superfluous now, but I dont want to mess with the code just for
+# making it look nice
+
 mbhb_data = load_ldc_timeseries(
     args.data_file,
     data_group='sky/mbhb/tdi',
     delta_t=1./args.sample_rate,
 )
 
+# Cut the data down to the period of interest
+
 end_idx = int(args.end_time * args.sample_rate) # seconds * hertz = unitless
-start_idx = int(end_idx - args.data_length * args.sample_rate) # unitless - unitless
+data_length_idx = int(args.data_length * args.sample_rate) # seconds * hertz = unitless
+start_idx = int(end_idx - data_length_idx) # unitless - unitless
 start_time = args.end_time - args.data_length # seconds - number of samples / (number of samples per second) = seconds
 
 logging.info("Cutting to %.0f seconds of data", args.data_length)
@@ -220,7 +225,7 @@ if args.remove_signals_after_coalescence is not None and not args.remove_all_mbh
         testing_plots=args.testing_plots,
     )
 
-# Zero padding - this is vital!
+# Zero padding and subtracting the mean - this is vital!
 for channel in data.keys():
     mean_val = np.mean(data[channel])
     data[channel] = data[channel] - mean_val
@@ -236,8 +241,14 @@ psds = {
     )
     for channel in ['A','E']
 }
+
 for channel in ['LISA_A','LISA_E']:
-    psds[channel] = pycbc.psd.inverse_spectrum_truncation(psds[channel], 86400, delta_f, trunc_method='hann')
+    psds[channel] = pycbc.psd.inverse_spectrum_truncation(
+        psds[channel],
+        86400,
+        delta_f,
+        trunc_method='hann'
+    )
 
 logging.info("Generated PSD objects")
 
@@ -251,7 +262,12 @@ if args.testing_plots is not None:
 original_length = int(args.data_length * args.sample_rate)
 
 logging.info('Pre-processing data')
-logging.info('%d %d %d', args.zeroed_length, original_length, int(original_length + (future_search_time / args.sample_rate)))
+logging.info(
+    '%d %d %d',
+    args.zeroed_length,
+    original_length,
+    int(original_length + (future_search_time / args.sample_rate))
+)
 #  For inpainting, this will be overwhitened
 data_ow_f = pre_process_data_lisa_pre_merger_inpaint(
     data,
