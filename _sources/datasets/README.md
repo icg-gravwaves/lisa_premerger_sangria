@@ -1,0 +1,36 @@
+# Dataset Download Scripts
+
+This [directory in the repository](https://github.com/icg-gravwaves/lisa_premerger_sangria/tree/main/datasets) contains bash scripts to fetch the necessary datasets for the notebooks and analyses in this repository.
+
+# Available Scripts
+
+## get_premerger_paper_data.sh
+
+Downloads data files from the [lisa_premerger_paper](https://github.com/icg-gravwaves/lisa_premerger_paper) repository, including:
+- PSD files (model_AE_TDI1_SMOOTH_optimistic.txt.gz, model_AE_TDI1_optimistic.txt.gz)
+- Injection parameters (injections.json)
+- Signal data files (signal_0.hdf, signal_zero_noise_0.hdf)
+
+**Usage:**
+```bash
+cd datasets
+bash get_premerger_paper_data.sh
+```
+
+## get_sangria_hm.sh
+
+Downloads the Sangria dataset with higher modes.
+
+**Usage:**
+```bash
+cd datasets
+bash get_sangria_hm.sh
+```
+
+## Notes
+
+- All downloaded files are ignored by git (see [.gitignore](./.gitignore))
+- Scripts check if files already exist before downloading to avoid unnecessary downloads
+   - This means that a failed / partial download must be deleted before it can be reattempted
+- Notebooks and analysis scripts reference these files using relative paths to this directory
+- Datasets and download links could change in the future. These will be kept up-to-date on a best effort basis, but if links change outside of our control, these may become obsolete.

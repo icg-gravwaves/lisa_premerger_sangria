@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Plot results from searching in data using the zero-latency search &#8212; Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'search/zero_latency/plot_data_results';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Inpainting" href="../../inpainting/README.html" />
+    <link rel="prev" title="Removal of Signal Mergers from data" href="signal_removal.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../data_release.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../data_release.html">
+                    Data Release
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../datasets/README.html">Dataset Download Scripts</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Zero Latency Searches</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../template_bank/README.html">Template Banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../template_bank/template_banks.html">Plotting template banks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zero_latency_search.html">Zero Latency Searches</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../overlap_runs/README.html">Computing overlap between full signal and premerger signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overlap_runs/plot_optimal_snr_fitting_factor.html">Calculating overlap - plots</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="signal_removal.html">Removal of Signal Mergers from data</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Plot results from searching in data using the zero-latency search</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inpainting/README.html">Inpainting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inpainting/Inpainting_plot.html">Example of using inpainting to compute matched-filters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/README.html">Inpainting Search Results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/example_using_this_code.html">Comparing zero-latency and inpainting SNR calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_data_results.html">Plot results from searching in data using the inpainting search</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inpainting_runs/focused.html">Focused region - overlapping signals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inpainting_runs/plot_focused_data_results.html">Results plots for Focused region with densely-packed signals</a></li>
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/icg-gravwaves/lisa_premerger_sangria" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/search/zero_latency/plot_data_results.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Plot results from searching in data using the zero-latency search</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plot results from searching in data using the zero-latency search</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#full-run-plots">Full run plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-6">Figure 6</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-plots">Individual Signal Plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5">Figure 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-end-time-plots">Data end time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimated-psd-forecast-time">Estimated PSD - forecast time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-estimated-to-model-psd">Comparing estimated to model PSD</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="plot-results-from-searching-in-data-using-the-zero-latency-search">
+<h1>Plot results from searching in data using the zero-latency search<a class="headerlink" href="#plot-results-from-searching-in-data-using-the-zero-latency-search" title="Link to this heading">#</a></h1>
+<p>So now we get to the results plotting - this are a bit out-of-order from the paper here as this notebook contains plots from all the runs, both with and without signal removal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This stuff only actually gets used in this cell:</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># Use the style file defined in the repository route</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;../../paper.mplstyle&#39;</span><span class="p">)</span>
+
+<span class="c1"># This is the folder where results plots will be saved:</span>
+<span class="n">paper_plots_dir</span> <span class="o">=</span> <span class="s1">&#39;../../paper/images/zero_latency_results&#39;</span>
+
+<span class="c1"># The common and plotting utils modules are in the parent</span>
+<span class="c1"># `search` directory</span>
+<span class="c1"># Here we add the `search` directory to the python path so we can</span>
+<span class="c1"># do a local import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">parent_dir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">)</span>
+
+
+<span class="c1"># Everything plotted in this notebook is done using these helper modules</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotting_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">common_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_results_zero_latency</span> <span class="k">as</span> <span class="n">get_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+
+SWIGLAL standard output/error redirection is enabled in IPython.
+This may lead to performance penalties. To disable locally, use:
+
+with lal.no_swig_redirect_standard_output_error():
+    ...
+
+To disable globally, use:
+
+lal.swig_redirect_standard_output_error(False)
+
+Note however that this will likely lead to error messages from
+LAL functions being either misdirected or lost when called from
+Jupyter notebooks.
+
+To suppress this warning, use:
+
+import warnings
+warnings.filterwarnings(&quot;ignore&quot;, &quot;Wswiglal-redir-stdio&quot;)
+import lal
+
+  import lal as _lal
+</pre></div>
+</div>
+</div>
+</div>
+<p>Load in the results - both PSD models, and both with and without signal removal</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">times_before</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+
+
+<span class="n">results_model_raw</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="s2">&quot;results/psd_model/data_runs_raw_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
+    <span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="n">results_model_remove</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="s2">&quot;results/psd_model/data_runs_remove_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
+    <span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="n">results_estimate_raw</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="s2">&quot;results/psd_estimate/data_runs_raw_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
+    <span class="n">times_before</span>
+<span class="p">)</span>
+
+<span class="n">results_estimate_remove</span> <span class="o">=</span> <span class="n">get_results</span><span class="p">(</span>
+    <span class="s2">&quot;results/psd_estimate/data_runs_remove_</span><span class="si">{time_before}</span><span class="s2">_results.hdf&quot;</span><span class="p">,</span>
+    <span class="n">times_before</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the truth times</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ldc.io.hdf5</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hdfio</span>
+
+<span class="n">input_data</span> <span class="o">=</span> <span class="s1">&#39;../../datasets/LDC2_sangria_hm_training.hdf&#39;</span>
+<span class="n">mbhb_sky</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hdfio</span><span class="o">.</span><span class="n">load_array</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sky/mbhb/cat&quot;</span><span class="p">)</span>
+
+<span class="n">truth_times_s</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="full-run-plots">
+<h1>Full run plots<a class="headerlink" href="#full-run-plots" title="Link to this heading">#</a></h1>
+<p>This is the plot of the analysis without signal removal. even in the full-run plot we can see the secondary peaks, particularly for signals 0, 6 and 10.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Search results&#39;</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/38f776663db210c885575cc2bba73d1afd89882373a0007b79f3d77b5f388240.png" src="../../_images/38f776663db210c885575cc2bba73d1afd89882373a0007b79f3d77b5f388240.png" />
+</div>
+</div>
+<section id="figure-6">
+<h2>Figure 6<a class="headerlink" href="#figure-6" title="Link to this heading">#</a></h2>
+<p>This is the same, but with the mergers removed from the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">marker_one</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Search Results (mergers removed)&#39;</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">height_factor</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
+<span class="p">)</span>
+<span class="n">fig_model_all</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_6_zerolatency_result.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b5927fed89e52a9c26437bb2e1e8d9795a3a9c719532ba35ec1523764174c733.png" src="../../_images/b5927fed89e52a9c26437bb2e1e8d9795a3a9c719532ba35ec1523764174c733.png" />
+</div>
+</div>
+<p>Now lets plot them both on the same axis just to compare.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_estimate_all</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_estimate_raw</span><span class="p">,</span>
+    <span class="n">results_two</span><span class="o">=</span><span class="n">results_estimate_remove</span><span class="p">,</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">width_factor</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4e602e78355ab24ff8036136b2b07e5faf95562841cfcc726500dedcf6b81e1d.png" src="../../_images/4e602e78355ab24ff8036136b2b07e5faf95562841cfcc726500dedcf6b81e1d.png" />
+</div>
+</div>
+<p>This is the example signal shown in figures 4&amp;5, but the raw-only version to start with</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="individual-signal-plots">
+<h1>Individual Signal Plots<a class="headerlink" href="#individual-signal-plots" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_signal_number</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
+    <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal_number</span><span class="p">],</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">signal_number</span><span class="o">=</span><span class="n">example_signal_number</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;off&#39;</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span>
+    <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;Results&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/cbe9da3d08f20319f2f9f6cb6f7c29bbad61636688fed55325f7c1af3fb994a5.png" src="../../_images/cbe9da3d08f20319f2f9f6cb6f7c29bbad61636688fed55325f7c1af3fb994a5.png" />
+</div>
+</div>
+<section id="figure-5">
+<h2>Figure 5<a class="headerlink" href="#figure-5" title="Link to this heading">#</a></h2>
+<p>One of the plots from the paper -  a zoom in on Signal 10 so that we see the secondary peaks clearly in the raw results, and that they have been removed in the peak removal instance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+    <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
+    <span class="n">results_two</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
+    <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">[</span><span class="n">example_signal_number</span><span class="p">],</span>
+    <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+    <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+    <span class="n">signal_number</span><span class="o">=</span><span class="n">example_signal_number</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;off&#39;</span><span class="p">,</span>
+    <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span>
+    <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="p">)</span>
+<span class="n">fig_model</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plots_dir</span><span class="si">}</span><span class="s1">/figure_5_signal_</span><span class="si">{</span><span class="n">example_signal_number</span><span class="si">}</span><span class="s1">_removed.pdf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/c1ba6581bb7642cfd5d33e455bf4f059b126d6981c6a9a1910bfad51a8a08b27.png" src="../../_images/c1ba6581bb7642cfd5d33e455bf4f059b126d6981c6a9a1910bfad51a8a08b27.png" />
+</div>
+</div>
+<p>For completeness - make the plot for all the signals</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
+    <span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+        <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
+        <span class="n">results_two</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
+        <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_time_s</span><span class="p">,</span>
+        <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+        <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+        <span class="n">signal_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+        <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;upper left&#39;</span><span class="p">,</span>
+        <span class="n">alpha_one</span><span class="o">=</span><span class="mf">0.4</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e3ad0ad3f9f6559268327e5afd929de4a007d9f191a9d7035a70b4f98e15a3a1.png" src="../../_images/e3ad0ad3f9f6559268327e5afd929de4a007d9f191a9d7035a70b4f98e15a3a1.png" />
+<img alt="../../_images/c7d6e69f27172b99226129148fbc3ccecde502eb14598f53761ebdc8dbf6b492.png" src="../../_images/c7d6e69f27172b99226129148fbc3ccecde502eb14598f53761ebdc8dbf6b492.png" />
+<img alt="../../_images/21233fd6526b2bd8ef7b4746563efb95e98b0fba3331befcc3f4b94457acd5bb.png" src="../../_images/21233fd6526b2bd8ef7b4746563efb95e98b0fba3331befcc3f4b94457acd5bb.png" />
+<img alt="../../_images/3ffc3dff69b9a598c06ae2b775aaf61551adb15d6506cf7008df8a4c6a217522.png" src="../../_images/3ffc3dff69b9a598c06ae2b775aaf61551adb15d6506cf7008df8a4c6a217522.png" />
+<img alt="../../_images/bc9171cf075271c0069609e32a95efbe65871a20122c5d03e62c11a83dacbfb4.png" src="../../_images/bc9171cf075271c0069609e32a95efbe65871a20122c5d03e62c11a83dacbfb4.png" />
+<img alt="../../_images/a2ea9d491b4dc469e75bfd7b34de0c389f8ad10f298632975781f839814c92f9.png" src="../../_images/a2ea9d491b4dc469e75bfd7b34de0c389f8ad10f298632975781f839814c92f9.png" />
+<img alt="../../_images/6a53f7aa2cc44cb589ec1fb36cb131498d84cdf3f86afa75df3d55032524136e.png" src="../../_images/6a53f7aa2cc44cb589ec1fb36cb131498d84cdf3f86afa75df3d55032524136e.png" />
+<img alt="../../_images/b20bd6cbe61106bdbcd54fbc725b8299f8ddc32c7aa8513604b1206ed9315bb1.png" src="../../_images/b20bd6cbe61106bdbcd54fbc725b8299f8ddc32c7aa8513604b1206ed9315bb1.png" />
+<img alt="../../_images/2c33dcc0879ee216e7eb281656834754f18b9ce0cbb531a601ac6415c9609582.png" src="../../_images/2c33dcc0879ee216e7eb281656834754f18b9ce0cbb531a601ac6415c9609582.png" />
+<img alt="../../_images/742c60b086242df2bbef576c9759578933845949017d1cf2acb9248af686ca1b.png" src="../../_images/742c60b086242df2bbef576c9759578933845949017d1cf2acb9248af686ca1b.png" />
+<img alt="../../_images/f5cb3846878f1122da68fe1a79f734047d6ecfac8354f487172b0f025b50d471.png" src="../../_images/f5cb3846878f1122da68fe1a79f734047d6ecfac8354f487172b0f025b50d471.png" />
+<img alt="../../_images/91e4ab544f233df702bc15c00c83646ea1b719574d43e499f978d733e37e34ff.png" src="../../_images/91e4ab544f233df702bc15c00c83646ea1b719574d43e499f978d733e37e34ff.png" />
+<img alt="../../_images/2c04828a5118c5a1a93318f4597f0922166e74604e33322af428ab3fbf43c266.png" src="../../_images/2c04828a5118c5a1a93318f4597f0922166e74604e33322af428ab3fbf43c266.png" />
+<img alt="../../_images/94b5dd28cf8dd4f2fa6eed47d6ae4f1fabc2cb432377ee13e25e3d35f84c24bf.png" src="../../_images/94b5dd28cf8dd4f2fa6eed47d6ae4f1fabc2cb432377ee13e25e3d35f84c24bf.png" />
+<img alt="../../_images/1d259194130aa004759f65b8e2ac24a78f9754130134203dc7ba8b09074ad2bb.png" src="../../_images/1d259194130aa004759f65b8e2ac24a78f9754130134203dc7ba8b09074ad2bb.png" />
+</div>
+</div>
+</section>
+<section id="data-end-time-plots">
+<h2>Data end time plots<a class="headerlink" href="#data-end-time-plots" title="Link to this heading">#</a></h2>
+<p>Now make the plots, but this time, use the data end time on the x-axis rather than the forecast merger time. This allows us to see some other features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
+    <span class="n">fig_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+        <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_raw</span><span class="p">,</span>
+        <span class="n">results_two</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
+        <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_time_s</span><span class="p">,</span>
+        <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+        <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+        <span class="n">signal_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+        <span class="n">predicted_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;upper left&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b429c775bb8db04a6d66f64c06641837cafb8127fbdb7c30e3e1fd2cd742dd46.png" src="../../_images/b429c775bb8db04a6d66f64c06641837cafb8127fbdb7c30e3e1fd2cd742dd46.png" />
+<img alt="../../_images/0f6fdf0024b27897249db2dd9b95ce63ee5110d51b5f98c9dc828742c1a53fa0.png" src="../../_images/0f6fdf0024b27897249db2dd9b95ce63ee5110d51b5f98c9dc828742c1a53fa0.png" />
+<img alt="../../_images/102f3755947f44c7c044f3a0c37a0bd54245814a91c654b55524d1a2f994bba2.png" src="../../_images/102f3755947f44c7c044f3a0c37a0bd54245814a91c654b55524d1a2f994bba2.png" />
+<img alt="../../_images/1f0b50131de9ae7f2c79c1e61b7745f47588f6c4bcc3e7cdc41e1cd6c0738ca6.png" src="../../_images/1f0b50131de9ae7f2c79c1e61b7745f47588f6c4bcc3e7cdc41e1cd6c0738ca6.png" />
+<img alt="../../_images/d92363bc6ea34b7ba14cb51a9a2dd9129a60394e631926619c4f8d2982d6979a.png" src="../../_images/d92363bc6ea34b7ba14cb51a9a2dd9129a60394e631926619c4f8d2982d6979a.png" />
+<img alt="../../_images/9d0bc7fbc48df1c25b8bcc9ebbcb23cad3d0ea6897ca8faa074f134ac30466d5.png" src="../../_images/9d0bc7fbc48df1c25b8bcc9ebbcb23cad3d0ea6897ca8faa074f134ac30466d5.png" />
+<img alt="../../_images/4daf16bb7684f8616c7ce7837ff50234812fcaaefb9dfee86acdc9b93ba3bbb8.png" src="../../_images/4daf16bb7684f8616c7ce7837ff50234812fcaaefb9dfee86acdc9b93ba3bbb8.png" />
+<img alt="../../_images/6bb49c28ed0fd81048da5b85ed866d5f2b2f34b517573dcee15d1203bf8ce4a5.png" src="../../_images/6bb49c28ed0fd81048da5b85ed866d5f2b2f34b517573dcee15d1203bf8ce4a5.png" />
+<img alt="../../_images/67dfd63ac2ef09920494f1dc94646b154f4b5e49f21e4b36fb446e3ea38ef984.png" src="../../_images/67dfd63ac2ef09920494f1dc94646b154f4b5e49f21e4b36fb446e3ea38ef984.png" />
+<img alt="../../_images/a4a64b7d16306ab84ad8dc4421b3823089414d9c8f0097f48c1c71ba45556feb.png" src="../../_images/a4a64b7d16306ab84ad8dc4421b3823089414d9c8f0097f48c1c71ba45556feb.png" />
+<img alt="../../_images/b96c72b6256f317741ebbfecdc9cf63f8f931657fb9fa36ddf2c0d6881423085.png" src="../../_images/b96c72b6256f317741ebbfecdc9cf63f8f931657fb9fa36ddf2c0d6881423085.png" />
+<img alt="../../_images/ddd79a52a9ff6b18d7117eb82a30dafd4c48084241c6923a7c14fc3517adc514.png" src="../../_images/ddd79a52a9ff6b18d7117eb82a30dafd4c48084241c6923a7c14fc3517adc514.png" />
+<img alt="../../_images/b662d8d43e094fef6574239bd38a0e5e5a17d053193234806f8c72b6f540c4e2.png" src="../../_images/b662d8d43e094fef6574239bd38a0e5e5a17d053193234806f8c72b6f540c4e2.png" />
+<img alt="../../_images/c35a3e27a5983a27c120368d4f7089120604f008a21984aaba57e4f458f8e741.png" src="../../_images/c35a3e27a5983a27c120368d4f7089120604f008a21984aaba57e4f458f8e741.png" />
+<img alt="../../_images/bea3055bb5afce43a75eba93c36f9187bccc56558112dab4fcb8ae434b8628c6.png" src="../../_images/bea3055bb5afce43a75eba93c36f9187bccc56558112dab4fcb8ae434b8628c6.png" />
+</div>
+</div>
+</section>
+<section id="estimated-psd-forecast-time">
+<h2>Estimated PSD - forecast time<a class="headerlink" href="#estimated-psd-forecast-time" title="Link to this heading">#</a></h2>
+<p>Raw/removed plots, but with the estimated PSD instead</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
+    <span class="n">fig_estimate</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+        <span class="n">results_one</span><span class="o">=</span><span class="n">results_estimate_raw</span><span class="p">,</span>
+        <span class="n">results_two</span><span class="o">=</span><span class="n">results_estimate_remove</span><span class="p">,</span>
+        <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_time_s</span><span class="p">,</span>
+        <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+        <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+        <span class="n">signal_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+        <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/7f6c3db5ba34c653af05bf41cc3fb3ea0031e6a21d7f6090889f290081823623.png" src="../../_images/7f6c3db5ba34c653af05bf41cc3fb3ea0031e6a21d7f6090889f290081823623.png" />
+<img alt="../../_images/264bdb82f75ca9bffcdd32a113917509c6670d5aabbb5d4f3fe1303b8fcf0ad5.png" src="../../_images/264bdb82f75ca9bffcdd32a113917509c6670d5aabbb5d4f3fe1303b8fcf0ad5.png" />
+<img alt="../../_images/8891b3dc51051f379f6e77c3e3a2b4adf37b92ee23eec45be67fb523365736b3.png" src="../../_images/8891b3dc51051f379f6e77c3e3a2b4adf37b92ee23eec45be67fb523365736b3.png" />
+<img alt="../../_images/6edd68d16fd0a369960030ec14ec308d6b398f39ebb5d22e105d23bae7d14d91.png" src="../../_images/6edd68d16fd0a369960030ec14ec308d6b398f39ebb5d22e105d23bae7d14d91.png" />
+<img alt="../../_images/6182cfb79356ede0e2a54911c259bb4c38b03050adaf694b7e7fe80eabfebdfd.png" src="../../_images/6182cfb79356ede0e2a54911c259bb4c38b03050adaf694b7e7fe80eabfebdfd.png" />
+<img alt="../../_images/36f2e545392f79b4a254d083bacd6215211ba303e24c2f130377599f7a3c31b7.png" src="../../_images/36f2e545392f79b4a254d083bacd6215211ba303e24c2f130377599f7a3c31b7.png" />
+<img alt="../../_images/27593f0ae5f131c25446fa8fd67be24475d0fa54aaad8e4d1758d781d79afcdf.png" src="../../_images/27593f0ae5f131c25446fa8fd67be24475d0fa54aaad8e4d1758d781d79afcdf.png" />
+<img alt="../../_images/b17b79f0869b1ab2c1d0a5bf7e56375b5a8d6fffc52b85337dcf7055b72b18ed.png" src="../../_images/b17b79f0869b1ab2c1d0a5bf7e56375b5a8d6fffc52b85337dcf7055b72b18ed.png" />
+<img alt="../../_images/6e9005a29ccb4d866c831caed5f22f947ac0a5c09ced078e0bbf40e2534d8a59.png" src="../../_images/6e9005a29ccb4d866c831caed5f22f947ac0a5c09ced078e0bbf40e2534d8a59.png" />
+<img alt="../../_images/75823a153d86b04bc34a54bcfb29661079fb41c2fc162870d8ff21b4e8222382.png" src="../../_images/75823a153d86b04bc34a54bcfb29661079fb41c2fc162870d8ff21b4e8222382.png" />
+<img alt="../../_images/f823291b23a1e2519b4033933818f8b4e80038826dd424538eca3b276f7f1bf6.png" src="../../_images/f823291b23a1e2519b4033933818f8b4e80038826dd424538eca3b276f7f1bf6.png" />
+<img alt="../../_images/f38cb819a2eefa873849a87d9d978793c77f942746e5216e800213dc6e69d975.png" src="../../_images/f38cb819a2eefa873849a87d9d978793c77f942746e5216e800213dc6e69d975.png" />
+<img alt="../../_images/af8904e3ca9fb0aa7f0c53ed5f0a29650ea1d1dbd2a232e34037c6e9571d78be.png" src="../../_images/af8904e3ca9fb0aa7f0c53ed5f0a29650ea1d1dbd2a232e34037c6e9571d78be.png" />
+<img alt="../../_images/962aac54ed5f7756d1e156c6d298c1ca9ea91daf07e685e196836051bf508180.png" src="../../_images/962aac54ed5f7756d1e156c6d298c1ca9ea91daf07e685e196836051bf508180.png" />
+<img alt="../../_images/14634976b61d02b8eae62e7f3cbf551da063a02d0a738246072bcc2d53b646a1.png" src="../../_images/14634976b61d02b8eae62e7f3cbf551da063a02d0a738246072bcc2d53b646a1.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="comparing-estimated-to-model-psd">
+<h1>Comparing estimated to model PSD<a class="headerlink" href="#comparing-estimated-to-model-psd" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">truth_time_s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">truth_times_s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">11</span><span class="p">]:</span>
+        <span class="n">legend_loc</span> <span class="o">=</span> <span class="s1">&#39;upper center&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">legend_loc</span> <span class="o">=</span> <span class="s1">&#39;upper right&#39;</span>
+    <span class="n">fig_psd_comparison</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_around_time</span><span class="p">(</span>
+        <span class="n">results_one</span><span class="o">=</span><span class="n">results_model_remove</span><span class="p">,</span>
+        <span class="n">results_two</span><span class="o">=</span><span class="n">results_estimate_remove</span><span class="p">,</span>
+        <span class="n">signal_truth_time</span><span class="o">=</span><span class="n">truth_time_s</span><span class="p">,</span>
+        <span class="n">truth_times</span><span class="o">=</span><span class="n">truth_times_s</span><span class="p">,</span>
+        <span class="n">start_time_offset</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">end_time_offset</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">times_before</span><span class="o">=</span><span class="n">times_before</span><span class="p">,</span>
+        <span class="n">signal_number</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+        <span class="n">label_one</span><span class="o">=</span><span class="s1">&#39;PSD model&#39;</span><span class="p">,</span>
+        <span class="n">label_two</span><span class="o">=</span><span class="s1">&#39;PSD estimate&#39;</span><span class="p">,</span>
+        <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[]</span> <span class="k">else</span> <span class="s1">&#39;upper right&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ef218f33c40404de115fe586bb2c11198b9b0fae4bfe4ae6386e07ebbba3c13c.png" src="../../_images/ef218f33c40404de115fe586bb2c11198b9b0fae4bfe4ae6386e07ebbba3c13c.png" />
+<img alt="../../_images/b0ee41b0239e6dfda0f55dfbf044c80e460d55030030ec91efe436e05ce0af4c.png" src="../../_images/b0ee41b0239e6dfda0f55dfbf044c80e460d55030030ec91efe436e05ce0af4c.png" />
+<img alt="../../_images/b1883c6b8eeabf36166ccccfc26153657421d14c9410efa4f313bd8542dd5e53.png" src="../../_images/b1883c6b8eeabf36166ccccfc26153657421d14c9410efa4f313bd8542dd5e53.png" />
+<img alt="../../_images/c5303cf6cfe87a4fe1b62a8ae42affdee5342ab15824b2f24cadcebfcfb9d57a.png" src="../../_images/c5303cf6cfe87a4fe1b62a8ae42affdee5342ab15824b2f24cadcebfcfb9d57a.png" />
+<img alt="../../_images/dea26d4a00dcd0506f6938d9c22e1698e8221f41a400e1a2705b5c38c01f08ec.png" src="../../_images/dea26d4a00dcd0506f6938d9c22e1698e8221f41a400e1a2705b5c38c01f08ec.png" />
+<img alt="../../_images/57ac0029c3a1e4248db996dc8af580e7e14153909d1fcb5dfef7fc08ffd0a981.png" src="../../_images/57ac0029c3a1e4248db996dc8af580e7e14153909d1fcb5dfef7fc08ffd0a981.png" />
+<img alt="../../_images/a9deee30492667824b3f8de276079f0bc5c0824a1f54ba1e0e6e909bd5a34323.png" src="../../_images/a9deee30492667824b3f8de276079f0bc5c0824a1f54ba1e0e6e909bd5a34323.png" />
+<img alt="../../_images/44113194d603121d60e75db0ca6ecd1ab99aa315b9c38673147f553f27d30470.png" src="../../_images/44113194d603121d60e75db0ca6ecd1ab99aa315b9c38673147f553f27d30470.png" />
+<img alt="../../_images/6f994ea87c641e44e48760cb01b6988fa76353bce9d0589c662083a7796b5d2c.png" src="../../_images/6f994ea87c641e44e48760cb01b6988fa76353bce9d0589c662083a7796b5d2c.png" />
+<img alt="../../_images/ddd8d7affd81947affc618a417e5a1d33748da0e88e1a9868cb943b2c257b92f.png" src="../../_images/ddd8d7affd81947affc618a417e5a1d33748da0e88e1a9868cb943b2c257b92f.png" />
+<img alt="../../_images/abdc64453b0fde8304e5986d20a0261f8e22ff413ef08009a1d5d1b9761d8ec3.png" src="../../_images/abdc64453b0fde8304e5986d20a0261f8e22ff413ef08009a1d5d1b9761d8ec3.png" />
+<img alt="../../_images/01b058fa6af374a6938b1839d6eb6c04f932ce168979fcc3b3d03d1e9f26d9de.png" src="../../_images/01b058fa6af374a6938b1839d6eb6c04f932ce168979fcc3b3d03d1e9f26d9de.png" />
+<img alt="../../_images/94edcc1faaf5c4db863f43aa9913e95a07e545eb5cb5884f798d3e6b144d99da.png" src="../../_images/94edcc1faaf5c4db863f43aa9913e95a07e545eb5cb5884f798d3e6b144d99da.png" />
+<img alt="../../_images/6cf4824e78090c3da4835e18035f724e2b0e8a211ff7f7649461d25b46f566a7.png" src="../../_images/6cf4824e78090c3da4835e18035f724e2b0e8a211ff7f7649461d25b46f566a7.png" />
+<img alt="../../_images/61c2d0ad3f3d0d64bc410cc146693014cda70eb233edd5649e5922bbb410c762.png" src="../../_images/61c2d0ad3f3d0d64bc410cc146693014cda70eb233edd5649e5922bbb410c762.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./search/zero_latency"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="signal_removal.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Removal of Signal Mergers from data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../inpainting/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Inpainting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plot results from searching in data using the zero-latency search</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#full-run-plots">Full run plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-6">Figure 6</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-signal-plots">Individual Signal Plots</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-5">Figure 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-end-time-plots">Data end time plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimated-psd-forecast-time">Estimated PSD - forecast time</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-estimated-to-model-psd">Comparing estimated to model PSD</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
