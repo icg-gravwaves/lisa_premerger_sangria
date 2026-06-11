@@ -196,8 +196,6 @@ for idx, i in enumerate([x / samplerate for x in range(25*samplerate, 0, -1)]):
     #ax.set_title('Matched-filter SNR (inpaint end & gaps)', fontsize=12)
 
     plt.tight_layout()
-    plt.savefig(f'snr_inpaintendandgaps_{idx}.png', dpi=600)
-    if int(i*20) // 20 in [14, 7, 4, 1]:
-        plt.savefig(f'../paper/images/snr_{i}_days_before_merger.pdf')
+    plt.savefig(f'output/snr_inpaintendandgaps_{idx}.png', dpi=600)
 
     plt.close(fig)
