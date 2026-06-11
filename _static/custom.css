@@ -1,9 +1,3 @@
-/* Limit the size of the sidebar logo */
-img.logo, .logo img {
-    max-width: 75px; /* Smaller size to fit next to the text */
-    margin-right: 10px;
-}
-
 /* Force the logo and title to align nicely next to each other */
 .sidebar-logo-container, .navbar-brand {
     display: flex;
