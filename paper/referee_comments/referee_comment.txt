@@ -89,8 +89,4 @@ If the authors mean the FFT evaluation described by Eq 3, then the search time i
 11. Page 10.
 "which leaves a noticeable residual at the merger of this loud signal."
 How ample is the residual?
-<<<<<<< HEAD
 Is it from the waveform model or the response?
-=======
-Is it from the waveform model or the response?
->>>>>>> 6a42ba4 (Explaining what each circle / cross means in the reuslts figures)
