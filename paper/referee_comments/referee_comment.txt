@@ -1,0 +1,71 @@
+---------------------------------------------------------------------
+
+Report of the Referee -- DT17729/Cabourn Davies
+
+----------------------------------------------------------------------
+
+
+
+This manuscript demonstrates two techniques to detect premerger MBHB signals in the LISA data on LISA Data Challenge simulated dataset Sangria HM. One technique was presented by the authors in a previous publication, consisting of stochastic template bank building and zero-latency whitening filtering. This work applies it to a more realistic dataset and shows it can identify premerger MBHBs where the accumulated signal-to-noise ratio allows. The other technique, called "inpainting", is newly introduced to analyze the LISA data. It fills data gaps with values such that the overwhitening does not contaminate the gapped segments with nonzero value. This technique is also demonstrated on Sangria HM, and on a derived version of it where gaps are introduced. The authors demonstrated the inpainting technique allows to identify the premerger MBHBs earlier than the zero-latency technique, and it manages to detect signals even in presence of data gaps, which the zero-latency technique fails to do.
+
+
+
+The manuscript is well written, transparent, and presents research of good quality. We recommend it for publication, while we do have several minor concerns that we would like the authors to address.
+
+
+
+1. Fig 1. The legend for full signal MBHB characteristic string is the same as the power spectral density "Model A/E, no GB". This may cause confusion notably at centihertzs. Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" are too similar, especially between the first and the last. We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
+
+
+
+2. Fig 1 caption. It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
+
+
+
+3. Page 2. The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs. It would be useful to illustrate and explain this. Provided enough separation, we agree that the premerger detection of MBHBs is, in principle, not a global-fit problem, however, we wonder, for this to hold true in practice, whether there are requirements on the technique or not.
+
+
+
+For instance, on page 7, the authors match zero padded data with shifting templates, and since there is no lower bound to the advance in time for the merger, the templates would a priori contain the merger (this is the case for ground-based detector researches and the method described in 2504.11322 for LISA); as a result, the normalization involves frequency content of MBHBs that actually
+
+
+
+overlap with other resolvable sources. Would this invalidate the "not a global-fit problem" claim for this technique?
+
+
+
+4. Fig 2. The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed". We suggest using a better palette and tuning the transparency.
+
+
+
+5. Page 3. "Characteristic strains at the times-before-merger that we consider are shown in Table I." What are shown are not the characteristic strains but the integrated areas.
+
+
+
+6. Table II. The total mass of the template bank construction is limited to 10^6 to 2x10^7 solar masses. This is not a wide range for MBHBs detectable by LISA. Would enlarging the range to the full population of MBHBs detectable by LISA increase the bank size to a computationally unmanageable scale? Same question to the mass ratio.
+
+
+
+7. Page 4. "We can see that significantly more templates are required when the confusion noise is included, presumably due to the signal power being accumulated over more time, rather than most of the power coming at the highest frequencies." This probably requires clarification and elaboration:
+
+after all, the only factor that changes with the inclusion of confusion is higher noise level at high frequencies (with respect to pre-merger MBHBs). Shouldn't this explain the need for more templates?
+
+
+
+8. Fig 5. Why are there sometimes multiple crosses of the same colour on the same verticle line? In general, for these figures (Fig 5, Fig 6, Fig 7, Fig 9), it is unclear how crosses (respectively circles) of the same colour differ from each other in terms of setup. Presumably they correspond to different search windows but the correspondance cannot be read from the plots.
+
+
+
+9. Page 7. We believe the full process is not necessarily more efficient with data padded to a length of 2^N: FFT algorithms usually already pad internally to improve its efficiency. It perhaps worths benchmarking before making the decision.
+
+
+
+10. Page 8. "as the inpainting search is not restricted to search at discrete times before merger": isn't this correct only if "a template bank that is effectual for observing any signals in a given range of times before merger" is created?
+
+
+
+If the authors mean the FFT evaluation described by Eq 3, then the search time is still discrete (as the data cadence is finite).
+
+
+
+11. Page 10. "which leaves a noticeable residual at the merger of this loud signal." How ample is the residual? Is it from the waveform model or the response?
