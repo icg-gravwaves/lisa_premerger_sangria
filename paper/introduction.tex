@@ -35,7 +35,8 @@ If one has to wait an additional day, the observation window may have passed, or
     \includegraphics[width=\textwidth]{images/dataset/figure_1_psds_with_sources.png}
     \caption{
         Comparison of power spectral densities used in this work.
-        The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
+        The power spectral density is estimated from the Sangria-HM dataset using the Welch method \bf{as described in~\cite{Allen:2005fk}}.
+        \bf{We use the full Sangria dataset, median averaging across segments, applying Hann windowing, and using a segment duration of 18.25 hours and a stride of 9.125 days}.
         The model shown is the noise model used to produce the Sangria-HM dataset, and is shown with and without unresolvable Galactic binary sources.
         We show the power spectral density model and estimate smoothed using the method described in Section~\ref{subsec:smoothing}.
         We also show the characteristic strain for a representative \ac{MBHB} signal from Sangria-HM (Signal 2), which shows that at 14, 7 and 4 days-before-merger, the \ac{MBHB} does not overlap

@@ -14,9 +14,17 @@ The manuscript is well written, transparent, and presents research of good quali
 
 
 
-1. Fig 1. The legend for full signal MBHB characteristic string is the same as the power spectral density "Model A/E, no GB". This may cause confusion notably at centihertzs. Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" are too similar, especially between the first and the last. We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
+1. Fig 1.
+The legend for full signal MBHB characteristic string is the same as the power spectral density "Model A/E, no GB".
+This may cause confusion notably at centihertzs.
+Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" are too similar, especially between the first and the last.
+We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
 
-2. Fig 1 caption. It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
+> We have updated the lines in this plot to use different colours - particularly the linestyle of the full signal so that is differs from the modelled PSD.
+> We have also added a shaded section to indicate the region in which smoothing is used, and made it so that the smoothed model and smoothed estimated PSDs are restricted to only this region.
+
+2. Fig 1 caption.
+It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
 
 3. Page 2. The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs. It would be useful to illustrate and explain this. Provided enough separation, we agree that the premerger detection of MBHBs is, in principle, not a global-fit problem, however, we wonder, for this to hold true in practice, whether there are requirements on the technique or not. For instance, on page 7, the authors match zero padded data with shifting templates, and since there is no lower bound to the advance in time for the merger, the templates would a priori contain the merger (this is the case for ground-based detector researches and the method described in 2504.11322 for LISA); as a result, the normalization involves frequency content of MBHBs that actually overlap with other resolvable sources. Would this invalidate the "not a global-fit problem" claim for this technique?
 
