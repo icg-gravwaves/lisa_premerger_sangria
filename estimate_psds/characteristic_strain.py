@@ -2,6 +2,8 @@ import numpy as np
 from copy import deepcopy
 import logging
 
+import h5py
+
 from pycbc.pnutils import get_inspiral_tf
 from pycbc.waveform import get_fd_det_waveform
 from pycbc import add_common_pycbc_options, init_logging
@@ -85,38 +87,44 @@ amp_E = np.abs(A_sig_psd['LISA_E'].numpy())
 h_c_A = (2.0 * freqs * amp_A)
 h_c_E = (2.0 * freqs * amp_E)
 
-# save the characteristic strain psd
-np.savetxt(
-    f'characteristic_strain/characteristic_strain_{sig_num}_full.txt',
-    list(zip(freqs, h_c_A, h_c_E))
-)
+# write the characteristic strain directly to a shared hdf5 file, one group per signal
+output_file = 'characteristic_strain/collected_characteristic_strain.hdf'
+with h5py.File(output_file, 'a') as f:
+    # store the frequency axis once (identical for every signal)
+    if 'frequencies' not in f:
+        f.create_dataset('frequencies', data=freqs)
+        f.attrs['delta_f'] = freqs[1]
 
-# map time before merger -> GW frequency using get_inspiral_tf
-track_t, track_f = get_inspiral_tf(
-    0.0,
-    wf['mass1'],
-    wf['mass2'],
-    wf['spin1z'],
-    wf['spin2z'],
-    1e-6,
-)
+    grp = f.create_group(str(sig_num))
 
-for i, days in enumerate(cutoff_days):
-    logging.info(f'{days} days before merger')
-    t_before = days * 86400
+    # save the full characteristic strain psd
+    grp.create_dataset('0_A', data=h_c_A)
+    grp.create_dataset('0_E', data=h_c_E)
 
-    # Find cut frequency
-    f_cut = float(np.interp(-t_before, track_t, track_f))
-
-    # zero out frequencies above f_cut
-    mask = freqs > (f_cut + 1e-12)
-    h_c_A_tbefore = deepcopy(h_c_A)
-    h_c_A_tbefore[mask] = 0
-    h_c_E_tbefore = deepcopy(h_c_E)
-    h_c_E_tbefore[mask] = 0
-
-    logging.info('Saving A channel')
-    np.savetxt(
-        f'characteristic_strain/characteristic_strain_{sig_num}_{days}.txt',
-        list(zip(freqs, h_c_A_tbefore, h_c_E_tbefore))
+    # map time before merger -> GW frequency using get_inspiral_tf
+    track_t, track_f = get_inspiral_tf(
+        0.0,
+        wf['mass1'],
+        wf['mass2'],
+        wf['spin1z'],
+        wf['spin2z'],
+        1e-6,
     )
+
+    for i, days in enumerate(cutoff_days):
+        logging.info(f'{days} days before merger')
+        t_before = days * 86400
+
+        # Find cut frequency
+        f_cut = float(np.interp(-t_before, track_t, track_f))
+
+        # zero out frequencies above f_cut
+        mask = freqs > (f_cut + 1e-12)
+        h_c_A_tbefore = deepcopy(h_c_A)
+        h_c_A_tbefore[mask] = 0
+        h_c_E_tbefore = deepcopy(h_c_E)
+        h_c_E_tbefore[mask] = 0
+
+        logging.info('Saving A channel')
+        grp.create_dataset(str(days).replace('.', 'p') + '_A', data=h_c_A_tbefore)
+        grp.create_dataset(str(days).replace('.', 'p') + '_E', data=h_c_E_tbefore)
