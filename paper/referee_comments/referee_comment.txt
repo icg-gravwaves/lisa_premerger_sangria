@@ -51,6 +51,10 @@ We suggest using a better palette and tuning the transparency.
 5. Page 3.
 "Characteristic strains at the times-before-merger that we consider are shown in Table I."
 What are shown are not the characteristic strains but the integrated areas.
+> Thanks, fixed to 
+"Signal-to-noise ratios calculated from integrated areas below the characteristic strains at the times-before-merger..." 
+
+(change highlighted in bold in the manuscript)
 
 6. Table II.
 The total mass of the template bank construction is limited to 10^6 to 2x10^7 solar masses.
