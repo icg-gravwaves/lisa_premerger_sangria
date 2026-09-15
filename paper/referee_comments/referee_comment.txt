@@ -21,7 +21,7 @@ Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" ar
 We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
 
 > We have updated the lines in this plot to use different colours - particularly the linestyle of the full signal so that is differs from the modelled PSD.
-> We have also added a shaded section to indicate the region in which smoothing is used, and made it so that the smoothed model and smoothed estimated PSDs are restricted to only this region.
+We have also added a shaded section to indicate the region in which smoothing is used, and made it so that the smoothed model and smoothed estimated PSDs are restricted to only this region.
 
 2. Fig 1 caption.
 It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
@@ -54,7 +54,7 @@ What are shown are not the characteristic strains but the integrated areas.
 > Thanks, fixed to 
 "Signal-to-noise ratios calculated from integrated areas below the characteristic strains at the times-before-merger..." 
 
-(change highlighted in bold in the manuscript)
+This has been highlighted in bold in the manuscript
 
 6. Table II.
 The total mass of the template bank construction is limited to 10^6 to 2x10^7 solar masses.
