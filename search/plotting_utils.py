@@ -206,10 +206,9 @@ def plot_around_time(
 
 def get_sm(vmin, vmax):
     norm = mcolors.LogNorm(vmin=vmin, vmax=vmax)
-    cmap = cm.get_cmap('rainbow')
     return cm.ScalarMappable(
         norm=norm,
-        cmap=cmap
+        cmap='rainbow'
     )
 
 def get_colors(values=None, vmax=None, vmin=None):
