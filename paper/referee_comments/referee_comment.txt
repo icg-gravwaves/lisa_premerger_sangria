@@ -30,7 +30,7 @@ It would be nice to provide the parameters used in the Welch method and where th
 Previously, the caption had:
 The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
 
-This has been updated to
+This has been updated to:
 
 The power spectral density is estimated from the Sangria-HM dataset using the Welch method as described in~\cite{Allen:2005fk}.
 We use the full Sangria dataset, median averaging across segments, applying Hann windowing, and using a segment duration of 18.25 hours and a stride of 9.125 days.
