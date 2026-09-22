@@ -48,6 +48,8 @@ Would this invalidate the "not a global-fit problem" claim for this technique?
 The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
 We suggest using a better palette and tuning the transparency.
 
+> We have removed the E channel lines from the plot, and updated the colour palette. This also makes the line colours match Figure 1
+
 5. Page 3.
 "Characteristic strains at the times-before-merger that we consider are shown in Table I."
 What are shown are not the characteristic strains but the integrated areas.
