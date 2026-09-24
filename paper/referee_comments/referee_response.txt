@@ -1,18 +1,7 @@
----------------------------------------------------------------------
+Thank you very much for your careful reading of the paper and helpful insights.
+We have implemented many of the changes requested, and provide a detailed summary of them (along with the original comments that they refer to) below
 
-Report of the Referee -- DT17729/Cabourn Davies
-
-----------------------------------------------------------------------
-
-
-
-This manuscript demonstrates two techniques to detect premerger MBHB signals in the LISA data on LISA Data Challenge simulated dataset Sangria HM. One technique was presented by the authors in a previous publication, consisting of stochastic template bank building and zero-latency whitening filtering. This work applies it to a more realistic dataset and shows it can identify premerger MBHBs where the accumulated signal-to-noise ratio allows. The other technique, called "inpainting", is newly introduced to analyze the LISA data. It fills data gaps with values such that the overwhitening does not contaminate the gapped segments with nonzero value. This technique is also demonstrated on Sangria HM, and on a derived version of it where gaps are introduced. The authors demonstrated the inpainting technique allows to identify the premerger MBHBs earlier than the zero-latency technique, and it manages to detect signals even in presence of data gaps, which the zero-latency technique fails to do.
-
-
-
-The manuscript is well written, transparent, and presents research of good quality. We recommend it for publication, while we do have several minor concerns that we would like the authors to address.
-
-
+We have updated the title of the paper to "Inpainting to search for premerger massive black hole binaries in realistic LISA datasets." on the request of the editor.
 
 1. Fig 1.
 The legend for full signal MBHB characteristic string is the same as the power spectral density "Model A/E, no GB".
@@ -20,8 +9,22 @@ This may cause confusion notably at centihertzs.
 Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" are too similar, especially between the first and the last.
 We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
 
+> We have updated the lines in this plot to use different colours - particularly the linestyle of the full signal so that is differs from the modelled PSD.
+We have also added a shaded section to indicate the region in which smoothing is used, and made it so that the smoothed model and smoothed estimated PSDs are restricted to only this region.
+
 2. Fig 1 caption.
 It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
+
+> We have updated the caption to contain more details:
+Previously, the caption had:
+The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
+
+This has been updated to:
+
+The power spectral density is estimated from the Sangria-HM dataset using the Welch method as described in~\cite{Allen:2005fk}.
+We use the full Sangria dataset, median averaging across segments, applying Hann windowing, and using a segment duration of 18.25 hours and a stride of 9.125 days.
+
+This has been highlighted in bold in the manuscript.
 
 3. Page 2.
 The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs.
@@ -34,15 +37,34 @@ Would this invalidate the "not a global-fit problem" claim for this technique?
 The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
 We suggest using a better palette and tuning the transparency.
 
+> We have removed the E channel lines from the plot, and updated the colour palette. This also makes the line colours match Figure 1
+
 5. Page 3.
 "Characteristic strains at the times-before-merger that we consider are shown in Table I."
 What are shown are not the characteristic strains but the integrated areas.
+
+> This has been fixed to say:
+"Signal-to-noise ratios calculated from integrated areas below the characteristic strains at the times-before-merger..." 
+
+This has been highlighted in bold in the manuscript
 
 6. Table II.
 The total mass of the template bank construction is limited to 10^6 to 2x10^7 solar masses.
 This is not a wide range for MBHBs detectable by LISA.
 Would enlarging the range to the full population of MBHBs detectable by LISA increase the bank size to a computationally unmanageable scale?
 Same question to the mass ratio.
+
+> Investigations into this question are encouraged.
+
+The uncertainty in the exact lower mass boundary between IMBH and MBHB mean that it is not clear where the boundary should sit, and it is true that reducing the lower mass cutoff can cause the template bank size to rapidly increase, meaning that this is primarily a tuning choice.
+
+There is not really a science case to increase the total mass upper limit, as these signals would not have a significant pre-merger inspiral signal to detect.
+
+We have added to the Table 2 caption:
+
+The choices made here were designed to include the full set of Sangria-HM dataset signals, which range in total mass from $1.6\times 10^6 M_\odot$ to $9.6\times 10^6 M_\odot$, mass ratio ranges from $1.03$ to $2.75$, and component spins in the z-direction range from $-0.7$ to $0.8$. 
+
+This has been highlighted in bold in the manuscript
 
 7. Page 4.
 "We can see that significantly more templates are required when the confusion noise is included, presumably due to the signal power being accumulated over more time, rather than most of the power coming at the highest frequencies."
@@ -54,9 +76,21 @@ Why are there sometimes multiple crosses of the same colour on the same verticle
 In general, for these figures (Fig 5, Fig 6, Fig 7, Fig 9), it is unclear how crosses (respectively circles) of the same colour differ from each other in terms of setup.
 Presumably they correspond to different search windows but the correspondance cannot be read from the plots.
 
+> Thank you for catching this, we simply hadn't defined this. The search is run hourly and there is one circle / cross for each result.
+
+We have added:
+
+Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.
+
+Highlighted in bold in the manuscript.
+
 9. Page 7.
 We believe the full process is not necessarily more efficient with data padded to a length of 2^N: FFT algorithms usually already pad internally to improve its efficiency.
 It perhaps worths benchmarking before making the decision.
+
+> Thank you for this consideration, and for full scale analyses, benchmarking of this kind would be sensible, however for demonstration of this technique, we believe that whether we manually do the padding or it is done internally doesn't really matter.
+
+We have removed this footnote from the manuscript, indicated with strikethrough.
 
 10. Page 8.
 "as the inpainting search is not restricted to search at discrete times before merger": isn't this correct only if "a template bank that is effectual for observing any signals in a given range of times before merger" is created?
@@ -66,3 +100,5 @@ If the authors mean the FFT evaluation described by Eq 3, then the search time i
 "which leaves a noticeable residual at the merger of this loud signal."
 How ample is the residual?
 Is it from the waveform model or the response?
+
+> We have added an appendix with a discussion of the residual. We have not attempted to diagnose why the residual is there, but simply noted that it is, and that despite being smaller than the residual, it can still be detected with high signal-to-noise.

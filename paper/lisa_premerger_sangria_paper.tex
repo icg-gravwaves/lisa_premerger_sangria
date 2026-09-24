@@ -33,11 +33,20 @@ superscriptaddress,
 \usepackage{array}
 \usepackage{subcaption}
 \usepackage[table]{xcolor}
+\usepackage{ulem}
 
 %---------- Colours ----------
 \definecolor{garibaldired}{HTML}{DD0000}
 \newcommand{\gscd}[1]{\textcolor{garibaldired}{[\textbf{GCD}: #1]}}
 \newcommand{\iwh}[1]{\textcolor{magenta}{[\textbf{IWH}: #1]}}
+% Easily toggle formatting for the resubmitted manuscript
+% Formatting ON
+\newcommand{\updated}[1]{\textbf{#1}}
+\newcommand{\deleted}[1]{\sout{#1}}
+% Formatting OFF
+% \newcommand{\updated}[1]{#1}
+% \newcommand{\deleted}[1]{}
+
 
 \newcommand{\strutrow}{\rule{0pt}{2.5ex}} % This gives a little extra space in tables
 \newcommand{\portsmouth}{Institute of Cosmology \& Gravitation, University of Portsmouth, Portsmouth, United Kingdom}
