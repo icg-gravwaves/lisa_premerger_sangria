@@ -45,7 +45,7 @@ We first describe how we use this to inpaint the raw strain, and then how we per
 
 To apply \texttt{PyCBC}'s inpainting to our search, where we have gaps in the middle of the data we simply apply it directly, allowing it to select values in the raw strain to make the overwhitened strain in the gap 0.
 To be able to analyze data that ends abruptly, where we are searching for signals merging in the future, we add a long stretch of zeroes to the end of the data, adding at least a week of extra zeroed data
-~\footnote{We add extra zeroes to resize the data to have length equal to $2^{N}$ where N is the smallest integer that is large enough to include the original data and a week of zeroes, to allow for more efficient Fast Fourier Transforms.}.
+~\footnote{\deleted{We add extra zeroes to resize the data to have length equal to $2^{N}$ where N is the smallest integer that is large enough to include the original data and a week of zeroes, to allow for more efficient Fast Fourier Transforms.}}.
 We then apply the inpainting over this ``gap'', simultaneously dealing with any issues due to the abrupt end of the data, but also smoothing out the abrupt start.
 
 With the inpainting approach we can simultaneously search for a signal matching a given template waveform at all times before merger.

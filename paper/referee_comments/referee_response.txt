@@ -1,0 +1,118 @@
+Thank you very much for your careful reading of the paper and helpful insights.
+We have implemented many of the changes requested, and provide a detailed summary of them (along with the original comments that they refer to) below
+
+We have updated the title of the paper to "Inpainting to search for premerger massive black hole binaries in realistic LISA datasets." on the request of the editor.
+
+1. Fig 1.
+The legend for full signal MBHB characteristic string is the same as the power spectral density "Model A/E, no GB".
+This may cause confusion notably at centihertzs.
+Also, the colours for PSD curves "A Estimated", "A Smoothed", and "Model A/E" are too similar, especially between the first and the last.
+We would also like to suggest tuning colour transparency to avoid overlapping drawings hiding information.
+
+> We have updated the lines in this plot to use different colours - particularly the linestyle of the full signal so that is differs from the modelled PSD.
+We have also added a shaded section to indicate the region in which smoothing is used, and made it so that the smoothed model and smoothed estimated PSDs are restricted to only this region.
+
+2. Fig 1 caption.
+It would be nice to provide the parameters used in the Welch method and where the segment of estimate is located in the Sangria HM dataset.
+
+> We have updated the caption to contain more details:
+Previously, the caption had:
+The power spectral density is estimated from the Sangria-HM dataset using the Welch method with a segment duration of 18.25 days.
+
+This has been updated to:
+
+The power spectral density is estimated from the Sangria-HM dataset using the Welch method as described in~\cite{Allen:2005fk}.
+We use the full Sangria dataset, median averaging across segments, applying Hann windowing, and using a segment duration of 18.25 hours and a stride of 9.125 days.
+
+This has been highlighted in bold in the manuscript.
+
+*** 3. Page 2.
+The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs.
+It would be useful to illustrate and explain this.
+Provided enough separation, we agree that the premerger detection of MBHBs is, in principle, not a global-fit problem, however, we wonder, for this to hold true in practice, whether there are requirements on the technique or not.
+For instance, on page 7, the authors match zero padded data with shifting templates, and since there is no lower bound to the advance in time for the merger, the templates would a priori contain the merger (this is the case for ground-based detector researches and the method described in 2504.11322 for LISA); as a result, the normalization involves frequency content of MBHBs that actually overlap with other resolvable sources.
+Would this invalidate the "not a global-fit problem" claim for this technique?
+
+4. Fig 2.
+The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
+We suggest using a better palette and tuning the transparency.
+
+> We have removed the E channel lines from the plot, and updated the colour palette. This also makes the line colours match Figure 1
+
+5. Page 3.
+"Characteristic strains at the times-before-merger that we consider are shown in Table I."
+What are shown are not the characteristic strains but the integrated areas.
+
+> This has been fixed to say:
+"Signal-to-noise ratios calculated from integrated areas below the characteristic strains at the times-before-merger..." 
+
+This has been highlighted in bold in the manuscript
+
+6. Table II.
+The total mass of the template bank construction is limited to 10^6 to 2x10^7 solar masses.
+This is not a wide range for MBHBs detectable by LISA.
+Would enlarging the range to the full population of MBHBs detectable by LISA increase the bank size to a computationally unmanageable scale?
+Same question to the mass ratio.
+
+> Investigations into this question are encouraged.
+
+The uncertainty in the exact lower mass boundary between IMBH and MBHB mean that it is not clear where the boundary should sit, and it is true that reducing the lower mass cutoff can cause the template bank size to rapidly increase, meaning that this is primarily a tuning choice.
+
+There is not really a science case to increase the total mass upper limit, as these signals would not have a significant pre-merger inspiral signal to detect.
+
+We have added to the Table 2 caption:
+
+The choices made here were designed to include the full set of Sangria-HM dataset signals, which range in total mass from $1.6\times 10^6 M_\odot$ to $9.6\times 10^6 M_\odot$, mass ratio ranges from $1.03$ to $2.75$, and component spins in the z-direction range from $-0.7$ to $0.8$. 
+
+This has been highlighted in bold in the manuscript
+
+7. Page 4.
+"We can see that significantly more templates are required when the confusion noise is included, presumably due to the signal power being accumulated over more time, rather than most of the power coming at the highest frequencies."
+This probably requires clarification and elaboration: after all, the only factor that changes with the inclusion of confusion is higher noise level at high frequencies (with respect to pre-merger MBHBs).
+Shouldn't this explain the need for more templates?
+
+> Due to the noise, less power can be recovered at high frequencies, so the power that is recoverable from the signal is at lower frequencies and is therefore accumulated over more time.
+We see that the reasoning for why the signal power is pushed to lower frequencies and longer times is not given, so we have reworded to:
+
+We can see that significantly more templates are required when the confusion noise is included, presumably due to noise at high frequency pushing the recoverable signal-to-noise ratio in a normalised template to lower frequencies.
+As the longer-duration low frequency component is now more important, small mismatches will become significant over the time, meaning more templates are needed to meet the minimum match criteria.
+
+This is highlighted in bold with the removed text struck out in the manuscript.
+
+8. Fig 5.
+Why are there sometimes multiple crosses of the same colour on the same verticle line?
+In general, for these figures (Fig 5, Fig 6, Fig 7, Fig 9), it is unclear how crosses (respectively circles) of the same colour differ from each other in terms of setup.
+Presumably they correspond to different search windows but the correspondance cannot be read from the plots.
+
+> Thank you for catching this, we simply hadn't defined this. The search is run hourly and there is one circle / cross for each result.
+
+We have added:
+
+Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.
+
+Highlighted in bold in the manuscript.
+
+9. Page 7.
+We believe the full process is not necessarily more efficient with data padded to a length of 2^N: FFT algorithms usually already pad internally to improve its efficiency.
+It perhaps worths benchmarking before making the decision.
+
+> Thank you for this consideration, and for full scale analyses, benchmarking of this kind would be sensible, however for demonstration of this technique, we believe that whether we manually do the padding or it is done internally doesn't really matter.
+
+We have removed this footnote from the manuscript, indicated with strikethrough.
+
+10. Page 8.
+"as the inpainting search is not restricted to search at discrete times before merger": isn't this correct only if "a template bank that is effectual for observing any signals in a given range of times before merger" is created?
+If the authors mean the FFT evaluation described by Eq 3, then the search time is still discrete (as the data cadence is finite).
+
+> Here we are comparing to the set of times-before-merger that are possible in the zero-latency filter. 
+
+To clarify, we have updated "discrete" to "a small set of" in the manuscript.
+
+We have indicated this change in bold / strikethrough in the paper.
+
+11. Page 10.
+"which leaves a noticeable residual at the merger of this loud signal."
+How ample is the residual?
+Is it from the waveform model or the response?
+
+> We have added an appendix with a discussion of the residual. We have not attempted to diagnose why the residual is there, but simply noted that it is, and that despite being smaller than the residual, it can still be detected with high signal-to-noise.

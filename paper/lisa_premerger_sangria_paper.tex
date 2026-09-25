@@ -33,11 +33,20 @@ superscriptaddress,
 \usepackage{array}
 \usepackage{subcaption}
 \usepackage[table]{xcolor}
+\usepackage{ulem}
 
 %---------- Colours ----------
 \definecolor{garibaldired}{HTML}{DD0000}
 \newcommand{\gscd}[1]{\textcolor{garibaldired}{[\textbf{GCD}: #1]}}
 \newcommand{\iwh}[1]{\textcolor{magenta}{[\textbf{IWH}: #1]}}
+% Easily toggle formatting for the resubmitted manuscript
+% Formatting ON
+\newcommand{\updated}[1]{\textbf{#1}}
+\newcommand{\deleted}[1]{\sout{#1}}
+% Formatting OFF
+% \newcommand{\updated}[1]{#1}
+% \newcommand{\deleted}[1]{}
+
 
 \newcommand{\strutrow}{\rule{0pt}{2.5ex}} % This gives a little extra space in tables
 \newcommand{\portsmouth}{Institute of Cosmology \& Gravitation, University of Portsmouth, Portsmouth, United Kingdom}
@@ -47,7 +56,7 @@ superscriptaddress,
 
 \preprint{APS/123-QED}
 
-\title{Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets}
+\title{Inpainting to search for premerger massive black hole binaries in realistic LISA datasets.}
 
 \author{Gareth {Cabourn Davies}\orcidlink{0000-0002-4289-3439}}
 \email{gareth.cabourn-davies@port.ac.uk}
@@ -129,6 +138,8 @@ Large Language Models were used in this work to generate code snippets efficient
 debug errors, and provide editing assistance in the writing of this manuscript.
 
 \end{acknowledgments}
+
+\input{appendix.tex}
 
 \bibliography{bibliography}
 
