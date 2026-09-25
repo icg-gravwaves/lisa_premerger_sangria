@@ -26,7 +26,7 @@ We use the full Sangria dataset, median averaging across segments, applying Hann
 
 This has been highlighted in bold in the manuscript.
 
-3. Page 2.
+*** 3. Page 2.
 The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs.
 It would be useful to illustrate and explain this.
 Provided enough separation, we agree that the premerger detection of MBHBs is, in principle, not a global-fit problem, however, we wonder, for this to hold true in practice, whether there are requirements on the technique or not.
@@ -71,6 +71,14 @@ This has been highlighted in bold in the manuscript
 This probably requires clarification and elaboration: after all, the only factor that changes with the inclusion of confusion is higher noise level at high frequencies (with respect to pre-merger MBHBs).
 Shouldn't this explain the need for more templates?
 
+> Due to the noise, less power can be recovered at high frequencies, so the power that is recoverable from the signal is at lower frequencies and is therefore accumulated over more time.
+We see that the reasoning for why the signal power is pushed to lower frequencies and longer times is not given, so we have reworded to:
+
+We can see that significantly more templates are required when the confusion noise is included, presumably due to noise at high frequency pushing the recoverable signal-to-noise ratio in a normalised template to lower frequencies.
+As the longer-duration low frequency component is now more important, small mismatches will become significant over the time, meaning more templates are needed to meet the minimum match criteria.
+
+This is highlighted in bold with the removed text struck out in the manuscript.
+
 8. Fig 5.
 Why are there sometimes multiple crosses of the same colour on the same verticle line?
 In general, for these figures (Fig 5, Fig 6, Fig 7, Fig 9), it is unclear how crosses (respectively circles) of the same colour differ from each other in terms of setup.
@@ -95,6 +103,12 @@ We have removed this footnote from the manuscript, indicated with strikethrough.
 10. Page 8.
 "as the inpainting search is not restricted to search at discrete times before merger": isn't this correct only if "a template bank that is effectual for observing any signals in a given range of times before merger" is created?
 If the authors mean the FFT evaluation described by Eq 3, then the search time is still discrete (as the data cadence is finite).
+
+> Here we are comparing to the set of times-before-merger that are possible in the zero-latency filter. 
+
+To clarify, we have updated "discrete" to "a small set of" in the manuscript.
+
+We have indicated this change in bold / strikethrough in the paper.
 
 11. Page 10.
 "which leaves a noticeable residual at the merger of this loud signal."
