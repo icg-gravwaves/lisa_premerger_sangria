@@ -2,19 +2,24 @@
 
 \section{Power loss due to Galactic Binary foreground}
 \label{sec:gb_noise_snr_loss}
-\updated{As demonstrated in Figure~\ref{fig:psds}, the pre-merger analysis mainly cuts off before the galactic bnary confusion noise becomes significant.}
+\updated{As demonstrated in Figure~\ref{fig:psds}, the pre-merger analysis waveforms mainly terminate before the frequency where resolvable galactic binary noise contribution becomes significant.
+To investigate this, we compare the expected signal-to-noise ratio loss when using different PSDs.
+Firstly, we use the estimated Sangria-HM `day zero' PSD, which includes all sources.
+We compare to the modelled PSD, which contains unresolvable galactic binary foreground which would not be removed by any global fit analyses.}
 
-\updated{Here we calculate how much SNR is lost due to the Galactic Binary confusion noise for each signal.}
+\updated{The fraction of signal-to-noise ratio lost is shown in Figure~\ref{fig:gb_snr_loss}, where we see that for the lightest systems, there can be some power loss.
+This power loss is enough to show that global fit-style subtraction of resolved Galactic Binary sources will help optimise this technique as we move closer to merger, but is not necessary for pre-merger searches.}
 
 \begin{figure}
    \centering
    \includegraphics[width=\columnwidth]{images/figure_11_GB_SNR_loss.pdf}
    \caption{
-       \updated{Fractional signal-to-noise ratio loss for each signal caused by Galactic Binary confusion noise.
-       We see that signals at lower chirp masses are affected more, losing up to 39\% of power half a day before merger.
-       For heavier signals, and for times more than a few days before merger, the signal power loss is much less, below 10\%.}
+       \updated{Fractional signal-to-noise ratio loss for each signal caused by the resolvable Galactic Binary noise contribution.
+       We see that signals at lower chirp masses are affected more, losing up to 15\% of power half a day before merger.
+       For heavier signals, and for times more than a few days before merger, the signal power loss is much less.
+       The few points where there seems to be a power `gain' (loss < 0) are due to the difference between an estimated PSD and the PSD model.}
    }
-   \label{fig:removal_residual}
+   \label{fig:gb_snr_loss}
 \end{figure}
 
 \section{Signal Removal}
