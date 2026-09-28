@@ -26,12 +26,18 @@ We use the full Sangria dataset, median averaging across segments, applying Hann
 
 This has been highlighted in bold in the manuscript.
 
-*** 3. Page 2.
+3. Page 2.
 The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs.
 It would be useful to illustrate and explain this.
 Provided enough separation, we agree that the premerger detection of MBHBs is, in principle, not a global-fit problem, however, we wonder, for this to hold true in practice, whether there are requirements on the technique or not.
 For instance, on page 7, the authors match zero padded data with shifting templates, and since there is no lower bound to the advance in time for the merger, the templates would a priori contain the merger (this is the case for ground-based detector researches and the method described in 2504.11322 for LISA); as a result, the normalization involves frequency content of MBHBs that actually overlap with other resolvable sources.
 Would this invalidate the "not a global-fit problem" claim for this technique?
+
+> We have added a new appendix to address this point.
+
+We find that ignoring resolvable galactic binary sources has a small (less than 10 percent) effect on recovered SNR for all Sangria sources up to one day before merger, and have shown the effect that the signal mass has on this loss of power.
+Therefore the global fit problem would be useful for optimisation in this technique, but would not invalidate the claim.
+
 
 4. Fig 2.
 The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
