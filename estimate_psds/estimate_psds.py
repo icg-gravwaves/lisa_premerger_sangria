@@ -209,6 +209,7 @@ def main():
     residual_A_psd.save(os.path.join(args.output_dir, 'residual_A_sangria_hm_PSD.txt'))
     residual_E_psd.save(os.path.join(args.output_dir, 'residual_E_sangria_hm_PSD.txt'))
 
+
     # The raw residuals are no longer needed once the PSDs are computed.
     del residual_A, residual_E
 
