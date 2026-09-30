@@ -38,7 +38,7 @@ Would this invalidate the "not a global-fit problem" claim for this technique?
 We find that ignoring resolvable galactic binary sources has a small (less than 10 percent) effect on recovered SNR for all Sangria sources up to one day before merger, and have shown the effect that the signal mass has on this loss of power.
 Therefore the global fit problem would be useful for optimisation in this technique, but would not invalidate the technique.
 
-We have updated the test to replace:
+We have updated the text to replace:
 This is important because it indicates that premerger detection of MBHB is not a ``Global Fit'' problem.
 
 with
@@ -92,8 +92,8 @@ Shouldn't this explain the need for more templates?
 > Due to the noise, less power can be recovered at high frequencies, so the power that is recoverable from the signal is at lower frequencies and is therefore accumulated over more time.
 We see that the reasoning for why the signal power is pushed to lower frequencies and longer times is not given, so we have reworded to:
 
-We can see that significantly more templates are required when the confusion noise is included, presumably due to noise at high frequency pushing the recoverable signal-to-noise ratio in a normalised template to lower frequencies.
-As the longer-duration low frequency component is now more important, small mismatches will become significant over the time, meaning more templates are needed to meet the minimum match criteria.
+We can see that significantly more templates are required when the confusion noise is included, presumably due to noise at high frequency pushing the bandwidth of the template to lower frequencies.
+As the longer-duration low frequency component now produces a more significant proportion of the power, small mismatches will become significant over the time, meaning more templates are needed to meet minimum match criteria.
 
 This is highlighted in bold with the removed text struck out in the manuscript.
 
