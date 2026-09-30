@@ -36,8 +36,20 @@ Would this invalidate the "not a global-fit problem" claim for this technique?
 > We have added a new appendix to address this point.
 
 We find that ignoring resolvable galactic binary sources has a small (less than 10 percent) effect on recovered SNR for all Sangria sources up to one day before merger, and have shown the effect that the signal mass has on this loss of power.
-Therefore the global fit problem would be useful for optimisation in this technique, but would not invalidate the claim.
+Therefore the global fit problem would be useful for optimisation in this technique, but would not invalidate the technique.
 
+We have updated the test to replace:
+This is important because it indicates that premerger detection of MBHB is not a ``Global Fit'' problem.
+
+with
+
+This is important because it indicates that premerger detection of MBHB can be run immediately at the start of the mission.
+
+And added:
+
+This point is explored further in Appendix A.
+
+This indicated in the manuscript with strikethrough and bold text
 
 4. Fig 2.
 The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
