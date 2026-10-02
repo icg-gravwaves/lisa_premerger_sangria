@@ -20,6 +20,7 @@ In Figure~\ref{fig:focused_no_2hr_removal} we show the results, without any sign
     \end{subfigure}
     \caption{
         Signal-to-Noise Ratio (SNR) vs forecast end time results for the inpainting search in the congested region of days 120-145.
+        \updated{Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
         For the left plot (\ref{fig:no_removal}), we do not remove the signal from the data at any point.
         We see overlap between signals, where, for example, Signal 2 is not visible as the ramp-up in signal-to-noise ratio for Signal 3 is dominant.
         The Signal 5 results are also overwhelmed by the ramp-down of Signal 4.
@@ -58,6 +59,7 @@ We then show results of this search, removing signals as they are identified, in
     \includegraphics[width=1.5\columnwidth]{images/inpainting_results/figure_10_focused_region_variable_removal.png}
     \caption{
         Timeline of results in the congested period of days 110-140 of the Sangria-HM dataset.
+        \updated{Each and cross corresponds to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
         These are inpainting results filtered to be at the 0, 5, 1, 4, 7 and 14 days-before-merger that were used in the zero latency search.
         We see that Signal 4 - the loudest signal - dominates the SNR, and can actually be found before Signals 2 and 3.
         We remove Signal 4 14 days before merger.
