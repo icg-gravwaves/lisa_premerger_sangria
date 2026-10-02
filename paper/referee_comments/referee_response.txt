@@ -108,7 +108,7 @@ We have added:
 
 Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.
 
-Highlighted in bold in the manuscript.
+This is in each of the captions for Figures 5, 6, 7, 9 and 10. Highlighted in bold in the manuscript.
 
 9. Page 7.
 We believe the full process is not necessarily more efficient with data padded to a length of 2^N: FFT algorithms usually already pad internally to improve its efficiency.
