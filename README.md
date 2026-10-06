@@ -1,6 +1,6 @@
-# Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets
+# Inpainting to search for premerger massive black hole binaries in realistic LISA datasets
 
-This is the repo used to control analysis and data release for the paper [Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets](https://arxiv.org/abs/2605.13738)
+This is the repo used to control analysis and data release for the paper [Inpainting to search for premerger massive black hole binaries in realistic LISA datasets](https://arxiv.org/abs/2605.13738)
 
 ## Data Release
 
