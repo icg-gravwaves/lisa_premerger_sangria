@@ -1,5 +1,5 @@
-Thank you very much for your careful reading of the paper and helpful insights.
-We have implemented many of the changes requested, and provide a detailed summary of them (along with the original comments that they refer to) below
+We would like to thank the referee for their careful reading of the paper and providing useful feedback.
+We have addressed all of the points that the referee raises, point-by-point, below and welcome any further comments the referee might have. Text changes we have made to the manuscript are highlighted in the submitted revised article with bold text and strikethrough to indicate new/altered text and removed text. Changes to figures are discussed in the point-by-point responses below.
 
 We have updated the title of the paper to "Inpainting to search for premerger massive black hole binaries in realistic LISA datasets." on the request of the editor.
 
@@ -23,8 +23,6 @@ This has been updated to:
 
 The power spectral density is estimated from the Sangria-HM dataset using the Welch method as described in~\cite{Allen:2005fk}.
 We use the full Sangria dataset, median averaging across segments, applying Hann windowing, and using a segment duration of 18.25 hours and a stride of 9.125 days.
-
-This has been highlighted in bold in the manuscript.
 
 3. Page 2.
 The degree of separation between the frequency content of premerger MBHBs and the other resolvable sources depends on the masses of MBHBs.
@@ -55,7 +53,7 @@ This indicated in the manuscript with strikethrough and bold text
 The colours for "E" and "A Smoothed" are quite close and the plot for "A Smoothed" simply seems buried in "E Smoothed".
 We suggest using a better palette and tuning the transparency.
 
-> We have removed the E channel lines from the plot, and updated the colour palette. This also makes the line colours match Figure 1
+> That's a good point. We realise that there is no real motivation to show both "A" and "E" on this plot, as they have the same underlying PSD. Therefore, to avoid confusion we have simply removed the E channel lines from the plot, and updated the colour palette. This also makes the line colours match Figure 1
 
 5. Page 3.
 "Characteristic strains at the times-before-merger that we consider are shown in Table I."
@@ -72,30 +70,25 @@ This is not a wide range for MBHBs detectable by LISA.
 Would enlarging the range to the full population of MBHBs detectable by LISA increase the bank size to a computationally unmanageable scale?
 Same question to the mass ratio.
 
-> Investigations into this question are encouraged.
+> The choices made here were designed to include the cover the parameter ranges used in the Sangria-HM dataset. We agree that the physical range, while not well known, could well include both higher- and lower-mass signals.
 
-The uncertainty in the exact lower mass boundary between IMBH and MBHB mean that it is not clear where the boundary should sit, and it is true that reducing the lower mass cutoff can cause the template bank size to rapidly increase, meaning that this is primarily a tuning choice.
-
-There is not really a science case to increase the total mass upper limit, as these signals would not have a significant pre-merger inspiral signal to detect.
+Nevertheless the methods here can definitely be scaled to the full range of MBHBs without reaching computationally unmanageable scales. Increasing the total mass will not meaningfully affect bank size, though such sources will merge more quickly and not really be detectables weeks / days out. Lower mass sources will increase the bank size. We leave a discussion of performance in the lower mass space for a separate paper. One would want to not only explore bank size, but also how important prompt detection is and the methods to use for it. If a signal is observable over months, one can happily taper the last hour(s) of data without loss of signal power.
 
 We have added to the Table 2 caption:
 
 The choices made here were designed to include the full set of Sangria-HM dataset signals, which range in total mass from $1.6\times 10^6 M_\odot$ to $9.6\times 10^6 M_\odot$, mass ratio ranges from $1.03$ to $2.75$, and component spins in the z-direction range from $-0.7$ to $0.8$. 
 
-This has been highlighted in bold in the manuscript
+**PLEASE ADD SOMETHING ELSE ABOUT WANTING TO EXPLORE LOW MASS SPACE IN TEXT**
 
 7. Page 4.
 "We can see that significantly more templates are required when the confusion noise is included, presumably due to the signal power being accumulated over more time, rather than most of the power coming at the highest frequencies."
 This probably requires clarification and elaboration: after all, the only factor that changes with the inclusion of confusion is higher noise level at high frequencies (with respect to pre-merger MBHBs).
 Shouldn't this explain the need for more templates?
 
-> Due to the noise, less power can be recovered at high frequencies, so the power that is recoverable from the signal is at lower frequencies and is therefore accumulated over more time.
-We see that the reasoning for why the signal power is pushed to lower frequencies and longer times is not given, so we have reworded to:
+> Due to the noise, less power can be recovered at high frequencies, so the fraction of total power that is recovered from the signal at lower frequencies increases. This broadens the "noise moments" (in the sense of traditional template bank papers), or increases the bandwidth of the signal.
+We have reworded this text to:
 
-We can see that significantly more templates are required when the confusion noise is included, presumably due to noise at high frequency pushing the bandwidth of the template to lower frequencies.
-As the longer-duration low frequency component now produces a more significant proportion of the power, small mismatches will become significant over the time, meaning more templates are needed to meet minimum match criteria.
-
-This is highlighted in bold with the removed text struck out in the manuscript.
+We can see that significantly more templates are required when the confusion noise is included, presumably due to the reduced noise at high frequency resulting in an increased bandwidth of the template, which is the dominant factor in template bank size~\cite{https://inspirehep.net/literature/402088 https://inspirehep.net/literature/714134}.
 
 8. Fig 5.
 Why are there sometimes multiple crosses of the same colour on the same verticle line?
@@ -108,29 +101,27 @@ We have added:
 
 Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.
 
-This is in each of the captions for Figures 5, 6, 7, 9 and 10. Highlighted in bold in the manuscript.
+This is in each of the captions for Figures 5, 6, 7, 9 and 10. 
 
 9. Page 7.
 We believe the full process is not necessarily more efficient with data padded to a length of 2^N: FFT algorithms usually already pad internally to improve its efficiency.
 It perhaps worths benchmarking before making the decision.
 
-> Thank you for this consideration, and for full scale analyses, benchmarking of this kind would be sensible, however for demonstration of this technique, we believe that whether we manually do the padding or it is done internally doesn't really matter.
+> Thank you for raising this. For full-scale analyses, benchmarking of this kind would be important, however FFT algorithms may well change significantly in the next 10 years and so for demonstration of this technique we don't feel this is necessary at this stage.
 
-We have removed this footnote from the manuscript, indicated with strikethrough.
+We have removed the footnote from the manuscript though, to avoid distraction.
 
 10. Page 8.
 "as the inpainting search is not restricted to search at discrete times before merger": isn't this correct only if "a template bank that is effectual for observing any signals in a given range of times before merger" is created?
 If the authors mean the FFT evaluation described by Eq 3, then the search time is still discrete (as the data cadence is finite).
 
-> Here we are comparing to the set of times-before-merger that are possible in the zero-latency filter. 
+> We were really referring to the FFT evaluation described by Eq 3 here, but we can still search with a noneffectual template bank, it would just result in reduced efficiency. Is it true that Eq. 3 is implemented and evaluated as a discrete FFT, and so by taking the peak of this we are, strictly speaking, still searching at discrete times. This can be alleviated by using sub-sample interpolation, but there doesn't seem to be a strong reason to do this if the planned workflow is that these search results are immediately handed off to an inference algorithm to obtain a posterior. There is a *big* improvement in being restricted to search (say) exactly 1 day, or exactly 2 days before merger, and needing a separate template bank and search for each than the new method here where we search at all [discrete] times [based on sample rate] at the same time.
 
 To clarify, we have updated "discrete" to "a small set of" in the manuscript.
-
-We have indicated this change in bold / strikethrough in the paper.
 
 11. Page 10.
 "which leaves a noticeable residual at the merger of this loud signal."
 How ample is the residual?
 Is it from the waveform model or the response?
 
-> We have added an appendix with a discussion of the residual. We have not attempted to diagnose why the residual is there, but simply noted that it is, and that despite being smaller than the residual, it can still be detected with high signal-to-noise.
+> We have added an appendix with a discussion of the residual. When running the code that is documented to be the code that produced the waveforms in this dataset a discrepancy is seen. We have not been able to identify why that is, as we cannot reproduce the original waveforms. Therefore we cannot diagnose this and simply state that it's there. There is a discussion about how well we can remove signals from the data, and what residuals will be left behind by things like waveform systematics. However, I think that discussion is not so relevant in the [premerger] search context, where we will not require the same removal accuracy that (for e.g.) tests of GR will require.
