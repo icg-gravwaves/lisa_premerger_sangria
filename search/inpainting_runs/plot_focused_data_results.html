@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Results plots for Focused region with densely-packed signals &#8212; Inpainting over the cracks</title>
+    <title>Results plots for Focused region with densely-packed signals &#8212; Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</title>
   
   
   
@@ -16,45 +16,42 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=71637191" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -68,7 +65,6 @@
     <link rel="prev" title="Focused region - overlapping signals" href="focused.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -84,8 +80,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -93,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -100,8 +108,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,8 +125,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -148,29 +155,33 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt=""/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
   
   
-    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+    <p class="title logo__title">Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../datasets/README.html">Dataset Download Scripts</a></li>
 
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+
 
 </ul>
 </details></li>
@@ -212,14 +223,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -302,7 +308,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -316,17 +322,25 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -411,29 +425,21 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">27</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="c1"># Everything plotted in this notebook is done using these helper modules</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="kn">import</span><span class="w"> </span><span class="nn">plotting_utils</span>
+<span class="ne">---&gt; </span><span class="mi">27</span> <span class="kn">from</span><span class="w"> </span><span class="nn">common_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_results_inpainting</span> <span class="k">as</span> <span class="n">get_results</span><span class="p">,</span> <span class="n">get_results_zero_latency</span>
 
-SWIGLAL standard output/error redirection is enabled in IPython.
-This may lead to performance penalties. To disable locally, use:
+<span class="n">File</span> <span class="o">~/</span><span class="n">lisa</span><span class="o">/</span><span class="n">lisa_premerger_sangria</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="n">common_utils</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span><span class="w"> </span><span class="nn">ldc.io.hdf5</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hdfio</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pycbc.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ldc.waveform.lisabeta</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastBHB</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ldc.lisa</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbits</span>
 
-with lal.no_swig_redirect_standard_output_error():
-    ...
-
-To disable globally, use:
-
-lal.swig_redirect_standard_output_error(False)
-
-Note however that this will likely lead to error messages from
-LAL functions being either misdirected or lost when called from
-Jupyter notebooks.
-
-To suppress this warning, use:
-
-import warnings
-warnings.filterwarnings(&quot;ignore&quot;, &quot;Wswiglal-redir-stdio&quot;)
-import lal
-
-  import lal as _lal
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pycbc&#39;
 </pre></div>
 </div>
 </div>
@@ -504,7 +510,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a1ef3bb97e7826320416f39d689330c9adf14fbe68fccf1a62feb64aa3e990ee.png" src="../../_images/a1ef3bb97e7826320416f39d689330c9adf14fbe68fccf1a62feb64aa3e990ee.png" />
+<img alt="../../_images/f968a39d3d661f11e83bf7a5a598bc0718e2e7100000ad90c8c2cc745d9b6620.png" src="../../_images/f968a39d3d661f11e83bf7a5a598bc0718e2e7100000ad90c8c2cc745d9b6620.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -526,7 +532,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/57cdfeba8cb5e874dcc720129b77ef540d38780fdd30c57004bde9a1e5fc9086.png" src="../../_images/57cdfeba8cb5e874dcc720129b77ef540d38780fdd30c57004bde9a1e5fc9086.png" />
+<img alt="../../_images/0b170843a8fb8f8cfea200f39adcf53e6e47a4f422fe9e9d5eabff6e7d175185.png" src="../../_images/0b170843a8fb8f8cfea200f39adcf53e6e47a4f422fe9e9d5eabff6e7d175185.png" />
 </div>
 </div>
 </section>
@@ -547,7 +553,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d974562a89c9bfa2f58b7329e8204c0c1c3427ec8ad6e8446109e3b07c20202b.png" src="../../_images/d974562a89c9bfa2f58b7329e8204c0c1c3427ec8ad6e8446109e3b07c20202b.png" />
+<img alt="../../_images/780bfd4b5650168c54313f573113ab830f2366cb5bf9000a60f8ad76082b916a.png" src="../../_images/780bfd4b5650168c54313f573113ab830f2366cb5bf9000a60f8ad76082b916a.png" />
 </div>
 </div>
 </section>
@@ -568,7 +574,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9d7a80d2bd599084b9dfc8171b48c278db2e7052b0775e145b3a93ef60dd3ad9.png" src="../../_images/9d7a80d2bd599084b9dfc8171b48c278db2e7052b0775e145b3a93ef60dd3ad9.png" />
+<img alt="../../_images/ce71cdba5d44222172cbb6974ffd446292bc4e20ebb9d1ecf64c52d0b8664830.png" src="../../_images/ce71cdba5d44222172cbb6974ffd446292bc4e20ebb9d1ecf64c52d0b8664830.png" />
 </div>
 </div>
 </section>
@@ -591,7 +597,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/cfa95b91ebc330f560a9ef534be2e5f45006d30a96b1712f156c582762c56f14.png" src="../../_images/cfa95b91ebc330f560a9ef534be2e5f45006d30a96b1712f156c582762c56f14.png" />
+<img alt="../../_images/5a25f565d98d6e12c0505648e0343cb0190993a6ec23b7aacf874f87cb446a1a.png" src="../../_images/5a25f565d98d6e12c0505648e0343cb0190993a6ec23b7aacf874f87cb446a1a.png" />
 </div>
 </div>
 </section>
@@ -613,7 +619,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dd3065bd990f5b278d11bf16ed216982d1d0c8d0bd3e22aba857c234b9ac77a8.png" src="../../_images/dd3065bd990f5b278d11bf16ed216982d1d0c8d0bd3e22aba857c234b9ac77a8.png" />
+<img alt="../../_images/0cc3e40a50ecb720453d51c6b6f2b249f66db67a954af1ac992707ebc3361fee.png" src="../../_images/0cc3e40a50ecb720453d51c6b6f2b249f66db67a954af1ac992707ebc3361fee.png" />
 </div>
 </div>
 </section>
@@ -636,7 +642,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8f0d640d48e63ae1ba583951dc31536ea9cf40c76c143b18b5cdb4cd6839eb29.png" src="../../_images/8f0d640d48e63ae1ba583951dc31536ea9cf40c76c143b18b5cdb4cd6839eb29.png" />
+<img alt="../../_images/7363cd83a4beaea8222902a3607841421cc9d355f1648a2f394169609651fe44.png" src="../../_images/7363cd83a4beaea8222902a3607841421cc9d355f1648a2f394169609651fe44.png" />
 </div>
 </div>
 </section>
@@ -658,7 +664,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e05e9fec760276114c6502dbf95ba081a91f7d9395f026d19746d83cbae72efd.png" src="../../_images/e05e9fec760276114c6502dbf95ba081a91f7d9395f026d19746d83cbae72efd.png" />
+<img alt="../../_images/8d19e99b15f33946adb28e7c92f4f46ae1990ee3c13143f16cbf07275693e024.png" src="../../_images/8d19e99b15f33946adb28e7c92f4f46ae1990ee3c13143f16cbf07275693e024.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -680,7 +686,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3d603206d6a17cc092d5b6d4e10fac60fa81602f83363dd989f8888da62dc3ac.png" src="../../_images/3d603206d6a17cc092d5b6d4e10fac60fa81602f83363dd989f8888da62dc3ac.png" />
+<img alt="../../_images/a3b7c7c28a782cc13bfc62296fd357df8af8ab5385225ec015cf80f6615631c8.png" src="../../_images/a3b7c7c28a782cc13bfc62296fd357df8af8ab5385225ec015cf80f6615631c8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -703,7 +709,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ba7dd87ba66832899ff148bb98678e2c342140ed938b08eed667c2fa8c78869d.png" src="../../_images/ba7dd87ba66832899ff148bb98678e2c342140ed938b08eed667c2fa8c78869d.png" />
+<img alt="../../_images/a7d50d74a905fc4d73eb31d34da98ffb3416553cc3a041bda05f68471780f913.png" src="../../_images/a7d50d74a905fc4d73eb31d34da98ffb3416553cc3a041bda05f68471780f913.png" />
 </div>
 </div>
 </section>
@@ -726,7 +732,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" src="../../_images/ea0067f1ffe6201cb58b39fbfa9be4b3eb2d1954a238e9129d068e0983c59001.png" />
+<img alt="../../_images/f39a02433ae21f44a93c6a2969f797c5e9313d4435fe41ae234f9de8a7c0149d.png" src="../../_images/f39a02433ae21f44a93c6a2969f797c5e9313d4435fe41ae234f9de8a7c0149d.png" />
 </div>
 </div>
 </section>
@@ -781,7 +787,7 @@ import lal
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c82df6ac33992ab4c86b15cd346b1ce91fe1d038179bd192a179e78f348967e2.png" src="../../_images/c82df6ac33992ab4c86b15cd346b1ce91fe1d038179bd192a179e78f348967e2.png" />
+<img alt="../../_images/2ee1ae4c394d7059c30be209adcae81505b40661556b98ae9f3afca0f47f0a3e.png" src="../../_images/2ee1ae4c394d7059c30be209adcae81505b40661556b98ae9f3afca0f47f0a3e.png" />
 </div>
 </div>
 <section id="make-a-table-of-removed-times-days-to-be-added-to-the-paper">
@@ -935,16 +941,14 @@ Signal 5 is removed 0.08 days before signal 5 merges
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+  <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Results plots for Focused region with densely-packed signals</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-removal-and-no-removal-same-plot">Variable removal and no removal - same plot</a></li>
@@ -1010,8 +1014,8 @@ By Gareth Cabourn Davies and Ian Harry
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

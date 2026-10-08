@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Plotting PSDs &#8212; Inpainting over the cracks</title>
+    <title>Plotting PSDs &#8212; Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</title>
   
   
   
@@ -16,45 +16,42 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=71637191" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -68,7 +65,6 @@
     <link rel="prev" title="Characterisic Strain - plotting" href="characteristic_strain.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -84,8 +80,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -93,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -100,8 +108,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,8 +125,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -148,29 +155,33 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt=""/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
   
   
-    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+    <p class="title logo__title">Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../datasets/README.html">Dataset Download Scripts</a></li>
 
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Estimating PSDs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="estimate_psds.html">Estimating PSDs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Plotting PSDs</a></li>
+
 
 </ul>
 </details></li>
@@ -212,14 +223,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -302,7 +308,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -316,17 +322,25 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -349,11 +363,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-pre-merger-mbhb-characteristic-strain">Adding pre-merger MBHB characteristic strain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot-figure-1">PSDs money plot (Figure 1)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-plot-the-smoothing-section">Load and plot the “smoothing section”</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot">PSDs money plot</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#now-make-the-smoothed-section-plot-figure-2">Now make the smoothed section plot (Figure 2)</a></li>
 </ul>
 
             </nav>
@@ -368,10 +383,10 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="plotting-psds">
 <h1>Plotting PSDs<a class="headerlink" href="#plotting-psds" title="Link to this heading">#</a></h1>
-<p>In this notebook we generate the Figure 1 plot for use in the paper. The PSDs and characteristic strains have been generated in estimate_psds.ipynb and characteristic_strain.ipynb respectively, so we will load them in</p>
+<p>In this notebook we generate the Figure 1 and Figure 2 plots for use in the paper. The PSDs and characteristic strains have been generated in estimate_psds.sh and characteristic_strain.sh respectively, so we will load them in</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pycbc.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_frequencyseries</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pycbc.psd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -390,11 +405,27 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">search_dir</span><span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">plotting_utils</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="n">cutoff_days</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+
+<span class="c1"># Bounds of the smoothed (bridged) section in Hz - must match estimate_psds.py</span>
+<span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.09</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_psd</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="p">):</span>
+    <span class="k">return</span>  <span class="n">pycbc</span><span class="o">.</span><span class="n">psd</span><span class="o">.</span><span class="n">from_txt</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">flen</span><span class="p">,</span>
+        <span class="n">delta_f</span><span class="p">,</span>
+        <span class="n">delta_f</span><span class="p">,</span>
+        <span class="n">is_asd_file</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/lustre2/shared_conda/envs/garethcd/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
 
 SWIGLAL standard output/error redirection is enabled in IPython.
 This may lead to performance penalties. To disable locally, use:
@@ -417,17 +448,9 @@ warnings.filterwarnings(&quot;ignore&quot;, &quot;Wswiglal-redir-stdio&quot;)
 import lal
 
   import lal as _lal
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell contains the information about input files</span>
-
-<span class="n">estimated_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{channel}</span><span class="s1">_sangria_hm_PSD.txt&#39;</span>
-<span class="n">smoothed_estimated_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{channel}</span><span class="s1">_sangria_hm_SMOOTHED_PSD.txt&#39;</span>
-<span class="n">segment_duration</span> <span class="o">=</span> <span class="mi">1576800</span>
+/mnt/lustre2/shared_conda/envs/garethcd/env_lisa_premerger_sangria/lib/python3.11/site-packages/lisaconstants/compat/astropy.py:252: UserWarning: The following constants differ between lisaconstants and the version of astropy you have installed: VACUUM_PERMEABILITY. The recommended version of astropy is 7.2.0. Use a different one at your own risks. 
+You may also open an issue at https://gitlab.esa.int/lisa-sgs/commons/lisa-constants to warn that lisaconstants is not compatible with astropy v8.0.1
+  warnings.warn(
 </pre></div>
 </div>
 </div>
@@ -435,270 +458,156 @@ import lal
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load in PSD files</span>
-<span class="n">A_estimate</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="n">estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="n">E_estimate</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="n">estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">))</span>
-<span class="n">T_estimate</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="n">estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">))</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="mi">365</span> <span class="o">*</span> <span class="mi">86400</span>
+<span class="n">delta_t</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">flen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span> <span class="o">/</span> <span class="n">delta_t</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">delta_f</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">duration</span>
 
-<span class="n">A_smoothed</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="n">smoothed_estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="n">E_smoothed</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="n">smoothed_estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">))</span>
+<span class="n">estimated_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{channel}</span><span class="s1">_sangria_hm_PSD.txt&#39;</span>
+<span class="n">A_estimate</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="n">estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+<span class="n">T_estimate</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="n">estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">),</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
 
-<span class="n">AE_model</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="s1">&#39;model_AE_PSD.txt&#39;</span><span class="p">)</span>
-<span class="n">T_model</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="s1">&#39;model_T_PSD.txt&#39;</span><span class="p">)</span>
+<span class="n">smoothed_estimated_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{channel}</span><span class="s1">_sangria_hm_SMOOTHED_PSD.txt&#39;</span>
+<span class="n">A_smoothed</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="n">smoothed_estimated_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+<span class="c1"># The noise-only residual PSDs (data with every signal type removed).</span>
+<span class="n">residual_A_psd</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;residual_A_sangria_hm_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+<span class="n">residual_E_psd</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;residual_E_sangria_hm_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
 
-<span class="n">AE_model_smoothed</span> <span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span><span class="s1">&#39;model_AE_SMOOTHED_PSD.txt&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now lets <em>also</em> get the PSD model which doesnt include GBs - this matches the one used in the zero latency filter paper. We don’t use this beyond this plot, so dont need to save it</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sangria_model_freqs</span> <span class="o">=</span> <span class="n">A_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span>
-<span class="n">nm_nogb</span> <span class="o">=</span> <span class="n">ldc_noise</span><span class="o">.</span><span class="n">get_noise_model</span><span class="p">(</span><span class="s2">&quot;sangria&quot;</span><span class="p">,</span> <span class="n">sangria_model_freqs</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ae_nogb</span> <span class="o">=</span> <span class="n">nm_nogb</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
-<span class="n">t_nogb</span> <span class="o">=</span> <span class="n">nm_nogb</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">AE_model</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;model_AE_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+<span class="n">T_model</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;model_T_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+
+<span class="n">AE_model_nogb</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;model_AE_NOGB_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
+
+<span class="n">AE_model_smoothed</span> <span class="o">=</span> <span class="n">load_psd</span><span class="p">(</span><span class="s1">&#39;model_AE_SMOOTHED_PSD.txt&#39;</span><span class="p">,</span> <span class="n">flen</span><span class="o">=</span><span class="n">flen</span><span class="p">,</span> <span class="n">delta_f</span><span class="o">=</span><span class="n">delta_f</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:390: RuntimeWarning: divide by zero encountered in divide
-  return self._data.__rtruediv__(other)
-/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:435: RuntimeWarning: divide by zero encountered in power
-  return self._data ** other
-/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:348: RuntimeWarning: invalid value encountered in multiply
-  return self._data * other
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/lustre2/shared_conda/envs/garethcd/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/psd/read.py:76: RuntimeWarning: divide by zero encountered in log
+  slog = numpy.log(noise_data)
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now make the PSD plot</p>
+<p>Now make the PSD plot - no smoothing</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cycle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
-
-<span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span>
-<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">A_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">A_smoothed</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A Smoothed&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_psd_lines</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="n">lines_to_plot</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">A_estimate</span><span class="p">,</span> <span class="s1">&#39;A Estimated&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">T_estimate</span><span class="p">,</span> <span class="s1">&#39;T Estimated&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">AE_model</span><span class="p">,</span> <span class="s1">&#39;Model A/E&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">T_model</span><span class="p">,</span> <span class="s1">&#39;Model T&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">AE_model_nogb</span><span class="p">,</span> <span class="s1">&#39;Model A/E, no GBs&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">),</span>
     <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">E_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">E_smoothed</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;E Smoothed&#39;</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">T_estimate</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">T_estimate</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;T&#39;</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">AE_model</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model A/E&#39;</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">T_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">T_model</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model T&#39;</span>
-<span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">AE_model_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">AE_model_smoothed</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model A/E, smoothed&#39;</span>
-<span class="p">)</span>
+    <span class="k">for</span> <span class="n">psd</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span> <span class="ow">in</span> <span class="n">lines_to_plot</span><span class="p">:</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency, Hz&quot;</span><span class="p">)</span>
-<span class="n">leg1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-43</span><span class="p">,</span> <span class="mf">1e-37</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/07c0a6f826865344bcc03ab8fe28861d9dd29080c582fdd6a17cf6ca4a9b26bc.png" src="../_images/07c0a6f826865344bcc03ab8fe28861d9dd29080c582fdd6a17cf6ca4a9b26bc.png" />
-</div>
-</div>
-<section id="adding-pre-merger-mbhb-characteristic-strain">
-<h2>Adding pre-merger MBHB characteristic strain<a class="headerlink" href="#adding-pre-merger-mbhb-characteristic-strain" title="Link to this heading">#</a></h2>
-<p>But we want to get a bit more information out: do Massive black hole binaries clash with the galactic binary background when analysing them pre-merger?</p>
-<p>So lets have a look at the charcteristic strain. First we load it in:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
-<span class="n">cutoff_days</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
-<span class="n">example_signal_number</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+            <span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
+            <span class="n">psd</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+            <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
-<span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;characteristic_strain/collected_characteristic_strain.hdf&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ccsf</span><span class="p">:</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">ccsf</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">][:]</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="n">freqs</span> <span class="o">&gt;</span> <span class="mi">0</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span>
-    <span class="n">full_char</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">example_signal_number</span><span class="p">)][</span><span class="s1">&#39;0_A&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">example_signal_number</span><span class="p">)][</span><span class="s1">&#39;0_E&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">char</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">days</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">example_signal_number</span><span class="p">)][</span><span class="nb">str</span><span class="p">(</span><span class="n">days</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_A&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> 
-                      <span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">example_signal_number</span><span class="p">)][</span><span class="nb">str</span><span class="p">(</span><span class="n">days</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_E&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">days</span> <span class="ow">in</span> <span class="n">cutoff_days</span>
-    <span class="p">}</span>
+    <span class="n">smoothed_section_upper</span> <span class="o">=</span> <span class="mf">0.09</span>
+    <span class="n">smoothed_section_lower</span> <span class="o">=</span> <span class="mf">0.03</span>
 
-<span class="c1"># days before merger to use as cutoffs</span>
-<span class="n">cutoff_days</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
+    <span class="n">smoothed_lines</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">A_smoothed</span><span class="p">,</span> <span class="s1">&#39;A Smoothed&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:pink&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">AE_model_smoothed</span><span class="p">,</span> <span class="s1">&#39;Model A/E Smoothed&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">psd</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span> <span class="ow">in</span> <span class="n">smoothed_lines</span><span class="p">:</span>
+        <span class="n">idx_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">smoothed_section_lower</span><span class="p">))</span>
+        <span class="n">idx_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">smoothed_section_upper</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+            <span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">idx_min</span><span class="p">:</span><span class="n">idx_max</span><span class="p">],</span>
+            <span class="n">psd</span><span class="p">[</span><span class="n">idx_min</span><span class="p">:</span><span class="n">idx_max</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+            <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
-<span class="n">time_before_colors</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">cutoff_days</span><span class="p">)</span>
-<span class="n">time_before_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span>
+        <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothed Section&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now plot on its own to check that it looks sensible. Note that we are transforming compared to the previous notebook so that it can sit on the same plot as the PSDs. Add in the plots with the pre-merger cutoffs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span>
 <span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.25</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">freqs</span><span class="p">,</span>
-    <span class="n">full_char</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">freqs</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Full signal&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
-<span class="p">)</span>
-<span class="k">for</span> <span class="n">days</span> <span class="ow">in</span> <span class="n">cutoff_days</span><span class="p">:</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-        <span class="n">freqs</span><span class="p">,</span>
-        <span class="n">char</span><span class="p">[</span><span class="n">days</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">freqs</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">time_before_colors</span><span class="p">[</span><span class="n">days</span><span class="p">],</span>
-        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">days</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="n">leg1</span> <span class="o">=</span> <span class="n">plot_psd_lines</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;MBHB time before merger&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">3e-43</span><span class="p">,</span> <span class="mf">1e-35</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency, Hz&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-43</span><span class="p">,</span> <span class="mf">1e-37</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/49cfeec7d36088c0e1f41677e841712fc9f5cc96c0f1f62bd3d34313ddc608b2.png" src="../_images/49cfeec7d36088c0e1f41677e841712fc9f5cc96c0f1f62bd3d34313ddc608b2.png" />
+<img alt="../_images/0237025ae1e12d01b650e6c0e9850a81cb5649c1e001fd0a4e497e404e694513.png" src="../_images/0237025ae1e12d01b650e6c0e9850a81cb5649c1e001fd0a4e497e404e694513.png" />
 </div>
 </div>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="psds-money-plot">
-<h1>PSDs money plot<a class="headerlink" href="#psds-money-plot" title="Link to this heading">#</a></h1>
-<p>Now lets have a look at the PSDS plotted together with the characteristic strains</p>
+<section class="tex2jax_ignore mathjax_ignore" id="psds-money-plot-figure-1">
+<h1>PSDs money plot (Figure 1)<a class="headerlink" href="#psds-money-plot-figure-1" title="Link to this heading">#</a></h1>
+<p>But we want to get a bit more information out: do Massive black hole binaries clash with the galactic binary background when analysing them pre-merger?</p>
+<p>So lets have a look at the charcteristic strain. First we load it in, then add to the PSDs plot that we made above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
-<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_before_colors</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">cutoff_days</span><span class="p">)</span>
+<span class="n">time_before_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span>
+
+<span class="n">paper_example_signal</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.5</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.25</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">A_estimate</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">A_estimate</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A Estimated&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span>
-<span class="p">)</span>
-<span class="c1"># ax.loglog(</span>
-<span class="c1">#     E_estimate.sample_frequencies,</span>
-<span class="c1">#     E_estimate,</span>
-<span class="c1">#     c=cycle[1],</span>
-<span class="c1">#     label=&#39;E Estimated&#39;,</span>
-<span class="c1">#     zorder=10</span>
-<span class="c1"># )</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">A_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">A_smoothed</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;A Smoothed&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">15</span>
-<span class="p">)</span>
-<span class="c1"># ax.loglog(</span>
-<span class="c1">#     E_smoothed.sample_frequencies,</span>
-<span class="c1">#     E_smoothed,</span>
-<span class="c1">#     c=cycle[3],</span>
-<span class="c1">#     label=&#39;E Smoothed&#39;,</span>
-<span class="c1">#     zorder=20</span>
-<span class="c1"># )</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">T_estimate</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">T_estimate</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;T Estimated&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">6</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">AE_model</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model A/E&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">30</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">T_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">T_model</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="n">cycle</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model T&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">25</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">sangria_model_freqs</span><span class="p">,</span>
-    <span class="n">ae_nogb</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model A/E, no GB&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">35</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
-    <span class="n">AE_model_smoothed</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
-    <span class="n">AE_model_smoothed</span><span class="p">,</span>
-    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model A/E, smoothed&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span>
-<span class="p">)</span>
+<span class="n">leg1</span> <span class="o">=</span> <span class="n">plot_psd_lines</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency, Hz&quot;</span><span class="p">)</span>
-<span class="n">leg1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;characteristic_strain/collected_characteristic_strain.hdf&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ccsf</span><span class="p">:</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">ccsf</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">][:]</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">freqs</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span>
+
+    <span class="n">full_char</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">paper_example_signal</span><span class="p">)][</span><span class="s1">&#39;0_A&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">paper_example_signal</span><span class="p">)][</span><span class="s1">&#39;0_E&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">char</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">days</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">paper_example_signal</span><span class="p">)][</span><span class="nb">str</span><span class="p">(</span><span class="n">days</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_A&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> 
+                    <span class="n">ccsf</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">paper_example_signal</span><span class="p">)][</span><span class="nb">str</span><span class="p">(</span><span class="n">days</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_E&#39;</span><span class="p">][</span><span class="n">valid</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">days</span> <span class="ow">in</span> <span class="n">cutoff_days</span>
+    <span class="p">}</span>
+
+
 <span class="n">line2</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">labels2</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="n">full_h_c</span><span class="o">=</span> <span class="n">load_frequencyseries</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s1">&#39;characteristic_strain/characteristic_strain_</span><span class="si">{</span><span class="n">example_signal_number</span><span class="si">}</span><span class="s1">_full.txt&#39;</span>
-<span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
     <span class="n">freqs</span><span class="p">,</span>
     <span class="n">full_char</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">freqs</span><span class="p">,</span>
     <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
-
 <span class="n">line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
         <span class="p">[],</span>
         <span class="p">[],</span>
         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
     <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">labels2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Full Signal&#39;</span><span class="p">)</span>
@@ -709,7 +618,8 @@ import lal
         <span class="n">char</span><span class="p">[</span><span class="n">days</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">freqs</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="n">time_before_colors</span><span class="p">[</span><span class="n">days</span><span class="p">],</span>
         <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">days</span><span class="si">}</span><span class="s1"> days&#39;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="o">+</span><span class="n">days</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">40</span><span class="o">+</span><span class="n">days</span><span class="p">,</span>
+        <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
     <span class="n">line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
@@ -724,24 +634,193 @@ import lal
     <span class="n">line2</span><span class="p">,</span>
     <span class="n">labels2</span><span class="p">,</span>
     <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Pre-merger MBHB Characteristic Strain</span><span class="se">\n</span><span class="s2">(Signal </span><span class="si">{</span><span class="n">example_signal_number</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Pre-merger MBHB Characteristic Strain</span><span class="se">\n</span><span class="s2">(Signal </span><span class="si">{</span><span class="n">paper_example_signal</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
     <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">leg1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency, Hz&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">1e-43</span><span class="p">,</span> <span class="mf">1e-37</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">paper_plot_dir</span><span class="si">}</span><span class="s1">/figure_1_psds_with_sources.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/89ee94ea69903c8634f00500a99e0dadf07560ffb20d28304bc1cf2440cc6328.png" src="../_images/89ee94ea69903c8634f00500a99e0dadf07560ffb20d28304bc1cf2440cc6328.png" />
+<img alt="../_images/6db4ec38112d0c4aefd78d7ffce10ef5f5a2e421223513f42fc73804cbccc235.png" src="../_images/6db4ec38112d0c4aefd78d7ffce10ef5f5a2e421223513f42fc73804cbccc235.png" />
 </div>
 </div>
-<p>Well thats nice, until around 3-4 days before merger, (for this signal) the MBHB strain is completely separate from the galactic binary foreground. Even at 0-5 &amp; 1 day before merger, it is well below the MBHB signal.</p>
-<p>This is important to show that this isnt a ‘global fit’ problem, and we can do this search without significantly worrying about removing the galactic white dwarf binary foregound from the data 🥳🎉🎊</p>
+<p>Well thats nice, until around 3-4 days before merger, (for most signals) the MBHB strain is completely separate from the galactic binary foreground. Even at 0-5 &amp; 1 day before merger, it is well below the MBHB signal.</p>
+<p>This is important to show that this isn’t a ‘global fit’ problem: the MBHB characteristic strain sits well below the galactic binary foreground at all pre-merger times, so we can do this search without significantly worrying about removing the galactic binary foreground from the data 🥳🎉🎊</p>
+<section id="load-and-plot-the-smoothing-section">
+<h2>Load and plot the “smoothing section”<a class="headerlink" href="#load-and-plot-the-smoothing-section" title="Link to this heading">#</a></h2>
+<p>To demonstrate what we are trying to do with the smoothing, we show the model PSD, and the peak either side of it. To use nicer numbers, we round these to 1sf and plot the difference that this makes (practically none)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span>
+
+<span class="n">pks</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
+            <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">&lt;</span> <span class="mf">0.1</span>
+        <span class="p">),</span>
+        <span class="n">AE_model</span><span class="p">,</span>
+        <span class="mi">0</span>
+    <span class="p">)</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># We will use 0.03 and 0.09 as the bounds of the section. </span>
+<span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.09</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">pks</span><span class="p">])</span>
+<span class="n">smoothing_window_bound_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">section_lower</span><span class="p">)</span>
+    <span class="p">),</span> 
+    <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span>
+        <span class="nb">abs</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">section_upper</span><span class="p">)</span>
+    <span class="p">),</span> 
+<span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+    <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">,</span>
+    <span class="n">AE_model</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PSD Model&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">pks</span><span class="p">],</span>
+    <span class="n">AE_model</span><span class="p">[</span><span class="n">pks</span><span class="p">],</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model Peaks&#39;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">smoothing_window_bound_idxs</span><span class="p">],</span>
+    <span class="n">AE_model</span><span class="p">[</span><span class="n">smoothing_window_bound_idxs</span><span class="p">],</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Smoothing Section Definition&quot;</span>
+<span class="p">)</span>
+
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.03497539 0.09725923]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa011aa4690&gt;
+</pre></div>
+</div>
+<img alt="../_images/6c4ec3f19fba32cc255d60ff3183b3dcfa58549c39634e9854b3970695399a37.png" src="../_images/6c4ec3f19fba32cc255d60ff3183b3dcfa58549c39634e9854b3970695399a37.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="now-make-the-smoothed-section-plot-figure-2">
+<h1>Now make the smoothed section plot (Figure 2)<a class="headerlink" href="#now-make-the-smoothed-section-plot-figure-2" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">width</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.25</span>
+<span class="c1"># Lets plot the PSDs to compare them:</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+
+
+<span class="n">lines_to_plot</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">A_estimate</span><span class="p">,</span> <span class="s1">&#39;A Estimated&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">A_smoothed</span><span class="p">,</span> <span class="s1">&#39;A Smoothed&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:pink&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">AE_model</span><span class="p">,</span> <span class="s1">&#39;Model A/E&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">AE_model_smoothed</span><span class="p">,</span> <span class="s1">&#39;Model A/E Smoothed&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">psd</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="p">,</span> <span class="n">freqmin</span><span class="p">,</span> <span class="n">freqmax</span><span class="p">)</span> <span class="ow">in</span> <span class="n">lines_to_plot</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">freqmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">idx_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">freqmin</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">idx_min</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">freqmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">idx_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">freqmax</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">idx_max</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+        <span class="n">psd</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">idx_min</span><span class="p">:</span><span class="n">idx_max</span><span class="p">],</span>
+        <span class="n">psd</span><span class="p">[</span><span class="n">idx_min</span><span class="p">:</span><span class="n">idx_max</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+        <span class="n">rasterized</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+
+
+
+<span class="n">scatter_freqs</span> <span class="o">=</span> <span class="p">[</span><span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span><span class="p">]</span>
+<span class="n">scatter_ys</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scatter_freqs</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">freq</span><span class="p">))</span>
+    <span class="n">scatter_ys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">AE_model</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+    <span class="n">scatter_freqs</span><span class="p">,</span> <span class="n">scatter_ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothing Endpoints&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Plot the Hann window used to smoothly transition between the estimate and the &#39;bridge&#39;.</span>
+<span class="c1"># This is the same window applied in smooth_section() (estimate_psds.py).</span>
+<span class="c1"># We multiply it by the bridge line so it sits at the correct scale on the plot.</span>
+<span class="n">idx_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">section_lower</span><span class="p">))</span>
+<span class="n">idx_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span> <span class="o">-</span> <span class="n">section_upper</span><span class="p">))</span>
+<span class="n">section_freqs</span> <span class="o">=</span> <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">idx_min</span><span class="p">:</span><span class="n">idx_max</span><span class="p">]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">windows</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">windows</span><span class="o">.</span><span class="n">hann</span><span class="p">(</span><span class="n">section_freqs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Reconstruct the bridge line (same as in smooth_section) to scale the window by.</span>
+<span class="n">start_x</span><span class="p">,</span> <span class="n">start_y</span> <span class="o">=</span> <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">idx_min</span><span class="p">],</span> <span class="n">AE_model</span><span class="p">[</span><span class="n">idx_min</span><span class="p">]</span>
+<span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span> <span class="o">=</span> <span class="n">AE_model</span><span class="o">.</span><span class="n">sample_frequencies</span><span class="p">[</span><span class="n">idx_max</span><span class="p">],</span> <span class="n">AE_model</span><span class="p">[</span><span class="n">idx_max</span><span class="p">]</span>
+<span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">end_y</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">start_y</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">end_x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">start_x</span><span class="p">))</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">start_y</span><span class="p">)</span> <span class="o">-</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">start_x</span><span class="p">)</span>
+<span class="n">bridge_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">intercept</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">section_freqs</span> <span class="o">**</span> <span class="n">slope</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+    <span class="n">section_freqs</span><span class="p">,</span>
+    <span class="n">window</span> <span class="o">*</span> <span class="n">bridge_line</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Hann Transition&quot;</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span>
+    <span class="n">section_lower</span><span class="p">,</span> <span class="n">section_upper</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Smoothed Section&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency, Hz&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower center&#39;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">2e-43</span><span class="p">,</span> <span class="mf">2e-38</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">2e-2</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=-</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../paper/images/dataset/figure_2_smoothing_60mHz.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1984ec73b1776bc1790ab798be06dec26fa6a5b3a0d47e39fa4ba8cb65d123e3.png" src="../_images/1984ec73b1776bc1790ab798be06dec26fa6a5b3a0d47e39fa4ba8cb65d123e3.png" />
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -799,22 +878,21 @@ import lal
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+  <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-pre-merger-mbhb-characteristic-strain">Adding pre-merger MBHB characteristic strain</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Plotting PSDs</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot-figure-1">PSDs money plot (Figure 1)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-and-plot-the-smoothing-section">Load and plot the “smoothing section”</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#psds-money-plot">PSDs money plot</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#now-make-the-smoothed-section-plot-figure-2">Now make the smoothed section plot (Figure 2)</a></li>
 </ul>
 
   </nav></div>
@@ -864,8 +942,8 @@ By Gareth Cabourn Davies and Ian Harry
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

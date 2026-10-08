@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Removal of Signal Mergers from data &#8212; Inpainting over the cracks</title>
+    <title>Removal of Signal Mergers from data &#8212; Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</title>
   
   
   
@@ -16,45 +16,42 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=71637191" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -68,7 +65,6 @@
     <link rel="prev" title="Calculating overlap - plots" href="../overlap_runs/plot_optimal_snr_fitting_factor.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -84,8 +80,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -93,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -100,8 +108,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,8 +125,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -148,29 +155,33 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt=""/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
   
   
-    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+    <p class="title logo__title">Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../datasets/README.html">Dataset Download Scripts</a></li>
 
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../estimate_psds/README.html">Estimating PSDs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/estimate_psds.html">Estimating PSDs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/characteristic_strain.html">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../estimate_psds/plot_psds.html">Plotting PSDs</a></li>
+
 
 </ul>
 </details></li>
@@ -212,14 +223,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -302,7 +308,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -316,17 +322,25 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -349,9 +363,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-signals">Generate the signals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-remaining-snr">Calculate remaining SNR</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-residual-plots">Generate residual plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-good-and-search-removal-waveforms">Generate good and search removal waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-residual-snr-diagnostic">Calculate the residual-SNR diagnostic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-signals-two-removals-before-and-after-merger">All signals: two removals, before and after merger</a></li>
 </ul>
             </nav>
         </div>
@@ -406,29 +420,23 @@ We therefore use the FastTDI waveform generator to make the signals and subtract
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/gareth/miniconda3/envs/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">25</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="k">if</span> <span class="n">parent_dir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">parent_dir</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">25</span> <span class="kn">import</span><span class="w"> </span><span class="nn">common_utils</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="kn">import</span><span class="w"> </span><span class="nn">plotting_utils</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="c1"># import importlib</span>
 
-SWIGLAL standard output/error redirection is enabled in IPython.
-This may lead to performance penalties. To disable locally, use:
+<span class="n">File</span> <span class="o">~/</span><span class="n">lisa</span><span class="o">/</span><span class="n">lisa_premerger_sangria</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="n">common_utils</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span><span class="w"> </span><span class="nn">ldc.io.hdf5</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hdfio</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span><span class="w"> </span><span class="nn">pycbc.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ldc.waveform.lisabeta</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastBHB</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ldc.lisa</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbits</span>
 
-with lal.no_swig_redirect_standard_output_error():
-    ...
-
-To disable globally, use:
-
-lal.swig_redirect_standard_output_error(False)
-
-Note however that this will likely lead to error messages from
-LAL functions being either misdirected or lost when called from
-Jupyter notebooks.
-
-To suppress this warning, use:
-
-import warnings
-warnings.filterwarnings(&quot;ignore&quot;, &quot;Wswiglal-redir-stdio&quot;)
-import lal
-
-  import lal as _lal
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pycbc&#39;
 </pre></div>
 </div>
 </div>
@@ -450,6 +458,8 @@ import lal
 <span class="n">mbhb_sky</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hdfio</span><span class="o">.</span><span class="n">load_array</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sky/mbhb/cat&quot;</span><span class="p">)</span>
 
 <span class="n">truth_times_s</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span>
+<span class="c1"># Compare every signal in the loaded catalogue.</span>
+<span class="n">comparison_signals</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -480,9 +490,17 @@ import lal
 </div>
 </div>
 </div>
-<section id="generate-the-signals">
-<h2>Generate the signals<a class="headerlink" href="#generate-the-signals" title="Link to this heading">#</a></h2>
-<p>Add the generated signals to a zeroth order dataset, this will help deal with signals close to each other in time.</p>
+<section id="generate-good-and-search-removal-waveforms">
+<h2>Generate good and search removal waveforms<a class="headerlink" href="#generate-good-and-search-removal-waveforms" title="Link to this heading">#</a></h2>
+<p>Each hourly search step has its own data end and therefore its own removal waveform.</p>
+<p>There was a bug in the search coe for the removal of the data. Each time the search moved forward an hour, it remade the removal waveform only up to the end of the data it was looking at. FastBHB doesn’t do that well: the last few hours of the waveform come out wrong.</p>
+<p>To show this, for every catalogue signal, we compare the last hourly step before merger and the first hourly step after merger. At each step, both methods subtract from identical 30-day data:</p>
+<ul class="simple">
+<li><p><strong>Good removal:</strong> generate for the full year, then slice to the search segment.</p></li>
+<li><p><strong>Search removal:</strong> generate with <code class="docutils literal notranslate"><span class="pre">T=end_time</span></code>, using the bugged search-code path.</p></li>
+</ul>
+<p>This affects some events more than others - particularly this is dependent on sky position. If the signal power is arriving before the coalescence time in the LISA frame, then it is well-fit, equivalent to taking data from after the merger, but if the merger power is still-to-come, the subtraction is not good.</p>
+<p>Neither waveform is padded or spliced beyond the data end. Each signal’s four plots use common scales and show the last 6,000 seconds of each searched segment. Their titles give the data end relative to the true merger time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># some zero timeseries:</span>
@@ -515,56 +533,57 @@ import lal
     <span class="n">channel</span><span class="p">:</span> <span class="n">mbhb_data</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">-</span> <span class="n">generated</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="p">}</span>
+<span class="c1"># Compare the same data separately at the hourly steps on either side of merger.</span>
+<span class="n">removal_versions</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">signal_number</span> <span class="ow">in</span> <span class="n">comparison_signals</span><span class="p">:</span>
+    <span class="n">mbhb</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span>
+    <span class="n">tc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mbhb</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">])</span>
+    <span class="n">end_times</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;before merger&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">tc</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">,</span>
+        <span class="s1">&#39;after merger&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">tc</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">+</span> <span class="mi">3600</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">removal_versions</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">end_times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span> <span class="o">/</span> <span class="n">delta_t</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">end</span> <span class="o">/</span> <span class="n">delta_t</span><span class="p">)</span>
+        <span class="n">good_wf</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">generated</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
+        <span class="c1"># This is the generation call used by remove_signals in the search.</span>
+        <span class="n">search_wf</span> <span class="o">=</span> <span class="n">common_utils</span><span class="o">.</span><span class="n">generate_waveform_for_data</span><span class="p">(</span><span class="n">mbhb</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">)</span>
+        <span class="n">bad_wf</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">ch</span><span class="p">:</span> <span class="n">good_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-</span> <span class="n">wfs</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="n">ch</span><span class="p">][</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span> <span class="o">+</span> <span class="n">search_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span>
+        <span class="p">}</span>
+        <span class="n">segment_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">segment_mbhb</span> <span class="o">=</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">ts</span><span class="p">[</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">mbhb_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">removal_versions</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">segment_data</span><span class="p">,</span> <span class="s1">&#39;mbhb_data&#39;</span><span class="p">:</span> <span class="n">segment_mbhb</span><span class="p">,</span>
+            <span class="s1">&#39;good_wf&#39;</span><span class="p">:</span> <span class="n">good_wf</span><span class="p">,</span> <span class="s1">&#39;bad_wf&#39;</span><span class="p">:</span> <span class="n">bad_wf</span><span class="p">,</span>
+            <span class="s1">&#39;good_residual&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">segment_data</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-</span> <span class="n">good_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">},</span>
+            <span class="s1">&#39;bad_residual&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">segment_data</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-</span> <span class="n">bad_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">},</span>
+            <span class="s1">&#39;good_mbhb_residual&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">segment_mbhb</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-</span> <span class="n">good_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">},</span>
+            <span class="s1">&#39;bad_mbhb_residual&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">segment_mbhb</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">-</span> <span class="n">bad_wf</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">},</span>
+            <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">ch</span><span class="p">:</span> <span class="n">wfs</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="n">ch</span><span class="p">][</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">},</span>
+        <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 0 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 1 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 2 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 3 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 4 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 5 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 6 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 7 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 8 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 9 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 10 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 11 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 12 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 13 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating signal 14 &amp; Adding to timeseries
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Subtracting from data
+Generating signal 1 &amp; Adding to timeseries
+Generating signal 2 &amp; Adding to timeseries
+Generating signal 3 &amp; Adding to timeseries
+Generating signal 4 &amp; Adding to timeseries
+Generating signal 5 &amp; Adding to timeseries
+Generating signal 6 &amp; Adding to timeseries
+Generating signal 7 &amp; Adding to timeseries
+Generating signal 8 &amp; Adding to timeseries
+Generating signal 9 &amp; Adding to timeseries
+Generating signal 10 &amp; Adding to timeseries
+Generating signal 11 &amp; Adding to timeseries
+Generating signal 12 &amp; Adding to timeseries
+Generating signal 13 &amp; Adding to timeseries
+Generating signal 14 &amp; Adding to timeseries
+Subtracting from data
 Subtracting from MBHB-only dataset
 </pre></div>
 </div>
@@ -593,148 +612,161 @@ Subtracting from MBHB-only dataset
 </div>
 </div>
 </section>
-<section id="calculate-remaining-snr">
-<h2>Calculate remaining SNR<a class="headerlink" href="#calculate-remaining-snr" title="Link to this heading">#</a></h2>
-<p>Lets calculate the SNR of matching the true waveform to the residual timeseries. A bank search will probably match better than this, but this is for illustration</p>
+<section id="calculate-the-residual-snr-diagnostic">
+<h2>Calculate the residual-SNR diagnostic<a class="headerlink" href="#calculate-the-residual-snr-diagnostic" title="Link to this heading">#</a></h2>
+<p>Within each search step, use identical full-year-derived segment templates and PSDs for both residuals. Matched-filter indices are lags; lag zero corresponds to the original alignment at the data end. Negative lags are plotted over the last 6,000 seconds, using the same reference as the strain panels.</p>
+<p>This circular matched-filter diagnostic compares the removals. It does not reproduce the Figure 10 SNR, which additionally depends on the search’s pre-merger bank templates, preprocessing and normalization. The before- and after-merger segment templates have different durations of the signal in-band, so their SNR normalization also differs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pycbc.filter</span><span class="w"> </span><span class="kn">import</span> <span class="n">matched_filter</span>
 
-<span class="n">plot_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">plot_duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">plot_bounds</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">residual_data_snrs</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">residual_mbhb_snrs</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">mbhb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">):</span>
-    <span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;LISA_A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample_times</span> <span class="o">-</span> <span class="n">mbhb</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span>
-    <span class="n">within_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-        <span class="n">times</span> <span class="o">&gt;=</span> <span class="n">plot_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">times</span> <span class="o">&lt;=</span> <span class="n">plot_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="p">)</span>
-    <span class="n">snrsq_data_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">plot_duration</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">))</span>
-    <span class="n">residual_data_snrs</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">mf_data_residual</span> <span class="o">=</span> <span class="n">matched_filter</span><span class="p">(</span>
-            <span class="n">data_residual</span><span class="p">[</span><span class="n">channel</span><span class="p">],</span>
-            <span class="n">wfs</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="n">channel</span><span class="p">],</span>
-            <span class="n">psd</span><span class="o">=</span><span class="n">psds</span><span class="p">[</span><span class="n">channel</span><span class="p">],</span>
-        <span class="p">)</span>
-        <span class="n">residual_data_snrs</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mf_data_residual</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">within_plot</span><span class="p">])</span>
-        <span class="n">snrsq_data_residual</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mf_data_residual</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">within_plot</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">snr_data_residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">snrsq_data_residual</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Data Residual SNR </span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">snr_data_residual</span><span class="p">)</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 0: 9.363
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 1: 0.969
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 2: 1.618
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 3: 6.385
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 4: 9.086
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 5: 0.479
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 6: 1.883
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 7: 0.991
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 8: 2.042
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 9: 1.835
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 10: 6.216
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 11: 3.537
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 12: 1.732
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 13: 2.981
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data Residual SNR 14: 2.399
+<span class="n">comparison_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">6000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">steps</span> <span class="ow">in</span> <span class="n">removal_versions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">steps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;LISA_A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample_times</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="n">within_plot</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span> <span class="o">&gt;=</span> <span class="n">comparison_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">times</span> <span class="o">&lt;=</span> <span class="n">comparison_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">segment_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">version</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;LISA_A&#39;</span><span class="p">])</span>
+        <span class="n">segment_delta_f</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_length</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">)</span>
+        <span class="n">version</span><span class="p">[</span><span class="s1">&#39;snrs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;good&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">signal_number</span><span class="p">:</span> <span class="p">{}},</span> <span class="s1">&#39;bad&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">signal_number</span><span class="p">:</span> <span class="p">{}}}</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">segment_psd</span> <span class="o">=</span> <span class="n">pycbc</span><span class="o">.</span><span class="n">psd</span><span class="o">.</span><span class="n">from_txt</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;../../estimate_psds/</span><span class="si">{</span><span class="n">channel</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">_sangria_hm_SMOOTHED_PSD.txt&#39;</span><span class="p">,</span>
+                <span class="n">segment_length</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">segment_delta_f</span><span class="p">,</span> <span class="n">segment_delta_f</span><span class="p">,</span>
+                <span class="n">is_asd_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;bad&#39;</span><span class="p">]:</span>
+                <span class="n">snr</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">matched_filter</span><span class="p">(</span>
+                    <span class="n">version</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">][</span><span class="n">channel</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_residual&#39;</span><span class="p">][</span><span class="n">channel</span><span class="p">],</span>
+                    <span class="n">psd</span><span class="o">=</span><span class="n">segment_psd</span><span class="p">,</span>
+                <span class="p">))</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="c1"># Lag zero aligns the original template with the original segment.</span>
+                <span class="n">version</span><span class="p">[</span><span class="s1">&#39;snrs&#39;</span><span class="p">][</span><span class="n">method</span><span class="p">][</span><span class="n">signal_number</span><span class="p">][</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span>
+                    <span class="n">snr</span><span class="p">,</span> <span class="n">segment_length</span>
+                <span class="p">)[</span><span class="n">within_plot</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="generate-residual-plots">
-<h2>Generate residual plots<a class="headerlink" href="#generate-residual-plots" title="Link to this heading">#</a></h2>
-<p>Lets have a look at the plots.</p>
-<p>In particular Signal 3 - this is one of the loud ones anyway (full SNR ~2000), but we can actually see the residuals still, on a scale comparable to the noise.</p>
+<section id="all-signals-two-removals-before-and-after-merger">
+<h2>All signals: two removals, before and after merger<a class="headerlink" href="#all-signals-two-removals-before-and-after-merger" title="Link to this heading">#</a></h2>
+<p>At the last hourly step before merger, the search’s end-time waveform can leave a large residual. At the first step after merger, compare how closely it agrees with full-year removal. Each step has two versions of the original three-panel residual plot, and all four figures use the same axis scales. The x-axis is relative to each step’s actual data end; merger is marked where it lies inside the plotted data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importlib.reload(plotting_utils)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_residual_snr</span><span class="p">(</span>
-    <span class="mi">3</span><span class="p">,</span>
-    <span class="n">mbhb_sky</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-    <span class="n">data</span><span class="p">,</span>
-    <span class="n">mbhb_data</span><span class="p">,</span>
-    <span class="n">data_residual</span><span class="p">,</span>
-    <span class="n">mbhb_residual</span><span class="p">,</span>
-    <span class="n">residual_data_snrs</span><span class="p">,</span>
-    <span class="n">generated</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># We might put this in the paper, maybe an appendix, dont save to the paper folder for now though</span>
-<span class="c1"># fig.savefig(&#39;../../paper/images/figure_X_removal_residual.pdf&#39;)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_removal_pairs</span><span class="p">(</span><span class="n">signal_number</span><span class="p">):</span>
+    <span class="n">figures</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">tc</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">[</span><span class="n">signal_number</span><span class="p">][</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">removal_versions</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Use the data end as the plot reference without changing the catalogue.</span>
+        <span class="n">plot_reference</span> <span class="o">=</span> <span class="n">mbhb_sky</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">plot_reference</span><span class="p">[</span><span class="s1">&#39;CoalescenceTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;bad&#39;</span><span class="p">]:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_residual_snr</span><span class="p">(</span>
+                <span class="n">signal_number</span><span class="p">,</span> <span class="n">plot_reference</span><span class="p">,</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;mbhb_data&#39;</span><span class="p">],</span>
+                <span class="n">version</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_residual&#39;</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_mbhb_residual&#39;</span><span class="p">],</span>
+                <span class="n">version</span><span class="p">[</span><span class="s1">&#39;snrs&#39;</span><span class="p">][</span><span class="n">method</span><span class="p">],</span> <span class="n">version</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_wf&#39;</span><span class="p">],</span>
+                <span class="n">plot_bounds</span><span class="o">=</span><span class="n">comparison_bounds</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">method_label</span> <span class="o">=</span> <span class="s1">&#39;good removal&#39;</span> <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;good&#39;</span> <span class="k">else</span> <span class="s1">&#39;search removal&#39;</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Signal </span><span class="si">{</span><span class="n">signal_number</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">method_label</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Data end </span><span class="si">{</span><span class="n">version</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tc</span><span class="si">:</span><span class="s1">+.0f</span><span class="si">}</span><span class="s1"> s relative to merger&#39;</span>
+            <span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time relative to search data end (s)&#39;</span><span class="p">)</span>
+            <span class="n">merger_relative</span> <span class="o">=</span> <span class="n">tc</span> <span class="o">-</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">comparison_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">merger_relative</span> <span class="o">&lt;=</span> <span class="n">comparison_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">merger_relative</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;0.4&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+            <span class="n">figures</span><span class="p">[(</span><span class="n">step</span><span class="p">,</span> <span class="n">method</span><span class="p">)]</span> <span class="o">=</span> <span class="n">fig</span>
+
+    <span class="c1"># Keep all four plots comparable, including the before/after residual amplitudes.</span>
+    <span class="k">for</span> <span class="n">panel</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+        <span class="n">limits</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">panel</span><span class="p">]</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span> <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">figures</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">figures</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">panel</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">lo</span> <span class="k">for</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="ow">in</span> <span class="n">limits</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">hi</span> <span class="k">for</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="ow">in</span> <span class="n">limits</span><span class="p">))</span>
+            <span class="c1"># Restore automatic scientific notation after changing the shared scale.</span>
+            <span class="k">for</span> <span class="n">offset_label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">texts</span><span class="p">):</span>
+                <span class="n">offset_label</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">get_offset_text</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">snr_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">removal_versions</span><span class="p">[</span><span class="n">signal_number</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                  <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;bad&#39;</span><span class="p">]</span>
+                  <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">version</span><span class="p">[</span><span class="s1">&#39;snrs&#39;</span><span class="p">][</span><span class="n">method</span><span class="p">][</span><span class="n">signal_number</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">figures</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">snr_max</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">figures</span>
+
+<span class="k">for</span> <span class="n">signal_number</span> <span class="ow">in</span> <span class="n">comparison_signals</span><span class="p">:</span>
+    <span class="n">comparison_figures</span> <span class="o">=</span> <span class="n">plot_removal_pairs</span><span class="p">(</span><span class="n">signal_number</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="n">comparison_figures</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/92394068320d31417cf74a7638efa2b4b617a466e390d47d6e424d104de9b59d.png" src="../../_images/92394068320d31417cf74a7638efa2b4b617a466e390d47d6e424d104de9b59d.png" />
-</div>
-</div>
-<p>For completeness, lets generate the plots for all the signals.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">signal_number</span><span class="p">,</span> <span class="n">mbhb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mbhb_sky</span><span class="p">):</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plotting_utils</span><span class="o">.</span><span class="n">plot_residual_snr</span><span class="p">(</span>
-        <span class="n">signal_number</span><span class="p">,</span>
-        <span class="n">mbhb</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">,</span>
-        <span class="n">mbhb_data</span><span class="p">,</span>
-        <span class="n">data_residual</span><span class="p">,</span>
-        <span class="n">mbhb_residual</span><span class="p">,</span>
-        <span class="n">residual_data_snrs</span><span class="p">,</span>
-        <span class="n">generated</span><span class="p">,</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/8dc46737e5f04cefc953d31ae4b09cf1093e65f2e021ba1868d72daea5c23a75.png" src="../../_images/8dc46737e5f04cefc953d31ae4b09cf1093e65f2e021ba1868d72daea5c23a75.png" />
-<img alt="../../_images/53df3289735cf0364c97de9615fb2717ac3a0df84c3d0ec2479a204f26afa478.png" src="../../_images/53df3289735cf0364c97de9615fb2717ac3a0df84c3d0ec2479a204f26afa478.png" />
-<img alt="../../_images/498e44796331465912edea7723ed3f62cfe3c0c1019bfd694119356d1d1dd178.png" src="../../_images/498e44796331465912edea7723ed3f62cfe3c0c1019bfd694119356d1d1dd178.png" />
-<img alt="../../_images/af685a0a02cd86435b06f190f9390d908157ecdaa51a9837911a881fe5053d67.png" src="../../_images/af685a0a02cd86435b06f190f9390d908157ecdaa51a9837911a881fe5053d67.png" />
-<img alt="../../_images/6505c4ce1acbc71d2b6522c640456372d2024ebcdb3c4110a94c70c7dee1b0ab.png" src="../../_images/6505c4ce1acbc71d2b6522c640456372d2024ebcdb3c4110a94c70c7dee1b0ab.png" />
-<img alt="../../_images/82e744203d487d6eb9314ebb2e238e3e926e65df2233b66ed87f37b6b59715cc.png" src="../../_images/82e744203d487d6eb9314ebb2e238e3e926e65df2233b66ed87f37b6b59715cc.png" />
-<img alt="../../_images/71bb0d4f01a7324dc4ac2c90fc4b40a4d97982ce16e7bf785cafaf7ad000e512.png" src="../../_images/71bb0d4f01a7324dc4ac2c90fc4b40a4d97982ce16e7bf785cafaf7ad000e512.png" />
-<img alt="../../_images/86da2b6dd794c4ff08418c8cbd9f7745d7f93f966f311b6a74dab04a0974e99c.png" src="../../_images/86da2b6dd794c4ff08418c8cbd9f7745d7f93f966f311b6a74dab04a0974e99c.png" />
-<img alt="../../_images/8d4b67f6113512f54c31d0dd3304dda4d5567dec08f140975339d0297cb5151d.png" src="../../_images/8d4b67f6113512f54c31d0dd3304dda4d5567dec08f140975339d0297cb5151d.png" />
-<img alt="../../_images/545c09cc72eaa7ac32dc79683c10d97d8347b934fe69f9a51dda927a1d344ce0.png" src="../../_images/545c09cc72eaa7ac32dc79683c10d97d8347b934fe69f9a51dda927a1d344ce0.png" />
-<img alt="../../_images/c352b2b71d07cd6db867a7e790d238fa23d3e6606f7be804789fcf176ac64a1b.png" src="../../_images/c352b2b71d07cd6db867a7e790d238fa23d3e6606f7be804789fcf176ac64a1b.png" />
-<img alt="../../_images/b7598796545596e9c7b15df64745ce14c030510422eb36f4966862dd75c99473.png" src="../../_images/b7598796545596e9c7b15df64745ce14c030510422eb36f4966862dd75c99473.png" />
-<img alt="../../_images/a66bbe6e0e00b0e43e230af4773f3039b9ff230ef80219ce044361d95e6aadaf.png" src="../../_images/a66bbe6e0e00b0e43e230af4773f3039b9ff230ef80219ce044361d95e6aadaf.png" />
-<img alt="../../_images/3caa4807675f20249020c8cdaf653e9adb52544be60b9c651c34c31989dc6226.png" src="../../_images/3caa4807675f20249020c8cdaf653e9adb52544be60b9c651c34c31989dc6226.png" />
-<img alt="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" src="../../_images/36620b37671c12a9f3f7cd68844b2dd39f119a5ba72a420fb1e75d8ac116ba82.png" />
+<img alt="../../_images/22aa458d5de2503a1b373594233ab90b18762a3b0b67a30880054b4f3057e3e5.png" src="../../_images/22aa458d5de2503a1b373594233ab90b18762a3b0b67a30880054b4f3057e3e5.png" />
+<img alt="../../_images/02e462523d322798360799798dfc8b7007f79199ccfb9c5839cab2ee1a17d91f.png" src="../../_images/02e462523d322798360799798dfc8b7007f79199ccfb9c5839cab2ee1a17d91f.png" />
+<img alt="../../_images/8ae7edd5e7afd0b55e06e2064403e471678caecefa877c56e5fba1319fb9db10.png" src="../../_images/8ae7edd5e7afd0b55e06e2064403e471678caecefa877c56e5fba1319fb9db10.png" />
+<img alt="../../_images/9d5a2557b0bd96808a9e32c7693de62486fd953a2c65e3b58221b5583c3d64c1.png" src="../../_images/9d5a2557b0bd96808a9e32c7693de62486fd953a2c65e3b58221b5583c3d64c1.png" />
+<img alt="../../_images/ab1ba6f74f3cd67c2046d820f02dc3957fbe171067fe47c71456511eadc3cc7e.png" src="../../_images/ab1ba6f74f3cd67c2046d820f02dc3957fbe171067fe47c71456511eadc3cc7e.png" />
+<img alt="../../_images/df9f936cd32d1dff278d7baaa881cbb1b2d6c1498d885fb42cb3e1ca76cedc64.png" src="../../_images/df9f936cd32d1dff278d7baaa881cbb1b2d6c1498d885fb42cb3e1ca76cedc64.png" />
+<img alt="../../_images/62cecf6d79e42a3f44f4e8342fb314b4db2dc32f05e82b197ede27ccaae06a6f.png" src="../../_images/62cecf6d79e42a3f44f4e8342fb314b4db2dc32f05e82b197ede27ccaae06a6f.png" />
+<img alt="../../_images/a287c588281b9a4aa698719c90161abd808de8c35750f37d0569194caa0c31fc.png" src="../../_images/a287c588281b9a4aa698719c90161abd808de8c35750f37d0569194caa0c31fc.png" />
+<img alt="../../_images/f107ddbbac0791f25e322fa5ef29af59b22ee4567ddc224726c9e9283a0006e3.png" src="../../_images/f107ddbbac0791f25e322fa5ef29af59b22ee4567ddc224726c9e9283a0006e3.png" />
+<img alt="../../_images/ab55eb928c18f4617fed212d9a08a82a015369ba91dfc8af6fd6ba48b10d16f5.png" src="../../_images/ab55eb928c18f4617fed212d9a08a82a015369ba91dfc8af6fd6ba48b10d16f5.png" />
+<img alt="../../_images/a5b3bb898362685b34101810959eca17a39543504a7855e2fa524dbdee7ba921.png" src="../../_images/a5b3bb898362685b34101810959eca17a39543504a7855e2fa524dbdee7ba921.png" />
+<img alt="../../_images/883cc34a9c46e23937f32e500e9bef529e54adced0606941b22c403e193f85d5.png" src="../../_images/883cc34a9c46e23937f32e500e9bef529e54adced0606941b22c403e193f85d5.png" />
+<img alt="../../_images/75662cff24685aee439b4e643f5b8b1b3e7a95f8db00ca03169fdfe91a817aab.png" src="../../_images/75662cff24685aee439b4e643f5b8b1b3e7a95f8db00ca03169fdfe91a817aab.png" />
+<img alt="../../_images/c1b65fdf24fa73353bd254971666533a7decac167e0b839c794514acbdab546f.png" src="../../_images/c1b65fdf24fa73353bd254971666533a7decac167e0b839c794514acbdab546f.png" />
+<img alt="../../_images/94e744de8f410e73713fc7d1fd1ce17a83c3627986806e5f020db6442f964ed9.png" src="../../_images/94e744de8f410e73713fc7d1fd1ce17a83c3627986806e5f020db6442f964ed9.png" />
+<img alt="../../_images/ee2d8c2a38a86d53d6829d864e5b345fa49ebf406893e587dd9e83754cc79296.png" src="../../_images/ee2d8c2a38a86d53d6829d864e5b345fa49ebf406893e587dd9e83754cc79296.png" />
+<img alt="../../_images/94a131bdd66880a79cae3050914f9252271848026b0c04f2d426bf8a6a5b5806.png" src="../../_images/94a131bdd66880a79cae3050914f9252271848026b0c04f2d426bf8a6a5b5806.png" />
+<img alt="../../_images/85beaa7ebee21e0cf9d4bf8182b9c4c419fca003779b8041d1b598e2853c06ec.png" src="../../_images/85beaa7ebee21e0cf9d4bf8182b9c4c419fca003779b8041d1b598e2853c06ec.png" />
+<img alt="../../_images/371e12bf565f5e4592353127376a281b8b05f0c0e284a14e3d5bd48eb4bbf3ef.png" src="../../_images/371e12bf565f5e4592353127376a281b8b05f0c0e284a14e3d5bd48eb4bbf3ef.png" />
+<img alt="../../_images/d6f40bb9641eea71ef0d09dc07ce79aa4c2747e8783d3f669f57a84627a55cee.png" src="../../_images/d6f40bb9641eea71ef0d09dc07ce79aa4c2747e8783d3f669f57a84627a55cee.png" />
+<img alt="../../_images/42fa0a160e8172a79a98b74cabdd8f70710185ef95bc0f943c3821d5cdd78ec9.png" src="../../_images/42fa0a160e8172a79a98b74cabdd8f70710185ef95bc0f943c3821d5cdd78ec9.png" />
+<img alt="../../_images/acd436a43cf4bb0a4c89b7d38e1494e3dbdc69841231b3dcec8e3dcbc7e73242.png" src="../../_images/acd436a43cf4bb0a4c89b7d38e1494e3dbdc69841231b3dcec8e3dcbc7e73242.png" />
+<img alt="../../_images/e6179782c4cb936c1735a46fd9ae891c6d539e7bc8c6c529ee492ece98cb39d3.png" src="../../_images/e6179782c4cb936c1735a46fd9ae891c6d539e7bc8c6c529ee492ece98cb39d3.png" />
+<img alt="../../_images/6d357e778d29d19e30cce399ea72da464ad5abc6c6a4d18c64311d51852b709f.png" src="../../_images/6d357e778d29d19e30cce399ea72da464ad5abc6c6a4d18c64311d51852b709f.png" />
+<img alt="../../_images/a18ecf89df700bcffbc81b3990d02c74a72722162bf5d9e9ab81bc8b60b9eec7.png" src="../../_images/a18ecf89df700bcffbc81b3990d02c74a72722162bf5d9e9ab81bc8b60b9eec7.png" />
+<img alt="../../_images/00e48a4c99195630d3f061c3575d22a43721ebeff1004a7abb7297fa55cfb63c.png" src="../../_images/00e48a4c99195630d3f061c3575d22a43721ebeff1004a7abb7297fa55cfb63c.png" />
+<img alt="../../_images/3629a6137894401a3f2a0726124315703524d46df1e941663b8a20d26f4c00fc.png" src="../../_images/3629a6137894401a3f2a0726124315703524d46df1e941663b8a20d26f4c00fc.png" />
+<img alt="../../_images/57b66c49baa2391c93683877665b87c508c0433af67c93a75f2832a9c234044e.png" src="../../_images/57b66c49baa2391c93683877665b87c508c0433af67c93a75f2832a9c234044e.png" />
+<img alt="../../_images/7173a85198ec418250b1e974c3c5cb706013f47673df303a752032b153f2ab66.png" src="../../_images/7173a85198ec418250b1e974c3c5cb706013f47673df303a752032b153f2ab66.png" />
+<img alt="../../_images/093b9e02f4bb1d7223556d76da54aa79362e96cb28468d604384d9b83732f387.png" src="../../_images/093b9e02f4bb1d7223556d76da54aa79362e96cb28468d604384d9b83732f387.png" />
+<img alt="../../_images/bb03caa56df51c19cf56daac5464c2759e19fa28f553e49a773fd8eb5567957f.png" src="../../_images/bb03caa56df51c19cf56daac5464c2759e19fa28f553e49a773fd8eb5567957f.png" />
+<img alt="../../_images/f84eab47f9e2910837058b93d59408edad32d8733e75b241e9c637fca906b28e.png" src="../../_images/f84eab47f9e2910837058b93d59408edad32d8733e75b241e9c637fca906b28e.png" />
+<img alt="../../_images/7eec6560560475bf31f2127e323eb7a3a85c106ca25e1d6dfdbbe1e492ba82f3.png" src="../../_images/7eec6560560475bf31f2127e323eb7a3a85c106ca25e1d6dfdbbe1e492ba82f3.png" />
+<img alt="../../_images/ec8359189d69ee105fe0517707f15102fb51361cdffc96a834e23adf2aa6f04c.png" src="../../_images/ec8359189d69ee105fe0517707f15102fb51361cdffc96a834e23adf2aa6f04c.png" />
+<img alt="../../_images/ed2767936036f585f5ad8f2a639a1face501e7d9cf7f5ead30c4a2cd7f6eb264.png" src="../../_images/ed2767936036f585f5ad8f2a639a1face501e7d9cf7f5ead30c4a2cd7f6eb264.png" />
+<img alt="../../_images/39306795c276b20513363aecace2d3435bb106d6208759fbdc3583578d119df1.png" src="../../_images/39306795c276b20513363aecace2d3435bb106d6208759fbdc3583578d119df1.png" />
+<img alt="../../_images/2e50226b92ada6af619c6b88806f9236f557f6a8ca0f9f9cc68fd3c448fd90ec.png" src="../../_images/2e50226b92ada6af619c6b88806f9236f557f6a8ca0f9f9cc68fd3c448fd90ec.png" />
+<img alt="../../_images/d6580d63cd35bfc86c86865b83cf4b8a6878dc326fb0e770055af89b5a1346ab.png" src="../../_images/d6580d63cd35bfc86c86865b83cf4b8a6878dc326fb0e770055af89b5a1346ab.png" />
+<img alt="../../_images/86f5cc933aebec4211a850ebb3b6e09b39809cbd892aa24a2f411f308939fba9.png" src="../../_images/86f5cc933aebec4211a850ebb3b6e09b39809cbd892aa24a2f411f308939fba9.png" />
+<img alt="../../_images/77e16560e3a545e3fe7e657896deca9686a81f5cedf675e3fb14eca5b8f8ad45.png" src="../../_images/77e16560e3a545e3fe7e657896deca9686a81f5cedf675e3fb14eca5b8f8ad45.png" />
+<img alt="../../_images/e136dcde1d8697ac45c78a34481afc31768346cb61cfa13804db92a6fe751a93.png" src="../../_images/e136dcde1d8697ac45c78a34481afc31768346cb61cfa13804db92a6fe751a93.png" />
+<img alt="../../_images/8b3400abd37ea5eda51cc5884856d47d22d79b8450145ab1c3632964d3ead425.png" src="../../_images/8b3400abd37ea5eda51cc5884856d47d22d79b8450145ab1c3632964d3ead425.png" />
+<img alt="../../_images/dc3ae99ea25552897a6272a8ab9e888728f4c4394fc8641fd8af315263a91b5d.png" src="../../_images/dc3ae99ea25552897a6272a8ab9e888728f4c4394fc8641fd8af315263a91b5d.png" />
+<img alt="../../_images/673cdc87aa947bca1b6ceb482b9892066a8d56b1e8d617cab12d0ff830fd0f88.png" src="../../_images/673cdc87aa947bca1b6ceb482b9892066a8d56b1e8d617cab12d0ff830fd0f88.png" />
+<img alt="../../_images/7d9b9c62d3d5f5c4c43a35e14b00aa77a3910fbabc5be0e488f0da22e29ec13c.png" src="../../_images/7d9b9c62d3d5f5c4c43a35e14b00aa77a3910fbabc5be0e488f0da22e29ec13c.png" />
+<img alt="../../_images/f81094d7698bc85bb9f45c5b59aac03a8d5dae4cf523ca88deb4518ccfc97452.png" src="../../_images/f81094d7698bc85bb9f45c5b59aac03a8d5dae4cf523ca88deb4518ccfc97452.png" />
+<img alt="../../_images/7d75c5cdc3a45fd65dc3f280229528762ae6e4f62b3cdd52d048efc3e581bf27.png" src="../../_images/7d75c5cdc3a45fd65dc3f280229528762ae6e4f62b3cdd52d048efc3e581bf27.png" />
+<img alt="../../_images/e4aebb70cc59df1b7b567ae0b8c8d20f7179bc146f38d102e906343bf409b0b6.png" src="../../_images/e4aebb70cc59df1b7b567ae0b8c8d20f7179bc146f38d102e906343bf409b0b6.png" />
+<img alt="../../_images/7721796b7d27970b62e2d8d54273fc9af6a51a4a4e754fb4660bf15ab2296973.png" src="../../_images/7721796b7d27970b62e2d8d54273fc9af6a51a4a4e754fb4660bf15ab2296973.png" />
+<img alt="../../_images/9018254ed9a096c4a7fd29c39377a71782b064c25242ccdd2aeaa685e2b10017.png" src="../../_images/9018254ed9a096c4a7fd29c39377a71782b064c25242ccdd2aeaa685e2b10017.png" />
+<img alt="../../_images/79cee58a0958531bfbe714c0ac59e6bbef059f63286c433c1b4ee87090edb1b0.png" src="../../_images/79cee58a0958531bfbe714c0ac59e6bbef059f63286c433c1b4ee87090edb1b0.png" />
+<img alt="../../_images/e123d2e6112eaf3ca04df6fc5317b34273afce85480dc2b40af2c39f31d1e44b.png" src="../../_images/e123d2e6112eaf3ca04df6fc5317b34273afce85480dc2b40af2c39f31d1e44b.png" />
+<img alt="../../_images/c64677799b85685a4caf5bd875f499fd69939bb3518301172d351304209c6c67.png" src="../../_images/c64677799b85685a4caf5bd875f499fd69939bb3518301172d351304209c6c67.png" />
+<img alt="../../_images/29227005b494cc5583d8b5d0782f227f40317416f1e9ab282aad42ed4a011703.png" src="../../_images/29227005b494cc5583d8b5d0782f227f40317416f1e9ab282aad42ed4a011703.png" />
+<img alt="../../_images/0d88bb28156dd3c40cf482821c1d9eafb0caa4f82fb70e977f2b134afc103120.png" src="../../_images/0d88bb28156dd3c40cf482821c1d9eafb0caa4f82fb70e977f2b134afc103120.png" />
+<img alt="../../_images/73c9cdc8871b621bb059cae65d9120a493070015b6d41942bdc04e7ec30ac94f.png" src="../../_images/73c9cdc8871b621bb059cae65d9120a493070015b6d41942bdc04e7ec30ac94f.png" />
+<img alt="../../_images/e12b0eb31f9ab0124491fc411bb034cb584ca28556daa6b30c392c437315094e.png" src="../../_images/e12b0eb31f9ab0124491fc411bb034cb584ca28556daa6b30c392c437315094e.png" />
+<img alt="../../_images/7d5908d84db1c27c0bd065aaca9d1dcefab47fdcac3313922be50bde65288a36.png" src="../../_images/7d5908d84db1c27c0bd065aaca9d1dcefab47fdcac3313922be50bde65288a36.png" />
+<img alt="../../_images/fb6f90c8b61a9bb1dc17120e1868745a41d78f1cc34cbe4625d6b74af69ff06d.png" src="../../_images/fb6f90c8b61a9bb1dc17120e1868745a41d78f1cc34cbe4625d6b74af69ff06d.png" />
+<img alt="../../_images/f671d64b7a5ec2eda2cc1b91e84339cd16adc2ccc2239960eceda386fa167517.png" src="../../_images/f671d64b7a5ec2eda2cc1b91e84339cd16adc2ccc2239960eceda386fa167517.png" />
 </div>
 </div>
 </section>
@@ -795,20 +827,18 @@ Subtracting from MBHB-only dataset
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+  <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-signals">Generate the signals</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-remaining-snr">Calculate remaining SNR</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-residual-plots">Generate residual plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-good-and-search-removal-waveforms">Generate good and search removal waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-the-residual-snr-diagnostic">Calculate the residual-SNR diagnostic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-signals-two-removals-before-and-after-merger">All signals: two removals, before and after merger</a></li>
 </ul>
   </nav></div>
 
@@ -857,8 +887,8 @@ By Gareth Cabourn Davies and Ian Harry
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

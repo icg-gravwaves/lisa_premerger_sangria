@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Characterisic Strain - plotting &#8212; Inpainting over the cracks</title>
+    <title>Characterisic Strain - plotting &#8212; Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</title>
   
   
   
@@ -16,45 +16,42 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=71637191" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -68,7 +65,6 @@
     <link rel="prev" title="Characteristic Strain" href="characteristic_strain_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -84,8 +80,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -93,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -100,8 +108,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -117,8 +125,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -148,29 +155,33 @@
     
     
     <img src="../_static/logo.png" class="logo__image only-light" alt=""/>
-    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt=""/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt=""/>`);</script>
   
   
-    <p class="title logo__title">Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets</p>
+    <p class="title logo__title">Inpainting to search for premerger massive black hole binaries in realistic LISA datasets</p>
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../datasets/README.html">Dataset Download Scripts</a></li>
 
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Estimating PSDs</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="estimate_psds.html">Estimating PSDs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="characteristic_strain_intro.html">Characteristic Strain</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Characterisic Strain - plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_psds.html">Plotting PSDs</a></li>
+
 
 </ul>
 </details></li>
@@ -212,14 +223,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -302,7 +308,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -316,17 +322,25 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -387,7 +401,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/lustre2/shared_conda/envs/garethcd/env_lisa_premerger_sangria/lib/python3.11/site-packages/pycbc/types/array.py:36: UserWarning: Wswiglal-redir-stdio:
 
 SWIGLAL standard output/error redirection is enabled in IPython.
 This may lead to performance penalties. To disable locally, use:
@@ -497,7 +511,6 @@ Signal 14
 <span class="n">hn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">freqs</span> <span class="o">*</span> <span class="n">psd</span><span class="p">)</span>  <span class="c1"># characteristic noise curve</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">hc_all</span><span class="p">[</span><span class="n">example_signal</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Signal </span><span class="si">{</span><span class="n">example_signal</span><span class="si">}</span><span class="s1"> $h_c$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">hn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Noise $h_n = \sqrt{f S_n}$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency [Hz]&#39;</span><span class="p">)</span>
@@ -509,10 +522,10 @@ Signal 14
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f8e7c584f90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7ff3a77f5b10&gt;
 </pre></div>
 </div>
-<img alt="../_images/a41d62174418a051e15e2a3e9d051bae0a1ddd89403be02f7ba61c9cf16e85a2.png" src="../_images/a41d62174418a051e15e2a3e9d051bae0a1ddd89403be02f7ba61c9cf16e85a2.png" />
+<img alt="../_images/59b3233771ba1b2f5c5446720a3ceaa59c5045c2b60c54ac170028f61024c945.png" src="../_images/59b3233771ba1b2f5c5446720a3ceaa59c5045c2b60c54ac170028f61024c945.png" />
 </div>
 </div>
 <section id="table-generation">
@@ -564,21 +577,21 @@ Signal 14
 \hline
 Number &amp; Time  &amp; Full Signal &amp; 0.5 &amp; 1 &amp; 4 &amp; 7 &amp; 14 \\
 \hline
-0 &amp; 55.56 &amp; 2699.04 &amp; 70.99 &amp; 52.74 &amp; 24.33 &amp; 16.43 &amp; 9.51 \\
-1 &amp; 101.23 &amp; 105.72 &amp; 3.99 &amp; 2.49 &amp; 0.79 &amp; 0.47 &amp; 0.28 \\
-2 &amp; 129.26 &amp; 400.25 &amp; 10.76 &amp; 7.51 &amp; 2.91 &amp; 1.84 &amp; 1.07 \\
-3 &amp; 130.31 &amp; 1992.38 &amp; 71.92 &amp; 54.76 &amp; 27.52 &amp; 19.88 &amp; 13.22 \\
-4 &amp; 133.41 &amp; 3475.28 &amp; 115.99 &amp; 88.26 &amp; 44.02 &amp; 31.65 &amp; 20.46 \\
-5 &amp; 138.55 &amp; 427.13 &amp; 16.40 &amp; 10.79 &amp; 3.85 &amp; 2.37 &amp; 1.22 \\
-6 &amp; 157.61 &amp; 673.48 &amp; 24.99 &amp; 16.19 &amp; 5.48 &amp; 3.25 &amp; 1.55 \\
-7 &amp; 191.34 &amp; 579.12 &amp; 15.72 &amp; 10.70 &amp; 4.02 &amp; 2.56 &amp; 1.49 \\
-8 &amp; 199.60 &amp; 365.18 &amp; 16.21 &amp; 10.68 &amp; 3.77 &amp; 2.28 &amp; 1.11 \\
-9 &amp; 215.34 &amp; 392.96 &amp; 18.69 &amp; 12.41 &amp; 4.75 &amp; 3.12 &amp; 1.82 \\
-10 &amp; 236.41 &amp; 2187.78 &amp; 45.09 &amp; 31.90 &amp; 12.71 &amp; 8.13 &amp; 4.37 \\
-11 &amp; 257.27 &amp; 1200.55 &amp; 45.32 &amp; 33.31 &amp; 13.99 &amp; 8.92 &amp; 4.71 \\
-12 &amp; 271.29 &amp; 359.02 &amp; 21.27 &amp; 14.71 &amp; 6.10 &amp; 4.17 &amp; 2.57 \\
-13 &amp; 282.51 &amp; 823.00 &amp; 24.75 &amp; 18.00 &amp; 7.81 &amp; 5.23 &amp; 3.00 \\
-14 &amp; 341.62 &amp; 230.57 &amp; 9.88 &amp; 6.43 &amp; 2.22 &amp; 1.34 &amp; 0.67 \\
+0 &amp; 55.56 &amp; 2699.97 &amp; 70.99 &amp; 52.74 &amp; 24.33 &amp; 16.43 &amp; 9.51 \\
+1 &amp; 101.23 &amp; 105.73 &amp; 3.99 &amp; 2.49 &amp; 0.79 &amp; 0.47 &amp; 0.28 \\
+2 &amp; 129.26 &amp; 400.33 &amp; 10.76 &amp; 7.51 &amp; 2.91 &amp; 1.84 &amp; 1.07 \\
+3 &amp; 130.31 &amp; 1992.40 &amp; 71.92 &amp; 54.76 &amp; 27.52 &amp; 19.88 &amp; 13.22 \\
+4 &amp; 133.41 &amp; 3475.54 &amp; 115.99 &amp; 88.26 &amp; 44.02 &amp; 31.65 &amp; 20.46 \\
+5 &amp; 138.55 &amp; 427.00 &amp; 16.40 &amp; 10.79 &amp; 3.85 &amp; 2.37 &amp; 1.22 \\
+6 &amp; 157.61 &amp; 673.55 &amp; 24.99 &amp; 16.19 &amp; 5.48 &amp; 3.25 &amp; 1.55 \\
+7 &amp; 191.34 &amp; 579.20 &amp; 15.72 &amp; 10.70 &amp; 4.02 &amp; 2.56 &amp; 1.49 \\
+8 &amp; 199.60 &amp; 365.55 &amp; 16.21 &amp; 10.68 &amp; 3.77 &amp; 2.28 &amp; 1.11 \\
+9 &amp; 215.34 &amp; 392.92 &amp; 18.69 &amp; 12.41 &amp; 4.75 &amp; 3.12 &amp; 1.82 \\
+10 &amp; 236.41 &amp; 2189.05 &amp; 45.09 &amp; 31.90 &amp; 12.71 &amp; 8.13 &amp; 4.37 \\
+11 &amp; 257.27 &amp; 1200.61 &amp; 45.32 &amp; 33.31 &amp; 13.99 &amp; 8.92 &amp; 4.71 \\
+12 &amp; 271.29 &amp; 359.01 &amp; 21.27 &amp; 14.71 &amp; 6.10 &amp; 4.17 &amp; 2.57 \\
+13 &amp; 282.51 &amp; 822.50 &amp; 24.75 &amp; 18.00 &amp; 7.81 &amp; 5.23 &amp; 3.00 \\
+14 &amp; 341.62 &amp; 230.69 &amp; 9.88 &amp; 6.43 &amp; 2.22 &amp; 1.34 &amp; 0.67 \\
 \hline
 \end{tabular}
 </pre></div>
@@ -643,16 +656,14 @@ Number &amp; Time  &amp; Full Signal &amp; 0.5 &amp; 1 &amp; 4 &amp; 7 &amp; 14 
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+  <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-generation">Table generation</a></li>
 </ul>
@@ -703,8 +714,8 @@ By Gareth Cabourn Davies and Ian Harry
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
