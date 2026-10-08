@@ -22,7 +22,7 @@ dependencies:
  - corner
  - ipykernel
  - pytorch
- - jupyter-book
+ - "jupyter-book<2"
  - ghp-import
  - cpuonly
  - humanize

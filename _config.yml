@@ -45,4 +45,4 @@ sphinx:
     nb_execution_timeout: 5000
     html_theme_options:
       logo:
-        text: "Inpainting over the cracks: challenges of applying pre-merger searches for massive black hole binaries to realistic LISA datasets"
+        text: "Inpainting to search for premerger massive black hole binaries in realistic LISA datasets"
