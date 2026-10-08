@@ -19,3 +19,7 @@ for removal in noremoval varied_removal ; do
     --output-file results/data_runs_focused_${removal}.hdf
 done
 ```
+
+## Signal removal residuals
+
+The [signal removal notebook](./signal_removal.ipynb) compares proper full-year waveform generation with the search's `T=end_time` generation. For each signal, it plots both removals at the hourly data ends immediately before and after merger, using identical data within each comparison. This explains the residual peak in Figure 10. The search-code bug is retained and marked with its fix in `../common_utils.py`.
