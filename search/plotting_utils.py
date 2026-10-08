@@ -391,7 +391,7 @@ def plot_residual_snr(
             ax2.axvline((truth_time_s - coalescence_time), zorder=-100, c='tab:pink')
             ax3.axvline((truth_time_s - coalescence_time), zorder=-100, c='tab:pink')
         
-    ax2.set_xlim(-2000, 1000)
+    ax2.set_xlim(*plot_bounds)
     ax1.set_ylim(-1.1 * max_data, 1.1 * max_data)
     ax2.set_ylim(-1.1 * max_residual, 1.1 * max_residual)
     ax3.set_ylim(0,10)

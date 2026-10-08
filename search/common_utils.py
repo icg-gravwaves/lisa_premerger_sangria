@@ -64,6 +64,12 @@ def load_ldc_timeseries(
 
 def fast_tdi(lisa_orbits, mbhb, start_time, end_time, dt):
 
+    ###########################################################################
+    # WARNING: T=end_time leaves large removal residuals just before merger.
+    # FastBHB's last few hours are inaccurate for a waveform ending pre-merger.
+    # T=end_time is intentional here to reproduce the search removal accurately.
+    # FIX: use T=365 * 86400 for Sangria-HM, then keep the segment slicing below.
+    ###########################################################################
     fast_hm = FastBHB(
         "MBHB",
         approx="IMRPhenomHM",
