@@ -9,7 +9,7 @@ import logging  # Library for logging messages
 import numpy as np
 from matplotlib import pyplot as plt
 # Use the style file defined in the repository route
-plt.style.use('../../paper.mplstyle')
+plt.style.use('../../../paper.mplstyle')
 
 
 
@@ -18,7 +18,7 @@ from pycbc.types import MultiDetOptionAction  # Custom action for argparse
 
 import sys, os
 
-parent_dir = os.path.abspath("..")
+parent_dir = os.path.abspath("../..")
 
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)

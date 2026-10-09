@@ -20,6 +20,10 @@ for removal in noremoval varied_removal ; do
 done
 ```
 
-## Signal removal residuals
+## Signal overlap and removal
+
+The [overlap analysis](./overlap_runs/README.md) explains how loud full signals can match pre-merger templates and produce additional peaks. The [overlap plots](./overlap_runs/plot_optimal_snr_fitting_factor.ipynb) show the optimal SNR and fitting factors for these signals.
+
+### Signal removal residuals
 
 The [signal removal notebook](./signal_removal.ipynb) compares proper full-year waveform generation with the search's `T=end_time` generation. For each signal, it plots both removals at the hourly data ends immediately before and after merger, using identical data within each comparison. This explains the residual peak in Figure 10. The search-code bug is retained and marked with its fix in `../common_utils.py`.

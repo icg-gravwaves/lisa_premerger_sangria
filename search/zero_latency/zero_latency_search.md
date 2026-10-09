@@ -11,7 +11,7 @@ This can produce duplicates around the edges, e.g. seeing a peak at 3595s could 
 
 The data is loaded from the data file and converted to AET channels. The start / end indices are calculated and the slice is taken.
 
-We then have options for removing signals from the data - this will be covered more later.
+We then have options for removing signals from the data, discussed in the [focused-region section](../inpainting_runs/focused.md).
 
 The mean is subtracted, which helps remove some strange behaviour we saw with a zero-frequency offset in the predicted SNR timeseries. This mattered more in the inpainting search, but it is included here as well for consistency.
 

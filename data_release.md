@@ -50,6 +50,6 @@ This section has the generation of Figures 7, and Table 3.
 
 [This section](./search/inpainting_runs/focused.md) discusses Section VI, and shows the analysis during a period of Sangria-HM data particularly densely-packed with signals.
 
-We show generation of Figures 8-10, and Table 4.
+We show generation of Figures 8-10, and Table 4. This section also contains the [overlap analysis](./search/inpainting_runs/overlap_runs/README.md) and its [plots](./search/inpainting_runs/overlap_runs/plot_optimal_snr_fitting_factor.ipynb).
 
 The [signal removal comparison](./search/inpainting_runs/signal_removal.ipynb) explains the Figure 10 residual peak by comparing full-year waveform generation with the search's changing end-time cutoff.
