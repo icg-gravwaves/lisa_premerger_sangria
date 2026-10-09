@@ -124,4 +124,10 @@ To clarify, we have updated "discrete" to "a small set of" in the manuscript.
 How ample is the residual?
 Is it from the waveform model or the response?
 
-> We have added an appendix with a discussion of the residual. When running the code that is documented to be the code that produced the waveforms in this dataset a discrepancy is seen. We have not been able to identify why that is, as we cannot reproduce the original waveforms. Therefore we cannot diagnose this and simply state that it's there. There is a discussion about how well we can remove signals from the data, and what residuals will be left behind by things like waveform systematics. However, I think that discussion is not so relevant in the [premerger] search context, where we will not require the same removal accuracy that (for e.g.) tests of GR will require.
+> We have discovered a bug in the waveform generation for subtraction that led to this residual, which is discussed in detail in the data release. The error was that we were generating the waveform in FastBHB up to the data end time - when that was pre-merger it caused errors in the generation. We simply state that this bug is there rather than try to fix it. There is a discussion about how well we can remove signals from the data, and what residuals will be left behind by things like waveform systematics. However, I think that discussion is not so relevant in the [premerger] search context, where we will not require the same removal accuracy that (for e.g.) tests of GR will require.
+
+We have updated the text in the caption from:
+this is due to imperfect removal of the signal from the data.
+to
+this is due to a bug in the signal removal, and is explained fully in the data release.
+
