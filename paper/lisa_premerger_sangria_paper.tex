@@ -167,7 +167,108 @@ used to make them publicly available. Please see the data release at
 for more detail.
 
 
-\input{dataset.tex}
+\section{The Sangria-HM Dataset}
+\label{sec:dataset}
+
+
+The LISA Data Challenges were designed to simulate comprehensively modeled data as an introduction
+to LISA data analysis~\cite{Baghi:2022ucj, LDC_WEBSITE}.
+Here we use the dataset known as Challenge 2a, also known as
+\textit{Sangria-HM}~\cite{LDC_WEBSITE_SANGRIA_HM}.
+Sangria-HM  consists of both a ``training'' and ``blind'' dataset, we analyze here the training dataset to more easily compare the values of the signals to our results.
+The Sangria-HM training dataset is a year long and contains Gaussian instrumental noise, a foreground of
+Galactic binaries and \ac{MBHB} systems, both with parameters derived from astrophysical models.
+The \acp{MBHB} are simulated using the \texttt{PhenomHM} waveform model~\cite{Garcia-Quiros:2020qpx}.
+
+In our previous work~\cite{CabournDavies:2024hea}, we demonstrated the zero-latency technique
+on a dataset that did not include a foreground of Galactic binaries.
+This foreground, made up of millions of white dwarf binaries in our galaxy which are nearly monochromatic in frequency, occupy the same frequency range as mergers of \acp{MBHB}.
+Many of the Galactic binary systems are not expected to be resolvable, and so must be considered an extra source of noise for \ac{MBHB} searches.
+
+The contribution of this `noise' will vary throughout the year, as LISA's most sensitive direction is oriented toward or away from the galactic center~\cite{Colpi:2024xhw,Seto:2004ji}.
+As the loudest Galactic binary sources are resolved and can be removed from the data, sensitivity to \ac{MBHB} signals will naturally increase~\cite{Crowder:2006eu,Strub:2024kbe}.
+
+The Galactic binary confusion noise overlaps with \ac{MBHB} mergers in frequency space.
+But we emphasize that our search is not \textit{for} the mergers,
+rather the inspiral stage of the signal, many days before merger, and so we consider whether the frequency overlaps with the
+particular times-before-merger for our signals.
+
+Figure~\ref{fig:psds} shows the power-spectral density directly estimated from the data, the modeled power-spectral density with and without Galactic binary foreground noise, and an example
+characteristic strain curve for Signal 2 in the Sangria-HM dataset (See Section~\ref{subsec:expected_snr} for a description).
+
+
+From Figure~\ref{fig:psds}, we see that at 14, 7 and 4 days-before-merger, the pre-merger characteristic strain does not overlap
+in frequency with the unresolvable Galactic binary confusion noise.
+At 1 and 0.5 days before merger, the Galactic binary confusion noise begins to overlap the \ac{MBHB}.
+However, the ``day 0'' sensitivity curve, where no resolvable Galactic binaries have been removed, qualitatively agrees with the modeled sensitivity curve where resolvable binaries are removed.
+This is important because it indicates that \emph{premerger detection of \ac{MBHB} \deleted{is not a ``Global Fit'' problem}\updated{can be run immediately at the start of the mission}}.
+The frequency content of premerger \acp{MBHB} are broadly separated from any other resolvable source, and therefore one would not need to simultaneously perform inference of premerger \acp{MBHB} and any other source because premerger inference could run perfectly well on data where no sources have been removed from it.
+It also indicates that the techniques to observe \ac{MBHB} sources could largely run separately from Global
+Fit analyses, where all sources are being simultaneously fit\footnote{As we will show in Section~\ref{subsec:peak_removal}, there is sufficient correlation between premerger \acp{MBHB} and \ac{MBHB} mergers that one would want to remove observed \acp{MBHB} from the data as they are observed to aid detection of potentially overlapping premerger \acp{MBHB}.}.
+\updated{This point is explored further in Appendix~\ref{sec:gb_noise_snr_loss}.}
+
+% Early placement of the figure referred to later on so that later figures dont get pushed off the end of the paper
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/dataset/figure_2_smoothing_60mHz.png}
+    \caption{
+        The method used to smooth over the dip in the power-spectral density at 60 mHz.
+        We draw a straight line between the two peaks either side of this point, and smoothly
+        transition between the estimated power-spectral density and the straight line using a Hann window.
+        This ensures that there are no immediate jumps in the power-spectral density to cause spectral leakage.
+        This is applied to both the estimated and modeled power-spectral density used in later analysis.
+    }
+    \label{fig:smoothing}
+\end{figure}
+
+\subsection{MBHB signals in the Sangria-HM data set}
+\label{subsec:expected_snr}
+For the example \ac{MBHB} signal shown in Figure~\ref{fig:psds}, we use the \textit{characteristic
+strain}~\cite{Moore:2014lga} for Signal 2.
+Characteristic strain has a desirable property for visualization; the integrated area between the characteristic strain and the
+power-spectral density in the frequency domain corresponds to the expected signal-to-noise ratio for the signal.
+
+\updated{Signal-to-noise ratios calculated from integrated areas below the} characteristic strains at the times-before-merger that we consider are shown in
+Table~\ref{tab:characteristic_strain_snr}.
+We compute this for each signal in the Sangria-HM dataset, with cutoffs set according to the
+time--frequency evolution expected for an inspiralling \ac{MBHB} signal.
+We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals -
+0, 3, 4, 10, 11 and possibly 12, 13 - would be seen 4 days or more before merger.
+
+
+\begin{table}
+    \input{tables/table_1_characteristic_strain.tex}
+    \caption{
+        Optimal signal-to-noise ratios (SNRs) for signals in the Sangria-HM dataset.
+        Waveforms are generated using FastBHB as implemented in \texttt{lisabeta} \cite{Marsat:2020rtl}.
+    }
+    \label{tab:characteristic_strain_snr}
+\end{table}
+
+There are 15 \ac{MBHB} signals in the Sangria-HM training dataset.
+In Table~\ref{tab:characteristic_strain_snr} we summarize these signals, showing the merger
+times and the signal-to-noise ratio of the full signal calculated from characteristic strain.
+We also show the signal-to-noise ratios for each of the 15 \ac{MBHB} signals, at 14, 7, 4, 1 and 0.5 days before merger using frequency-domain cuts.
+We see that Signal 1 is unlikely to be seen even 0.5 days pre-merger, and that only the loudest signals - 0, 3, 4, 10, 11 and possibly 12 and 13 - would be seen 4 days or more before merger.
+
+\subsection{Smoothing the power spectral density}
+\label{subsec:smoothing}
+At $\sim60$\,mHz, we see a dip in the power-spectral density, this is an artifact where gravitational waves at this frequency have a wavelength
+of $5\times10^{9}$\,m, which is exactly double the arm length of LISA, and the TDI combination process results in cancellation at this frequency.
+Despite appearances, it is \emph{not} a point of infinite sensitivity, it is a point of zero sensitivity because any potential signal is also cancelled completely at this point.
+However, a problem arises when creating a whitening filter
+to ``whiten'' this because it is effectively a delta function in the inverse power-spectral density, which would require an infinitely long time-domain whitening filter to correctly whiten.
+
+Instead, following our previous work~\cite{CabournDavies:2024hea} we choose not to whiten this feature, especially as the signals we are looking for are at frequencies two orders of magnitude
+smaller than this.
+To do this we simply smooth the feature out of the power spectrum.
+We identify peaks in the model either side of the dip, and draw a line between them.
+To avoid this process itself introducing discontinuities in the spectrum, we use a Hann window to smoothly transition between the power-spectral density
+and the straight line.
+We illustrate this in Figure~\ref{fig:smoothing}.
+
+
+
 
 \input{zerolatency_sangria.tex}
 
