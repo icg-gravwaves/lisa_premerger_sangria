@@ -669,8 +669,16 @@ For Signal 3 this is significantly after the estimated time in Table~\ref{tab:ch
 \updated{An additional peak is seen at the time when Signal 4 merges, this is erroneous, although we are removing Signal 4 using identical parameters to how it was added to the data we did not reproduce the waveform with complete accuracy, due to a bug which leaves a noticeable residual at the merger of this loud signal.
 This is explored further in the data release.}
 
+\section{Conclusion and Discussion}
+\label{sec:conclusion}
 
-\input{conclusions.tex}
+We have demonstrated the application of two separate search techniques, one using a zero-latency
+whitening filter, and the other using inpainting, to identify premerger \ac{MBHB} signals in the Sangria-HM Training dataset.
+Both methods recovered signals at the times predicted by noiseless calculations of the accumulation of signal-to-noise ratio as these signals approach merger.
+While the Sangria-HM dataset does not include gaps, we demonstrate that our inpainting technique is capable of recovering premerger signals in the presence of gaps, which are expected to exist in the 30 day period of real LISA data that we use for our search.
+
+We believe that the methods presented here, being of negligible computing cost for the late 2030s and utilizing similar signal processing techniques to those developed over the last decades for ground-based analyses represent viable search strategies for premerger observation of \ac{MBHB} after LISA launches.
+The authors are keen to continue to work closely with the LISA Ground Segment, and the ``L2A'' package in particular, to apply these methods to more realistic simulations of LISA data that the LISA Simulation Group will produce in the coming years and tackle any further difficulties that analysis of more realistic data (e.g. correlated noise, non-Gaussianities, or data arriving in a non-uniform manner) will require.
 
 \begin{acknowledgments}
 For the purpose of open access, the authors have applied a Creative Commons Attribution (CC-BY)
@@ -702,7 +710,31 @@ debug errors, and provide editing assistance in the writing of this manuscript.
 
 \end{acknowledgments}
 
-\input{appendix.tex}
+\appendix
+
+\section{Power loss due to resolvable Galactic Binary foreground}
+\label{sec:gb_noise_snr_loss}
+\updated{As demonstrated in Figure~\ref{fig:psds}, the pre-merger analysis waveforms mainly terminate before the frequency where resolvable galactic binary noise contribution becomes significant.
+To investigate this, we compare the expected signal-to-noise ratio loss when using different PSDs.
+Firstly, we use the estimated Sangria-HM `day zero' PSD, which includes signals from all sources, this is `A Estimated' in Figure~\ref{fig:psds}.
+We compare to the modelled PSD, `Model A/E', which contains unresolvable galactic binary foreground which would not be removed by any global fit analyses.}
+
+\updated{The fraction of signal-to-noise ratio lost is shown in Figure~\ref{fig:gb_snr_loss}.
+We see that for the signals at lower chirp masses, we can lose up to 17\% of power half a day before merger.
+For heavier signals, and for times more than a few days before merger, the signal power loss is much less.
+The few points where there seems to be a power `gain' (loss $<$ 0) are due to the inherent variability in estimating a PSD.
+The signal-to-noise ratio loss is enough to show that global fit-style subtraction of resolved Galactic Binary sources will help optimise this technique, particularly as we move closer to merger, but is not significant enough that this subtraction is strictly necessary for pre-merger searches.
+This finding is similar to what is shown in Section~\ref{sec:focused}, that the removal of signals from the data is desirable in some cases.
+}
+
+\begin{figure}
+   \centering
+   \includegraphics[width=\columnwidth]{images/figure_11_GB_SNR_loss.pdf}
+   \caption{
+       \updated{Fractional signal-to-noise ratio differences for each signal when using the `A Estimated' and `Model A/E' PSDs from Figure~\ref{fig:psds}.}
+   }
+   \label{fig:gb_snr_loss}
+\end{figure}
 
 \bibliography{bibliography}
 
