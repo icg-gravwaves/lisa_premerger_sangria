@@ -1,5 +1,5 @@
 repo_dir=/home/gareth.cabourndavies/lisa/lisa_premerger_sangria/
-working_dir=$repo_dir/search/overlap_runs
+working_dir=$repo_dir/search/inpainting_runs/overlap_runs
 python_exe=/home/gareth.cabourndavies/environments/env_lisa_premerger_sangria/bin/python
 
 

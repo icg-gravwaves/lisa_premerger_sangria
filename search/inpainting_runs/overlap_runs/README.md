@@ -3,7 +3,7 @@
 Peaks in the data were being produced when the data end was at the time of the merger. This was suspicious. We found that the cause was that the signals were so loud in the data, even the tiny overlap between the pre-merger truncated templates and the full-length signal could cause SNR spikes which peek out above the noise, and can be comparable to the true peak.
 
 ## Calculating signal overlap and fitting factors
-To calculate the optimal SNR and fitting factor over time, we use `optimal_snr_over_time.py`.
+Run the commands below from `search/inpainting_runs/overlap_runs`. To calculate the optimal SNR and fitting factor over time, we use `optimal_snr_over_time.py`.
 
 ```bash
 python optimal_snr_over_time.py \
@@ -29,4 +29,4 @@ This was run on the head node in a loop using optima_snr_over_time.sh - probably
 
 We use the match to the signal template itself divided by the optimal SNR as a proxy for the fitting factor, this is to simplify calculations and avoid using matches to each template in the full template bank.
 
-The next notebook shows the plots from these calculations for each of the signals in the Sangria-HM dataset. After that, we show the signals being removed from the data.
+The [overlap notebook](./plot_optimal_snr_fitting_factor.ipynb) shows these calculations for each signal in the Sangria-HM dataset. The [removal comparison](../signal_removal.ipynb) then compares full-year and search-end-time removal waveforms.
