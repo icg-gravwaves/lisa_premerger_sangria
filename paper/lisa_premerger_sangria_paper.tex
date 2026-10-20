@@ -267,10 +267,167 @@ To avoid this process itself introducing discontinuities in the spectrum, we use
 and the straight line.
 We illustrate this in Figure~\ref{fig:smoothing}.
 
+\section{Applying the Premerger Search}
+\label{sec:zerolatency_sangria}
+
+We now apply our previous zero-latency filter based search method to the Sangria-HM Training dataset to demonstrate its ability to observe premerger \acp{MBHB}.
+A full description of the method can be found in~\cite{CabournDavies:2024hea} and, other than some necessary differences which we will highlight below, we use the same method, and implementation, here.
+
+\subsection{Template Bank}
+\label{subsec:template_bank}
+In order to utilize a matched filter search, we must first set up a set of waveforms -- a \textit{template bank} -- to which
+we compare the data.
+We use stochastic bank placement~\cite{Babak:2008rb, Harry:2009ea} in the same way as~\cite{CabournDavies:2024hea},
+with parameter limits set from Table~\ref{tab:parameter_space}.
+\updated{These parameter choices exclude some of the massive black hole binary parameter space, particularly at lower masses.
+This could be a very interesting region to explore, but is not explored in the context of proving the technique of this work.}
+In constructing the bank, we calculate the match for signals only using frequencies up to the point corresponding to the desired
+time-before-merger for the signal.
+
+Although we did create such template banks in~\cite{CabournDavies:2024hea}, the inclusion of the
+Galactic binary confusion noise in Sangria-HM changes the sensitivity curves and requires that we create new banks for this work. 
+
+We create separate template banks for each of our 5 premerger search times (0.5, 1, 4, 7, and 14 days before merger) and simulate the termination of the waveforms by computing the numerical
+match between waveforms only using frequencies up to frequency corresponding to the dominant gravitational-wave mode at that time-before-merger for that signal. 
 
 
+\begin{table}[ht]
+\begin{centering}
+\begin{tabular}{|c|r @{ -- } l|c|}
+% this means the table is aligned on the dash - upper and lower are technically different columns, just with a dash between them
+\hline
+  Parameter & \multicolumn{2}{c|}{Limits} & Distribution\\
+  \hline
+  \strutrow Total Mass, $M_\odot$ & $10^6$ & $2\times 10^7$ & uniform \\
+  Mass ratio, $q$ & 1 & 4 & uniform \\
+  Component Spins, $\chi_1, \chi_2$ & -0.9 & 0.9 & uniform\\
+  Ecliptic Longitude, $\lambda$ & 0 & $2\pi$ & uniform \\
+  Ecliptic Latitude, $\beta$ & $-\pi / 2$ & $\pi / 2$ & uniform in $\sin(\beta)$\\
+  Inclination, $\iota$ & 0 & $\pi / 2$ & uniform in $\cos(\iota)$ \\
+  Polarisation & 0 & $2 \pi$ & uniform \\  
+\hline
+\end{tabular}
+\caption{Parameter space used in setting up the template banks for the zero-latency filter search.
+\updated{The choices made here were designed to include the full set of Sangria-HM dataset signals, which range in total mass from $1.6\times 10^6 M_\odot$ to $9.6\times 10^6 M_\odot$, mass ratio ranges from $1.03$ to $2.75$, and component spins in the z-direction range from $-0.7$ to $0.8$.}
+\label{tab:parameter_space}
+}
+\end{centering}
+\end{table}
 
-\input{zerolatency_sangria.tex}
+We must define a power spectral density used for the match calculations used in deciding the stochastic placement and so in this work, we consider
+the modeled power spectral density with Galactic binary confusion, and the power spectral density estimated directly from the data.
+The banks used in~\cite{CabournDavies:2024hea} used a modeled power spectral density without Galactic binary confusion noise.
+
+In Figure~\ref{fig:bank_size}, we show the bank sizes at the different time-before-merger cutoffs for the different power spectral densities.
+We compute this using three of the sensitivity curves shown earlier in Figure~\ref{fig:psds}; the modeled power-spectral density with Galactic binary confusion, the modeled curve without Galactic binary confusion as used in~\cite{CabournDavies:2024hea}, and a power-spectral density estimated from data.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/figure_3_bank_size.pdf}
+    \caption{
+        Template bank sizes assuming different power-spectral densities.
+        Inclusion of unresolvable Galactic binary foreground in the model increases bank size by a factor between 2.1 and 2.6.
+        Using the estimated rather than modeled power-spectral density increases bank size by a factor between 1.0 and 1.9.
+    }
+    \label{fig:bank_size}
+\end{figure}
+We can see that significantly more templates are required when the confusion noise is included, presumably due to \deleted{the signal power being accumulated over more time, rather than most of the power coming at the highest frequencies}\updated{noise at high frequency pushing the bandwidth of the template to lower frequencies.
+As the longer-duration low frequency component now produces a more significant proportion of the power, small mismatches will become significant over the time, meaning more templates are needed to meet minimum match criteria}.
+We also see that, for shorter times before merger, more waveforms are required for the estimated curve, than for the model curve.
+In all cases the number of waveforms is relatively small, current template banks for ground based analysis are at least one order of magnitude larger than this, and would not present a computational challenge a decade from now.
+
+For the searches in this paper, we use the template banks calculated from the estimated power-spectral density.
+
+\subsection{Applying the search to Sangria-HM}
+\label{subsec:application}
+
+In \cite{CabournDavies:2024hea} we simulated 30 days of data, with a merger occurring at a defined point after the end of the data, and attempted to recover the signal.
+Here we wish to recover the 15 signals by searching for them in the full 365 days of data.
+We also wish to identify the signals as \emph{early} as possible.
+To simulate this we begin by taking the first 30 days of data and searching for mergers 0.5, 1, 4, 7 and 14 days from the end of that data (ie. signals that would merge 0.5, 1, 4, 7 or 14 days in the future).
+We allow a one hour search window in each case, and therefore search for signals 6 days 23 hours to 7 days premerger (and similar), but do so using waveforms that are truncated 7 days premerger.
+
+We then read the next hour of data, and ``forget'' the first hour of data and repeat the process.
+By repeating this, we walk through the entire year-long data set, hour-by-hour, simulating how data might arrive in real time while continuously searching for premerger signals.
+We consider a signal to be detected if we recover it with a signal-to-noise ratio larger than 10, which is more conservative than the thresholds we computed empirically in~\cite{CabournDavies:2024hea} but allows for some uncertainty in the noise model.
+
+
+\subsection{Signal removal before merger}
+\label{subsec:peak_removal}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_4_opt_snr_match_signal_10.pdf}
+    \caption{
+        Optimal signal-to-noise ratio (SNR) build-up and signal-to-noise ratio of premerger-truncated signals matched filtered against the full signal for Signal 10.
+        We see that the premerger-truncated signals' signal-to-noise ratios are a product of the optimal signal-to-noise and the match between the full and truncated signals.
+        Equivalent plots for all signals are included in the data release.
+    }
+    \label{fig:double_peak}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_5_signal_10_removed.pdf}
+    \caption{
+        Signal 10 results, showing results with and without the secondary peaks, for the removed results,
+        the signal is removed from the data two hours before merger.
+        \updated{Each circle and cross correspond to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
+        We also see peaks in the data before merger, these are the post-signal peaks for Signal 9, which is 21 days before Signal 10.
+        Equivalent plots for all signals are included in the data release.
+    }
+    \label{fig:zerolatency_signal_removed_raw}
+\end{figure}
+
+Finally, before we apply the search to the Sangria-HM data we consider the cross-correlation between
+the merger of a \ac{MBHB} signal and a template waveform searching for premerger waveforms.
+In Figure~\ref{fig:double_peak} we show a number of things to illustrate this.
+First (black solid line), we show the integrated signal-to-noise ratio of one of the signals in the Sangria-HM dataset as a function of time before (and after) merger, noting, as is well known, that the power peaks sharply in the hour leading up to merger.
+Second (dotted lines) we show the normalized match between waveforms truncated 1, 4, 7 and 14 days before merger, and the signal, as a function of the signal's time before merger.
+This is normalized such that a value of 1 indicates perfect agreement, and all the integrated signal-to-noise would be recovered, a value of 0 indicates complete disagreement, and no signal-to-noise ratio would be recovered, a value of 0.5 indicates that 50\% of the signal-to-noise ratio would be recovered.
+This value peaks sharply to 1 at the expected times when the waveform and merger are both at the same time before merger and rapidly drops on both sides.
+Finally (solid lines), we show the product of the normalized matches and the integrated signal-to-noise, representing the signal-to-noise ratio that would be recovered by searching with the waveform truncated at the stated point before merger.
+We see the expected peaks at the desired time before merger.
+However, we also see secondary peaks close to the merger time.
+These are points where the normalized match is low, but because the integrated signal-to-noise is larger (over 100) the product of the two can result in values that are comparable, in terms of signal-to-noise, to a premerger signal.
+In short, this shows that there is enough cross-correlation between pre-merger signals and loud merger events that it has the potential to confuse our search.
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{images/zero_latency_results/figure_6_zerolatency_result.png}
+    \caption{
+        Search results for the zero-latency filter search.
+        \updated{Each circle corresponds to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
+    }
+    \label{fig:zerolatency_remove_all}
+\end{figure*}
+
+We therefore want to avoid confusing actual mergers as premerger signals, or having a merger mask a second incoming \ac{MBHB}.
+There are techniques, for example~\cite{Allen:2004gu}, that could be used to distinguish between genuine premerger signals, and premerger template waveforms overlapping with \ac{MBHB} mergers.
+However, in this case, it is easier to simply remove the signals from the data before merger.
+To do this, we remove each signal 2 hours before its corresponding merger time.
+When removing the signal, we assume that we know the waveform perfectly and remove the full waveform from the data. 
+This is a simplification; some waveforms would be identified quite a bit before 2 hours premerger, whereas some quieter signals may not be detected until close to merger, although all 15 of the signals we consider are detectable 2 hours before merger.
+In a real-world scenario one could consider a scenario where we remove signals as they become detectable, which we will explore in Section~\ref{sec:focused}.
+Additionally, we will not have a perfect waveform model, and there will be some level of residual due to mismatch.
+However, in the real-world scenario the goal will not be perfect removal of the signal, but to remove the possibility of confusing premerger signals with loud \ac{MBHB} mergers, which would be possible with even a rough subtraction of the signal.
+
+Figure~\ref{fig:zerolatency_signal_removed_raw} shows the effect of removing the merger when searching for Signal 10.
+Without the merger removed, we ``detect'' additional mergers 14, 7, 4 and 1 day after the merger of Signal 10, due to this cross-correlation.
+With the merger removed, we recover the expected result of the signal being detected first 4 days before merger with signal-to-noise increasing as the signal nears merger.
+
+
+\subsection{Search Results}
+\label{subsec:zerolatency_results}
+
+Finally, we show the results from searching the full year-long dataset in Figure~\ref{fig:zerolatency_remove_all}.
+We can see that peaks in the signal-to-noise ratio timeseries corresponding to all signals except Signal 1, which we did not expect to recover.
+In Table~\ref{tab:when_found}, alongside our inpainting results, which we'll discuss later in Section~\ref{sec:inpainting_sangria},
+we show when each signal is recovered, and with what signal-to-noise ratio. We recover all of the signals at times comparable to what was predicted in Table~\ref{tab:characteristic_strain_snr}.
+We note that Signals 2 - 5 are visibly overlapping in Figure~\ref{fig:zerolatency_remove_all}.
+We leave a discussion of identifying each of these as separate signals to Section~\ref{sec:focused} so that we can do so in the context of both our zero-latency and inpainting search results.
+
 
 \input{inpainting_introduction.tex}
 
