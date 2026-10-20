@@ -129,7 +129,7 @@ If one has to wait an additional day, the observation window may have passed, or
 % The figure is included here so that it appears higher-up in the paper.
 % It doesnt actually get discussed in this section.
 \begin{figure*}
-    \includegraphics[width=\textwidth]{images/dataset/figure_1_psds_with_sources.png}
+    \includegraphics[width=\textwidth]{figure_1_psds_with_sources.png}
     \caption{
         Comparison of power spectral densities used in this work.
         The power spectral density is estimated from the Sangria-HM dataset using the Welch method \updated{as described in~\cite{Allen:2005fk}}.
@@ -210,7 +210,7 @@ Fit analyses, where all sources are being simultaneously fit\footnote{As we will
 % Early placement of the figure referred to later on so that later figures dont get pushed off the end of the paper
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{images/dataset/figure_2_smoothing_60mHz.png}
+    \includegraphics[width=\columnwidth]{figure_2_smoothing_60mHz.png}
     \caption{
         The method used to smooth over the dip in the power-spectral density at 60 mHz.
         We draw a straight line between the two peaks either side of this point, and smoothly
@@ -345,7 +345,7 @@ We compute this using three of the sensitivity curves shown earlier in Figure~\r
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{images/figure_3_bank_size.pdf}
+    \includegraphics[width=\columnwidth]{figure_3_bank_size.pdf}
     \caption{
         Template bank sizes assuming different power-spectral densities.
         Inclusion of unresolvable Galactic binary foreground in the model increases bank size by a factor between 2.1 and 2.6.
@@ -379,7 +379,7 @@ We consider a signal to be detected if we recover it with a signal-to-noise rati
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_4_opt_snr_match_signal_10.pdf}
+    \includegraphics[width=\columnwidth]{figure_4_opt_snr_match_signal_10.pdf}
     \caption{
         Optimal signal-to-noise ratio (SNR) build-up and signal-to-noise ratio of premerger-truncated signals matched filtered against the full signal for Signal 10.
         We see that the premerger-truncated signals' signal-to-noise ratios are a product of the optimal signal-to-noise and the match between the full and truncated signals.
@@ -390,7 +390,7 @@ We consider a signal to be detected if we recover it with a signal-to-noise rati
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{images/zero_latency_results/figure_5_signal_10_removed.pdf}
+    \includegraphics[width=\columnwidth]{figure_5_signal_10_removed.pdf}
     \caption{
         Signal 10 results, showing results with and without the secondary peaks, for the removed results,
         the signal is removed from the data two hours before merger.
@@ -417,7 +417,7 @@ In short, this shows that there is enough cross-correlation between pre-merger s
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{images/zero_latency_results/figure_6_zerolatency_result.png}
+    \includegraphics[width=\textwidth]{figure_6_zerolatency_result.png}
     \caption{
         Search results for the zero-latency filter search.
         \updated{Each circle corresponds to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
@@ -528,7 +528,7 @@ This gives us everything we need to compute $\rho(t)$ given a template waveform 
 % Early figure referred to later on so that later figures dont get pushed off the end of the paper
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{images/inpainting_results/figure_7_forecast_inpainting_estimate.png}
+    \includegraphics[width=\textwidth]{figure_7_forecast_inpainting_estimate.png}
     \caption{
         Signal-to-noise ratio (SNR) as a function of the forecast merger time and the time before merger. 
         \updated{Each circle corresponds to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
@@ -615,7 +615,7 @@ We then search for Signal 0 using inpainting to mitigate the gaps and show the r
 
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{images/inpainting_results/figure_8_signal_0_timeline.png}
+    \includegraphics[width=\columnwidth]{figure_8_signal_0_timeline.png}
     \caption{
         Timeline of results for Signal Zero, demonstrating the inclusion of gaps in the data in the days before merger.
         Timeline plots for all signals are included in the data release.
@@ -640,12 +640,12 @@ In Figure~\ref{fig:focused_no_2hr_removal} we show the results, without any sign
 \begin{figure*}
     \centering
     \begin{subfigure}{\columnwidth}
-    \includegraphics[width=\columnwidth]{images/inpainting_results/figure_9a_focused_region_no_removal.png}
+    \includegraphics[width=\columnwidth]{figure_9a_focused_region_no_removal.png}
     \caption{No removal of signals}
     \label{fig:no_removal}
     \end{subfigure}
     \begin{subfigure}{\columnwidth}
-    \includegraphics[width=\columnwidth]{images/inpainting_results/figure_9b_focused_region_2hr_removal.png}
+    \includegraphics[width=\columnwidth]{figure_9b_focused_region_2hr_removal.png}
     \caption{Signals are removed 2 hours before merger}
     \label{fig:2hr_removal}
     \end{subfigure}
@@ -698,7 +698,7 @@ We then show results of this search, removing signals as they are identified, in
 
 \begin{figure*}
     \centering
-    \includegraphics[width=1.5\columnwidth]{images/inpainting_results/figure_10_focused_region_variable_removal.png}
+    \includegraphics[width=1.5\columnwidth]{figure_10_focused_region_variable_removal.png}
     \caption{
         Timeline of results in the congested period of days 110-140 of the Sangria-HM dataset.
         \updated{Each and cross corresponds to a different data end time as the search is performed with the data end time stepping forward in hourly steps.}
@@ -782,7 +782,7 @@ This finding is similar to what is shown in Section~\ref{sec:focused}, that the 
 
 \begin{figure}
    \centering
-   \includegraphics[width=\columnwidth]{images/figure_11_GB_SNR_loss.pdf}
+   \includegraphics[width=\columnwidth]{figure_11_GB_SNR_loss.pdf}
    \caption{
        \updated{Fractional signal-to-noise ratio differences for each signal when using the `A Estimated' and `Model A/E' PSDs from Figure~\ref{fig:psds}.}
    }
